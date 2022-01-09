@@ -1,0 +1,46 @@
+# Compressed archives
+*.tgz
+*.tar
+*.gz
+*.bz2
+*.lz4
+
+# Media files
+*.webm
+*.mp4
+*.mp3
+*.m4a
+*.mkv
+*.mov
+*.aac
+*.ts
+*.ac3
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.xcf
+*.ttf
+*.svg
+
+# Documents
+*.docx
+*.pdf
+*.xlsx
+
+# System Files
+## Windows
+desktop.ini
+## OSX
+.DS_Store
+## IDE's
+.nbproject/
+.idea/
+
+# Python cache
+__pycache__/
+
+# Makefile's are generated, so no need to keep them under VCS.
+Makefile
