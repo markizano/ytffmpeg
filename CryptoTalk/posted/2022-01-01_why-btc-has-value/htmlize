@@ -1,0 +1,18 @@
+#!/bin/bash
+
+header=$'<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+'
+
+footer=$'</body></html>
+'
+
+exec 0>&-
+exec 3> >(ssh -q markizano.net "cat > $public/misc/btc.html")
+echo "$header" >&3
+cmark -t html readme.md >&3
+echo "$footer" >&3
+exec 3>&-
+

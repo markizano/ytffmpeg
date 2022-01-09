@@ -1,0 +1,7 @@
+file 'tiktok/part3/00_Intro.mp4'
+file 'tiktok/part3/01_hash-vs-enc-p3.mp4'
+file 'tiktok/part3/09_Encryption.mp4'
+file 'tiktok/part3/10_EncryptionKeys.mp4'
+file 'tiktok/part3/11_IV.mp4'
+file 'tiktok/part3/12_Summary.mp4'
+file 'tiktok/part3/13_TT-Ending.mp4'

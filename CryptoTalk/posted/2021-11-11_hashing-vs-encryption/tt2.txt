@@ -1,0 +1,7 @@
+file 'tiktok/part2/00_Intro.mp4'
+file 'tiktok/part2/01_hash-vs-enc-part2.mp4'
+file 'tiktok/part2/05_WhenApply.mp4'
+file 'tiktok/part2/06_passwords.mp4'
+file 'tiktok/part2/07_shame.mp4'
+file 'tiktok/part2/08_suspicion.mp4'
+file 'tiktok/part2/09_thanks.mp4'

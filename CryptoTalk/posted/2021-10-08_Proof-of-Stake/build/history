@@ -1,0 +1,38 @@
+40973  2021-10-08/16:12:56 ffmpeg -i ../PoWvsPoS.mp4 -c:a aac -c:v h264 -vf scale=576x1024 PoWvsPoS.mp4
+40974  2021-10-08/16:13:10 ffmpeg -map_metadata 0 -i ../PoWvsPoS.mp4 -c:a aac -c:v h264 -vf scale=576x1024 PoWvsPoS.mp4
+40975  2021-10-08/16:13:21 ffmpeg -i ../PoWvsPoS.mp4 -c:a aac -c:v h264 -vf scale=576x1024 -map_metadata 0 -y PoWvsPoS.mp4
+40976  2021-10-08/16:13:47 ffmpeg -i ../intro.mp4 -c:a aac -c:v h264 -vf scale=576x1024 -map_metadata 0 -y 01_intro.mp4
+40979  2021-10-08/16:15:33 #ffmpeg -i ../ALGO-example.mp4 -i ../ALGO-example.m4a -c:a aac -c:v h264 -vf scale=576x1024 -map_metadata 0 -y 02_ALGO-Example.mp4
+40981  2021-10-08/16:16:41 #ffmpeg -t 00:00:35 -i ../ALGO-example.mp4 -i ../ALGO-example.m4a -c:a aac -c:v h264 -vf scale=576x1024 -map_metadata 0 -y 02_ALGO-Example.mp4
+40983  2021-10-08/16:17:33 ffmpeg -t 00:00:34 -i ../ALGO-example.mp4 -i ../ALGO-example.m4a -c:a aac -c:v h264 -vf scale=576x1024 -map_metadata 0 -y 02_ALGO-Example.mp4
+40986  2021-10-08/16:19:08 ffmpeg -t 00:00:02.8 -i ../PoWvsPoS.mp4 -c:a aac -c:v h264 -vf scale=576x1024 -map_metadata 0 -y PoWvsPoS.mp4
+40991  2021-10-08/16:19:32 ffmpeg -t 00:00:02.8 -i ../PoWvsPoS.mp4 -c:a aac -c:v h264 -vf scale=576x1024 -map_metadata 0 -y 00_PoWvsPoS.mp4
+40995  2021-10-08/16:24:23 ffmpeg -i 00_PoWvsPoS.mp4 -i 01_intro.mp4 -i 02_ALGO-Example.mp4  -filter_complex '[0:v][1:v][2:v]concat=n=3[vout];[0:a][1:a][2:a]concat=v=0:a=1:n=3[aout]' -map [vout] -map [aout] done.mp4
+40996  2021-10-08/16:25:21 ffmpeg -t 00:00:02.8 -i ../PoWvsPoS.mp4 -c:a aac -c:v h264 -vf scale=576x1024 -aspect 3:4 -map_metadata 0 -y 00_PoWvsPoS.mp4
+40998  2021-10-08/16:25:33 ffmpeg -t 00:00:02.8 -i ../PoWvsPoS.mp4 -c:a aac -c:v h264 -vf scale=576x1024 -aspect 4:3 -map_metadata 0 -y 00_PoWvsPoS.mp4
+41000  2021-10-08/16:25:42 ffmpeg -t 00:00:02.8 -i ../PoWvsPoS.mp4 -c:a aac -c:v h264 -vf scale=576x1024 -aspect 9:16 -map_metadata 0 -y 00_PoWvsPoS.mp4
+41002  2021-10-08/16:26:00 #ffmpeg -t 00:00:02.8 -i ../PoWvsPoS.mp4 -c:a aac -c:v h264 -vf scale=576x1024 -aspect 9:16 -map_metadata 0 -y 00_PoWvsPoS.mp4
+41003  2021-10-08/16:26:15 ffmpeg -i ../intro.mp4 -c:a aac -c:v h264 -vf scale=576x1024 -aspect 9:16  -map_metadata 0 -y 01_intro.mp4
+41004  2021-10-08/16:26:46 ffmpeg -t 00:00:34 -i ../ALGO-example.mp4 -i ../ALGO-example.m4a -c:a aac -c:v h264 -vf scale=576x1024 -aspect 9:16 -map_metadata 0 -y 02_ALGO-Example.mp4
+41006  2021-10-08/16:27:34 ffmpeg -i ../intro.mp4 -c:a aac -c:v h264 -vf scale=576x1024 -aspect 3:4  -map_metadata 0 -y 01_intro.mp4
+41008  2021-10-08/16:45:40 ffmpeg -i ../intro.mp4 -c:a aac -c:v h264 -vf scale=576x1024 -aspect 21:37  -map_metadata 0 -y 01_intro.mp4
+41013  2021-10-08/16:46:30 #ffmpeg -i 00_PoWvsPoS.mp4 -i 01_intro.mp4 -i 02_ALGO-Example.mp4  -filter_complex '[0:v][1:v][2:v]concat=n=3[vout];[0:a][1:a][2:a]concat=v=0:a=1:n=3[aout]' -map [vout] -map [aout] done.mp4
+41014  2021-10-08/16:46:41 ffmpeg -t 00:00:34 -i ../ALGO-example.mp4 -i ../ALGO-example.m4a -c:a aac -c:v h264 -vf scale=576x1024 -aspect 21:37 -map_metadata 0 -y 02_ALGO-Example.mp4
+41015  2021-10-08/16:46:54 ffmpeg -i 00_PoWvsPoS.mp4 -i 01_intro.mp4 -i 02_ALGO-Example.mp4  -filter_complex '[0:v][1:v][2:v]concat=n=3[vout];[0:a][1:a][2:a]concat=v=0:a=1:n=3[aout]' -map [vout] -map [aout] done.mp4
+41018  2021-10-08/16:47:02 ffmpeg -i 00_PoWvsPoS.mp4 -i 01_intro.mp4 -i 02_ALGO-Example.mp4  -filter_complex '[0:v][1:v][2:v]concat=n=3[vout];[0:a][1:a][2:a]concat=v=0:a=1:n=3[aout]' -map [vout] -map [aout] -y done.mp4
+41019  2021-10-08/16:48:50 ffmpeg -i 00_PoWvsPoS.mp4 -i 01_intro.mp4 -i 02_ALGO-Example.mp4  -filter_complex '[0:v][1:v][2:v]concat=n=3[vout];[0:a][1:a][2:a]concat=v=0:a=1:n=3[aout]' -map [vout] -map [aout] -aspect 9:16 -y done.mp4
+41020  2021-10-08/16:49:17 ffmpeg -t 00:00:34 -i ../ALGO-example.mp4 -i ../ALGO-example.m4a -c:a aac -c:v h264 -vf scale=576x1024 -aspect 9:16 -map_metadata 0 -y 02_ALGO-Example.mp4
+41021  2021-10-08/16:49:27 ffmpeg -i 00_PoWvsPoS.mp4 -i 01_intro.mp4 -i 02_ALGO-Example.mp4  -filter_complex '[0:v][1:v][2:v]concat=n=3[vout];[0:a][1:a][2:a]concat=v=0:a=1:n=3[aout]' -map [vout] -map [aout] -aspect 9:16 -y done.mp4
+41022  2021-10-08/16:51:27 ffmpeg -i ../intro.mp4 -c:a aac -c:v h264 -vf scale=576x1024,setsar=1:1,setdar=9:16 -map_metadata 0 -y 01_intro.mp4
+41024  2021-10-08/16:53:32 ffmpeg -i ../intro.mp4 -c:a aac -c:v h264 -vf scale=576x1024,setsar=1:1,setdar=9:16 -map_metadata -1 -y 01_intro.mp4
+41026  2021-10-08/16:53:59 ffmpeg -i ../intro.mp4 -c:a aac -c:v h264 -vf scale=576x1024,setsar=9:16,setdar=9:16 -map_metadata -1 -y 01_intro.mp4
+41027  2021-10-08/16:54:09 ffmpeg -i ../intro.mp4 -c:a aac -c:v h264 -vf scale=576x1024,setsar=9:16 -map_metadata -1 -y 01_intro.mp4
+41029  2021-10-08/16:54:24 ffmpeg -i ../intro.mp4 -c:a aac -c:v h264 -vf scale=576x1024,setsar=1:1 -map_metadata -1 -y 01_intro.mp4
+41032  2021-10-08/16:55:01 #ffmpeg -t 00:00:34 -i ../ALGO-example.mp4 -i ../ALGO-example.m4a -c:a aac -c:v h264 -vf scale=576x1024,setdar=1:1 -map_metadata 0 -y 02_ALGO-Example.mp4
+41034  2021-10-08/16:55:21 ffmpeg -t 00:00:34 -i ../ALGO-example.mp4 -i ../ALGO-example.m4a -c:a aac -c:v h264 -vf scale=576x1024,setdar=1:1 -map_metadata -1 -y 02_ALGO-Example.mp4
+41036  2021-10-08/16:56:04 ffmpeg -t 00:00:34 -i ../ALGO-example.mp4 -i ../ALGO-example.m4a -c:a aac -c:v h264 -vf scale=576x1024,setsar=1:1 -map_metadata -1 -y 02_ALGO-Example.mp4
+41040  2021-10-08/16:56:41 ffmpeg -i 00_PoWvsPoS.mp4 -i 01_intro.mp4 -i 02_ALGO-Example.mp4  -filter_complex '[0:v][1:v][2:v]concat=n=3[vout];[0:a][1:a][2:a]concat=v=0:a=1:n=3[aout]' -map [vout] -map [aout] -y done.mp4
+41041  2021-10-08/16:56:51 ffmpeg -i 00_PoWvsPoS.mp4 -i 01_intro.mp4 -i 02_ALGO-Example.mp4  -filter_complex '[0:v][1:v][2:v]concat=n=3[vout];[0:a][1:a][2:a]concat=v=0:a=1:n=3[aout]' -map [vout] -map [aout] -vsync 2 -y done.mp4
+41049  2021-10-08/17:01:55 #ffmpeg -i ../intro.mp4 -c:a aac -c:v h264 -vf scale=576x1245,crop=576:1024:0:$((1245-1024)),setsar=1:1 -map_metadata -1 -y 01_intro.mp4
+41051  2021-10-08/17:02:11 ffmpeg -i ../intro.mp4 -c:a aac -c:v h264 -vf scale=576x1245,crop=576:1024:0:$((1245-1024)),setsar=1:1 -map_metadata -1 -y 01_intro.mp4
+41053  2021-10-08/17:02:31 ffmpeg -i 00_PoWvsPoS.mp4 -i 01_intro.mp4 -i 02_ALGO-Example.mp4  -filter_complex '[0:v][1:v][2:v]concat=n=3[vout];[0:a][1:a][2:a]concat=v=0:a=1:n=3[aout]' -map [vout] -map [aout] -vsync 2 -y done.mp4

@@ -1,0 +1,5 @@
+file 'tiktok/part1/01_Title.mp4'
+file 'tiktok/part1/02_HashingAlgos.mp4'
+file 'tiktok/part1/03_butKizano1.mp4'
+file 'tiktok/part1/04_RainbowTable.mp4'
+file 'tiktok/part1/05_thanks.mp4'
