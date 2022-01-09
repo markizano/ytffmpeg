@@ -1,0 +1,221 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211028_121351752.mp4"
+        },
+        {
+          "i": "images/bitcoin.png",
+          "loop": "1"
+        }
+      ],
+      "output": "build/00_Welcome.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=5:end=30,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[v0]",
+        "[0:a]atrim=start=5:end=30,asetpts=PTS-STARTPTS[audio]",
+        "[v0]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:textfile=w.txt:fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=200:enable='between(t,5,8)'[v1]",
+        "[v1]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text=A:fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=300:enable='between(t,5.2,8)'[v2]",
+        "[v2]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text=Crypto?:fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=400:enable='between(t,5.4,8)'[withText]",
+        "[1:v]fade=in:d=0.5:st=20.7:alpha=1,fade=out:d=1:st=22:alpha=1[bitcoin]",
+        "[withText][bitcoin]overlay=150:550:shortest=1[video]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211026_052454058.mp4"
+        }
+      ],
+      "output": "build/01_WhatIsBitcoin.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=101.0:end=113.5,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=101.0:end=113.5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211026_052735218.mp4"
+        }
+      ],
+      "output": "build/02_Transactions.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=8.9:end=19.0,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=8.9:end=19.0,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211026_053301708.mp4"
+        }
+      ],
+      "output": "build/03_Structure.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=168.25:end=201.5,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=168.25:end=201.5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211026_054015191.mp4"
+        },
+        {
+          "loop": "1",
+          "i": "images/tree.png"
+        }
+      ],
+      "output": "build/04_PoW.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=482.0:end=510.46,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[clip]",
+        "[0:a]atrim=start=482.0:end=510.46,asetpts=PTS-STARTPTS[audio]",
+        "[1:v]format=rgba,fps=29.97,fade=in:st=10:d=1.5,fade=out:st=12:d=0.5[tree]",
+        "[clip][tree]overlay=60:380:shortest=1:enable='between(t,9.99,12.56)',format=yuv420p[video]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211026_055025611.mp4"
+        },
+        {
+          "loop": "1",
+          "i": "images/BTC-bitcoin.png"
+        }
+      ],
+      "output": "build/05_Rewards.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=264.0:end=288.0,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[clip]",
+        "[0:a]atrim=start=264.0:end=288.0,asetpts=PTS-STARTPTS[audio]",
+        "[1:v]format=rgba,fps=29.97,fade=in:st=2.59:d=1.2,fade=out:st=4:d=1[btclogo]",
+        "[clip][btclogo]overlay=85:630:shortest=1:enable='between(t,2.58,4.8)',format=yuv420p[video]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "screenrecords/BTC-block0.mp4"
+        }
+      ],
+      "output": "build/06_blockchain.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=10.0:end=87.0,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=10.0:end=87.0,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211028_030807273.mp4"
+        }
+      ],
+      "output": "build/07_visualQue.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=10.0:end=13.0,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=10.0:end=13.0,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211026_062802060.mp4"
+        }
+      ],
+      "output": "build/08_TransactionFees.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=8.0:end=39.0,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=8.0:end=39.0,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211026_063519343.mp4"
+        },
+        {
+          "i": "/home/YouTube/stock-footage/privates-in-public.mp4"
+        }
+      ],
+      "remember-me": "trim=start=163.9:end=193.9,setpts=PTS-STARTPTS",
+      "output": "build/09_PKI.mp4",
+      "filter_complex": [
+        "[0:v]scale=576x1024,setsar=1:1,split[v0][v1]",
+        "[0:a]atrim=start=163.9:end=193.9,asetpts=PTS-STARTPTS,asplit[a0][a1]",
+        "[v0]trim=start=163.9:end=184.65,setpts=PTS-STARTPTS[vfirst]",
+        "[v1]trim=start=184.65:end=193.9,setpts=PTS-STARTPTS[vsec]",
+        "[a0]atrim=start=0:end=20.75,asetpts=PTS-STARTPTS[afirst]",
+        "[a1]atrim=start=20.75,asetpts=PTS-STARTPTS[asec]",
+        "[vfirst][1:v][vsec]concat=n=3[video]",
+        "[afirst][1:a][asec]concat=v=0:a=1:n=3[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211026_064003972.mp4"
+        }
+      ],
+      "output": "build/10_Privacy.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=40.125:end=53.0,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=40.125:end=53.0,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211026_071927302.mp4"
+        }
+      ],
+      "output": "build/11_Security.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=6:end=75.5,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=6:end=75.5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211026_072333280.mp4"
+        }
+      ],
+      "output": "build/12_Summary.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=49.5:end=69.2,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=49.5:end=69.2,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211117_113957986.mp4"
+        }
+      ],
+      "output": "build/20_WAC-BTC-Part2.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=1:end=5,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[v0]",
+        "[v0]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:textfile=w.txt:fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=200:enable='between(t, 0.2, 1.5)'[v1]",
+        "[v1]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text=A:fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=300:enable='between(t, 0.5, 1.5)'[v2]",
+        "[v2]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text=Crypto?:fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=400:enable='between(t, 0.8, 1.5)'[video]",
+        "[0:a]atrim=start=1:end=5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "BTC/VID_20211117_114017242.mp4"
+        }
+      ],
+      "output": "build/21_WAC-BTC-Part3.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=1:end=5,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[v0]",
+        "[v0]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:textfile=w.txt:fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=200:enable='between(t, 0.7, 1.7)'[v1]",
+        "[v1]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text=A:fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=300:enable='between(t, 1, 1.7)'[v2]",
+        "[v2]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text=Crypto?:fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=400:enable='between(t, 1.3, 1.7)'[video]",
+        "[0:a]atrim=start=1:end=5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    }
+  ]
+}

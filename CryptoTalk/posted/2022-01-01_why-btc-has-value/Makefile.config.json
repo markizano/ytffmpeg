@@ -1,0 +1,635 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211123_055422465.mp4"
+        }
+      ],
+      "output": "build/00_YouTubeOpening.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=6:end=23.9,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[clip]",
+        "[clip]drawtext=text=Why:fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=white:fontsize=48:box=1:boxcolor=black@0.8:boxborderw=5:x=50:y=60:enable='gte(t, 15.367)'[why]",
+        "[why]drawtext=text=Does:fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=white:fontsize=48:box=1:boxcolor=black@0.8:boxborderw=5:x=375:y=110:enable='gte(t, 15.6)'[does]",
+        "[does]drawtext=text=BitCoin:fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=white:fontsize=48:box=1:boxcolor=black@0.8:boxborderw=5:x=20:y=275:enable='gte(t, 15.7)'[bitcoin]",
+        "[bitcoin]drawtext=text=Have:fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=white:fontsize=48:box=1:boxcolor=black@0.8:boxborderw=5:x=415:y=385:enable='gte(t, 16.03)'[have]",
+        "[have]drawtext=text=Value:fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=white:fontsize=48:box=1:boxcolor=black@0.8:boxborderw=5:x=30:y=460:enable='gte(t, 16.367)'[value]",
+        "[value]drawtext=text='Anyways?!':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=8:x=95:y=625:enable='gte(t, 16.6)'[video]",
+        "[0:a]atrim=start=6:end=23.9,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211123_055821209.mp4"
+        }, {
+          "loop": "1",
+          "i": "assets/michael-saylor.png"
+        }, {
+          "loop": "1",
+          "i": "assets/robert-breedlove.png"
+        }, {
+          "i": "resources/prevVid_WhatsACrypto_BTC.mp4"
+        }
+      ],
+      "output": "build/01_OpeningStatements.mp4",
+      "filter_complex": [
+        "[1:v]fade=in:st=12.5:d=0.4,fade=out:st=13.6:d=0.4[mike]",
+        "[2:v]fade=in:st=16.1:d=0.4,fade=out:st=17.4:d=0.4[rob]",
+        "[3:v]format=rgba,setpts=PTS+42/TB,fade=in:st=42:d=0.8:alpha=1,fade=out:st=44.0:d=0.8:alpha=1[prev]",
+        "[0:v]trim=start=4:end=60.8,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[clip]",
+        "[clip][mike]overlay=20:180:enable='between(t, 12.5, 14)':shortest=1[withMike]",
+        "[withMike][rob]overlay=40:190:enable='between(t, 16.1, 17.8)':shortest=1[withRob]",
+        "[withRob][prev]overlay=24:36:enable='between(t, 42, 44.8)'[withPrev]",
+        "[withPrev]drawtext=text='#BitCoinMasterclass':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=white:fontsize=50:box=1:boxcolor=black@0.8:boxborderw=8:x=32:y=770:enable='between(t, 30, 32)'[btcmc]",
+        "[btcmc]drawtext=text='What is currency?':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=black:fontsize=32:box=1:boxcolor=white@0.8:boxborderw=8:x=32:y=25:enable='between(t, 38, 42 )'[currency]",
+        "[currency]drawtext=text='What is fiat?':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=black:fontsize=32:box=1:boxcolor=white@0.8:boxborderw=8:x=32:y=75:enable='between(t, 39, 42)'[fiat]",
+        "[fiat]drawtext=text='What is BitCoin (recap)?':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=black:fontsize=32:box=1:boxcolor=white@0.8:boxborderw=8:x=32:y=118:enable='between(t, 40, 42)'[bitcoin]",
+
+        "[bitcoin]drawtext=text='What is currency?':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=black:fontsize=32:box=1:boxcolor=white@0.8:boxborderw=8:x=32:y=25:enable='between(t, 45, 54 )'[currency2]",
+        "[currency2]drawtext=text='What is fiat?':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=black:fontsize=32:box=1:boxcolor=white@0.8:boxborderw=8:x=32:y=75:enable='between(t, 45, 54)'[fiat2]",
+        "[fiat2]drawtext=text='What is BitCoin (recap)?':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=black:fontsize=32:box=1:boxcolor=white@0.8:boxborderw=8:x=32:y=120:enable='between(t, 45, 54)'[bitcoin2]",
+        "[bitcoin2]drawtext=text='Who is Backing BitCoin?':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=black:fontsize=32:box=1:boxcolor=white@0.8:boxborderw=8:x=50:y=175:enable='between(t, 46, 54)'[backing]",
+        "[backing]drawtext=text='Why is the Price So Volatile?':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=black:fontsize=32:box=1:boxcolor=white@0.8:boxborderw=8:x=50:y=225:enable='between(t, 48, 54)'[volatile]",
+        "[volatile]drawtext=text='Why does BitCoin Have Value?':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=black:fontsize=32:box=1:boxcolor=white@0.8:boxborderw=8:x=32:y=275:enable='between(t, 52, 54)'[video]",
+
+        "[0:a]atrim=start=4:end=60.8,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "assets/transition.mp4"
+        }, {
+          "loop": "1",
+          "t": "00:05",
+          "i": "assets/transition_what-is-currency.png"
+        }, {
+          "i": "assets/transition_what-is-currency.m4a"
+        }
+      ],
+      "output": "build/02.1_WhatIsCurrency.mp4",
+      "filter_complex": [
+        "[0:v]split[v0][v1]",
+        "[v0]fade=out:st=1:d=1[enter]",
+        "[v1]format=rgba,setpts=PTS+3/TB,fade=in:st=3:d=1:alpha=1[exit]",
+        "[1:v]setsar=1:1,trim=start=0:end=3,setpts=PTS+1/TB,fade=in:st=1:d=1:alpha=1,fade=out:st=3:d=1:alpha=1[what]",
+        "[enter][what]overlay=0:0:enable='between(t, 1, 3)':shortest=1[first]",
+        "[first][exit]overlay=0:0:enable='between(t, 3, 5)'[video]",
+        "[2:a]aresample=48000[audio]"
+      ],
+      "attributes": [
+        "vsync"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211124_200559628.mp4"
+        }, {
+          "i": "resources/FullMetal001.mkv"
+        }
+      ],
+      "output": "build/02_Currency.mp4",
+      "filter_complex": [
+        "[1:v]trim=start=427:end=440,setpts=PTS-STARTPTS,scale=480x360,setsar=1:1,setpts=(0.2*PTS)+13.0/TB,format=rgba,fade=in:st=12.9:d=1:alpha=1,fade=out:st=15.3:d=0.8:alpha=1[fma]",
+        "[0:v]trim=start=2:end=131,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[clip]",
+        "[clip][fma]overlay=45:510:enable='between(t, 12.9, 16.0)'[video]",
+        "[0:a]atrim=start=2:end=131,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "ss": "00:02:32.7",
+          "to": "00:02:45.5",
+          "i": "assets/The Philosophy of Bitcoin and How it Could Change the World As We Know It _ Robert Breedlove-d_34YjXAU5Y.mp4"
+        }
+      ],
+      "output": "assets/fiat-is-by-decree.mp4",
+      "filter_complex": [
+        "[0:v]crop=1280:1080:244:0,pad=1280:2276:0:500,scale=576x1024,setsar=1:1[video]",
+        "[0:a]aresample=44100[audio]"
+      ],
+      "attributes": [
+        "not-a-build"
+      ]
+    },
+    {
+      "input": [
+        {
+          "ss": "00:44:42",
+          "to": "00:44:58.5",
+          "i": "assets/The Philosophy of Bitcoin and How it Could Change the World As We Know It _ Robert Breedlove-d_34YjXAU5Y.mp4"
+        }
+      ],
+      "output": "assets/counterfeit-is-inflation.mp4",
+      "filter_complex": [
+        "[0:v]crop=1280:1080:244:0,pad=1280:2276:0:500,scale=576x1024,setsar=1:1[video]",
+        "[0:a]aresample=44100[audio]"
+      ],
+      "attributes": [
+        "not-a-build"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "assets/transition.mp4"
+        }, {
+          "loop": "1",
+          "t": "00:05",
+          "i": "assets/transition_what-is-fiat.png"
+        }, {
+          "i": "assets/transition_what-is-fiat.m4a"
+        }
+      ],
+      "output": "build/03.1_WhatIsFiat.mp4",
+      "filter_complex": [
+        "[0:v]split[v0][v1]",
+        "[v0]fade=out:st=1:d=1[enter]",
+        "[v1]format=rgba,setpts=PTS+3/TB,fade=in:st=3:d=1:alpha=1[exit]",
+        "[1:v]setsar=1:1,trim=start=0:end=3,setpts=PTS+1/TB,fade=in:st=1:d=1:alpha=1,fade=out:st=3:d=1:alpha=1[what]",
+        "[enter][what]overlay=0:0:enable='between(t, 1, 3)':shortest=1[first]",
+        "[first][exit]overlay=0:0:enable='between(t, 3, 5)'[video]",
+        "[2:a]aresample=48000[audio]"
+      ],
+      "attributes": [
+        "vsync"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "assets/fiat-is-by-decree.mp4"
+        }, {
+          "i": "resources/VID_20211202_152429889.mp4"
+        }, {
+          "i": "assets/counterfeit-is-inflation.mp4"
+        }, {
+          "i": "/home/YouTube/stock-footage/money-printer-go-brr-jerome-powell.mp4"
+        }
+      ],
+      "output": "build/03_WhatIsFiat.mp4",
+      "filter_complex": [
+        "[1:v]crop=888:1579:0:170,scale=576x1024,setsar=1:1,split[v0][v1]",
+        "[3:v]scale=576x326,format=rgba,trim=start=0:end=5,setpts=PTS-STARTPTS,setpts=PTS+7.15/TB,fade=in:st=7.15:d=1:alpha=1,fade=out:st=11.15:d=1:alpha=1[jpowell]",
+        "[v0]trim=start=2.25:end=59.25,setpts=PTS-STARTPTS[fiat]",
+        "[fiat][jpowell]overlay=0:300:enable='between(t, 7.15, 12.15)'[moneyprinter]",
+        "[v1]trim=start=60.5:end=191,setpts=PTS-STARTPTS[inflation]",
+        "[inflation]drawtext=text='#BitCoinMasterclass':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=white:fontsize=50:box=1:boxcolor=black@0.8:boxborderw=8:x=32:y=770:enable='between(t, 5.136, 7.636)'[btcmc]",
+        "[1:a]asplit[a0][a1]",
+        "[a0]atrim=start=2.25:end=59.25,asetpts=PTS-STARTPTS[afiat]",
+        "[a1]atrim=start=60.5:end=191,asetpts=PTS-STARTPTS[ainflation]",
+        "[0:v][moneyprinter][2:v][btcmc]concat=n=4[video]",
+        "[0:a][afiat][2:a][ainflation]concat=v=0:a=1:n=4[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "assets/transition.mp4"
+        }, {
+          "loop": "1",
+          "t": "00:05",
+          "i": "assets/transition_enter-bitcoin.png"
+        }, {
+          "i": "assets/transition_enter-bitcoin.m4a"
+        }
+      ],
+      "output": "build/04.1_EnterBitCoin.mp4",
+      "filter_complex": [
+        "[0:v]split[v0][v1]",
+        "[v0]fade=out:st=1:d=1[enter]",
+        "[v1]format=rgba,setpts=PTS+3/TB,fade=in:st=3:d=1:alpha=1[exit]",
+        "[1:v]setsar=1:1,trim=start=0:end=3,setpts=PTS+1/TB,fade=in:st=1:d=1:alpha=1,fade=out:st=3:d=1:alpha=1[what]",
+        "[enter][what]overlay=0:0:enable='between(t, 1, 3)':shortest=1[first]",
+        "[first][exit]overlay=0:0:enable='between(t, 3, 5)'[video]",
+        "[2:a]aresample=48000[audio]"
+      ],
+      "attributes": [
+        "vsync"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211202_154655621.mp4"
+        }
+      ],
+      "output": "build/04_EnterBitCoin.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=3:end=33.6,setpts=PTS-STARTPTS,scale=576x1245,crop=576:1024:0:110,setsar=1:1[video]",
+        "[0:a]atrim=start=3:end=33.6,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "assets/transition.mp4"
+        }, {
+          "loop": "1",
+          "t": "00:05",
+          "i": "assets/transition_life-liberty-property.png"
+        }, {
+          "i": "assets/transition_life-liberty-property.m4a"
+        }
+      ],
+      "output": "build/05.1_LifeLibertyProperty.mp4",
+      "filter_complex": [
+        "[0:v]split[v0][v1]",
+        "[v0]fade=out:st=1:d=1[enter]",
+        "[v1]format=rgba,setpts=PTS+3/TB,fade=in:st=3:d=1:alpha=1[exit]",
+        "[1:v]setsar=1:1,trim=start=0:end=3,setpts=PTS+1/TB,fade=in:st=1:d=1:alpha=1,fade=out:st=3:d=1:alpha=1[what]",
+        "[enter][what]overlay=0:0:enable='between(t, 1, 3)':shortest=1[first]",
+        "[first][exit]overlay=0:0:enable='between(t, 3, 5)'[video]",
+        "[2:a]aresample=48000[audio]"
+      ],
+      "attributes": [
+        "vsync"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211202_155347774.mp4"
+        },
+        {
+          "i": "resources/The\\ Star-Spangled\\ Banner-sDRRXq41rac.mkv"
+        },
+        {
+          "i": "/home/YouTube/stock-footage/record-scratch.mp3"
+        }
+      ],
+      "output": "build/05_LifeLibertyProperty.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=11:end=43.3,setpts=PTS-STARTPTS,scale=576x1245,crop=576:1024:0:110,setsar=1:1[video]",
+        "[0:a]atrim=start=11:end=43.3,asetpts=PTS-STARTPTS[amain]",
+        "[1:a]aresample=48000,atrim=start=3:end=10.25,asetpts=PTS-STARTPTS,volume=0.25,afade=in:st=0:d=9[starSpangledBanner]",
+        "[2:a]aresample=48000,volume=0.6[recordScratch]",
+        "[starSpangledBanner][recordScratch]concat=v=0:a=1[abackground]",
+        "[amain][abackground]amix=inputs=2:duration=longest[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "assets/transition.mp4"
+        }, {
+          "loop": "1",
+          "t": "00:05",
+          "i": "assets/transition_whois-backing-btc.png"
+        }, {
+          "i": "assets/transition_whois-backing-btc.m4a"
+        }
+      ],
+      "output": "build/06.1_whoisBackingBitcoin.mp4",
+      "filter_complex": [
+        "[0:v]split[v0][v1]",
+        "[v0]fade=out:st=1:d=1[enter]",
+        "[v1]format=rgba,setpts=PTS+3/TB,fade=in:st=3:d=1:alpha=1[exit]",
+        "[1:v]setsar=1:1,trim=start=0:end=3,setpts=PTS+1/TB,fade=in:st=1:d=1:alpha=1,fade=out:st=3:d=1:alpha=1[what]",
+        "[enter][what]overlay=0:0:enable='between(t, 1, 3)':shortest=1[first]",
+        "[first][exit]overlay=0:0:enable='between(t, 3, 5)'[video]",
+        "[2:a]aresample=48000[audio]"
+      ],
+      "attributes": [
+        "vsync"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211203_124259522.mp4"
+        }
+      ],
+      "output": "build/06_WhosBackingAllOfThis-Transition.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=2:end=8,setpts=PTS-STARTPTS,scale=576x1245,crop=576:1024:0:110,setsar=1:1[video]",
+        "[0:a]atrim=start=2:end=8,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "assets/transition.mp4"
+        }, {
+          "loop": "1",
+          "t": "00:05",
+          "i": "assets/transition_how-fiat-backed.png"
+        }, {
+          "i": "assets/transition_how-fiat-backed.m4a"
+        }
+      ],
+      "output": "build/07.1_transition_how-fiat-backed.mp4",
+      "filter_complex": [
+        "[0:v]split[v0][v1]",
+        "[v0]fade=out:st=1:d=1[enter]",
+        "[v1]format=rgba,setpts=PTS+3/TB,fade=in:st=3:d=1:alpha=1[exit]",
+        "[1:v]setsar=1:1,trim=start=0:end=3,setpts=PTS+1/TB,fade=in:st=1:d=1:alpha=1,fade=out:st=3:d=1:alpha=1[what]",
+        "[enter][what]overlay=0:0:enable='between(t, 1, 3)':shortest=1[first]",
+        "[first][exit]overlay=0:0:enable='between(t, 3, 5)'[video]",
+        "[2:a]aresample=48000[audio]"
+      ],
+      "attributes": [
+        "vsync"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211209_021336188.mp4"
+        }, {
+          "i": "assets/pop.m4a"
+        }, {
+          "loop": "1",
+          "i": "assets/sears.png"
+        }, {
+          "loop": "1",
+          "i": "assets/circut-city.png"
+        }, {
+          "loop": "1",
+          "i": "assets/radio-shack.png"
+        }, {
+          "loop": "1",
+          "i": "assets/blockbuster.png"
+        }
+      ],
+      "output": "build/07_WhatIsFiat.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=3:end=144,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[clip]",
+        "[2:v]setsar=1:1,fade=out:st=139:d=1[sears]",
+        "[3:v]setsar=1:1,fade=out:st=139:d=1[circutCity]",
+        "[4:v]setsar=1:1,fade=out:st=139:d=1[radioShack]",
+        "[5:v]setsar=1:1,fade=out:st=139:d=1[blockbuster]",
+
+        "[clip][sears]overlay=300:165:enable='between(t, 136, 140)':shortest=1[withSears]",
+        "[withSears][circutCity]overlay=55:40:enable='between(t, 137, 140)':shortest=1[withCircutCity]",
+        "[withCircutCity][radioShack]overlay=275:525:enable='between(t, 138, 140)':shortest=1[withRadioshack]",
+        "[withRadioshack][blockbuster]overlay=40:720:enable='between(t, 139, 140)':shortest=1[video]",
+
+        "[0:a]atrim=start=3:end=144,asetpts=PTS-STARTPTS[aclip]",
+        "[1:a]asplit=4[p0][p1][p2][p3]",
+        "[p0]adelay=136s:all=1,apad=whole_dur=137s[asears]",
+        "[p1]apad=whole_dur=1s[acircutCity]",
+        "[p2]apad=whole_dur=1s[aradioShack]",
+        "[p3]apad=whole_dur=900ms[ablockbuster]",
+        "[asears][acircutCity][aradioShack][ablockbuster]concat=v=0:a=1:n=4[pop]",
+        "[aclip][pop]amix=inputs=2:duration=longest[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "assets/transition.mp4"
+        }, {
+          "loop": "1",
+          "t": "00:05",
+          "i": "assets/transition_whois-backing-btc.png"
+        }, {
+          "i": "assets/transition_whois-backing-btc.m4a"
+        }
+      ],
+      "output": "build/08.1_whois-backing-btc.mp4",
+      "filter_complex": [
+        "[0:v]split[v0][v1]",
+        "[v0]fade=out:st=1:d=1[enter]",
+        "[v1]format=rgba,setpts=PTS+3/TB,fade=in:st=3:d=1:alpha=1[exit]",
+        "[1:v]setsar=1:1,trim=start=0:end=3,setpts=PTS+1/TB,fade=in:st=1:d=1:alpha=1,fade=out:st=3:d=1:alpha=1[what]",
+        "[enter][what]overlay=0:0:enable='between(t, 1, 3)':shortest=1[first]",
+        "[first][exit]overlay=0:0:enable='between(t, 3, 5)'[video]",
+        "[2:a]aresample=48000[audio]"
+      ],
+      "attributes": [
+        "vsync"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211221_061629839.mp4"
+        }
+      ],
+      "output": "build/08_BitCoinBacking.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=3:end=53.4,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=3:end=53.4,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "assets/transition.mp4"
+        }, {
+          "loop": "1",
+          "t": "00:05",
+          "i": "assets/transition_why-so-volatile.png"
+        }, {
+          "i": "assets/transition_why-so-volatile.m4a"
+        }
+      ],
+      "output": "build/09.1_why-so-volatile.mp4",
+      "filter_complex": [
+        "[0:v]split[v0][v1]",
+        "[v0]fade=out:st=1:d=1[enter]",
+        "[v1]format=rgba,setpts=PTS+3/TB,fade=in:st=3:d=1:alpha=1[exit]",
+        "[1:v]setsar=1:1,trim=start=0:end=3,setpts=PTS+1/TB,fade=in:st=1:d=1:alpha=1,fade=out:st=3:d=1:alpha=1[what]",
+        "[enter][what]overlay=0:0:enable='between(t, 1, 3)':shortest=1[first]",
+        "[first][exit]overlay=0:0:enable='between(t, 3, 5)'[video]",
+        "[2:a]aresample=48000[audio]"
+      ],
+      "attributes": [
+        "vsync"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211222_203453773.mp4"
+        }, {
+          "loop": "1",
+          "i": "assets/robinhood.png"
+        }, {
+          "loop": "1",
+          "i": "assets/public.png"
+        }, {
+          "loop": "1",
+          "i": "assets/webull.png"
+        }
+      ],
+      "output": "build/09_Volatility.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=4:end=165.5,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[clip]",
+        "[1:v]setsar=1:1,fade=in:st=101:d=0.5,fade=out:st=102.5:d=0.5[robinhood]",
+        "[2:v]setsar=1:1,fade=in:st=101.4:d=0.5,fade=out:st=102.5:d=0.5[public]",
+        "[3:v]setsar=1:1,fade=in:st=101.9:d=0.5,fade=out:st=102.5:d=0.5[webull]",
+        "[clip][robinhood]overlay=300:635:enable='between(t, 101, 103)':shortest=1[withRobinhood]",
+        "[withRobinhood][public]overlay=60:500:enable='between(t, 101.4, 103)':shortest=1[withPublic]",
+        "[withPublic][webull]overlay=385:180:enable='between(t, 101.9, 103)':shortest=1[video]",
+        "[0:a]atrim=start=4:end=165.5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "assets/transition.mp4"
+        }, {
+          "loop": "1",
+          "t": "00:05",
+          "i": "assets/transition_why-does-btc-have-value.png"
+        }, {
+          "i": "assets/transition_why-does-btc-have-value.m4a"
+        }
+      ],
+      "output": "build/10.1_why-does-btc-have-value.mp4",
+      "filter_complex": [
+        "[0:v]split[v0][v1]",
+        "[v0]fade=out:st=1:d=1[enter]",
+        "[v1]format=rgba,setpts=PTS+3/TB,fade=in:st=3:d=1:alpha=1[exit]",
+        "[1:v]setsar=1:1,trim=start=0:end=3,setpts=PTS+1/TB,fade=in:st=1:d=1:alpha=1,fade=out:st=3:d=1:alpha=1[what]",
+        "[enter][what]overlay=0:0:enable='between(t, 1, 3)':shortest=1[first]",
+        "[first][exit]overlay=0:0:enable='between(t, 3, 5)'[video]",
+        "[2:a]aresample=48000[audio]"
+      ],
+      "attributes": [
+        "vsync"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211222_222325817.mp4"
+        }
+      ],
+      "output": "build/10_Conclusion.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=1.7:end=53.7,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1,split[v0][v1]",
+        "[v0]trim=start=0:end=49.5,setpts=PTS-STARTPTS[notYourKeys]",
+        "[v1]trim=start=49.5:end=51.98,setpts=PTS-STARTPTS,hflip[notYourCoins]",
+        "[notYourKeys][notYourCoins]concat[video]",
+        "[0:a]atrim=start=1.7:end=53.7,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "assets/transition.mp4"
+        }, {
+          "loop": "1",
+          "t": "00:05",
+          "i": "assets/transition_why-is-btc-expensive.png"
+        }, {
+          "i": "assets/transition_why-is-btc-expensive.m4a"
+        }
+      ],
+      "output": "build/11.1_why-is-btc-expensive.mp4",
+      "filter_complex": [
+        "[0:v]split[v0][v1]",
+        "[v0]fade=out:st=1:d=1[enter]",
+        "[v1]format=rgba,setpts=PTS+3/TB,fade=in:st=3:d=1:alpha=1[exit]",
+        "[1:v]setsar=1:1,trim=start=0:end=3,setpts=PTS+1/TB,fade=in:st=1:d=1:alpha=1,fade=out:st=3:d=1:alpha=1[what]",
+        "[enter][what]overlay=0:0:enable='between(t, 1, 3)':shortest=1[first]",
+        "[first][exit]overlay=0:0:enable='between(t, 3, 5)'[video]",
+        "[2:a]aresample=48000[audio]"
+      ],
+      "attributes": [
+        "vsync"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211230_141239208.mp4"
+        }, {
+          "loop": "1",
+          "i": "assets/tsla.png"
+        }, {
+          "loop": "1",
+          "i": "assets/amzn.png"
+        }, {
+          "loop": "1",
+          "i": "assets/goog.png"
+        }, {
+          "loop": "1",
+          "i": "assets/aapl.png"
+        }
+      ],
+      "output": "build/11_Expensive.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=9.9:end=104,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[clip]",
+        "[1:v]fade=in:st=27.16:d=0.3,fade=out:st=29.5:d=0.5[tsla]",
+        "[2:v]fade=in:st=27.73:d=0.3,fade=out:st=29.5:d=0.5[amzn]",
+        "[3:v]fade=in:st=28.46:d=0.3,fade=out:st=29.5:d=0.5[goog]",
+        "[4:v]fade=in:st=29.14:d=0.3,fade=out:st=29.5:d=0.5[aapl]",
+        "[clip][tsla]overlay=30:45:enable='between(t, 27.16, 30)':shortest=1[withTSLA]",
+        "[withTSLA][amzn]overlay=370:70:enable='between(t, 27.73, 30)':shortest=1[withAMZN]",
+        "[withAMZN][goog]overlay=55:625:enable='between(t, 28.46, 30)':shortest=1[withGOOG]",
+        "[withGOOG][aapl]overlay=365:615:enable='between(t, 29.14, 30)':shortest=1[video]",
+        "[0:a]atrim=start=9.9:end=104,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211230_145455197.mp4"
+        }
+      ],
+      "output": "build/12_Promo.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=3.5:end=80,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[clip]",
+        "[clip]drawtext=text=blog.markizano.net:fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=white:fontsize=48:box=1:boxcolor=black@0.8:boxborderw=5:x=55:y=670:enable='between(t, 45, 47)'[video]",
+        "[0:a]atrim=start=3.5:end=80.5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        { "i": "Why-BitCoin-Has-Value.mp4" },
+        { "i": "assets/transition.mp4" },
+        { "i": "assets/silence-1s.m4a" },
+        { "i": "resources/markizano-yt-ending.mp4" }
+      ],
+      "output": "build/WhyBTCHasValue.TikTok.mp4",
+      "filter_complex": [
+        "[0:v]split=9[v0][v1][v2][v3][v4][v5][v6][v7][v8]",
+        "[0:a]asplit=9[a0][a1][a2][a3][a4][a5][a6][a7][a8]",
+
+        "[v0]trim=start=0.7:end=7.25,setpts=PTS-STARTPTS[vp0]",
+        "[a0]atrim=start=0.7:end=7.25,asetpts=PTS-STARTPTS[ap0]",
+
+        "[1:v]setpts=0.5*PTS,trim=start=0:duration=1,setpts=PTS-STARTPTS[vp1]",
+        "[2:a]atrim=start=0:duration=1,asetpts=PTS-STARTPTS[ap1]",
+
+        "[v1]trim=start=13.7:end=17.8,setpts=PTS-STARTPTS[vp2]",
+        "[a1]atrim=start=13.7:end=17.8,asetpts=PTS-STARTPTS[ap2]",
+
+        "[v2]trim=start=53:end=72.5,setpts=PTS-STARTPTS[vp3]",
+        "[a2]atrim=start=53:end=72.5,asetpts=PTS-STARTPTS[ap3]",
+
+        "[v3]trim=start=76:end=84,setpts=PTS-STARTPTS[vp4]",
+        "[a3]atrim=start=76:end=84,asetpts=PTS-STARTPTS[ap4]",
+
+        "[v4]trim=start=209:end=226.2,setpts=PTS-STARTPTS[vp5]",
+        "[a4]atrim=start=209:end=226.2,asetpts=PTS-STARTPTS[ap5]",
+
+        "[v5]trim=start=430.7:end=482.3,setpts=PTS-STARTPTS[vp6]",
+        "[a5]atrim=start=430.7:end=482.3,asetpts=PTS-STARTPTS[ap6]",
+
+        "[v6]trim=start=661:end=680.3,setpts=PTS-STARTPTS[vp7]",
+        "[a6]atrim=start=661:end=680.3,asetpts=PTS-STARTPTS[ap7]",
+
+        "[v7]trim=start=883:end=912,setpts=PTS-STARTPTS[vp8]",
+        "[a7]atrim=start=883:end=912,asetpts=PTS-STARTPTS[ap8]",
+
+        "[1:v]setpts=0.5*PTS,trim=start=0:duration=1,setpts=PTS-STARTPTS[vp9]",
+        "[2:a]atrim=start=0:duration=1,asetpts=PTS-STARTPTS[ap9]",
+
+        "[v8]trim=start=1030:end=1038.8,setpts=PTS-STARTPTS[vp10]",
+        "[a8]atrim=start=1030:end=1038.8,asetpts=PTS-STARTPTS[ap10]",
+
+        "[vp0][vp1][vp2][vp3][vp4][vp5][vp6][vp7][vp8][vp9][vp10]concat=n=11[video]",
+        "[ap0][ap1][ap2][ap3][ap4][ap5][ap6][ap7][ap8][ap9][ap10]concat=v=0:a=1:n=11[audio]"
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,43 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "resources/VID_20220105_110926985.mp4"
+        }
+      ],
+      "output": "build/00_WalkIn.mp4",
+      "filter_complex": [
+        "[0:v]scale=720x1280,setsar=1:1,split[reg][slow]",
+        "[reg]trim=start=6:end=17,setpts=PTS-STARTPTS[v0]",
+        "[slow]trim=start=17:end=18.85,setpts=PTS-STARTPTS,setpts=1.5*PTS[v1]",
+        "[v0][v1]concat[video]"
+      ],
+      "attributes": [ "no-audio" ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20220105_111350770.mp4"
+        }
+      ],
+      "output": "build/01_PunchLine.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=31.75:end=42,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[video]"
+      ],
+      "attributes": [ "no-audio" ]
+    },
+    {
+      "input": [
+        {
+          "i": "'resources/Jaymes Young - Infinity (Lyrics) Cause I love you for infinity, oh, oh [TikTok Song]-qDBX7zvIFoM.mp4'"
+        }
+      ],
+      "output": "build/audio.m4a",
+      "filter_complex": [
+        "[0:a]atrim=start=32.22:end=56.24,asetpts=PTS-STARTPTS[audio]"
+      ],
+      "attributes": [ "no-video" ]
+    }
+  ]
+}

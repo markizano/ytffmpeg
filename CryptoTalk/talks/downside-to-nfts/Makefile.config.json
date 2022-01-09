@@ -1,0 +1,38 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "resources/andrei-jikh-downside-to-nfts.mp4"
+        }
+      ],
+      "output": "build/00_AndreiStitch.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=0:end=6,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[video]",
+        "[0:a]atrim=start=0:end=6,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20220104_192922895.mp4"
+        },
+        { "loop": "true", "i": "assets/FIL.png" },
+        { "loop": "true", "i": "assets/SC.png" },
+        { "i": "resources/nft-source.mp4" }
+      ],
+      "output": "build/01_Rebuttal.mp4",
+      "filter_complex": [
+        "[1:v]format=rgba,fade=in:st=25.75:d=0.5:alpha=1,fade=out:st=27.75:d=0.5:alpha=1[FIL]",
+        "[2:v]format=rgba,fade=in:st=26.75:d=0.5:alpha=1,fade=out:st=27.75:d=0.5:alpha=1[SC]",
+        "[0:v]trim=start=1:end=32,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[clip]",
+        "[3:v]format=rgba,scale=783x1010,pad=784:1392:0:170,scale=720x1280,trim=start=1:end=16,setpts=0.35*PTS-STARTPTS+10/TB,fade=in:st=9.5:d=0.5,fade=out:st=15.24:d=0.5[nft]",
+        "[clip][nft]overlay=0:0:enable='between(t, 9.5, 15.84)'[v0]",
+        "[v0][FIL]overlay=350:730:enable='between(t, 25.75, 28.25)':shortest=1[v1]",
+        "[v1][SC]overlay=140:680:enable='between(t, 26.75, 28.25)':shortest=1[video]",
+        "[0:a]atrim=start=1:end=32,asetpts=PTS-STARTPTS[audio]"
+      ]
+    }
+  ]
+}
+

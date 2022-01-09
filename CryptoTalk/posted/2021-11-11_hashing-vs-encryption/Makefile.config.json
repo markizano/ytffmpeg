@@ -1,0 +1,251 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_125636269.mp4"
+        }
+      ],
+      "output": "build/00_YT-Intro.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=22:end=68.6,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=22:end=68.6,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_130345933.mp4"
+        },
+        {
+          "loop": "1",
+          "i": "assets/hash-browns.png"
+        },
+        {
+          "loop": "1",
+          "i": "assets/encryption.png"
+        }
+      ],
+      "output": "build/01_Title.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=7:end=15.7,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[v0]",
+        "[0:a]atrim=start=7:end=15.7,asetpts=PTS-STARTPTS[audio]",
+        "[1:v]fade=in:st=2.2:d=0.5,fade=out:st=2.9:d=0.4[hashbrowns]",
+        "[2:v]fade=in:st=3.5:d=0.5,fade=out:st=4.1:d=0.4[encryption]",
+        "[v0][hashbrowns]overlay=270:610:enable='between(t,2.2,3.3)':shortest=1[v1]",
+        "[v1][encryption]overlay=50:535:enable='between(t,3.5,4.5)':shortest=1[video]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_131058623.mp4"
+        },
+        {
+          "loop": "1",
+          "i": "assets/one-way.png"
+        },
+        {
+          "i": "hashing-vs-encryption/VID_20211109_131612153.mp4"
+        }
+      ],
+      "output": "build/02_HashingAlgos.mp4",
+      "filter_complex": [
+        "[0:v]scale=576x1024,setsar=1:1,split[v0][v1]",
+        "[0:a]asplit[a0][a1]",
+        "[v0]trim=start=222:end=286.91,setpts=PTS-STARTPTS[addsign]",
+        "[a0]atrim=start=222:end=286.91,asetpts=PTS-STARTPTS[ap0]",
+        "[addsign][1:v]overlay='if(not(between(x, -500, 976)),W,x-((W+w)/(29.97*4)))':'if( not(between(y, 690, 765)), 765, y-(75/(29.97*2)) )':enable='between(t, 2, 4)':shortest=1[vp0]",
+        "[v1]trim=start=288.9:end=294.95,setpts=PTS-STARTPTS[vp1]",
+        "[a1]atrim=start=288.9:end=294.95,asetpts=PTS-STARTPTS[ap1]",
+        "[2:v]trim=start=1.1:end=3,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[v2]",
+        "[2:a]atrim=start=1.1:end=3,asetpts=PTS-STARTPTS[a2]",
+        "[vp0][vp1][v2]concat=n=3[c]",
+        "[c]drawtext=text='674441960ca1ba2de08ad4e50c9fde98':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=white:fontsize=26:box=1:boxcolor=black@0.8:boxborderw=10:x=20:y=750:enable='between(t,13,14.5)'[md5]",
+        "[md5]drawtext=text='d910b02871075d3156ec8675dfc95b7d5d640aa6':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=white:fontsize=22:box=1:boxcolor=black@0.8:boxborderw=10:x=15:y=750:enable='between(t,16,17.5)'[sha1]",
+        "[sha1]drawtext=text='38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=white:fontsize=14:box=1:boxcolor=black@0.8:boxborderw=10:x=10:y=750:enable='between(t,19,21.9)'[sha256]",
+        "[sha256]drawtext=textfile='bits.txt':fontfile=/home/YouTube/resources/DejaVuSans.ttf:fontcolor=white:fontsize=36:box=1:boxcolor=black@0.8:boxborderw=10:x=95:y=45:enable='between(t,19.8,21.9)'[video]",
+        "[ap0][ap1][a2]concat=n=3:v=0:a=1[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_131825744.mp4"
+        }
+      ],
+      "output": "build/03_butKizano1.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=21.6:end=26,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1,format=gray[video]",
+        "[0:a]atrim=start=21.6:end=26,asetpts=PTS-STARTPTS,asetrate=48000*0.7,atempo=1/0.7,aresample=48000[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_132335387.mp4"
+        },
+        {
+          "loop": "1",
+          "i": "assets/rainbow-table.png"
+        }
+      ],
+      "output": "build/04_RainbowTable.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=179.5:end=237.5,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[hashed]",
+        "[1:v]fade=in:st=32:d=0.5,fade=out:st=33.5:d=0.5[rainbowtable]",
+        "[hashed][rainbowtable]overlay=60:275:enable='between(t, 32, 34)':shortest=1[video]",
+        "[0:a]atrim=start=179.5:end=237.5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_133250945.mp4"
+        }
+      ],
+      "output": "build/05_WhenApply.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=18:end=22.7,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1,format=gray[video]",
+        "[0:a]atrim=start=18:end=22.7,asetpts=PTS-STARTPTS,asetrate=48000*0.7,atempo=1/0.7,aresample=48000[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_133357726.mp4"
+        }
+      ],
+      "output": "build/06_passwords.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=5.5:end=28,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=5.5:end=28,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_133659974.mp4"
+        }
+      ],
+      "output": "build/07_shame.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=4.3:end=14.5,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=4.3:end=14.5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_133748860.mp4"
+        },
+        {
+          "loop": "1",
+          "i": "assets/kermit.png"
+        }
+      ],
+      "output": "build/08_suspicion.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=86.4:end=112.6,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[v0]",
+        "[1:v]fade=in:st=23.5:d=1[kermit]",
+        "[v0][kermit]overlay=0:'if( not(between(y, -101, 1346)), -100, y+15 )':enable='gt(t,24)':shortest=1[video]",
+        "[0:a]atrim=start=86.4:end=112.6,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_143017126.mp4"
+        }
+      ],
+      "output": "build/09_Encryption.mp4",
+      "filter_complex": [
+        "[0:v]scale=576x1024,setsar=1:1,split[v0][v1]",
+        "[0:a]asplit[a0][a1]",
+        "[v0]trim=start=3.7:end=5.8,setpts=PTS-STARTPTS[vintro]",
+        "[a0]atrim=start=3.7:end=5.8,asetpts=PTS-STARTPTS[aintro]",
+        "[v1]trim=start=189:end=230,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[vid]",
+        "[a1]atrim=start=189:end=230,asetpts=PTS-STARTPTS[aud]",
+        "[vintro][vid]concat[video]",
+        "[aintro][aud]concat=v=0:a=1[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_154846078.mp4"
+        },
+        {
+          "i": "hashing-vs-encryption/PKI.mp4"
+        },
+        {
+          "i": "hashing-vs-encryption/btc-pki-snippet.mp4"
+        }
+      ],
+      "output": "build/10_EncryptionKeys.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=7.5:end=42.5,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[v0]",
+        "[1:v]format=rgba,scale=225x400,setsar=1:1,trim=start=0:end=3.8,setpts=PTS+7/TB,fade=in:st=7:d=0.5:alpha=1,fade=out:st=9:d=1.8:alpha=1[pki]",
+        "[2:v]setpts=PTS+13.5/TB,fade=in:st=13.5:d=0.5:alpha=1,fade=out:st=14.5:d=0.5:alpha=1[sign0]",
+        "[2:v]setpts=PTS+21/TB,fade=in:st=21:d=0.5:alpha=1,fade=out:st=22:d=0.5:alpha=1[sign1]",
+        "[v0][pki]overlay=325:75:enable='between(t, 7, 10.8)'[v1]",
+        "[v1][sign0]overlay=90:160:enable='between(t, 13.5, 15)'[v2]",
+        "[v2][sign1]overlay=90:160:enable='between(t, 21.0, 22.5)'[video]",
+        "[0:a]atrim=start=7.5:end=42.5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_155023580.mp4"
+        },
+        {
+          "i": "assets/sms-engine.mp3"
+        }
+      ],
+      "output": "build/11_IV.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=22:end=32.7,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=22:end=32.7,asetpts=PTS-STARTPTS[a0]",
+        "[1:a]adelay=8s|8s,volume=volume=1/4[engine]",
+        "[a0][engine]amix=duration=first[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_155326919.mp4"
+        }
+      ],
+      "output": "build/12_Summary.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=79:end=95,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=79:end=95,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_155800680.mp4"
+        }
+      ],
+      "output": "build/13_TT-Ending.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=5:end=13.2,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=5:end=13.2,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "hashing-vs-encryption/VID_20211109_162413682.mp4"
+        }
+      ],
+      "output": "build/14_YT-Ending.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=139:end=165.5,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=139:end=165.5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    }
+  ]
+}

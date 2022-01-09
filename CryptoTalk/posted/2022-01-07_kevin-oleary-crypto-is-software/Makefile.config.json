@@ -1,0 +1,53 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/VID_20220106_161432100.mp4" },
+        { "i": "resources/VID_20220106_161432100.m4a" }
+      ],
+      "output": "build/00_Intro.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=0:end=12.5,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[video]",
+        "[1:a]atrim=start=0:end=12.5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "\"resources/Inside Kevin O'Leary's Crypto Portfolio _ Cointelegraph-ba_5kYA6VoU.mkv\""
+        }
+      ],
+      "output": "build/01_KevinOleary.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=116.15:end=295.5,setpts=PTS-STARTPTS,split=7[clip0][clip1][clip2][clip3][clip4][clip5][clip6]",
+        "[clip0]trim=start=0:end=5,setpts=PTS-STARTPTS,crop=1080:1080:420:0,pad=1080:1920:0:256,scale=720x1280[vp0]",
+        "[clip1]trim=start=5:end=11,setpts=PTS-STARTPTS,crop=950:590:0:270,pad=1080:1920:65:500,scale=720x1280[vp1]",
+        "[clip2]trim=start=11:end=21.666,setpts=PTS-STARTPTS,crop=950:590:955:270,pad=1080:1920:65:500,scale=720x1280[vp2]",
+        "[clip3]trim=start=21.666:end=34.066,setpts=PTS-STARTPTS,crop=1080:1080:420:0,pad=1080:1920:0:256,scale=720x1280[vp3]",
+        "[clip4]trim=start=34.066:end=69.8,setpts=PTS-STARTPTS,crop=950:590:955:270,pad=1080:1920:65:500,scale=720x1280[vp4]",
+        "[clip5]trim=start=69.8:end=81.93,setpts=PTS-STARTPTS,crop=1080:1080:420:0,pad=1080:1920:0:256,scale=720x1280[vp5]",
+        "[clip6]trim=start=81.93:end=179,setpts=PTS-STARTPTS,crop=950:590:955:270,pad=1080:1920:65:500,scale=720x1280[vp6]",
+        "[vp0][vp1][vp2][vp3][vp4][vp5][vp6]concat=n=7,setpts=0.925*PTS[video]",
+        "[0:a]atrim=start=116.15:end=295.5,asetpts=0.925*(PTS-STARTPTS)[audio]"
+      ]
+    },
+    {
+      "input": [
+        { "i": "resources/VID_20220106_155136614.mp4" },
+        { "i": "resources/VID_20220106_155136614.m4a" },
+        { "ss": "1647", "i": "resources/The-Hobbit.chap2.mkv" },
+        { "loop": "true", "i": "assets/how-to-be-a-billionaire.png" }
+      ],
+      "output": "build/02_Essay.mp4",
+      "filter_complex": [
+        "[2:v]trim=start=0:end=4,setpts=(0.55*(PTS-STARTPTS))+65.5/TB,crop=1072:800:470:0,scale=714:534,format=rgba,fade=in:st=65:d=0.5:alpha=1,fade=out:st=67:d=0.5:alpha=1[precious]",
+        "[3:v]setsar=1:1,format=rgba,fade=in:st=25:d=0.5:alpha=1,fade=out:st=26.5:d=0.5:alpha=1[h2bab]",
+        "[0:v]trim=start=3:end=151.5,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[v0]",
+        "[v0][precious]overlay=4:372:enable='between(t, 65, 67.5)'[v1]",
+        "[v1][h2bab]overlay=207:253:enable='between(t, 25, 27)':shortest=1[video]",
+        "[1:a]atrim=start=3:end=151.5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,60 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "resources/00_Welcome.mp4"
+        }
+      ],
+      "output": "build/00_.mp4"
+    },
+    {
+      "input": [
+        {
+          "i": "resources/01_WhatIsBitcoin.mp4"
+        }
+      ],
+      "output": "build/01_.mp4"
+    },
+    {
+      "input": [
+        {
+          "i": "resources/02_Transactions.mp4"
+        }
+      ],
+      "output": "build/02_.mp4"
+    },
+    {
+      "input": [
+        {
+          "i": "resources/03_Structure.mp4"
+        }
+      ],
+      "output": "build/03_.mp4"
+    },
+    {
+      "input": [
+        {
+          "i": "resources/04_PoW.mp4"
+        }
+      ],
+      "output": "build/04_.mp4"
+    },
+    {
+      "input": [
+        {
+          "i": "resources/05_Rewards.mp4"
+        }
+      ],
+      "output": "build/05_.mp4"
+    },
+    {
+      "input": [
+        {
+          "i": "resources/99_thanks.mp4"
+        }
+      ],
+      "output": "build/06_.mp4"
+    }
+  ]
+}

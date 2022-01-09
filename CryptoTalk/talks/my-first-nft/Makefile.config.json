@@ -1,0 +1,41 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211206_113011540.mp4"
+        }
+      ],
+      "output": "build/00_Intro.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=0:end=10.4,setpts=PTS-STARTPTS,crop=888:1580:0:170,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=0:end=10.4,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "screenshares/new-assets.mp4"
+        }
+      ],
+      "output": "build/01_minting.mp4",
+      "resolution": "804x1004",
+      "filter_complex": [
+        "[0:v]trim=start=3:end=74,setpts=PTS-STARTPTS,format=yuv420p,pad=888:1580:42:150,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=3:end=74,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211206_115345085.mp4"
+        }
+      ],
+      "output": "build/02_continuation.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=0.1:end=9.5,setpts=PTS-STARTPTS,crop=888:1580:0:170,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=0.1:end=9.5,asetpts=PTS-STARTPTS,aresample=48000[audio]"
+      ]
+    }
+  ]
+}

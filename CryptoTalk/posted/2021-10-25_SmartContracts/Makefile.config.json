@@ -1,0 +1,110 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "SmartContracts/VID_20211023_181716636.mp4"
+        }
+      ],
+      "output": "build/00_intro.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=23:end=26.3,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[v0]",
+        "[0:a]atrim=start=23:end=26.3,asetpts=PTS-STARTPTS[audio]",
+        "[v0]drawtext=fontfile=../../DejaVuSans.ttf:text='Smart':fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=150:enable='between(t,2.0,3)'[v1]",
+        "[v1]drawtext=fontfile=../../DejaVuSans.ttf:text='Contracts':fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=(150+72):enable='between(t,2.4,3)'[video]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "SmartContracts/VID_20211024_133148519.mp4"
+        }
+      ],
+      "output": "build/01_TheWhat.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=10:end=17,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=10:end=17,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "SmartContracts/VID_20211023_182345254.mp4"
+        }
+      ],
+      "output": "build/02_Huh.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=1:end=4.1,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=1:end=4.1,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "SmartContracts/VID_20211024_133253706.mp4"
+        }
+      ],
+      "output": "build/03_ProgrammableMoney.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=13:end=20.7,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=13:end=20.7,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "SmartContracts/VID_20211024_133504760.mp4"
+        },
+        {
+          "i": "images/solidity.png"
+        },
+        {
+          "i": "images/rust.png"
+        }
+      ],
+      "output": "build/04_Languages.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=55.8:end=70,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[v0]",
+        "[v0][1:v]overlay=W-w-25:70:enable='between(t,2.9,5.5)'[v1]",
+        "[v1][2:v]overlay=25:95:enable='between(t,4,5.5)'[video]",
+        "[0:a]atrim=start=55.8:end=70,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "SmartContracts/VID_20211024_133836372.mp4"
+        }
+      ],
+      "output": "build/05_quickCaveat.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=5.1:end=8.9,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=5.1:end=8.9,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "SmartContracts/VID_20211024_134855340.mp4"
+        }
+      ],
+      "output": "build/06_ForExample.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=3:end=47.3,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=3:end=47.3,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "SmartContracts/VID_20211024_135057401.mp4"
+        }
+      ],
+      "output": "build/07_potential.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=18:end=31,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=18:end=31,asetpts=PTS-STARTPTS[audio]"
+      ]
+    }
+  ]
+}

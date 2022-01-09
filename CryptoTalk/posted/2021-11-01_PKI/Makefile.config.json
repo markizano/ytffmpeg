@@ -1,0 +1,105 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "PKI/VID_20211101_122050817.mp4"
+        }
+      ],
+      "output": "build/00_Intro.mp4",
+      "filter_complex": [
+        "[0:v]scale=576x1024,setsar=1:1,split=3[v0][v1][v2]",
+        "[0:a]asplit=3[a0][a1][a2]",
+        "[v0]trim=start=17.0:end=19.5,setpts=PTS-STARTPTS[pki]",
+        "[a0]atrim=start=17.0:end=19.5,asetpts=PTS-STARTPTS[apki]",
+        "[pki]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text='P':fontcolor=white:fontsize=500:box=1:boxcolor=black@0.6:boxborderw=25:x=(w-text_w)/2:y=(h-text_h)/2-100:enable='between(t,1.00,1.4)'[p]",
+        "[p]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text='K':fontcolor=white:fontsize=500:box=1:boxcolor=black@0.6:boxborderw=25:x=(w-text_w)/2:y=(h-text_h)/2-100:enable='between(t,1.4,2.0)'[k]",
+        "[k]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text='I':fontcolor=white:fontsize=500:box=1:boxcolor=black@0.6:boxborderw=25:x=(w-text_w)/2:y=(h-text_h)/2-100:enable='between(t,2.0,2.4)'[vpki]",
+        "[v2]trim=start=19.8:end=23.125,setpts=PTS-STARTPTS[pubkey]",
+        "[a2]atrim=start=19.8:end=23.125,asetpts=PTS-STARTPTS[apubkey]",
+        "[pubkey]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text='Public':fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=50:enable='between(t,1.6,3.0)'[u]",
+        "[u]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text='Key':fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=150:enable='between(t,2.05,3.0)'[b]",
+        "[b]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text='Infrastructure':fontcolor=white:fontsize=72:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=250:enable='between(t,2.3,3.0)'[vpubkey]",
+        "[v1]trim=start=46.67:end=48.0,setpts=PTS-STARTPTS[vlock]",
+        "[a1]atrim=start=46.67:end=48.0,asetpts=PTS-STARTPTS[alock]",
+        "[vpki][vlock][vpubkey]concat=n=3[video]",
+        "[apki][alock][apubkey]concat=v=0:a=1:n=3[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "PKI/VID_20211101_132740726.mp4"
+        }
+      ],
+      "output": "build/01_Explanation.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=39.9:end=62.0,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=39.9:end=62.0,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "PKI/VID_20211101_140815770.mp4"
+        },
+        {
+          "i": "/home/YouTube/stock-footage/privates-in-public.mp4"
+        }
+      ],
+      "output": "build/02_Structure.mp4",
+      "filter_complex": [
+        "[0:v]scale=576x1024,setsar=1:1,split[v0][v1]",
+        "[0:a]asplit[a0][a1]",
+        "[v0]trim=start=264.9:end=293.5,setpts=PTS-STARTPTS[vpairs]",
+        "[a0]atrim=start=264.9:end=293.5,asetpts=PTS-STARTPTS[apairs]",
+        "[v1]trim=start=297:end=310.6,setpts=PTS-STARTPTS[vkeys]",
+        "[a1]atrim=start=297:end=310.6,asetpts=PTS-STARTPTS[akeys]",
+        "[vpairs][1:v][vkeys]concat=n=3[video]",
+        "[apairs][1:a][akeys]concat=v=0:a=1:n=3[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "PKI/VID_20211101_153104577.mp4"
+        }
+      ],
+      "output": "build/03_Password.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=87.9:end=121.8,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=87.9:end=121.8,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "PKI/VID_20211101_154757442.mp4"
+        }
+      ],
+      "output": "build/04_Example.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=62.5:end=101,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=62.5:end=101,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "PKI/VID_20211101_155453258.mp4"
+        }
+      ],
+      "output": "build/05_Closing.mp4",
+      "filter_complex": [
+        "[0:v]scale=576x1024,setsar=1:1,split[v0][v1]",
+        "[0:a]asplit[a0][a1]",
+        "[v0]trim=start=57.0:end=87.0,setpts=PTS-STARTPTS[vfirst]",
+        "[a0]atrim=start=57.0:end=87.0,asetpts=PTS-STARTPTS[afirst]",
+        "[v1]trim=start=96.6:end=101.0,setpts=PTS-STARTPTS[vsec]",
+        "[a1]atrim=start=96.6:end=101.0,asetpts=PTS-STARTPTS[asec]",
+        "[vfirst][vsec]concat[video]",
+        "[afirst][asec]concat=v=0:a=1[audio]"
+      ]
+    }
+  ]
+}

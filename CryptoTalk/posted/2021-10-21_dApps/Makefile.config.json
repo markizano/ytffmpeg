@@ -1,0 +1,51 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "dApps/VID_20211017_143957287.mp4"
+        }
+      ],
+      "output": "build/00_intro.mp4",
+      "index": 0
+    },
+    {
+      "input": [
+        {
+          "i": "dApps/VID_20211017_144051782.mp4"
+        }
+      ],
+      "output": "build/01_TheWhat.mp4",
+      "index": 1
+    },
+    {
+      "input": [
+        {
+          "i": "screenshares/compound-dApp.mp4"
+        }
+      ],
+      "output": "build/02_compoundExample.mp4",
+      "index": 2,
+      "filter_complex": "\"[0:v]scale=576x1024,setsar=1:1,trim=start=0.5:end=26.0,setpts=PTS-STARTPTS[video];[0:a]atrim=start=0.5:end=26.0,asetpts=PTS-STARTPTS[audio]\""
+    },
+    {
+      "input": [
+        {
+          "i": "dApps/VID_20211017_144720989.mp4"
+        }
+      ],
+      "output": "build/03_ButWait-TheresMore.mp4",
+      "index": 3,
+      "filter_complex": "\"[0:v]scale=576x1024,setsar=1:1,trim=start=0:end=12.3,setpts=PTS-STARTPTS[video];[0:a]atrim=start=0:end=12.3,asetpts=PTS-STARTPTS[audio]\""
+    },
+    {
+      "input": [
+        {
+          "i": "dApps/VID_20211017_144849680.mp4"
+        }
+      ],
+      "output": "build/04_WhoAmI.mp4",
+      "index": 4
+    }
+  ]
+}

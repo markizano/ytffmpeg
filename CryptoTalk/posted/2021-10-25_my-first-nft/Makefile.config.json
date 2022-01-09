@@ -1,0 +1,20 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "Chillblocks/VID_20211024_235120155.mp4"
+        }
+      ],
+      "output": "build/00_muahaha.mp4"
+    },
+    {
+      "input": [
+        {
+          "i": "screenrecords/Chillblocks-3178.mp4"
+        }
+      ],
+      "output": "build/00_Chillblocks3174.mp4"
+    }
+  ]
+}

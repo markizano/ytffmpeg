@@ -1,0 +1,28 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "resources/VID_20211228_231903531.mp4"
+        }
+      ],
+      "output": "build/00_rvn-wallet.mp4",
+      "filter_complex": [
+        "[0:v]scale=576x1024,setsar=1:1[video]",
+        "[0:a]aresample=48000[audio]"
+      ]
+    }, {
+      "input": [
+        {
+          "i": "screenrecords/backup-rvn-wallet.mp4"
+        }
+      ],
+      "output": "build/01_screenrecord.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=5:end=33,setpts=PTS-STARTPTS,scale=1080x683,pad=1080:1920:0:500,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=5:end=33,asetpts=PTS-STARTPTS[audio]"
+      ]
+    }
+  ]
+}
+

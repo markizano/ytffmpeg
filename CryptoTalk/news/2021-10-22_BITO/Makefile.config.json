@@ -1,0 +1,88 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "2021-10-22_BITO/VID_20211023_111324854.mp4"
+        }
+      ],
+      "output": "build/00_intro.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=3.4:end=7.1,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf:text='BITO':fontcolor=white:fontsize=200:box=1:boxcolor=black@0.8:boxborderw=10:x=(w-text_w)/2:y=130:enable='between(t,1.35,3.0)'[video]",
+        "[0:a]atrim=start=3.4:end=7.1,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "2021-10-22_BITO/VID_20211023_114442509.mp4"
+        }
+      ],
+      "output": "build/01_TheWhat.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=7.9:end=33,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=7.9:end=33,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "2021-10-22_BITO/VID_20211023_115455567.mp4"
+        }
+      ],
+      "output": "build/02_BITO-WentPublic.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=39.125:end=53,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1,drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf:text='2000 Contracts':fontcolor=white:fontsize=62:box=1:boxcolor=black@0.5:boxborderw=10:x=(w-text_w)/2:y=h-150:enable='between(t,10.3,11.0)'[video]",
+        "[0:a]atrim=start=39.125:end=53,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "2021-10-22_BITO/VID_20211023_115659763.mp4"
+        }
+      ],
+      "output": "build/03_FuturesContract.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=5:end=11.125,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=5:end=11.125,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "2021-10-22_BITO/VID_20211023_115751916.mp4"
+        }
+      ],
+      "output": "build/04_IndirectEffect.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=25:end=35,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=25:end=35,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "2021-10-22_BITO/VID_20211023_120011728.mp4"
+        }
+      ],
+      "output": "build/05_MyThoughts.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=3.1:end=30,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=3.1:end=30,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "input": [
+        {
+          "i": "2021-10-22_BITO/VID_20211023_120140694.mp4"
+        }
+      ],
+      "output": "build/06_YourThoughts.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=53:end=62.3,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[video]",
+        "[0:a]atrim=start=53:end=62.3,asetpts=PTS-STARTPTS[audio]"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "avax-vs-rvn/VID_20211111_143046973.mp4"
+        },
+        {
+          "loop": "1",
+          "i": "assets/rvn.png"
+        },
+        {
+          "loop": "1",
+          "i": "assets/avax.png"
+        }
+      ],
+      "output": "build/00_AVAX-vs-RVN.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=5.5:end=24.5,setpts=PTS-STARTPTS,scale=576x1024,setsar=1:1[v0]",
+        "[1:v]fade=in:st=2.5:d=0.3,fade=out:st=2.9:d=0.2[rvn]",
+        "[2:v]fade=in:st=3.0:d=0.3,fade=out:st=3.7:d=0.2[avax]",
+        "[v0][rvn]overlay=280:640:enable='between(t, 2.5, 3.1)':shortest=1[withRVN]",
+        "[withRVN][avax]overlay=25:595:enable='between(t, 3.0, 3.9)':shortest=1[video]",
+        "[0:a]atrim=start=5.5:end=24.5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    }
+  ]
+}
