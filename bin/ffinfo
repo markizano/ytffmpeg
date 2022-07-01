@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+import os, sys, io
+import json
+import subprocess
+
+def div(x, y): return round(x / y, 4)
+
+Template = {
+  'f': '%(filename)s: %(nb_streams)d streams, %(format_name)s, d:%(duration)s, b:%(bit_rate)s',
+  'v': '  v:%(index)d: %(width)sx%(height)s d:%(duration)s c:%(codec_name)s (%(pix_fmt)s) @%(fps)s SAR: %(sample_aspect_ratio)s; DAR: %(display_aspect_ratio)s; %(xtags)s',
+  'a': '  a:%(index)d: d:%(duration)s c:%(codec_name)s r:%(sample_rate)s ch:%(channels)d(%(channel_layout)s); %(xtags)s',
+  's': '  s:%(index)d: d:%(duration)s c:%(codec_name)s d:%(duration)s; %(xtags)s',
+  't': '  x:%(index)d: c:%(codec_name)s (%(codec_long_name)s), d:%(duration)s; %(xtags)s'
+}
+sys.argv.pop(0)
+for filename in sys.argv:
+  ffjson = json.loads( subprocess.check_output( 'ffprobe -v quiet -print_format json -show_format -show_streams'.split(' ') + [filename]).decode('utf-8') )
+  streams = []
+  for stream in ffjson['streams']:
+    if 'duration' not in stream:
+      stream['duration'] = -1
+    if 'tags' in stream:
+      stream['xtags'] = ', '.join([ f'{name}: {tag}' for name, tag in stream['tags'].items() ])
+    else:
+      stream['xtags'] = ''
+    if stream['codec_type'] == 'video':
+      stream['fps'] = div( *[ int(x) for x in stream['r_frame_rate'].split('/') ] )
+      streams.append(Template['v'] % stream)
+    elif stream['codec_type'] == 'audio':
+      streams.append(Template['a'] % stream)
+    elif stream['codec_type'] == 'subtitle':
+      streams.append(Template['s'] % stream)
+    elif stream['codec_type'] == 'attachment':
+      streams.append(Template['t'] % stream)
+    else:
+      streams.append('\x1b[31mUnrecognized\x1b[0m: '+ json.dumps(stream))
+
+  print(Template['f'] % ffjson['format'])
+  print('\n'.join(streams) + '\n')

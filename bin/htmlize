@@ -1,0 +1,39 @@
+#!/bin/bash
+
+. common.sh
+
+header=$'<!DOCTYPE html>
+<html>
+  <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+  <body>
+'
+
+footer=$'</body></html>
+'
+
+echo "$1" | grep -qiP '^\x2d\x2d?h(?:elp)?$' && {
+  cat <<EOF
+Usage: $0 [markdown]
+Will create a file next to your [markdown] file called by the parent directory with a .html suffix.
+EOF
+  exit 8
+}
+
+test -f "$1" || {
+  log_error_msg "$1 is not a file. Should be markdown file to process."
+  exit 1
+}
+
+markdown="`realpath $1`"
+title="`basename $(dirname "$markdown")`"
+outfile="$(dirname $markdown)/$title.md"
+
+exec 0>&-
+exec 3>"$outfile"
+echo "$header" >&3
+cmark -t html "$markdown" >&3
+echo "$footer" >&3
+exec 3>&-
+
+echo "Wrote to $outfile."
+

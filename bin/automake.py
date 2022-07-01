@@ -61,18 +61,23 @@ class FFMPEG(object):
     }
     '''
     assert isinstance(unit, dict), '`unit` must be a dictionary!'
-    assert len(list(unit.keys())) == 1, '`unit` must have only 1 key that is the function name!'
+    assert len(list(unit.keys())) == 1, '`unit` must have only 1 key that is the function name! In: %s' % unit
     function = list(unit.keys())[0]
     args = []
     if isinstance(unit[function], dict):
       for arg in unit[function].items():
         args.append( '='.join(arg) )
     elif isinstance(unit[function], (list, tuple)):
-      args = ':'.join( unit[function] )
-    elif isinstance(unit[function], (str, int, float)):
-      args = unit[function]
+      print('list/tuple found!')
+      args.extend(unit[function])
+      pprint(args)
+    elif isinstance(unit[function], str):
+      args.append( unit[function] )
     else:
       raise ValueError('Unknown type "%s" from unit[%s]!' % ( type(unit[function]), function ) )
+    import pdb
+    if not isinstance(args, list):
+      pdb.set_trace()
     return function + '=' + ':'.join(args)
 
   def parseFilterComplex(self, filter_complexes):
@@ -186,12 +191,19 @@ class FFMPEG(object):
       final['astreams'] += '[%d:a]' % i
       i += 1
     final['streamCount'] = i
-    #final['date'] = "drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='%s':fontcolor=black:fontsize=28:box=1:boxcolor=white@0.8:boxborderw=10:x=w-200:y=15" % os.environ.get('POST_DATE', time.strftime('%F'))
     final['date'] = self.parseFunction(FFMPEG.POST_DATE)
+    if 'no-video' in self.config.get('attributes', []):
+      final['vcodec'] = ''
+    else:
+      final['vcodec'] = '-c:v ' + self.config.get('vcodec', 'h264')
+    if 'no-audio' in self.config.get('attributes', []):
+      final['acodec'] = ''
+    else:
+      final['acodec'] = '-c:a ' + self.config.get('acodec', 'aac')
     result = ('build/final.mp4:%(deps)s\n'
       '\tffmpeg -hide_banner%(input)s'
       ' -filter_complex "%(vstreams)sconcat=n=%(streamCount)d,%(date)s[video];%(astreams)sconcat=v=0:a=1:n=%(streamCount)d[audio]"'
-      ' -map [video] -map [audio] -map_metadata -1 -c:v h264 -c:a aac -vsync 2 -y build/final.mp4'
+      ' -map [video] -map [audio] -map_metadata -1 %(vcodec)s %(acodec)s -vsync 2 -y build/final.mp4'
       '\n\n')
     return result % final
 
