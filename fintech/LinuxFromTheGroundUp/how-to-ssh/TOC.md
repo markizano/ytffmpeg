@@ -26,4 +26,6 @@
 # Networking
 - Port forwarding.
 - SOCKS5 proxy.
+- X11 Forwarding
+- 
 

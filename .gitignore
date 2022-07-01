@@ -44,3 +44,7 @@ __pycache__/
 
 # Makefile's are generated, so no need to keep them under VCS.
 Makefile
+
+# Experiments with Natron until I'm confident it will be used.
+*.ntp
+*.ntp.~*~

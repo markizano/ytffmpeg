@@ -15,12 +15,25 @@ h1. Lesson I: Linux From The Ground Up
 -- System Updates
 -- Software Installation
 -- Linux "flavours" aka Distributions
+--- Debian/Ubuntu
+--- RedHat/Fedora/CentOS
+--- Archlinux
+--- Gentoo
 
 Lesson II: Networking Fundamentals
 - Networking Commands
 -- ifconfig
--- iwconfig
 -- netstat / ss / route / ip
 -- ping / fping
 -- traceroute
--- 
+-- iptables
+
+Lesson III: Networking 2: Wi-Fi
+- Networking Commands
+-- iwconfig
+-- iw
+-- wpa_supplicant
+-- wpa_passphrase
+
+
+

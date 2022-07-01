@@ -39,9 +39,9 @@ In this video, we'll be covering USDC, USDT, GUSD, BUSD and DAI.
 
 # What's a Stablecoin?
 Stablecoins are just that: Coins that are stable like a horse!
-Stablecoins are pegged to some security which is used to back them. They are intended to be stable
+Stablecoins are pegged a dollar which is used to back them. They are intended to be stable
 in price and do not fluxuate like other cryptocurrencies. Often times, they are the gateway into
-other cryptocurrencies.
+other crypto projects.
 
 From a retail investor perspective, I highly recommend Stablecoins to those new to cryptocurrency
 because there's so much to be done with them at a fraction of the risk of other cryptocurrencies.
@@ -49,40 +49,42 @@ because there's so much to be done with them at a fraction of the risk of other 
 Relatively speaking: The fluxuation in price of a stablecoin is sub-penny. The price may fluxuate a
 fraction of a cent to maybe 2 pennies, but for the most part: 1 stablecoin == 1 USD.
 
+Now, there is a risk factor I do need to disclose: this risk applies to stablecoins just like it 
+does the banks. If there's a run on the banks and everyone goes to cash out their accounts at the 
+same time and the bank doesn't have the funds to provide everyone with cash, this will be a 
+liquidity crash. Not everyone is going to get their cash. Same thing with the stablecoins: If 
+everyone goes to cash in their crypto at the same time and flee to stablecoins, there will be a 
+liquidity crash and thus this will crash the price of the stablecoin.
+
 When you goto an exchange to purchase stablecoins, you'll be giving them your USD and exchanging them
 for a digital version of it. You'll give the exchange your $1 and they will mint for you a brand new
 stablecoin you can use in your cryptocurrency journey.
 
 When you want to cash out, you give your stablecoins to the exchange and they will make a deposit
 into your account for the equivalent amount and the digital coins you used to pay for this will be
-burnt.
-
-# BlockFi Usage
-One practical example to Stablecoins is how you can earn up to 9% interest on your stablecoins using
-a high yield account like BlockFi. You can use whatever platform you want, but if you want to say
-thank you for introducing you to this, you can navigate to markizano.net/blockfi and get up to $150
-in free BitCoin by using the referral code embedded in the link.
-You'll get redirected to the BlockFi website with the referral code to where you can install the 
-app and create your account. Then, you can purchase some stablecoins like USDC, GUSD and DAI and earn
-some inflation-breaking returns that will at least let you park your cash without losing value over
-time. BlockFi is usually pretty good about re-arranging their rates on a month-to-month basis based
-on market conditions, so this isn't guaranteed forever, but we can at least take advantage of it while
-its here.
+burnt, or sent to an address nobody has access because the private keys were destroyed upon creation.
 
 # Term Check: ERC-20
-I'm going to throw some terms at you that I don't want you to miss.
-ERC stands for Ethereum Request for Comment. It was used mostly on the Githubs when someone came
-out with a proposal to change something on the Ethereum network, they would request for someone to
-comment on it. ERC-20 referrs to the instructions on what a token is.
+I'm going to throw some terms at you and I don't want you to miss out on the goodies!
+ERC stands for Ethereum Request for Comment. It was used mostly on the Githubs when someone came 
+out with a proposal to change something on the Ethereum network. They would request for someone to 
+comment on it and it would be used as the guilelines for the upcoming change if it was accepted and 
+coded into the Ethereum network. Those of you that work in software development know that you need
+to have a process by which changes can make it into the codebase. You can think of ERC proposals
+as formal CR or Change Requests.
+ERC-20 referrs to the instructions on what a token is.
 
 You can find more about that using the [link](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/)
 in the description below as #ERC20.
 
+And, if you found this little tidbit helpful, smash that like button for the YouTube algorithm so 
+others learn these goodies too ;)
+
 # Term Check: Commercial Paper
-In this video, there's going to be a lot of talk about what is "Commercial Paper" - I had to lookup
+In this video, there's going to be a lot of talk about this "Commercial Paper" - I had to lookup
 the term myself. According to [investopedia](https://www.investopedia.com/terms/c/commercialpaper.asp),
-it's a form of debt that's not usually backed by collateral and limited only to those with the highest
-of credit rankings and minimum withdrawal amounts over six figures. It's short-term unsecured debt.
+it's a form of debt that's not usually backed by collateral. It's limited only to those with the highest
+of credit rankings. There is a minimum withdrawal amounts over six figures. It's short-term unsecured debt.
 To find out more, you can read the post linked in the description as #CommercialPaper.
 
 # USDC
@@ -108,7 +110,7 @@ This information was published in July of 2021.
 # USDT
 USDT is provided by Tether. Tether's whitepaper and slogan says "Fiat currencies on the Bitcoin 
 Blockchain." It uses Proof of Reserves to back its holdings. Tether is available on the Ethereum 
-network as an ERC-20 token along with many other blockchains as it's supported on many trading 
+network as an ERC-20 token along with many other blockchains. It's supported on many trading 
 pairs. Personally, I often see far much support for USDT trading pairs than any other stablecoin 
 mentioned in this video, but that's just my exposure.
 As of August of 2021, according to a post by The Block,
@@ -122,7 +124,8 @@ You can find out more about this using the link in the description as
 [#TheBlock](https://www.theblockcrypto.com/post/113874/tether-new-reserves-report-june-2021-treasury-bills).
 
 # GUSD
-GUSD is provided by Gemini, which was founded by the Winklevoss twins! "Gemini is a U.S. company 
+GUSD is provided by Gemini, which was founded by the Winklevoss twins! To quote their website:
+"Gemini is a U.S. company 
 regulated by the New York Department of Financial Services. GUSD reserves are eligible for FDIC 
 insurance up to $250,000 per user while custodied with State Street Bank and Trust" as per their
 [website](https://www.gemini.com/dollar). It is also available as an ERC-20 token.
