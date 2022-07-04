@@ -9,12 +9,21 @@
 - Options.
 - Service File Locations in sysvinit, OpenRC and systemd.
 
+## SSHd configuration
+- Location
+- Directives
+- Linux Service (start/stop/reload)
+
+
 # SSH As a Client
 - Configuration
 - Options
-- Networking capabilities with SSH
+- Example uses:
+-- Controlling server
+-- Networking capabilities with SSH
 
 # Permissions
+- Require: linux-permissions.mp4
 - .ssh must be 0700/rwx --- ---
 - .ssh/id_*/private-keys must be read-only (0400-0600/r-- --- ---)
 - files in .ssh other than private keys may have any permissions, but ownership and read-write to owner is suggested/best-security practice.
