@@ -8,8 +8,7 @@ header=$'<!DOCTYPE html>
   <body>
 '
 
-footer=$'</body></html>
-'
+footer=$'</body></html>'
 
 echo "$1" | grep -qiP '^\x2d\x2d?h(?:elp)?$' && {
   cat <<EOF
@@ -26,7 +25,7 @@ test -f "$1" || {
 
 markdown="`realpath $1`"
 title="`basename $(dirname "$markdown")`"
-outfile="$(dirname $markdown)/$title.md"
+outfile="$(dirname $markdown)/$title.html"
 
 exec 0>&-
 exec 3>"$outfile"
