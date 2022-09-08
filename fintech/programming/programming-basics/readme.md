@@ -21,10 +21,10 @@ Finally if that light bulb went off in your head about something, let me know by
 button. Not only does it help the channel but it also helps the search results when others ask
 questions that were answered here.
 
-# Fundamentals
+## Fundamentals
 Understanding the fundamentals of programming. By the end of this video, you should have a fairly
 basic handle on the fundamentals of programming. It might take a watch or two for it to fully sink
-in because I did pack a ton of data into this video. However, you'll enjoy using this as a great
+in because I did pack a ton of data into this video. You'll enjoy using this as a great
 springboard for some of my videos coming out on how to program, so subscribe if you want to continue
 this journey to become a professional engineer!
 
@@ -39,31 +39,7 @@ long time to complete. Mostly calculations. I'm going to teach you a few things 
 seem like Majik! But first, we've got to cover the basics.
 
 
-# Types of Languages or Programming Styles
-There are 3 main Types of languages:
-- Procedural/Scripting
-- Object-oriented
-- Functional
-
-## Procedural
-Procedural languages are like sequential commands that tell the computer to do things. They involve
-little redirection of thought and you can read the code like you can read a book: from start to finish.
-
-Procedural programming is the easiest to pick up, conceptually, but is the most difficult to maintain.
-
-## Object-Oriented
-Object Oriented programming is like procedural except it encapsulates functionality in little bubbles
-that make it easy to tie instructions together in a re-usable format.
-The idea is if you write a piece of functionality for one purpose, you can use that functionality
-for another purpose without having to write that code again.
-
-## Functional
-Functional languages definitely do involve more math than your typical setup. Functional languages
-are based on a set of functions that must balance out. I'll confess here, I still struggle with
-Functional languages, but definitely want to ramp up my skills on these!
-
-
-# Strong vs Weak Typed Languages
+## Strong vs Weak Typed Languages
 I'll also put on a separate set of lenses and say that programming often comes in two distinct flavors
 still: Strongly typed and weakly typed.
 
@@ -75,7 +51,7 @@ Loosely typed languages are more relaxed about the data type and approach code w
 quacks, it must be a duck" style of coding.
 
 
-# Interpreted vs Compiled Languages
+## Interpreted vs Compiled Languages
 Even still, we can put another set of lenses on to view programming and that is to consider if we
 should just write the code and run it, or if we should compile our code to something the computer
 can understand before executing the code.
@@ -92,15 +68,6 @@ Interpreted languages are compiled on-the-fly and can go directly from Algebraic
 code to execution without any steps in between from the programmer's perspective. Languages that
 support REPL (Read, Evaluate, Print, Loop) are typically interpreted languages.
 
-Which should you choose?
-
-In an ideal world, you would select the language that best suits your needs and run with that.
-
-In reality, you do what the lead architect says.
-
-
-
-
 
 # Variables
 When programming, most of what you'll be doing is storing data of sorts. Variables are used to store
@@ -108,18 +75,17 @@ these values when working with them. Variables, at their core, are just the bina
 computers use to process stuff. However, those 0's and 1's can combine to represent a
 universe of information.
 
-You can think of a variable as a box to store data. You might have to define the type of data when
-you create it in strongly typed languages. Variables are a way to carry data from one part of your
-application to another.
+You can think of a variable as a box to store data. Variables are a way to carry data from one part
+of your application to another.
 
 ## Primitive Data Types
-Let's cover the primary data types:
+Let's cover the primitive data types:
 - Boolean
+- Character
 - Number
 -- Float
 -- Long
 -- Short
-- Character
 
 If you're already kinda familiar with programming to some degree, you'll notice I left out "string".
 No, not twine, this isn't crochet class! A string is a string of characters. It's a complex type we
@@ -138,8 +104,8 @@ to represent fractions since the decimal place is fixed at 0. However, this perm
 numbers as large as 2^64 and store them in a single variable as a Long itself.
 
 ## Number: Float
-Numbers that could be fractions or include decimal places are called a "Float" for the "floating decimal
-point".
+Numbers that could be fractions or include decimal places are called a "Float" for the "floating
+decimal point".
 
 ## Number: Signed
 
@@ -184,39 +150,55 @@ Operators include:
 - division /
 - power/exponent ^
 
-Basic operators are pretty basic, but I will cover addition here in more detail.
+# Conclusion
+Now, I know this was a lot to take in. So I have created this to be a bite sized piece of details
+that you can just consume at your leisure. If you want to continue this course, I encourage you
+to checkout our next video on Control Structures.
 
-### Addition
-The addition (+) operator is great for adding numbers together, as you may have guessed.
-However, it's important to note that some languages have a dedicated operation for joining strings
-together. Other languages will use the addition operator to join strings together.
-
-Advanced Operators include:
-- left bit-shift <<
-- right bit-shift >>
-- or |
-- and &
-- exclusive or "xor"
-
-I'll provide resources where you can learn more about these advanced operators. I'll admit, I've
-yet to have a practical use-case for them, so I am not as familiar with them as I should be. I
-must confess I am not able to explain them accurately, so I won't even try, as that would make a
-fool of me.
-\#AdvancedOperators in the description.
+Thank you so much for watching. If I helped clip a bell in your head, help me by clicking that bell
+icon and like button on your way out.
 
 
 
 
+
+
+
+# Intro (Part 2)
 
 
 # Control Structures
 Control structures help control how your code will flow.
+
+# Conditionals
+*If* this condition is true, *then* you will hear a beep. (_beeping-noise_)
+
+Conditionals are the bread and butter of computer programming! This is where "Algebraic English"
+comes into play as we are looping from conditions in contained sets called functions.
+
+If I were to sum 90% of the programming out there, functions, conditionals and assignments are
+going to be 90% of the code you will write. So, these concepts are absolutely critical.
+
 
 ## If
 Just about every programming language will have an `if` control structure. This control structure 
 is the start to any condition you will ever write and is usually followed by the condition to test. 
 You can use your `and` & `or` operators to assert compound conditions. They will eventually result 
 in a boolean and that is the 0's and 1's the computer understands so we can tell it which to do.
+
+
+## And
+If two conditions are true, then this "and" operator will return True for both of them.
+If either of the conditions are not true, then "and" does not apply, so the result will be False.
+At this point, we should be able to deduce that if neither condition is true, then the result will
+be False.
+
+## Or
+The `or` operator in conditionals is great for checking "if this" or "that".
+For example, if both conditions are true, then the result is True.
+If either condition is true, then the result is True.
+If both conditions are False, then the result is False.
+
 
 ## Else
 The `else` control structure is an extension of the "if" operator. You cannot have `else` without "if".
@@ -280,26 +262,6 @@ of an outcome that has a one-to-many relationship. This operation is not present
 Some require that you use `if()` exclusively. However, enough languages support this construct that
 it would be worth mentioning here so you can use it later.
 
-# Conditionals
-*If* this condition is true, *then* you will hear a beep. (_beeping-noise_)
-
-Conditionals are the bread and butter of computer programming! This is where "Algebraic English"
-comes into play as we are looping from conditions in contained sets called functions.
-
-If I were to sum 90% of the programming out there, functions, conditionals and assignments are
-going to be 90% of the code you will write. So, these concepts are absolutely critical.
-
-## And
-If two conditions are true, then this "and" operator will return True for both of them.
-If either of the conditions are not true, then "and" does not apply, so the result will be False.
-At this point, we should be able to deduce that if neither condition is true, then the result will
-be False.
-
-## Or
-The `or` operator in conditionals is great for checking "if this" or "that".
-For example, if both conditions are true, then the result is True.
-If either condition is true, then the result is True.
-If both conditions are False, then the result is False.
 
 
 
