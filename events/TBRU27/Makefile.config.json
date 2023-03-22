@@ -1,0 +1,144 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/00_start-on-porch.mp4" },
+        { "i": "resources/01_setting-up-hotel.mp4" },
+        { "loop": "true", "i": "resources/02_thumbs-up-in-hotel.png" },
+        { "i": "resources/03_cheers-to-fun.mp4" },
+        { "i": "resources/04_the_spread.mp4" },
+        { "loop": "true", "i": "resources/05_have-you-ridden-a-cock.png" },
+
+
+        { "i": "resources/05_waiting-on-valet.mp4" },
+        { "i": "resources/06_otw-to-fun.mp4" },
+
+        { "i": "resources/07_hi-anthony.mp4" },
+        { "i": "resources/08_anthony-obed-angel.mp4" },
+
+        { "i": "resources/09_introducing-patrick.png" },
+        { "i": "resources/09_hi-patrick.mp4" },
+
+        { "i": "resources/10_jeff-n-crew.mp4" },
+
+        { "loop": "true", "i": "resources/11_wayne.png" },
+        { "loop": "true", "i": "resources/12_glynn.png" },
+        { "i": "resources/11_marsalis-hall.mp4" },
+        { "loop": "true", "i": "resources/13_shawn.png" },
+        { "loop": "true", "i": "resources/17_obed-anthony.png" },
+        { "i": "resources/12_marsalis-hall.mp4" },
+
+        { "loop": "true", "i": "resources/18_sunset.png" },
+
+        { "i": "resources/13_the-show.mp4" },
+        { "i": "resources/14_the-show_pan.mp4" },
+
+        { "i": "resources/15_hallways.mp4" },
+        { "i": "resources/16_dance-dance.mp4" },
+        { "i": "resources/17_breakfast.mp4" },
+        { "i": "resources/18_church-at-the-door.mp4" },
+        { "loop": "true", "i": "resources/20_khris-john.png" }
+      ],
+      "output": "build/TBRU27-v.mp4",
+      "attributes": [ "no-audio" ],
+      "filter_complex": [
+        "# Starting the trip...",
+        "[0:v]fps=30,trim=start=0:end=8.38,setpts=(PTS-STARTPTS)/(8.38/6)[v0]",
+        "[1:v]fps=30,trim=start=0:end=7,setpts=(PTS-STARTPTS)/(7/5)[v1]",
+        "[2:v]fps=30,format=yuv420p,trim=start=0:end=5,setpts=PTS-STARTPTS,crop=1080:1920:'lerp(0, 1476, t/5)':0[v2]",
+        "[3:v]fps=30,trim=start=0:end=10.75,setpts=(PTS-STARTPTS)/(10.75/5)[v3]",
+        "[4:v]fps=30,trim=start=0:end=23.19,setpts=(PTS-STARTPTS)/(23.19/10)[v4]",
+        "[5:v]fps=30,format=yuv420p,trim=start=0:end=5,setpts=PTS-STARTPTS,crop=1080:1920:224:'lerp(0, 760, t/5)'[v5]",
+
+        "# Waiting on valet...",
+        "[6:v]fps=30,trim=start=0:end=4.87,setpts=PTS-STARTPTS[v6]",
+        "[7:v]fps=30,trim=start=0:end=4.1,setpts=PTS-STARTPTS[v7]",
+
+        "# Hi OAA (obed, angel & anthony)",
+        "[8:v]fps=30,trim=start=0:end=4,setpts=PTS-STARTPTS[v8]",
+        "[9:v]fps=30,trim=start=0:end=5.8,setpts=PTS-STARTPTS[v9]",
+
+        "# Hi Patrick",
+        "[10:v]fps=30,format=yuv420p,trim=start=0:end=5,setpts=PTS-STARTPTS,crop=1080:1920:'lerp(1476, 0, t/5)':0[v10]",
+        "[11:v]fps=30,trim=start=0:end=3.9,setpts=PTS-STARTPTS[v11]",
+
+        "# Jeff `n crew",
+        "[12:v]fps=30,trim=start=0:end=5.83,setpts=PTS-STARTPTS[v12]",
+
+        "# Hi Dallas Bears!",
+        "[13:v]fps=30,format=yuv420p,trim=start=0:end=4,setpts=PTS-STARTPTS,crop=1080:1920:'lerp(0, 1476, t/4)':0[v13]",
+        "[14:v]fps=30,format=yuv420p,trim=start=0:end=4,setpts=PTS-STARTPTS,crop=1080:1920:'lerp(1476, 0, t/4)':0[v14]",
+        "[15:v]fps=30,trim=start=0:end=8,setpts=(PTS-STARTPTS)/(8/5)[v15]",
+        "[16:v]fps=30,format=yuv420p,trim=start=0:end=4,setpts=PTS-STARTPTS,crop=1080:1920:'lerp(0, 1476, t/4)':0[v16]",
+        "[17:v]fps=30,format=yuv420p,trim=start=0:end=4,setpts=PTS-STARTPTS,crop=1080:1920:'lerp(1476, 0, t/4)':0[v17]",
+        "[18:v]fps=30,trim=start=0.4:end=4.67,setpts=PTS-STARTPTS[v18]",
+        "[23:v]fps=30,trim=start=0:end=7.1,setpts=(PTS-STARTPTS)/(7.1/5)[v19]",
+
+        "# What a gorgeous sunset!",
+        "[19:v]fps=30,format=yuv420p,trim=start=0:end=5,setpts=PTS-STARTPTS,crop=1080:1920:0:'lerp(0, 640, t/5)'[v20]",
+
+        "# Marsalis Hall for dinner/comedy show",
+        "[20:v]fps=30,trim=start=0:end=10.6,setpts=(PTS-STARTPTS)/(10.6/5),split=3[dinnerme0][dinnerme1][dinnerme2]",
+        "[21:v]fps=30,trim=start=0:end=14.7,setpts=(PTS-STARTPTS)/(14.7/5),reverse,split[dinnerpan0][dinnerpan1]",
+        "[dinnerme0]trim=start=0:end=1.75,setpts=PTS-STARTPTS[me0]",
+        "[dinnerme1]trim=start=1.75:end=3.49,setpts=PTS-STARTPTS[me1]",
+        "[dinnerme2]trim=start=3.49:end=5,setpts=PTS-STARTPTS[me2]",
+        "[dinnerpan0]trim=start=0:end=2.28,setpts=PTS-STARTPTS[pan0]",
+        "[dinnerpan1]trim=start=2.28:end=5,setpts=PTS-STARTPTS[pan1]",
+        "[me0][pan0][me1][pan1][me2]concat=n=5[v21]",
+
+        "# Hallways and breakfast",
+        "[22:v]fps=30,trim=start=0:end=9.37,setpts=(PTS-STARTPTS)/(9.37/5),split[hallways0][hallways1]",
+        "[24:v]fps=30,trim=start=0:end=11.1,setpts=(PTS-STARTPTS)/(11.1/5),split[breakfast0][breakfast1]",
+        "[hallways0]trim=start=0:end=2.66,setpts=PTS-STARTPTS[h0]",
+        "[hallways1]trim=start=2.66:end=5,setpts=PTS-STARTPTS[h1]",
+        "[breakfast0]trim=start=0:end=1.68,setpts=PTS-STARTPTS[b0]",
+        "[breakfast1]trim=start=1.68:end=5,setpts=PTS-STARTPTS[b1]",
+        "[h0][b1]concat,setpts=(PTS-STARTPTS)/(5/4)[v22]",
+        "[b0][h1]concat,setpts=(PTS-STARTPTS)/(5/4)[v23]",
+
+        "# Drinks at the Hidden Door",
+        "[25:v]fps=30,trim=start=1.35:end=12.5,setpts=(PTS-STARTPTS)/(11.15/4)[v24]",
+
+        "[26:v]fps=30,format=yuv420p,trim=start=0:end=5,setpts=PTS-STARTPTS,crop=1080:1920:'lerp(0, 1476, t/5)':0[v25]",
+
+        "[v0][v1][v2][v3][v4][v5][v6][v7][v8][v9][v10][v11][v12][v13][v14][v15][v16][v17][v18][v19][v20][v21][v22][v23][v24][v25]concat=n=26[video]"
+      ]
+    },
+    {
+      "input": [
+        { "i": "resources/off-to-join-the-circus.mp3" },
+        { "i": "resources/Ciara_ftMissyElliott_1-2-step.m4a" },
+        { "i": "resources/Blaque_ImGood.m4a" },
+        { "i": "resources/ImagineDragons_Thunder.m4a" }
+      ],
+      "output": "build/TBRU27-a.m4a",
+      "attributes": [ "no-video" ],
+      "filter_complex": [
+        "[0:a]atrim=start=0:end=22.8,asetpts=NB_CONSUMED_SAMPLES/SR/TB,afade=out:st=14:d=8.8[circus]",
+        "[1:a]atrim=start=0:end=26.6,adelay=20s:all=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[blaque]",
+        "[circus][blaque]amix,asetpts=NB_CONSUMED_SAMPLES/SR/TB[a0]",
+        "[2:a]atrim=start=8:end=56,asetpts=NB_CONSUMED_SAMPLES/SR/TB[a1]",
+        "[3:a]atrim=start=20:end=52,asetpts=NB_CONSUMED_SAMPLES/SR/TB[a2]",
+        "[a0][a1][a2]concat=v=0:a=1:n=3[audio]"
+      ]
+    },
+    {
+      "require": "build/TBRU27-v.mp4 build/TBRU27-a.m4a",
+      "input": [
+        { "i": "build/TBRU27-v.mp4" },
+        { "i": "build/TBRU27-a.m4a" }
+      ],
+      "output": "build/TBRU27.mp4",
+      "attributes": [ "vsync" ],
+      "filter_complex": [
+        "[0:v]trim=start=0:end=126.5,setpts=PTS-STARTPTS[video]",
+        "[1:a]atrim=start=0:end=126.5,asetpts=PTS-STARTPTS[audio]"
+      ]
+    }
+  ]
+}
+
+
+
+
