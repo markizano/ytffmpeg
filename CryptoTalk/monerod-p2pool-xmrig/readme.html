@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+  <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+  <body>
+
+<h1>Intro</h1>
+<p>MineXMR is shutting down! What are we going to do?! OMG!</p>
+<p>Greetings and welcome to Kizano's FinTech where I teach you from zero to master in IT and DevOps.
+Nothing in this video is financial advice since I'm not a financial advisor. I'm an IT guy who's
+going to teach you some technical details about Monero as a service in Linux, the p2pool software
+to run the mining pool side chain and xmrig, some mining software that's required in order to start
+mining. Also, I trust you know the laws of your local juristiction. This is for education and
+information purposes only. If you're running short on time, feel free to use the timestamps below
+so you can get what you need and be on your day. If you found this helpful, it would be very grateful
+if you slapped that like button on your way out to ensure this video shows up at the top of search
+results for others seeking answers to the same questions I'm about to answer in this video.
+Finally, if you want more lessons on how to become a Linux master, Software Engineer, Network Admin,
+or Development Operations, subscribe to the channel for more in-depth details on how the innards of
+IT workings!</p>
+<p>In this video, I want to walk you through how these things are setup, but also cover some of the why
+and how along the way. I want to provide a happy medium between RTFM and &quot;just do what I did&quot;. I may
+not get everything 100% accurate everytime, but I do my best at my goal here, which is to get those
+dendrites to fire off and that light bulb on your head to click on.</p>
+<p>With that said, let's begin.</p>
+<h1>Architecture</h1>
+<p>Before we dive into the installs, I did want to present to you a quick graphic to help describe some
+of the architecture we would be putting together here:</p>
+<p><img src="https://markizano.net/assets/images/blog/xmr-architecture.png=99%x" alt="xmr-architecture" /></p>
+<p>In this diagram, we can see the Monero daemon runs and provides the access we need to the blockchain.
+The p2pool software stands in the middle as a means to extract the block templates and render the
+information miners need in order to mine against the network.
+xmrig will connect to p2pool to fetch jobs to work on and will submit them back for the PoW chain.</p>
+<p>Also notice how the wallet connects on the same RPC port. Your wallet is what signs off on the
+transactions that actually send your crypto from your account. Please keep that in mind for security.</p>
+<p>Now that we understand a bit more about the high level, let's deep dive into some technicals and get
+these components installed and running!</p>
+<h1>Monero(d)</h1>
+<p>Monero (XMR) is a privacy focused cryptocurrency where all transactions are encoded in secret and
+obfuscate the flow of money. How this works is beyond the scope of this video. What I want to explain
+here is how to install, configure and setup your Monero service to run as a daemon.
+This will be required to run the p2pool software that will represent your mining pool software that
+your xmrig mining software is going to use to talk to p2pool to mine against the blockchain.</p>
+<h2>Download &amp;&amp; Install</h2>
+<p>Download monero with the <a href="https://www.getmonero.org/downloads/">#getmonero</a> link in the description
+below. Once you have it downloaded, let's unzip using the following commands:</p>
+<pre><code class="language-bash">    sudo mkdir -p /usr/local/crypto/monero
+    sudo tar -jxvf monero-linux-x64-v0.18.1.0.tar.bz2 -C /usr/local/crypto/monero
+    monero_base=/usr/local/crypto/monero/monero-x86_64-linux-gnu-v0.18.1.0
+    sudo update-alternatives --install /usr/local/bin/monerod monerod $monero_base/monerod 102
+</code></pre>
+<h2>Create User Account</h2>
+<p>Now, I'm not a fan of running software as myself or root unless I absolutely have to. If possible, I
+like to &quot;jail&quot; my apps and programs in their own user account and give them permission to access
+anything else. Let's create a user account specifically for Monero.</p>
+<p>Let's start with the group, then create the user so it can default to that group:</p>
+<pre><code>sudo addgroup --system --gid=200 crypto
+sudo adduser --gid=200 --home=/home/crypto/xmr --system xmr
+</code></pre>
+<p>Now, I'm assuming you ran the above as root. This will create a Unix account on this machine that
+can be used to run Monero going forward.</p>
+<h2>Configure</h2>
+<p>We need to create a configuration file for our daemon that it can use so it knows what it needs to
+do. I'm going to be using <code>~/.monerod.conf</code> as my configuration file in this example. You can use
+whatever you like, just translate accordingly:</p>
+<pre><code class="language-ini">    p2p-bind-ip=0.0.0.0
+    p2p-bind-port=18080
+
+    rpc-bind-ip=127.0.0.1
+    rpc-bind-port=18081
+
+    no-igd=1
+    hide-my-port=1
+
+    disable-dns-checkpoints=1
+    enable-dns-blocklist=1
+
+    zmq-rpc-bind-ip=127.0.0.1
+    zmq-rpc-bind-port=18082
+    zmq-pub=tcp://0.0.0.0:18084
+</code></pre>
+<p>I'll annotate here that I tried using SSL that's embedded and offerred by Monero(d), but I could not
+get downstream apps like monero-wallet-cli nor p2pool to understand SSL was enabled and use an
+encrypted HTTP client. I'm grateful monero(d) supports SSL. I'm disapointed the other two do not.</p>
+<p>For more information on these configuration options, how they work and what they mean, you can use
+<code>monerod --help</code> and it will print some information, or you can visit
+<a href="https://github.com/monero-project/monero#installing-monero-from-a-package">#monerod</a> in the
+description for a link to additional reading.</p>
+<p>Once this configuration file is written, you should be able to start up the daemon and point it to
+this configuration file and it'll listen on the necessary ports.</p>
+<p>Quick breakdown of the options:</p>
+<ul>
+<li>p2p-bind-(ip|port): These are the bind IP and Port options for the p2p network. Monero uses a
+peer-to-peer network connection in order to facilitate the state of the network. This program is
+critical to Monero operations and this Port is public to enable all the nodes to talk and find
+each other.</li>
+<li>rpc-bind-(ip|port): These are the RPC Client IP and Port options for commanding the daemon. RPC
+is Remote Procedure Call or a standard for how commands are sent across HTTP connections. What's
+important to note is that this port is available to send commands and instruct the Monero daemon
+to do things like submit transactions, validate blocks that have been submitted to the network,
+track transaction history and obfuscate, encrypt and secure the Monero network in general. If
+you are not careful, you can lose your crypto with this port open, so please be careful not to
+just leave it exposed to the Internet on a public port. If you do, secure it with SSL and ensure
+it requires authentication, and set it to view-only with <code>--restricted-rpc</code>.</li>
+<li>no-igd: Don't do u-plug-n-play stuff with the router to open a port.</li>
+<li>hide-my-port: Don't announce yourself on the network as a receiving peer. Read &quot;unlisted&quot; rather
+rather than &quot;hide&quot;, IMHO.</li>
+<li>disable-dns-checkpoints/enable-dns-blocklist: These were options recommended as per p2pool
+instruction guides.</li>
+<li>zmq-rpc-bind-(ip|port): ZMQ stands for Zero-Message-Queue. These are the 0-MQ bind IP and Port
+options that control where Monero(d) will listen for RPC-based ZMQ connections.</li>
+<li>zmq-pub: This is the address of the publisher will be setup to broadcast information p2pool will
+be using. I suspect it might be for block announcements, transfer of transaction data within blocks
+and other options from within the daemon itself. I haven't read all the source to Monero yet, so
+I can't say for certain, just speculating there. This is what p2pool will want for it's ZMQ endpoint
+when you run this program later in this tutorial.</li>
+</ul>
+<p>With our daemon configured, let's run Monero(d)!</p>
+<h2>Run</h2>
+<p>Let's run the Monero daemon in our new user's home directory!</p>
+<pre><code class="language-bash">    cd ~xmr
+    sudo -H -uxmr -gcrypto monerod --config-file=~/.monerod.conf
+</code></pre>
+<p>This is going to take some time to collect all the information it needs to catch up to the present,
+so we'll come back after Monero(d) has had time to catch up the Blockchain.</p>
+<p>Now that Monero(d) has caught up on the blockchain, let's go ahead and run p2pool against it!</p>
+<h1>P2Pool</h1>
+<p>p2pool is a decentralized mining pool software that is designed to be the bridge between your Monero(d)
+daemon running and your xmrig or other mining software. p2pool works by having a side-chain validate
+transactions and sometimes those shares end up being validated as blocks on the Monero chain. When
+you mine for a while, you will see a share has been accepted by you to the Network. When a block is
+found and you have accepted shares, then you get a payout directly from that block as rewards are
+paid immediately as part of the block transaction. A pretty nifty way to decentralize the network
+even further if mining itself is properly decentralized!</p>
+<h2>Download &amp;&amp; Install</h2>
+<p>You can navigate to p2pool.io and click on the link that will take you to Github to download the
+software. Select the platform that suits you and download the compressed archive.
+Once downloaded, I unzipped it like so:</p>
+<pre><code class="language-bash">    mkdir /usr/local/crypto/p2pool
+    tar -C /usr/local/crypto/p2pool -zxvf p2pool-v2.2.1-linux-x64.tar.gz
+    update-alternatives --install /usr/local/bin/p2pool p2pool /usr/local/crypto/p2pool/p2pool-v2.2.1-linux-x64/p2pool 100
+</code></pre>
+<p>Make sure the above is run as root.</p>
+<h2>Run</h2>
+<p>Let's get our p2pool up and running! P2Pool runs against your wallet, so you will want to find your
+wallet address and paste it into the command here like so:</p>
+<pre><code class="language-bash">    sudo -H -uxmr -gcrypto p2pool --wallet ${WALLET_ADDRESS} \
+      --host 127.0.0.1 --rpc-port 18081 --zmq-port 18084 \
+      --stratum 0.0.0.0:8777 --data-api ~xmr/.p2pool --loglevel 1
+</code></pre>
+<p>I run the p2pool software as the XMR user. For added security, you can create a dedicated user for
+p2pool using the steps described earlier and make sure the above is corrected for that user, along
+with the value to <code>--data-api</code> in the above command if you want to have a data directory containing
+p2pool stats.</p>
+<p>For more details, you can use <code>p2pool --help</code> and it will print more details.</p>
+<p>Let's breakdown some of these options here:</p>
+<ul>
+<li>wallet: This is the wallet address you want payments to be sent. Do not use integrated or subaccount
+addresses as they do not work just yet. All miners that connect to this pool will automatically
+mine everything to this address.</li>
+<li>host: This is the target address that will receive all the requests from p2pool with regards to
+the <code>rpc-port</code> and <code>zmq-port</code> options used.</li>
+<li>rpc-port: Target RPC port as described in your <code>~xmr/.monerod.conf</code></li>
+<li>zmq-port: Target ZMQ Publisher port as described in your <code>~xmr/.monerod.conf</code> from the <code>--zmq-pub</code> argument.</li>
+<li>stratum: This is where <code>p2pool</code> will listen for connections from incoming miner software and process
+mining pool server side stuff.</li>
+<li>data-api: If you want a directory containing files that are continually updated with stats and details
+you can specify this and it will be created and maintained by <code>p2pool</code>.</li>
+<li>loglevel: This is how verbose do you want your daemon to be and how much output do you want to see.
+Higher numbers mean more output. 6 is the max verbosity. 0 is absolutely silent.</li>
+</ul>
+<p>Now that we have our pool running, I'm so excited for the next piece: Pointing our mining software
+at the pool and mining some coins! Let's make some Monero!</p>
+<h1>xmrig</h1>
+<p>Xmrig is mining software for the XMR token, the native coin on the Monero network. You can use this
+on any computer and it will use the CPU power available to mine the coins to your wallet.
+Since our pool will send the tokens to our wallet, we will need less configuration than a centralized
+pool as far as xmrig is concerned.</p>
+<p>For those of you that follow me here, you may remember my previous post on (Building xmrig)[https://blog.markizano.net/2021/06/build-xmrig-on-linux.html].
+I'll cover some of the same things here since you can also just download a compiled version from the
+releases page on Github.</p>
+<p>Let's install xmrig to mine against our pool!</p>
+<h2>Download &amp;&amp; Install</h2>
+<p>Download xmrig from <a href="https://xmrig.com/download">https://xmrig.com/download</a> for your distribution.
+Once you have it downloaded, I unzipped it as such as root:</p>
+<pre><code class="language-bash">  sudo mkdir /usr/local/crypto/xmrig
+  sudo tar -zxvf xmrig-6.18.0-linux-x64.tar.gz -C /usr/local/crypto/xmrig
+  sudo update-alternatives --install /usr/local/bin/xmrig xmrig /usr/local/crypto/xmrig/xmrig-6.18.0/xmrig 100
+  sudo setcap cap_sys_rawio=ep /usr/local/crypto/xmrig/xmrig-6.18.0/xmrig
+</code></pre>
+<p>Small note: I found out how to make xmrig run without root. If you want to learn about the juicy
+details, stick around. If you just want to get this thing up and running, skip to the next chapter
+using the timestamps below.</p>
+<p>You can run xmrig without root by ensuing it has rawio admin access, hence the <code>setcap</code> command near
+the end above. If you want to enable randomx boost to take full advantage of your processor's potential,
+you can use the script from the github repository I'll link to as <a href="https://www.xmrig.org/">#xmrig</a>
+in the description below. Also in that scripts directory is the ability to enable hugepages in Linux.
+You will need the <code>msr-tools</code> package installed to have the MSR commands installed.</p>
+<p>Now, what I did was created a system group called <code>msr</code>. I changed the group of <code>/dev/cpu/*/msr</code> all
+to that <code>msr</code> group and gave root access. It should look like this, when you're done:</p>
+<pre><code>    $ sudo chmod g+rw /dev/cpu/*/msr
+    $ sudo chgrp msr /dev/cpu/*/msr
+    $ ls -l /dev/cpu/*/msr
+    crw-rw---- 1 root msr 202,  0 2022-06-14 10:28 /dev/cpu/0/msr
+    crw-rw---- 1 root msr 202,  1 2022-06-14 10:28 /dev/cpu/1/msr
+    crw-rw---- 1 root msr 202,  2 2022-06-14 10:28 /dev/cpu/2/msr
+    crw-rw---- 1 root msr 202,  3 2022-06-14 10:28 /dev/cpu/3/msr
+    crw-rw---- 1 root msr 202,  4 2022-06-14 10:28 /dev/cpu/4/msr
+    crw-rw---- 1 root msr 202,  5 2022-06-14 10:28 /dev/cpu/5/msr
+    crw-rw---- 1 root msr 202,  6 2022-06-14 10:28 /dev/cpu/6/msr
+    crw-rw---- 1 root msr 202,  7 2022-06-14 10:28 /dev/cpu/7/msr
+    crw-rw---- 1 root msr 202,  8 2022-06-14 10:28 /dev/cpu/8/msr
+</code></pre>
+<p>Next, add your monero user to that <code>msr</code> group using <code>adduser xmr msr</code>.</p>
+<p>Now, if you have enabled hugepages, altered your MSR addresses properly, updated permissions correctly,
+you should be able to run <code>xmrig</code> as a non-root user and it won't complain about permissions denied or
+unable to activate certain settings.</p>
+<p>Let's configure xmrig!</p>
+<h2>Configure</h2>
+<p>Navigate to <a href="https://xmrig.com/wizard">https://xmrig.com/wizard</a> and we'll use the Wizard to configure our miner.
+Click next and we'll next select &quot;+Add Pool&quot; with the following details:</p>
+<ul>
+<li>Host: IP address of the place where you installed the p2pool software. What's awesome is we only
+need 1 instance of p2pool to mine. If you want, you can setup more and add them as additional pools,
+but we will stick to just 1 for this tutorial.</li>
+<li>Port: This is the port part of the <code>--stratum</code> we described earlier when configuring <code>p2pool</code>.</li>
+<li>Username: I use the hostname of the machine that's doing the mining. I also include the difficulty
+I last knew about the machine at the time I happened to be looking at the logs. This will eventually
+balance out over time, I just like to give xmrig a heads up on where to start.</li>
+<li>Password: This can be anything or nothing. Not required.</li>
+<li>Coin/Algo: Monero/RandomX</li>
+</ul>
+<p>Once we have all that configured, let's add the pool and continue on!</p>
+<p>For backends, we'll leave CPU on and the rest off since we are just CPU mining.</p>
+<p>Set your misc options if you care to change that.</p>
+<p>When you're done, you'll get a config file! We'll use this to configure xmrig when we run it in our
+next step!</p>
+<p>For now, let's write this file to <code>~xmr/.xmrig.json</code></p>
+<h2>Run</h2>
+<p>Once you have the configuration file written as <code>~xmr/.xmrig.json</code>, that should be it! xmrig will
+find and load the configuration file as per what you specified.
+You should see output that looks like this:
+<img src="https://markizano.net/misc/xmrig-running.png" alt="xmrig-running.png" /></p>
+<p>When you have xmrig running, sit back and enjoy the passive income!</p>
+<h1>monero-wallet-cli</h1>
+<p>Now that you have some passive incoming flowing, you'll want to keep track of and possibly even take
+profits on your earnings. You'll need the wallet in order to do that. Let's step through configuring
+and running the wallet. You already have the software from the Monero(d) install. I recommend you
+run your wallet software on a different machine to avoid the risk of exposure of your private keys.</p>
+<p>For the sake of this tutorial, I'll run it on the local machine, but please, please be mindful of
+how dangerous this is.</p>
+<h2>Configure</h2>
+<p>You can create configuration for your monero client by creating <code>~xmr/.monero.conf</code> and change the
+value for <code>wallet-file</code> to whatever you want.</p>
+<pre><code class="language-ini">    use-english-language-names=1
+
+    daemon-address=127.0.0.1:18081
+    trusted-daemon=1
+
+    wallet-file=/home/crypto/xmr/my-wallet
+</code></pre>
+<p>Breakdown of options:</p>
+<ul>
+<li><code>daemon-address</code>: This is the <code>host:port</code> of where you will be connecting to the RPC Endpoint of
+the Monero(d) you setup to run earlier. The value of this argument should be the value from
+Monero(d)'s <code>--rpc-bind-ip</code>:<code>--rpc-bind-port</code> values.</li>
+<li><code>trusted-daemon</code>: Since we set this daemon up and are in full control of it, yes, we will trust our
+own daemon.</li>
+<li><code>wallet-file</code>: You can specify where you want to load your wallet file and what you want the
+filename to be. Take extra care with this file. I usually ensure it is owned by the wallet-user
+account on my Linux box and set permissions to 0600 (-rw-------) to avoid anyone else from reading
+it (except root).</li>
+</ul>
+<h2>Run</h2>
+<p>Then, to kick off the monero wallet, you can run this command:</p>
+<pre><code class="language-bash">    sudo -H -uxmr -gcrypto monero-wallet-cli --config-file ~/.monero.conf
+</code></pre>
+<p>This will start up the wallet and you can use this to monitor your profits, send crypto to exchanges
+take profits, send to your friends or just mine and HODL.</p>
+<h1>Conclusion</h1>
+<p>If you made it this far in the video, then give yourself a big congratulations and thank you so much
+for watching! A lot of work went into this video, and I'm confident you put a lot of work into getting
+your own monero setup going.</p>
+<p>If you appreciate the work that went into this, then it would mean a lot if you would slap that like
+button on your way out. Feel free to subscribe if you want to see future videos that will help you
+go from zero to master in engineering, systems, networking and cloud computing with an application
+to finance technology and cryptocurrency.</p>
+<p>For references made in this video that don't yet exist, it would be great to subscribe because then
+you'll be notified when that video comes into existence.</p>
+<p>I have a few final disclaimers that I need to amend since I missed them in the beginning. I am just
+an IT guy in the Linux world. If you are a core Monero developer, then please feel free to leave a
+correction in the comments below and go easy on me. If you are new to this, then please know that I
+am just an IT guy in the Linux world providing more details on how this stuff works and to give you
+a resource upon which you may learn.</p>
+<p>Until I see you in the next video, thanks so much for watching!</p>
+<p>Monero is Privacy focused Cryptocurrency. In this video we cover installing Monerod the daemon, p2pool,
+decentralized mining pool software, xmrig the mining software itself and the Monero Wallet command-line
+interface all in one video.</p>
+<p>Original #blog post: https://blog.markizano.net/2022/08/setup-and-install-monerod-p2pool-xmrig.html</p>
+<p>Timestamps:</p>
+<ul>
+<li>00:00 - Greetings</li>
+<li>02:15 - Architecture Diagram</li>
+<li>04:26 - Setting up Linode</li>
+<li>07:09 - Download Monero Software</li>
+<li>10:25 - Setup Linux User Account</li>
+<li>11:28 - Configure Monero Daemon</li>
+<li>17:09 - Running Monero Daemon</li>
+<li>18:50 - Download P2Pool Decentralized Mining Pool</li>
+<li>23:48 - Download, Configure Install xmrig</li>
+<li>24:57 - - Advanced Setup for xmrig</li>
+<li>30:10 - Run xmrig mining software</li>
+<li>33:12 - Download and Configure monero-wallet-cli</li>
+<li>35:35 - - Generate A New Wallet</li>
+<li>39:01 - - Restore from Backup Seed Phrase</li>
+<li>42:00 - Thank you!!!</li>
+</ul>
+<p>Here are some resources you might find useful:</p>
+<h1>Resources</h1>
+<ul>
+<li><a href="https://www.getmonero.org/downloads/">Download Monero</a> #getmonero</li>
+<li><a href="https://github.com/monero-project/monero#installing-monero-from-a-package">Install Monero Guide</a> #monerod</li>
+<li><a href="https://p2pool.observer/">P2Pool Observer</a></li>
+<li><a href="https://p2pool.io/">P2Pool Website</a></li>
+<li><a href="https://zeromq.org/socket-api/#messaging-patterns">ZMQ Messaging Patterns</a></li>
+<li><a href="https://www.xmrig.org/">Download xmrig</a></li>
+<li>[xmrig Github](https://github.com/xmrig/xmrigh</li>
+</ul>
+<h1>Referrals</h1>
+<p>Get started with servers:</p>
+<ul>
+<li>Linode: <a href="https://markizano.net/linode">https://markizano.net/linode</a></li>
+</ul>
+<p>Get started with crypto:</p>
+<ul>
+<li>Blockfi: <a href="https://markizano.net/blockfi">https://markizano.net/blockfi</a></li>
+<li>Coinbase: <a href="https://markizano.net/coinbase">https://markizano.net/coinbase</a></li>
+<li>CoinEx: <a href="https://markizano.net/coinex">https://markizano.net/coinex</a></li>
+<li>Crypto.com: <a href="https://markizano.net/crypto.com">https://markizano.net/crypto.com</a></li>
+</ul>
+<p>Get started with investing:</p>
+<ul>
+<li>Robinhood: <a href="https://markizano.net/robinhood">https://markizano.net/robinhood</a></li>
+<li>Public: <a href="https://markizano.net/public.com">https://markizano.net/public.com</a></li>
+<li>Webull: <a href="https://markizano.net/webull">https://markizano.net/webull</a></li>
+</ul>
+</body></html>
