@@ -1,0 +1,17 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "resources/scheme-protocol-command.mp4"
+        }
+      ],
+      "output": "build/SchemeProtocolCommand.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=:end=,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[video]",
+        "[0:a]atrim=start=:end=,asetpts=PTS-STARTPTS[audio]"
+      ]
+    }
+  ]
+}
+

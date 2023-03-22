@@ -1,0 +1,16 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "resources/interfaces.mp4"
+        }
+      ],
+      "output": "build/Interfaces.mp4",
+      "filter_complex": [
+        "[0:v]setsar=1:1,fps=29[video]",
+        "[0:a]aresample=48000[audio]"
+      ]
+    }
+  ]
+}

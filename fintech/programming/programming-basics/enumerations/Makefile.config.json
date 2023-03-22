@@ -1,0 +1,41 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/enumerations_.mp4" },
+        { "i": "resources/enumerations-reaction_.mp4" }
+      ],
+      "output": "build/Enumerations.mp4",
+      "filter_complex": [
+
+        "[0:v]fps=29,trim=start=0:end=52.18,setpts=PTS-STARTPTS[vStart]",
+        "[0:a]atrim=start=0:end=52.18,asetpts=PTS-STARTPTS[aStart]",
+
+        "[0:v]fps=29,trim=start=53.3:end=72.5,setpts=PTS-STARTPTS[vClip0]",
+        "[0:a]atrim=start=53.3:end=72.5,asetpts=PTS-STARTPTS[aClip0]",
+
+        "[0:v]fps=29,trim=start=82:end=126.3,setpts=PTS-STARTPTS[vClip1]",
+        "[0:a]atrim=start=82:end=126.3,asetpts=PTS-STARTPTS[aClip1]",
+
+        "[0:v]fps=29,trim=start=126.3:end=161.8,setpts=PTS-STARTPTS[vAmpersand]",
+        "[0:a]atrim=start=126.3:end=161.8,asetpts=PTS-STARTPTS[aClip2]",
+
+        "[1:v]fps=29,trim=start=8.5:end=44,setpts=PTS-STARTPTS,scale=540x960,setsar=1:1,crop=540:720:0:110,fade=in:st=0:d=5:alpha=1[vReaction]",
+        "[vAmpersand][vReaction]overlay=0:0[vMistake]",
+        "[vMistake]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text='mmhrmm....':fontcolor=0x928d17:fontsize=80:box=1:boxcolor=0x721212@0.8:boxborderw=25:x=60:y=615:enable='between(t, 2, 5)'[uhHuh]",
+        "[uhHuh]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text='bitwise wuut???':fontcolor=0x928d17:box=1:boxcolor=0x721212@0.8:boxborderw=25:fontsize=70:x=40:y=620:enable='between(t, 7, 10)'[wut]",
+        "[wut]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:textfile=resources/annotation0.txt:fontcolor=0x928d17:box=1:boxcolor=0x721212@0.8:boxborderw=25:fontsize=70:x=20:y=575:enable='between(t, 12, 16)'[wat]",
+        "[wat]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text='Haiyaa...':fontcolor=0x928d17:box=1:boxcolor=0x721212@0.8:boxborderw=25:fontsize=80:x=130:y=575:enable='between(t, 19, 22)'[haiyaa]",
+        "[haiyaa]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:textfile=resources/annotation1.txt:fontcolor=0x928d17:box=1:boxcolor=0x721212@0.8:boxborderw=25:fontsize=70:x=15:y=630:enable='between(t, 24, 25)'[sorry]",
+        "[sorry]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text='Stop bro...':fontcolor=0x928d17:box=1:boxcolor=0x721212@0.8:boxborderw=25:fontsize=70:x=15:y=630:enable='between(t, 28, 30)'[vClip2]",
+
+        "[0:v]fps=29,trim=start=161.8:end=173.25,setpts=PTS-STARTPTS[vFin]",
+        "[0:a]atrim=start=161.8:end=173.25,asetpts=PTS-STARTPTS[aFin]",
+
+        "[vStart][vClip0][vClip1][vClip2][vFin]concat=n=5[video]",
+        "[aStart][aClip0][aClip1][aClip2][aFin]concat=v=0:a=1:n=5[audio]"
+      ]
+    }
+  ]
+}
+

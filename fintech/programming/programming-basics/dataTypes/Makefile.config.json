@@ -1,0 +1,47 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/2023-01-09-071508247.mp4" },
+        { "i": "resources/VID_20230111_122051772.mp4" },
+        { "loop": "true", "i": "resources/video-performance.png" }
+      ],
+      "output": "build/dataTypes.mp4",
+      "filter_complex": [
+        "[1:v]fps=29,trim=start=0:end=5.5,setpts=PTS-STARTPTS,scale=608x1080,setsar=1:1[vme]",
+        "[1:a]atrim=start=0:end=5.5,asetpts=PTS-STARTPTS[apast]",
+
+        "[2:v]fps=29,trim=start=0:duration=5.5,setsar=1:1,format=yuv420p[vground]",
+        "[vground][vme]overlay=55:480[vpast]",
+
+        "[1:v]fps=29,trim=start=6.8:end=12,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[vbridge]",
+        "[1:a]atrim=start=6.8:end=12,asetpts=PTS-STARTPTS[abridge]",
+
+        "[vpast][vbridge]concat[vintro]",
+        "[apast][abridge]concat=v=0:a=1[aintro]",
+
+        "[0:v]fps=29,trim=start=40:end=45,setpts=PTS-STARTPTS,scale=608x1080,setsar=1:1,fade=in:st=0:d=5.5:alpha=1[vprev]",
+        "[0:a]atrim=start=40:end=45,asetpts=PTS-STARTPTS,afade=in:st=0:d=5.5[aprev]",
+
+        "[1:v]fps=29,trim=start=12:end=17,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[vlead]",
+        "[1:a]atrim=start=12:end=17,asetpts=PTS-STARTPTS[alead]",
+
+        "[vlead][vprev]overlay=(W-w)/2:(H-h)/2[vrecall]",
+        "[alead][aprev]amix[arecall]",
+
+        "[1:v]fps=29,trim=start=17:end=22,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[vaboutThat]",
+        "[1:a]atrim=start=17:end=22,asetpts=PTS-STARTPTS[aaboutThat]",
+
+        "[1:v]fps=29,trim=start=23.5:end=252.77,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[vrest]",
+        "[1:a]atrim=start=23.5:end=252.77,asetpts=PTS-STARTPTS[arest]",
+
+        "[vaboutThat][vrest]concat[vfin]",
+        "[aaboutThat][arest]concat=v=0:a=1[afin]",
+  
+        "[vintro][vrecall][vfin]concat=n=3[video]",
+        "[aintro][arecall][afin]concat=v=0:a=1:n=3[audio]"
+      ]
+    }
+  ]
+}
+
