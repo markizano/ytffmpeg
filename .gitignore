@@ -15,6 +15,7 @@
 *.aac
 *.ts
 *.ac3
+*.wav
 
 # Images
 *.png
