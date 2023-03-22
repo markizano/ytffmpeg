@@ -1,0 +1,44 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "loop": "true", "i": "resources/background.jpg"},
+        { "i": "resources/VID_20230313_095103337.mp4" },
+        { "i": "resources/VID_20230313_100601915.mp4" },
+        { "i": "resources/i-dont-fit-in-a-box.m4a" }
+      ],
+      "output": "build/transition_check-all-that-apply.mp4",
+      "attributes": [ "vsync" ],
+      "filter_complex": [
+        "[0:v]format=yuv420p,setsar=1:1,trim=start=0:end=44.43,setpts=PTS-STARTPTS[blackground]",
+
+        "[1:v]trim=start=6:end=10.6,setpts=PTS-STARTPTS,setsar=1:1,fade=out:st=4.26:d=0.34:alpha=1[whatisyourip]",
+        "[blackground][whatisyourip]overlay=0:0:enable='between(t, 0, 4.6)'[withIP]",
+
+        "[1:v]trim=start=55:end=61.5,setpts=PTS-STARTPTS,setsar=1:1,fade=in:st=0:d=0.6:alpha=1,fade=out:st=6:d=0.5:alpha=1,setpts=PTS+(4.24/TB)[toTexas]",
+        "[withIP][toTexas]overlay=0:0:enable='between(t, 4.24, 10.74)'[withTexas]",
+
+        "[1:v]trim=start=106.2:end=110.85,setpts=PTS-STARTPTS,setsar=1:1,fade=in:st=0:d=0.5:alpha=1,fade=out:st=4.48:d=0.16883:alpha=1,setpts=PTS+(10.38/TB)[toArtemis]",
+        "[withTexas][toArtemis]overlay=0:0:enable='between(t, 10.38, 15.02)'[withArtemis]",
+
+        "[1:v]trim=start=148.2:end=152.05,setpts=PTS-STARTPTS,setsar=1:1,fade=in:st=0:d=0.6:alpha=1,fade=out:st=3.51:d=0.34:alpha=1,setpts=PTS+(14.66/TB)[toColorado]",
+        "[withArtemis][toColorado]overlay=0:0:enable='between(t, 14.66, 18.52)'[withColorado]",
+
+        "[1:v]trim=start=186.7:end=189.75,setpts=PTS-STARTPTS,setsar=1:1,fade=in:st=0:d=0.5:alpha=1,fade=out:st=2.89:d=0.36:alpha=1,setpts=PTS+(18.16/TB)[toNaruto]",
+        "[withColorado][toNaruto]overlay=0:0:enable='between(t, 18.16, 21.41)'[withNaruto]",
+
+        "[1:v]trim=start=242:end=246.8,setpts=PTS-STARTPTS,setsar=1:1,fade=in:st=0:d=0.5:alpha=1,fade=out:st=4.44:d=0.36:alpha=1,setpts=PTS+(21.05/TB)[toDeathNote]",
+        "[withNaruto][toDeathNote]overlay=0:0:enable='between(t, 21.05, 25.85)'[withDeathNote]",
+
+
+        "[2:v]trim=start=8:end=20.7,setpts=PTS-STARTPTS,setsar=1:1,fade=in:st=0:d=0.5:alpha=1,fade=out:st=12.34:d=0.36:alpha=1,setpts=PTS+(25.49/TB)[toProf]",
+        "[withDeathNote][toProf]overlay=0:0:enable='between(t, 25.49, 38.19)'[withProf]",
+
+        "[2:v]trim=start=47.4:end=54,setpts=PTS-STARTPTS,setsar=1:1,fade=in:st=0:d=0.5:alpha=1,setpts=PTS+(37.83/TB)[toLMT]",
+        "[withProf][toLMT]overlay=0:0:enable='gt(t, 37.83)':shortest=1,setpts=(PTS-STARTPTS)*0.519019,scale=720x1280[video]",
+        "[3:a]anull[audio]"
+      ]
+    }
+  ]
+}
+

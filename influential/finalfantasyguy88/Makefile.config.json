@@ -1,0 +1,42 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/VID_20220914_114552999.mp4" },
+        { "i": "resources/VID_20220914_115133331.mp4" },
+        { "framerate": "29.98", "loop": "true", "i": "resources/TikTok-bg.png" },
+        { "framerate": "29.98", "loop": "true", "i": "resources/Instagram-bg.png" }
+      ],
+      "output": "build/finalfantasyguy88.mp4",
+      "filter_complex": [
+        "[0:v]fps=28,trim=start=0:end=3.25,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[intro]",
+        "[0:a]atrim=start=0:end=3.25,asetpts=PTS-STARTPTS[aintro]",
+
+        "[0:v]fps=28,trim=start=3.25:end=7.118,setpts=PTS-STARTPTS,scale=240x428,setsar=1:1[tiktok]",
+        "[0:a]atrim=start=3.25:end=7.118,asetpts=PTS-STARTPTS[atiktok]",
+
+        "[0:v]fps=28,trim=start=7.118:end=25.6,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[shill]",
+        "[0:a]atrim=start=7.118:end=25.6,asetpts=PTS-STARTPTS[ashill]",
+
+        "[0:v]fps=28,trim=start=25.6:end=32.25,setpts=PTS-STARTPTS,scale=180x320,setsar=1:1[instagram]",
+        "[0:a]atrim=start=25.6:end=32.25,asetpts=PTS-STARTPTS[ainstagram]",
+
+        "[0:v]fps=28,trim=start=32.25:end=54.925,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[art]",
+        "[0:a]atrim=start=32.25:end=54.925,asetpts=PTS-STARTPTS[aart]",
+
+        "[1:v]fps=28,trim=start=0:end=8.7,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[fin]",
+        "[1:a]atrim=start=0:end=8.7,asetpts=PTS-STARTPTS[afin]",
+
+        "[2:v]fps=28,trim=start=0:end=3.868,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[tiktokBG]",
+        "[3:v]fps=28,trim=start=0:end=6.65,setpts=PTS-STARTPTS,setsar=1:1[instagramBG]",
+
+        "[tiktokBG][tiktok]overlay=480:105:shortest=1[vpTikTok]",
+        "[instagramBG][instagram]overlay=540:60:shortest=1[vpInstaGram]",
+
+        "[intro][vpTikTok][shill][vpInstaGram][art][fin]concat=n=6[video]",
+        "[aintro][atiktok][ashill][ainstagram][aart][afin]concat=n=6:v=0:a=1[audio]"
+      ]
+    }
+  ]
+}
+
