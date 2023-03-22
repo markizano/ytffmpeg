@@ -99,6 +99,7 @@ class FFMPEG(object):
     for fc in filter_complexes:
       if isinstance(fc, str):
         # If it's already a string, just pass it along.
+        if fc.startswith('#'): continue # but not if it's a comment.
         result.append(fc)
         continue
 
@@ -132,12 +133,12 @@ class FFMPEG(object):
       elif isinstance(config['filter_complex'], list):
         result.append( '"' + self.parseFilterComplex(config['filter_complex'] ) + '"' )
 
-      if 'no-audio' not in config.get('attributes', []):
-        result.append('-map')
-        result.append('[audio]')
       if 'no-video' not in config.get('attributes', []):
         result.append('-map')
         result.append('[video]')
+      if 'no-audio' not in config.get('attributes', []):
+        result.append('-map')
+        result.append('[audio]')
     else:
       result.append('-vf')
       result.append('scale=720x1280,setsar=1:1')
@@ -167,6 +168,8 @@ class FFMPEG(object):
 
   def _buildVideoCmds(self):
     for video in self.config['videos']:
+      if 'attributes' in video and 'include-only' in video['attributes']:
+        continue
       self._genVideoCmd(video)
 
   def _genFinalCmd(self):
@@ -180,15 +183,19 @@ class FFMPEG(object):
       'vstreams': '',   # List of [0:v] streams to concat.
       'astreams': '',   # List of [0:a] streams to concat.
     }
+    # Not every video == an index in the list.
+    # Intentionally set this way to avoid filter_complex=[v:5][v:9][v:12]concat=n=3[video]
     i = 0
     for video in self.config['videos']:
       if 'not-a-build' in video['attributes']:
         continue
       vidName = video['output']
-      final['deps'] += ' %s' % vidName
       final['input'] += ' -i %s' % vidName
       final['vstreams'] += '[%d:v]' % i
       final['astreams'] += '[%d:a]' % i
+      if 'attributes' in video and 'include-only' in video['attributes']:
+        continue
+      final['deps'] += ' %s' % vidName
       i += 1
     final['streamCount'] = i
     final['date'] = self.parseFunction(FFMPEG.POST_DATE)
@@ -225,6 +232,8 @@ clean:
 '''
     i = 0
     for video in self.config['videos']:
+      if 'attributes' in video and 'include-only' in video['attributes']:
+        continue
       video['require'] = video.get('require', '')
       result += video['output'] + ( ': %(require)s\n\t%(ffmpeg)s' % video ) + '\n\n'
     result += self._genFinalCmd()

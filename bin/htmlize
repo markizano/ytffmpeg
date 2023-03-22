@@ -13,7 +13,7 @@ footer=$'</body></html>'
 echo "$1" | grep -qiP '^\x2d\x2d?h(?:elp)?$' && {
   cat <<EOF
 Usage: $0 [markdown]
-Will create a file next to your [markdown] file called by the parent directory with a .html suffix.
+Will create a file next to your [markdown] file with a .html suffix.
 EOF
   exit 8
 }
@@ -24,7 +24,7 @@ test -f "$1" || {
 }
 
 markdown="`realpath $1`"
-title="`basename $(dirname "$markdown")`"
+title="`basename $markdown .md`"
 outfile="$(dirname $markdown)/$title.html"
 
 exec 0>&-
