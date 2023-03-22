@@ -22,12 +22,6 @@ button. Not only does it help the channel but it also helps the search results w
 questions that were answered here.
 
 ## Fundamentals
-Understanding the fundamentals of programming. By the end of this video, you should have a fairly
-basic handle on the fundamentals of programming. It might take a watch or two for it to fully sink
-in because I did pack a ton of data into this video. You'll enjoy using this as a great
-springboard for some of my videos coming out on how to program, so subscribe if you want to continue
-this journey to become a professional engineer!
-
 Programming is algebraic english!
 
 I found out early on that computers may speak to each other in 1's and 0's, but we have to speak to
@@ -38,54 +32,69 @@ They say computers were created to perform automated tasks that would otherwise 
 long time to complete. Mostly calculations. I'm going to teach you a few things here that might
 seem like Majik! But first, we've got to cover the basics.
 
-
-## Strong vs Weak Typed Languages
-I'll also put on a separate set of lenses and say that programming often comes in two distinct flavors
-still: Strongly typed and weakly typed.
-
-Strongly typed languages require you to declare the type of data you are storing and just how much
-of it. They have a fixed amount of space that is allocated for their function so they can perform
-faster than loosely typed languages.
-
-Loosely typed languages are more relaxed about the data type and approach code with more of a "if it
-quacks, it must be a duck" style of coding.
-
-
-## Interpreted vs Compiled Languages
-Even still, we can put another set of lenses on to view programming and that is to consider if we
-should just write the code and run it, or if we should compile our code to something the computer
-can understand before executing the code.
-
-What's the difference?
-
-Compiled languages take the Algebraic English instructions and converts them into what is called
-"bytecode" or machine code. This is an intermediary between the raw instructions sent to the hardware
-and gibberish if you open it in a text editor. Performing this compilation step ensures a few things
-are in place before you go to use the application. Typically, compiled languages are strongly typed,
-but this isn't always the case.
-
-Interpreted languages are compiled on-the-fly and can go directly from Algebraic English to machine
-code to execution without any steps in between from the programmer's perspective. Languages that
-support REPL (Read, Evaluate, Print, Loop) are typically interpreted languages.
+So let's get started!
 
 
 # Variables
-When programming, most of what you'll be doing is storing data of sorts. Variables are used to store
-these values when working with them. Variables, at their core, are just the binary 1's and 0's
-computers use to process stuff. However, those 0's and 1's can combine to represent a
-universe of information.
+
+Example:
+
+```python
+    price = 3
+```
+
+So, what did I just do there?
+
+I assigned a value to a variable.
+
+Okay, that sums up all of programming, you can call yourself a master now. Don't forget to get your
+free stuff using the links in the description below and thanks so much for watching!
+
+Okay, in all seriousness, when programming, most of what you'll be doing is storing data of sorts. 
+Variables are used to store these values when working with them. Variables, at their core, are just 
+the binary 1's and 0's computers use to process stuff. However, those 0's and 1's can combine to 
+represent a universe of information.
 
 You can think of a variable as a box to store data. Variables are a way to carry data from one part
 of your application to another.
+
+Let's assign another variable:
+
+```python
+    toppings = [ 'pepperoni', 'cheese', 'bacon' ]
+```
+
+There, I just assigned a list of items to a variable.
+
+Variables come in many shapes and sizes. They are ways to name those memory addresses that contain
+information we want to mutate, translate, store, send across the wire or do all kinds of things.
+
+Let's look at another example:
+
+```python
+    three = 3
+    four = 4
+    answer = three + four
+    print(answer)
+```
+
+In this example, we asked the computer to store the number `3` in the variable called `three`.
+We also stored the number `4` in a variable called `four`.
+Finally, we combined the two with addition and asked the computer to print the results to the
+screen.
+
+Let's run this and see what happens (show screenshare).
+
+In short, variables can vary. You can have any number of variables and you can put them anywhere in
+your code to make them do fun things.
+
 
 ## Primitive Data Types
 Let's cover the primitive data types:
 - Boolean
 - Character
-- Number
--- Float
--- Long
--- Short
+- Number: Integer
+- Number: Float
 
 If you're already kinda familiar with programming to some degree, you'll notice I left out "string".
 No, not twine, this isn't crochet class! A string is a string of characters. It's a complex type we
@@ -97,7 +106,7 @@ A boolean is the truest of a binary: It can be true or false. That's it. 0 usual
 1 usually represents true if coerced into numbers. Booleans are useful because they are the fundamental
 unit of conditions.
 
-## Number: Int/Long/Short
+## Number: Integer
 Numbers come in a few flavors based on the size, sign (+/-) and where/whether there is a decimal.
 Integer and Long are two familiar data types that represent whole numbers. There is no decimal place
 to represent fractions since the decimal place is fixed at 0. However, this permits you to create
@@ -106,8 +115,6 @@ numbers as large as 2^64 and store them in a single variable as a Long itself.
 ## Number: Float
 Numbers that could be fractions or include decimal places are called a "Float" for the "floating
 decimal point".
-
-## Number: Signed
 
 ## Character
 Some languages support the idea of a "character" as a data type. Typically denoted as `char`. There
@@ -160,7 +167,7 @@ icon and like button on your way out.
 
 
 
-
+||------------------------------------------------------------------------------------------------||
 
 
 
@@ -263,17 +270,7 @@ Some require that you use `if()` exclusively. However, enough languages support 
 it would be worth mentioning here so you can use it later.
 
 
-
-
-
-
-
-
-
-
-
-
-
+||------------------------------------------------------------------------------------------------||
 
 
 # Control Structures (cont'd)
