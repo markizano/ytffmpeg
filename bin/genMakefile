@@ -15,20 +15,16 @@ def main():
       print('Seed your Makefile.config.json with the contents of a directory of your choise.')
       return 1
 
-    counter = 0
+    #counter = 0
+    result['videos'].append({
+      'input': [],
+      'output': 'build/result.mp4',
+      'filter_complex': [ '' ]
+    })
     for root, dirs, files in os.walk(target):
       for f in sorted(files):
-        result['videos'].append({
-          'input': [{
-            'i': os.path.join(root, f),
-          }],
-          'output': 'build/%02d_.mp4' % counter,
-          'filter_complex': [
-            '[0:v]trim=start=:end=,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[video]',
-            '[0:a]atrim=start=:end=,asetpts=PTS-STARTPTS[audio]'
-          ]
-        })
-        counter += 1
+        result['videos'][0]['input'].append({ 'i': os.path.join(root, f) })
+        #counter += 1
   with io.open('Makefile.config.json', 'w') as res:
     json.dump(result, res, indent=2)
     res.write('\n')
