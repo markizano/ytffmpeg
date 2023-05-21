@@ -1,0 +1,22 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/VID_20230511_093644761.mp4" },
+        { "i": "resources/VID_20230511_095636539.mp4" }
+      ],
+      "output": "build/iGotAnError.mp4",
+      "filter_complex": [
+        "[0:v]fps=30,trim=start=6.7:end=243.25,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[v1]",
+        "[0:a]atrim=start=6.7:end=243.25,asetpts=PTS-STARTPTS[a1]",
+
+        "[1:v]fps=30,trim=start=2.5:end=9.5,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[v0]",
+        "[1:a]atrim=start=2.5:end=9.5,asetpts=PTS-STARTPTS[a0]",
+
+        "[v0][v1]concat[video]",
+        "[a0][a1]concat=v=0:a=1[audio]"
+      ]
+    }
+  ]
+}
+

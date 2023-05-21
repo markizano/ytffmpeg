@@ -1,0 +1,27 @@
+{
+  "videos": [
+    {
+      "input": [
+        {
+          "i": "resources/VID_20230508_140113588.mp4"
+        }
+      ],
+      "output": "build/BashVariables.mp4",
+      "filter_complex": [
+
+        "[0:v]fps=30,trim=start=0:end=148.3,setpts=PTS-STARTPTS[v0]",
+        "[0:a]atrim=start=0:end=148.3,asetpts=PTS-STARTPTS[a0]",
+
+        "[0:v]fps=30,trim=start=157.71:end=352.5,setpts=PTS-STARTPTS[v1]",
+        "[0:a]atrim=start=157.71:end=352.5,asetpts=PTS-STARTPTS[a1]",
+
+        "[0:v]fps=30,trim=start=379.8:end=385.884,setpts=PTS-STARTPTS[v2]",
+        "[0:a]atrim=start=379.8:end=385.884,asetpts=PTS-STARTPTS[a2]",
+
+        "[v0][v1][v2]concat=n=3[video]",
+        "[a0][a1][a2]concat=v=0:a=1:n=3[audio]"
+      ]
+    }
+  ]
+}
+

@@ -1,0 +1,26 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/VID_20230508_144612546.mp4" },
+        { "i": "resources/VID_20230508_144950659.mp4" }
+      ],
+      "output": "build/SSH-Introduction.mp4",
+      "filter_complex": [
+
+        "[0:v]fps=30,trim=start=0:end=5.7,setpts=PTS-STARTPTS[v0]",
+        "[0:a]atrim=start=0:end=5.7,asetpts=PTS-STARTPTS[a0]",
+
+        "[1:v]fps=30,trim=start=0:end=144.3,setpts=PTS-STARTPTS[v1]",
+        "[1:a]atrim=start=0:end=144.3,asetpts=PTS-STARTPTS[a1]",
+
+        "[1:v]fps=30,trim=start=147.8:end=284.109,setpts=PTS-STARTPTS[v2]",
+        "[1:a]atrim=start=147.8:end=284.109,asetpts=PTS-STARTPTS[a2]",
+
+        "[v0][v1][v2]concat=n=3[video]",
+        "[a0][a1][a2]concat=v=0:a=1:n=3[audio]"
+      ]
+    }
+  ]
+}
+
