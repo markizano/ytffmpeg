@@ -8,7 +8,11 @@ an individual, a nation or a system, I will have done my job if I can leave this
 than I found it. In my life and in my entire cycle, I want to provide and derive a much better place
 and want to use and consume all the resources it would take to sustain me until the end and leave
 nothing behind in a big puddle or mess, barring an assasination, fatal incident or other recourse
-that would otherwise prevent me from accomplishing my goals in life.
+that would otherwise prevent me from accomplishing my goals in life. With this, I hope to write my
+obituary. When people talk about me, one day, I want them to say "well, he accomplished his goals
+and that included improving on these 6 foundational points." -- of course, that's very high-level
+and very aspirational, but aim for the stars and hopefully, you'll at least land on the moon, right?
+
 
 In this essay, we'll explore six major pain points I see in the world around me today that I would
 like to see improved by some form or fashion. If it were physically possible, I would personally
@@ -19,6 +23,14 @@ beyond primal instinct. We are conscious creatures after all with intelligence, 
 catering our every motion to those who have the least intelligence instead of increasing their
 capacity for accomplishing more. Because when you win, I win. When we win, the world gets better,
 right?
+
+I have 6 major points I want to discuss in this essay:
+- Waste Management
+- Incarciration and the Penal System
+- Education
+- Governance vs Politics
+- Finance
+- Healthcare
 
 In this essay, we'll review the current waste management systems of our society, what that is and
 how we can improve it. We'll explore the penal system, how incarciration is immoral and explore some
@@ -139,6 +151,12 @@ With as much money citizens pay into the tax system and that is expensed in the 
 disbursed, I don't see an issue with 
 
 # Conclusion
+Look, I get it -- this is a lot to take in, there's a lot more to research. There needs to be an
+additional installment to this as more data is collected and more things are actually done in these
+areas. I cannot do this alone, but I also cannot scour for every resource on this alone either.
+Let's see if we can turn some gears in this direction. I am willing to put a company behind it and
+stand behind that company for this.
+
 My conslusion from all of this is it stems from the hatred of the self and the pain of the self that
 we all endure. We don't cultivate environments where it's easy to love the self, let alone take care
 of it. I speak these terms from the stance of "Do unto others as you would have them do unto you."

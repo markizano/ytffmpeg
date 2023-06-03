@@ -1,13 +1,14 @@
 #!/bin/bash
 
 set -euo pipefail
-shopt -s globstar lastpipe
+shopt -s lastpipe
 
 . common.sh
 
 ffmpeg_ext=${ffmpeg_ext:-mp4}
 
 test -v DEBUG && DEBUG=echo || DEBUG=''
+test -v vf || vf=''
 
 # Runs ffprobe in such a way that we get a consistent read on an mp4 file.
 # Expected output:
@@ -20,11 +21,18 @@ function ffprintstream () {
         jq -r '.streams[] | [ .width, .height, .tags.rotate // 0 ] | join(" ")'
 }
 
-for mp4 in **/*.mp4; do
+mp4s=$@
+if [ -z "$mp4s" ]; then
+  mp4s=`shopt -s globstar; echo **/*.mp4`
+fi
+
+log_debug_msg "$mp4s"
+
+for mp4 in $mp4s; do
     ffprintstream "$mp4" | while read width height rotate; do
 
         ffmpeg_opts="-map_metadata -1 -crf ${ffmpeg_crf:-24} -c:v ${ffmpeg_vcodec:-h264} -c:a ${ffmpeg_acodec:-aac}"
-        if ! echo "${width}x${height}" | grep -qP '1920x1080|1080x1920|1920x888'; then
+        if ! grep -qP '1920x1080|1080x1920|1920x888' <<<"${width}x${height}"; then
             log_info_msg "Skipping '$mp4' since it was ${width}x${height} rot ${rotate}."
             continue
         fi
@@ -43,6 +51,10 @@ for mp4 in **/*.mp4; do
 
         if [ "${width}x${height}" == "1920x888" ]; then
             filter_complex="pad=1080:1920:iw-ow/2:0,$filter_complex"
+        fi
+        # Allow passing custom filters into the ffmpeg.
+        if [ -n "$vf" ]; then
+            filter_complex="$filter_complex,$vf"
         fi
 
         dotfile="`dirname "$mp4"`/.`basename "$mp4" .mp4`.$ffmpeg_ext"
