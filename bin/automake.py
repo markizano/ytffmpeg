@@ -149,6 +149,10 @@ class FFMPEG(object):
     if 'no-video' not in config.get('attributes', []):
       result.append('-c:v')
       result.append(config.get('codec', {}).get('video', 'h264'))
+    if 'metadata' in config:
+      for name, value in config['metadata'].items():
+        result.append('-metadata')
+        result.append(f'"{name}={value}"')
 
     result.append('-map_metadata')
     result.append('-1')
