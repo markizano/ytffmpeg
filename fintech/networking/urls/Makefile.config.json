@@ -2,14 +2,61 @@
   "videos": [
     {
       "input": [
-        {
-          "i": "resources/urls.mp4"
-        }
+        { "i": "resources/urls.mp4" }
       ],
-      "output": "build/00_.mp4",
+      "output": "build/UniversalResourceLocators.mp4",
       "filter_complex": [
-        "[0:v]trim=start=:end=,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[video]",
-        "[0:a]atrim=start=:end=,asetpts=PTS-STARTPTS[audio]"
+        "[0:v]fps=29,trim=start=0:end=62.6,setpts=PTS-STARTPTS[vStart]",
+        "[0:a]atrim=start=0:end=62.6,asetpts=PTS-STARTPTS[aStart]",
+
+
+        "### Requests ###",
+        "[0:v]fps=29,trim=start=86:end=87.5,setpts=PTS-STARTPTS[vHeyYou]",
+        "[0:a]atrim=start=86:end=87.5,asetpts=PTS-STARTPTS[aHeyYou]",
+
+        "[0:v]fps=29,trim=start=88.5:end=89.7,setpts=PTS-STARTPTS[vHeyBackACK]",
+        "[0:a]atrim=start=88.5:end=89.7,asetpts=PTS-STARTPTS[aHeyBackACK]",
+
+        "[0:v]fps=29,trim=start=90:end=92.5,setpts=PTS-STARTPTS[vRequest]",
+        "[0:a]atrim=start=90:end=92.5,asetpts=PTS-STARTPTS[aRequest]",
+
+        "[0:v]fps=29,trim=start=95.3:end=97.4,setpts=PTS-STARTPTS[vThanks]",
+        "[0:a]atrim=start=95.3:end=97.4,asetpts=PTS-STARTPTS[aThanks]",
+
+        "### Responses ###",
+        "[0:v]fps=29,trim=start=101.5:end=102.5,setpts=PTS-STARTPTS[vHeyACK]",
+        "[0:a]atrim=start=101.5:end=102.5,asetpts=PTS-STARTPTS[aHeyACK]",
+
+        "[0:v]fps=29,trim=start=102.5:end=103.5,setpts=PTS-STARTPTS[vHeyBack]",
+        "[0:a]atrim=start=102.5:end=103.5,asetpts=PTS-STARTPTS[aHeyBack]",
+
+        "[0:v]fps=29,trim=start=106:end=111.4,setpts=PTS-STARTPTS[vResponse]",
+        "[0:a]atrim=start=106:end=111.4,asetpts=PTS-STARTPTS[aResponse]",
+
+        "[vHeyYou][vHeyACK][vHeyBack][vHeyBackACK][vRequest][vResponse][vThanks]concat=n=7[vConvo]",
+        "[aHeyYou][aHeyACK][aHeyBack][aHeyBackACK][aRequest][aResponse][aThanks]concat=v=0:a=1:n=7[aConvo]",
+
+        "[0:v]fps=29,trim=start=114.4:end=123.75,setpts=PTS-STARTPTS[vTCPex]",
+        "[0:a]atrim=start=114.4:end=123.75,asetpts=PTS-STARTPTS[aTCPex]",
+
+        "[0:v]fps=29,trim=start=81.8:end=84.8,setpts=PTS-STARTPTS[vUDP]",
+        "[0:a]atrim=start=81.8:end=84.8,asetpts=PTS-STARTPTS[aUDP]",
+
+        "[0:v]fps=29,trim=start=130.9:end=134,setpts=PTS-STARTPTS[vUDPex]",
+        "[0:a]atrim=start=130.9:end=134,asetpts=PTS-STARTPTS[aUDPex]",
+
+        "[vTCPex][vUDP][vUDPex]concat=n=3[vClip1]",
+        "[aTCPex][aUDP][aUDPex]concat=v=0:a=1:n=3[aClip1]",
+
+
+        "[0:v]fps=29,trim=start=134:end=306,setpts=PTS-STARTPTS[vClip2]",
+        "[0:a]atrim=start=134:end=306,asetpts=PTS-STARTPTS[aClip2]",
+
+        "[0:v]fps=29,trim=start=312.7:end=319,setpts=PTS-STARTPTS[vFin]",
+        "[0:a]atrim=start=312.7:end=319,asetpts=PTS-STARTPTS[aFin]",
+
+        "[vStart][vConvo][vClip1][vClip2][vFin]concat=n=5[video]",
+        "[aStart][aConvo][aClip1][aClip2][aFin]concat=v=0:a=1:n=5[audio]"
       ]
     }
   ]

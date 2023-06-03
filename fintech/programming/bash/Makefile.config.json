@@ -2,12 +2,13 @@
   "videos": [
     {
       "input": [
-        {
-          "i": "resources/VID_20230508_140113588.mp4"
-        }
+        { "i": "resources/VID_20230508_140113588.mp4" },
+        { "loop": "true", "i": "thumbnail.png -disposition:v:1 attached_pic" }
       ],
       "output": "build/BashVariables.mp4",
       "filter_complex": [
+
+        "[1:v]trim=start=0:end=0.0333,scale=1080x1920,setsar=1:1,setpts=PTS-STARTPTS,fps=30[tn]",
 
         "[0:v]fps=30,trim=start=0:end=148.3,setpts=PTS-STARTPTS[v0]",
         "[0:a]atrim=start=0:end=148.3,asetpts=PTS-STARTPTS[a0]",
@@ -18,7 +19,7 @@
         "[0:v]fps=30,trim=start=379.8:end=385.884,setpts=PTS-STARTPTS[v2]",
         "[0:a]atrim=start=379.8:end=385.884,asetpts=PTS-STARTPTS[a2]",
 
-        "[v0][v1][v2]concat=n=3[video]",
+        "[tn][v0][v1][v2]concat=n=4,scale=720x1280,setsar=1:1[video]",
         "[a0][a1][a2]concat=v=0:a=1:n=3[audio]"
       ]
     }

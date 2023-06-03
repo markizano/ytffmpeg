@@ -20,6 +20,171 @@
         "[0:v]trim=7start=:end=631,setpts=PTS-STARTPTS,setsar=1:1[video]",
         "[0:a]atrim=start=6.62:end=631,asetpts=PTS-STARTPTS[audio]"
       ]
+    },
+    {
+      "input": [
+        { "i": "resources/VID_20230602_022318411.mp4" },
+        { "i": "resources/VID_20230602_030822012.mp4" },
+        { "loop": "true", "i": "resources/sdlc/00_intro.png" },
+        { "loop": "true", "i": "resources/sdlc/01_process.png" },
+        { "loop": "true", "i": "resources/sdlc/02_planning.png" },
+        { "loop": "true", "i": "resources/sdlc/03_planning-ex.png" },
+        { "loop": "true", "i": "resources/sdlc/04_analysis.png" },
+        { "loop": "true", "i": "resources/sdlc/05_analysis-ex.png" },
+        { "loop": "true", "i": "resources/sdlc/06_design.png" },
+        { "loop": "true", "i": "resources/sdlc/07_design-ui.png" },
+        { "loop": "true", "i": "resources/sdlc/08_design-code.png" },
+        { "loop": "true", "i": "resources/sdlc/09_implementation.png" },
+        { "loop": "true", "i": "resources/sdlc/10_implementation-ex.png" },
+        { "loop": "true", "i": "resources/sdlc/11_testing.png" },
+        { "loop": "true", "i": "resources/sdlc/12_testing-ex.png" },
+        { "loop": "true", "i": "resources/sdlc/13_integration.png" },
+        { "loop": "true", "i": "resources/sdlc/14_integration-ex.png" },
+        { "loop": "true", "i": "resources/sdlc/15_maintenance.png" },
+        { "loop": "true", "i": "resources/sdlc/16_maintenance-ex.png" },
+        { "loop": "true", "i": "resources/sdlc/17_thank-you.png" }
+      ],
+      "output": "build/SDLC.mp4",
+      "filter_complex": [
+        "# First intro",
+        "[0:v]fps=30,trim=start=2:end=32.5,setpts=PTS-STARTPTS[v0]",
+        "[0:a]atrim=start=2:end=32.5,asetpts=PTS-STARTPTS[a0]",
+
+        "# Getting started",
+        "[0:v]fps=30,trim=start=39.5:end=76.4,setpts=PTS-STARTPTS[v1]",
+        "[0:a]atrim=start=39.5:end=76.4,asetpts=PTS-STARTPTS[a1]",
+
+        "# SDLC is not just for devs...",
+        "[0:v]fps=30,trim=start=163.5:end=177,setpts=PTS-STARTPTS[v2]",
+        "[0:a]atrim=start=163.5:end=177,asetpts=PTS-STARTPTS[a2]",
+
+        "# About SDLC",
+        "[0:v]fps=30,trim=start=201.7:end=235,setpts=PTS-STARTPTS[v3]",
+        "[0:a]atrim=start=201.7:end=235,asetpts=PTS-STARTPTS[a3]",
+
+        "# First paragraph",
+        "[0:v]fps=30,trim=start=236.2:end=279,setpts=PTS-STARTPTS[v4]",
+        "[0:a]atrim=start=236.2:end=279,asetpts=PTS-STARTPTS[a4]",
+
+        "# First paragraph (cont'd)",
+        "[0:v]fps=30,trim=start=294:end=309.5,setpts=PTS-STARTPTS[v5]",
+        "[0:a]atrim=start=294:end=309.5,asetpts=PTS-STARTPTS[a5]",
+
+        "# First paragraph (fin)",
+        "[0:v]fps=30,trim=start=312.8:end=324,setpts=PTS-STARTPTS[v6]",
+        "[0:a]atrim=start=312.8:end=324,asetpts=PTS-STARTPTS[a6]",
+
+        "#h1. Process",
+        "[0:v]fps=30,trim=start=331.8:end=358.8,setpts=PTS-STARTPTS[v7]",
+        "[0:a]atrim=start=331.8:end=358.8,asetpts=PTS-STARTPTS[a7]",
+
+        "# Process 2",
+        "[0:v]fps=30,trim=start=361.5:end=366,setpts=PTS-STARTPTS[v8]",
+        "[0:a]atrim=start=361.5:end=366,asetpts=PTS-STARTPTS[a8]",
+
+        "# Process Example",
+        "[0:v]fps=30,trim=start=403:end=464.2,setpts=PTS-STARTPTS[v9]",
+        "[0:a]atrim=start=403:end=464.2,asetpts=PTS-STARTPTS[a9]",
+
+        "# Process Example 2 (why I built Yaba)",
+        "[0:v]fps=30,trim=start=475:end=502,setpts=PTS-STARTPTS[v10]",
+        "[0:a]atrim=start=475:end=502,asetpts=PTS-STARTPTS[a10]",
+
+        "# Analysis",
+        "[0:v]fps=30,trim=start=504:end=557,setpts=PTS-STARTPTS[v11]",
+        "[0:a]atrim=start=504:end=557,asetpts=PTS-STARTPTS[a11]",
+
+        "# Analysis Example",
+        "[0:v]fps=30,trim=start=562:end=644,setpts=PTS-STARTPTS[v12]",
+        "[0:a]atrim=start=562:end=644,asetpts=PTS-STARTPTS[a12]",
+
+        "# Design",
+        "[0:v]fps=30,trim=start=648:end=733,setpts=PTS-STARTPTS[v13]",
+        "[0:a]atrim=start=648:end=733,asetpts=PTS-STARTPTS[a13]",
+
+        "# Design Example",
+        "[0:v]fps=30,trim=start=744.5:end=791,setpts=PTS-STARTPTS[v14]",
+        "[0:a]atrim=start=744.5:end=791,asetpts=PTS-STARTPTS[a14]",
+
+        "# Implementation",
+        "[0:v]fps=30,trim=start=794:end=822,setpts=PTS-STARTPTS[v15]",
+        "[0:a]atrim=start=794:end=822,asetpts=PTS-STARTPTS[a15]",
+
+        "# Implementation (uhh, cont)",
+        "[0:v]fps=30,trim=start=824.25:end=861.8,setpts=PTS-STARTPTS[v16]",
+        "[0:a]atrim=start=824.25:end=861.8,asetpts=PTS-STARTPTS[a16]",
+
+        "# Implementation Example; implement sad-rain here",
+        "[0:v]fps=30,trim=start=873.2:end=902,setpts=PTS-STARTPTS[v17]",
+        "[0:a]atrim=start=873.2:end=902,asetpts=PTS-STARTPTS[a17]",
+
+        "# New Future feature",
+        "[0:v]fps=30,trim=start=905:end=909,setpts=PTS-STARTPTS[v18]",
+        "[0:a]atrim=start=905:end=909,asetpts=PTS-STARTPTS[a18]",
+
+        "# yaba.markizano.net advert",
+        "[0:v]fps=30,trim=start=917.75:end=926,setpts=PTS-STARTPTS[v19]",
+        "[0:a]atrim=start=917.75:end=926,asetpts=PTS-STARTPTS[a19]",
+
+
+        "# Testing",
+        "[0:v]fps=30,trim=start=934:end=1031.5,setpts=PTS-STARTPTS[v20]",
+        "[0:a]atrim=start=934:end=1031.5,asetpts=PTS-STARTPTS[a20]",
+
+        "[0:v]fps=30,trim=start=1038.225:end=1066.25,setpts=PTS-STARTPTS[v21]",
+        "[0:a]atrim=start=1038.225:end=1066.25,asetpts=PTS-STARTPTS[a21]",
+
+        "[0:v]fps=30,trim=start=1068:end=1109.75,setpts=PTS-STARTPTS[v22]",
+        "[0:a]atrim=start=1068:end=1109.75,asetpts=PTS-STARTPTS[a22]",
+
+        "[0:v]fps=30,trim=start=1119:end=1211,setpts=PTS-STARTPTS[v23]",
+        "[0:a]atrim=start=1119:end=1211,asetpts=PTS-STARTPTS[a23]",
+
+        "[v0][v1][v2][v3][v4][v5][v6][v7][v8][v9][v10][v11][v12][v13][v14][v15][v16][v17][v18][v19][v20][v21][v22][v23]concat=n=24[v25]",
+        "[a0][a1][a2][a3][a4][a5][a6][a7][a8][a9][a10][a11][a12][a13][a14][a15][a16][a17][a18][a19][a20][a21][a22][a23]concat=v=0:a=1:n=24,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a25]"
+
+        "# Testing Example",
+        "[1:v]fps=30,trim=start=5:end=72.5,setpts=PTS-STARTPTS[v30]",
+        "[1:a]atrim=start=5:end=72.5,asetpts=PTS-STARTPTS[a30]",
+
+        "# Integration",
+        "[1:v]fps=30,trim=start=78:end=109.35,setpts=PTS-STARTPTS[v31]",
+        "[1:a]atrim=start=78:end=109.35,asetpts=PTS-STARTPTS[a31]",
+
+        "# Integration Example",
+        "[1:v]fps=30,trim=start=115:end=136.8,setpts=PTS-STARTPTS[v32]",
+        "[1:a]atrim=start=115:end=136.8,asetpts=PTS-STARTPTS[a32]",
+
+        "# Maintenance",
+        "[1:v]fps=30,trim=start=291:end=351.5,setpts=PTS-STARTPTS[v33]",
+        "[1:a]atrim=start=291:end=351.5,asetpts=PTS-STARTPTS[a33]",
+
+        "# Maintenance Example",
+        "[1:v]fps=30,trim=start=354:end=389,setpts=PTS-STARTPTS[vm1]",
+        "[1:a]atrim=start=354:end=389,asetpts=PTS-STARTPTS[am1]",
+        "[1:v]fps=30,trim=start=393:end=416,setpts=PTS-STARTPTS[vm2]",
+        "[1:a]atrim=start=393:end=416,asetpts=PTS-STARTPTS[am2]",
+
+        "[vm1][vm2]concat[v34]",
+        "[am1][am2]concat=v=0:a=1[a34]",
+
+        "[1:v]fps=30,trim=start=420:end=505,setpts=PTS-STARTPTS[v35]",
+        "[1:a]atrim=start=420:end=505,asetpts=PTS-STARTPTS[a35]",
+
+        "[1:v]fps=30,trim=start=514:end=534,setpts=PTS-STARTPTS[v36]",
+        "[1:a]atrim=start=514:end=534,asetpts=PTS-STARTPTS[a36]",
+
+        "# Ending",
+
+        "[1:v]fps=30,trim=start=534:end=588,setpts=PTS-STARTPTS[v37]",
+        "[1:a]atrim=start=534:end=588,asetpts=PTS-STARTPTS[a37]",
+
+        "[v25][v30][v31][v31][v32][v33][v34][v35][v36][v37]concat=9[video]",
+        "[a25][a30][a31][a31][a32][a33][a34][a35][a36][a37]concat=v=0:a=1:n=9,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[audio]",
+
+
+      ]
     }
   ]
 }
+
