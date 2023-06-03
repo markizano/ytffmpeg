@@ -1,0 +1,27 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/VID_20230602_123411216.mp4" },
+        { "i": "resources/VID_20230602_123843941.mp4" },
+        { "i": "resources/VID_20230602_124224502.mp4" }
+      ],
+      "output": "build/how-to-webdev.mp4",
+      "filter_complex": [
+        "[0:v]fps=30,trim=start=0:end=15.55,setpts=PTS-STARTPTS[v0]",
+        "[0:a]atrim=start=0:end=15.55,asetpts=PTS-STARTPTS[a0]",
+
+        "[1:v]fps=30,trim=start=0:end=135.34,setpts=PTS-STARTPTS[v1]",
+        "[1:a]atrim=start=0:end=135.34,asetpts=PTS-STARTPTS[a1]",
+
+        "[2:v]fps=30,trim=start=0:end=6,setpts=PTS-STARTPTS[v2]",
+        "[2:a]atrim=start=0:end=6,asetpts=PTS-STARTPTS[a2]",
+
+        "[v0][v1][v2]concat=n=3,scale=720x1280,setsar=1:1[video]",
+        "[a0][a1][a2]concat=v=0:a=1:n=3,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[audio]"
+
+
+      ]
+    }
+  ]
+}

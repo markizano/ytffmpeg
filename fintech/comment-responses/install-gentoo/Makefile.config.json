@@ -1,0 +1,33 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/waiting-for-install.mp4" },
+        { "i": "resources/gentoo.mp4" },
+        { "i": "resources/gentoo-insert.mp4" }
+      ],
+      "output": "build/build-gentoo.mp4",
+      "metadata": {
+        "title": "Comment response: what about gentoo?"
+      },
+      "filter_complex": [
+        "[0:v]fps=30,trim=start=0:end=10.38,setpts=PTS-STARTPTS[v0]",
+        "[0:a]atrim=start=0:end=10.38,asetpts=PTS-STARTPTS[a0]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=30,trim=start=0:end=18,setpts=PTS-STARTPTS[v1]",
+        "[1:a]atrim=start=0:end=18,asetpts=PTS-STARTPTS[a1]",
+
+        "[2:v]scale=576x1024,setsar=1:1,fps=30,trim=start=0:end=21.25,setpts=PTS-STARTPTS[v2]",
+        "[2:a]atrim=start=0:end=21.25,asetpts=PTS-STARTPTS[a2]",
+
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=30,trim=start=18.5:end=184.92,setpts=PTS-STARTPTS[v3]",
+        "[1:a]atrim=start=18.5:end=184.92,asetpts=PTS-STARTPTS[a3]",
+
+        "[v0][v1][v2][v3]concat=n=4[video]",
+        "[a0][a1][a2][a3]concat=v=0:a=1:n=4[audio]"
+      ]
+    }
+  ]
+}
+
