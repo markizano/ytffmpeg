@@ -26,6 +26,10 @@ for filename in sys.argv:
       stream['xtags'] = ''
     if stream['codec_type'] == 'video':
       stream['fps'] = div( *[ int(x) for x in stream['r_frame_rate'].split('/') ] )
+      if 'sample_aspect_ratio' not in stream:
+          stream['sample_aspect_ratio'] = '0:0'
+      if 'display_aspect_ratio' not in stream:
+          stream['display_aspect_ratio'] = '0:0'
       streams.append(Template['v'] % stream)
     elif stream['codec_type'] == 'audio':
       streams.append(Template['a'] % stream)
