@@ -47,14 +47,15 @@
         { "i": "resources/swoosh.m4a" }
       ],
       "output": "build/SDLC.mp4",
-      "attributes": [ "vsync" ],
       "filter_complex": [
         "# First intro",
         "[3:v]trim=start=0:end=77.3,setpts=PTS-STARTPTS,boxblur=4:2[firstSlideBackground]",
-        "[21:a]adelay=16.5s:all=1,asetpts=PTS-STARTPTS,apad[sfxSample]",
+        "[21:a]asetpts=PTS-STARTPTS[sfxSample]",
         "[0:v]fps=29,trim=start=2:end=32.5,setpts=PTS-STARTPTS,scale=608x1080,setsar=1:1[x0]",
-        "[0:a]atrim=start=2:end=32.5,asetpts=NB_CONSUMED_SAMPLES/SR/TB[s_0]",
-        "[sfxSample][s_0]amix=duration=first[s0]",
+        "[0:a]atrim=start=2:end=18.2,asetpts=NB_CONSUMED_SAMPLES/SR/TB[aintro1]",
+        "[0:a]atrim=start=18.2:end=32.5,asetpts=NB_CONSUMED_SAMPLES/SR/TB[aintro2]",
+        "[aintro2][sfxSample]amix[aintro_]",
+        "[aintro1][aintro_]concat=v=0:a=1[s0]",
 
         "# SDLC is not just for devs...",
         "[0:v]fps=29,trim=start=163.5:end=177,setpts=PTS-STARTPTS,scale=608x1080,setsar=1:1[x1]",
@@ -71,7 +72,7 @@
         "# Getting started",
         "[3:v]trim=start=0:end=36.9,setpts=PTS-STARTPTS,setsar=1:1,format=yuv420p,fps=29[00_intro]",
         "[0:v]fps=29,trim=start=39.5:end=76.4,setpts=PTS-STARTPTS,scale='if(gt(t,31.9),lerp(608,340,(t-31.9)/5),608)':'if(gt(t,31.9),lerp(1080,604,(t-31.9)/5),1080)':eval=frame[gettingStarted]",
-        "[00_intro][gettingStarted]overlay='if(gt(t,31.9),lerp(236,1580,(t-31.9)/5),(W-w)/2)':'if(gt(t,31.9),lerp(0,476,(t-31.9)/5),0)':shortest=1[v1]",
+        "[00_intro][gettingStarted]overlay='if(gt(t,31.9),lerp(656,1580,(t-31.9)/5),(W-w)/2)':'if(gt(t,31.9),lerp(0,476,(t-31.9)/5),0)':shortest=1[v1]",
         "[0:a]atrim=start=39.5:end=76.4,asetpts=NB_CONSUMED_SAMPLES/SR/TB[a1]",
 
         "### Start overlay process ###",
@@ -150,22 +151,22 @@
 
         "# Design",
         "[9:v]trim=start=0:end=85,setpts=PTS-STARTPTS,setsar=1:1,format=yuv420p,fps=29[06_design]",
-        "[21:a]adelay=84s:all=1[analysisExNext]",
+        "[21:a]adelay=84s:all=1[designNext]",
         "[0:v]fps=29,trim=start=648:end=733,setpts=PTS-STARTPTS,scale=200x356,setsar=1:1[vdesign]",
         "[0:a]atrim=start=648:end=733,asetpts=NB_CONSUMED_SAMPLES/SR/TB[adesign]",
         "[06_design][vdesign]overlay=600:710:shortest=1[v7]",
-        "[adesign][analysisExNext]amix[a7]",
+        "[adesign][designNext]amix[a7]",
 
 
         "# Design Example",
         "[10:v]trim=start=0:end=17.5,setpts=PTS-STARTPTS,setsar=1:1,format=yuv420p,fps=29[07_design-ui]",
         "[11:v]trim=start=0:end=29,setpts=PTS-STARTPTS,setsar=1:1,format=yuv420p,fps=29[08_design-code]",
-        "[21:a]adelay=45.5s:all=1[analysisExNext]",
+        "[21:a]adelay=45.5s:all=1[designExNext]",
         "[07_design-ui][08_design-code]concat[07_designEx]",
         "[0:v]fps=29,trim=start=744.5:end=791,setpts=PTS-STARTPTS,scale=180x320[vdesignEx]",
         "[0:a]atrim=start=744.5:end=791,asetpts=NB_CONSUMED_SAMPLES/SR/TB[adesignEx]",
         "[07_designEx][vdesignEx]overlay=W-w:0:shortest=1[v8]",
-        "[adesignEx][analysisExNext]amix[a8]",
+        "[adesignEx][designExNext]amix[a8]",
 
 
         "# Implementation",
