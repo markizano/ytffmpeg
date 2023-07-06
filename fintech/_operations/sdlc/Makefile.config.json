@@ -2,8 +2,8 @@
   "videos": [
     {
       "input": [
-        { "i": "resources/VID_20230602_022318411.mp4" },
-        { "i": "resources/VID_20230602_030822012.mp4" },
+        { "i": "resources/VID_20230602_022318411.mkv" },
+        { "i": "resources/VID_20230602_030822012.mkv" },
         { "f": "lavfi", "i": "color=color=0x00000000:size=1920x1080,format=rgba,setsar=1:1"  },
         { "loop": "true", "i": "resources/sdlc/00_intro.png" },
         { "loop": "true", "i": "resources/sdlc/01_process.png" },
@@ -141,11 +141,9 @@
         "[10:v]trim=start=0:end=17.5,setpts=PTS-STARTPTS,setsar=1:1,format=yuv420p,fps=29[07_design-ui]",
         "[11:v]trim=start=0:end=29,setpts=PTS-STARTPTS,setsar=1:1,format=yuv420p,fps=29[08_design-code]",
         "[07_design-ui][08_design-code]concat[07_designEx]",
-        "[21:a]adelay=45.5s:all=1[designExNext]",
         "[0:v]fps=29,trim=start=744.5:end=791,setpts=PTS-STARTPTS,scale=180x320[vdesignEx]",
-        "[0:a]atrim=start=744.5:end=791,asetpts=NB_CONSUMED_SAMPLES/SR/TB[adesignEx]",
+        "[0:a]atrim=start=744.5:end=791,asetpts=NB_CONSUMED_SAMPLES/SR/TB[a8]",
         "[07_designEx][vdesignEx]overlay=W-w:0:shortest=1[v8]",
-        "[adesignEx][designExNext]amix[a8]",
 
 
         "# Implementation",
