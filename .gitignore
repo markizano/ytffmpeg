@@ -49,3 +49,6 @@ Makefile
 # Experiments with Natron until I'm confident it will be used.
 *.ntp
 *.ntp.~*~
+
+# Products of my own compilations
+*.filter_complex
