@@ -1,0 +1,73 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/VID_20230702_144529513.mp4" },
+        { "i": "resources/VID_20230702_144529513_02.mp4" },
+        { "i": "resources/VID_20230702_144529513_03.mp4" }
+      ],
+      "output": "build/VID_20230702_144529513.mkv",
+      "vcodec": "libx265",
+      "attributes": [
+        "no-audio",
+        "not-a-build"
+      ],
+      "metadata": {
+        "title": "Mark Cam"
+      },
+      "filter_complex": [
+        "[0:v][1:v][2:v]concat=n=3,trim=start=22.898:end=3907.8,setpts=PTS-STARTPTS,crop=1080:720:0:480,colorspace=range=tv:format=yuv420p:all=bt709,fps=30[video]"
+      ]
+    },
+    {
+      "input": [
+        { "i": "resources/20230702_144509.mp4" },
+        { "i": "resources/20230702_151822.mp4" }
+      ],
+      "output": "build/20230702.mkv",
+      "vcodec": "libx265",
+      "attributes": [
+        "no-audio",
+        "not-a-build"
+      ],
+      "metadata": {
+        "title": "LT Cam"
+      },
+      "filter_complex": [
+        "[0:v][1:v]concat,trim=start=45.00:end=3930.34,setpts=PTS-STARTPTS,crop=1080:1240:0:300,scale=626x720,setsar=1:1,format=yuvj420p,colorspace=range=tv:all=bt709,format=yuv420p,fps=30[video]"
+      ]
+    },
+    {
+      "input": [
+        { "i": "resources/VID_20230702_144517858.mp4" },
+        { "i": "resources/VID_20230702_144517858_02.mp4" }
+      ],
+      "output": "build/VID_20230702_144517858.mkv",
+      "attributes": [
+        "not-a-build"
+      ],
+      "vcodec": "libx265",
+      "acodec": "ac3",
+      "metadata": {
+        "title": "Main View"
+      },
+      "filter_complex": [
+        "[0:v][1:v]concat,trim=start=34.267:end=3919.735,setpts=PTS-STARTPTS,crop=1510:850:206:0,scale=1280x720,setsar=1:1,colorspace=range=tv:all=bt709:format=yuv420p,fps=30[video]",
+        "[0:a][1:a]concat=v=0:a=1,atrim=start=34.267:end=3919.735,asetpts=PTS-STARTPTS[audio]"
+      ]
+    },
+    {
+      "require": "build/VID_20230702_144517858.mkv build/20230702.mkv build/VID_20230702_144529513.mkv",
+      "input": [
+        { "i": "build/VID_20230702_144517858.mkv -v verbose" },
+        { "i": "build/20230702.mkv" },
+        { "i": "build/VID_20230702_144529513.mkv" },
+        { "i": "resources/prescriptive-descriptive-heierarchies.mp4" },
+        { "loop": "1", "i": "build/gray-transition.png" }
+      ],
+      "output": "build/NakedTruth-001.mp4",
+      "filter_complex_script": "resources/NakedTruth-001.txt"
+    }
+  ]
+}
+

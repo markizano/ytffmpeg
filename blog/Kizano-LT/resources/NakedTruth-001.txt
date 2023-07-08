@@ -1,0 +1,263 @@
+# Mapping: 0=Both, 1=LT, 2=Me;
+[0:v]trim=start=7:end=71.5,setpts=PTS-STARTPTS[vWelcomeUs];
+[0:a]atrim=start=7:end=71.5,asetpts=PTS-STARTPTS[a0];
+
+[2:v]trim=start=11.0:duration=2.3,pad=1280:720:100:0,setpts=(PTS-STARTPTS)+(4.25/TB),fade=in:st=4.25:d=0.1:alpha=1,fade=out:st=6.45:d=0.1:alpha=1[vWelcomeMe0];
+[2:v]trim=start=52.25:duration=19.5,pad=1280:720:100:0,zoompan=zoom=pzoom+0.0006:d=0:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1280x720:fps=30,fade=in:st=0:d=0.5:alpha=1,setpts=(PTS-STARTPTS)+(45.25/TB)[vWelcomeMe1];
+[vWelcomeUs][vWelcomeMe0]overlay=0:0:enable='between(t,4.25,6.55)',setpts=PTS-STARTPTS[vWelcomeMe];
+[vWelcomeMe][vWelcomeMe1]overlay=0:0:enable='gt(t,45.25)':eof_action=endall:shortest=1[v0];
+
+# ME: I tried re-creating that environment;
+[2:v]trim=start=83.7:end=103,pad=1280:720:100:0,setpts=(PTS-STARTPTS),zoompan=zoom=pzoom+0.0002:d=0:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1280x720:fps=30[v1];
+[0:a]atrim=start=83.7:end=103,asetpts=PTS-STARTPTS[a1];
+
+# LT: I think monogomy has a place in LGBT;
+[1:v]trim=start=103:end=133.5,setpts=(PTS-STARTPTS)[vlt0];
+[2:v]trim=start=103:end=133.5,crop=654:720:213:0,pad=1280:720:0:0,setpts=(PTS-STARTPTS)[vme0];
+[vme0][vlt0]overlay=654:0,setpts=PTS-STARTPTS[v2];
+[0:a]atrim=start=103:end=133.5,asetpts=PTS-STARTPTS[a2];
+
+# ME: the 'shape' I have drawn for myself.;
+[2:v]trim=start=158:end=241.5,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v3];
+[0:a]atrim=start=158:end=241.5,asetpts=PTS-STARTPTS[a3];
+
+# LT: (transition from last timestamp) family 'shape';
+[1:v]trim=start=252:end=295,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v4];
+[0:a]atrim=start=252:end=295,asetpts=PTS-STARTPTS[a4];
+
+# US: feel what you do, no one way better than other.;
+[0:v]trim=start=295:end=302,setpts=PTS-STARTPTS[v5];
+[0:a]atrim=start=295:end=302,asetpts=PTS-STARTPTS[a5];
+
+# LT: it took a while. not everyone can be 1st priority.;
+[1:v]trim=start=302:end=325,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v6];
+[0:a]atrim=start=302:end=325,asetpts=PTS-STARTPTS[a6];
+
+# LT: you gotta take care of yourself.;
+[1:v]trim=start=332:end=380,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v7];
+[0:a]atrim=start=332:end=380,asetpts=PTS-STARTPTS[a7];
+
+# ME: heirarchy types (splice in video clip from other at 390.5) -> 'The Self';
+[2:v]trim=start=382:end=387,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[vpreHeteroHomo];
+[0:a]atrim=start=382:end=387,asetpts=PTS-STARTPTS[apreHeteroHomo];
+
+# slow-motion transition to grayscale image to @polyamfam's video
+    [4:v]trim=start=0:end=29.01,fps=30,pad=1280:720:100:0,setpts=PTS-STARTPTS[vgrayBackground];
+    [2:v]trim=start=387:end=390.5,pad=1280:720:100:0,setpts=(PTS-STARTPTS)*1.5,fade=out:st=3.0:d=2.5:alpha=1[vgrayTransition];
+    [vgrayBackground][vgrayTransition]overlay=eof_action=pass,setpts=PTS-STARTPTS[vgraySlowMow];
+    [0:a]atrim=start=387:end=390.5,asetpts=(PTS-STARTPTS)*1.5,atempo=0.5[agrayTransition];
+
+# Prescriptive vs descriptive heirarchies; (20.26s)
+    [3:v]trim=start=11.17:end=31.43,setpts=(PTS-STARTPTS)+(5.25/TB),scale=406x720,setsar=1:1,fps=30,fade=in:st=0:d=0.5:alpha=1,fade=out:st=25:d=1:alpha=1[vpreRxHeirarchy];
+    [3:a]atrim=start=11.17:end=31.43,adelay=5.25s:all=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[apreRxHeirarchy];
+
+# Merge them together
+[vgraySlowMow][vpreRxHeirarchy]overlay=(W-w)/2:0:eof_action=pass:enable='gt(t,5.5)'[vRxHeirarchy];
+[agrayTransition][apreRxHeirarchy]amix[aRxHeirarchy];
+
+[2:v]trim=start=387:end=390.5,pad=1280:720:100:0,reverse,fade=in:st=0:d=2,setpts=(PTS-STARTPTS)+(25.76)[vrewind];
+[0:a]atrim=start=387:end=390.5,areverse,adelay=25.76s:all=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[arewind];
+
+[vRxHeirarchy][vrewind]overlay=0:0:enable='gt(t,26.75)':shortest=1,setpts=PTS-STARTPTS[vpostRxHeirarchy];
+[arewind][aRxHeirarchy]amix[aPostRxHeirarchy];
+
+[2:v]trim=start=391:end=410,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[vpostHeteroHomo];
+[0:a]atrim=start=391:end=410,asetpts=NB_CONSUMED_SAMPLES/SR/TB[apostHeteroHomo];
+
+[vpostRxHeirarchy][vpostHeteroHomo]concat=v=1:a=0,setpts=PTS-STARTPTS[vHeteroHomo];
+[aPostRxHeirarchy][apostHeteroHomo]concat=v=0:a=1[aHeteroHomo];
+
+# Overlay @polyamfam's video on top of me talking about it:
+[vpreHeteroHomo][vHeteroHomo]concat=v=1:a=0,setpts=PTS-STARTPTS[v8];
+[apreHeteroHomo][aHeteroHomo]concat=v=0:a=1[a8];
+
+# LT: I only have so much time;
+[1:v]trim=start=649:end=744,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v9];
+[0:a]atrim=start=649:end=744,asetpts=PTS-STARTPTS[a9];
+
+# US: stands the test of time;
+[0:v]trim=start=744:end=787,setpts=PTS-STARTPTS[v10];
+[0:a]atrim=start=744:end=787,asetpts=PTS-STARTPTS[a10];
+
+# ME: BF in a box;
+[2:v]trim=start=787:end=800,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v11];
+[0:a]atrim=start=787:end=800,asetpts=PTS-STARTPTS[a11];
+
+# LT: one person may be on other side of earth;
+[1:v]trim=start=800:end=845,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v12];
+[0:a]atrim=start=800:end=845,asetpts=PTS-STARTPTS[a12];
+
+# ME: growing with someone;
+[2:v]trim=start=845:end=918,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v13];
+[0:a]atrim=start=845:end=918,asetpts=PTS-STARTPTS[a13];
+
+# LT: you grow into yourself;
+[1:v]trim=start=919:end=1008,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v14];
+[0:a]atrim=start=919:end=1008,asetpts=PTS-STARTPTS[a14];
+
+# LT: What are your thoughts on Gay Marriage?;
+[1:v]trim=start=1095:end=1113,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v15];
+[0:a]atrim=start=1095:end=1113,asetpts=PTS-STARTPTS[a15];
+
+# ME: my response;
+[2:v]trim=start=1113:end=1212,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v16];
+[0:a]atrim=start=1113:end=1212,asetpts=PTS-STARTPTS[a16];
+
+# LT: Rebuttal and experience (somewhere between this and next, clip to US for a few secs).;
+[1:v]trim=start=1212:end=1275,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v17];
+[0:a]atrim=start=1212:end=1275,asetpts=PTS-STARTPTS[a17];
+
+# ME: ideal policy;
+[2:v]trim=start=1275:end=1298,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v18];
+[0:a]atrim=start=1275:end=1298,asetpts=PTS-STARTPTS[a18];
+
+# US: hospital liability;
+[0:v]trim=start=1298:end=1320,setpts=PTS-STARTPTS[v19];
+[0:a]atrim=start=1298:end=1320,asetpts=PTS-STARTPTS[a19];
+
+# LT: access without liability;
+[1:v]trim=start=1320:end=1402,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v20];
+[0:a]atrim=start=1320:end=1402,asetpts=PTS-STARTPTS[a20];
+
+# ME: Recap on what we've covered so far;
+[2:v]trim=start=1601:end=1710,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v21];
+[0:a]atrim=start=1601:end=1710,asetpts=PTS-STARTPTS[a21];
+
+# LT: medical preferences;
+[1:v]trim=start=1710:end=1755,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v22];
+[0:a]atrim=start=1710:end=1755,asetpts=PTS-STARTPTS[a22];
+
+# US: gabbing about healthcare;
+[0:v]trim=start=1755:end=1784,setpts=PTS-STARTPTS[v23];
+[0:a]atrim=start=1755:end=1784,asetpts=PTS-STARTPTS[a23];
+
+# LT: heteronormative not good for healthcare;
+[1:v]trim=start=1784:end=1860,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v24];
+[0:a]atrim=start=1784:end=1860,asetpts=PTS-STARTPTS[a24];
+
+# US: misgendered, doctor trust;
+[0:v]trim=start=1860:end=1884,setpts=PTS-STARTPTS[v25];
+[0:a]atrim=start=1860:end=1884,asetpts=PTS-STARTPTS[a25];
+
+# LT: going to doc;
+[1:v]trim=start=1884:end=1895,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v26];
+[0:a]atrim=start=1884:end=1895,asetpts=PTS-STARTPTS[a26];
+
+# US: accepting LGBT+;
+[0:v]trim=start=1920:end=1952,setpts=PTS-STARTPTS[v27];
+[0:a]atrim=start=1920:end=1952,asetpts=PTS-STARTPTS[a27];
+
+# ME: agency of self (last 3s can be used for fading transition);
+[2:v]trim=start=1952:end=1977,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v28];
+[0:a]atrim=start=1952:end=1977,asetpts=PTS-STARTPTS[a28];
+
+# US: gender freedom, happiness of freedom, not enslavement;
+[0:v]trim=start=1980:end=2038,setpts=PTS-STARTPTS[v29];
+[0:a]atrim=start=1980:end=2038,asetpts=PTS-STARTPTS[a29];
+
+# ME: thank you for being here (2s transition);
+[2:v]trim=start=2038:end=2130,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v30];
+[0:a]atrim=start=2038:end=2130,asetpts=PTS-STARTPTS[a30];
+
+# US: transition to visibility (2s transition);
+[0:v]trim=start=2132:end=2140,setpts=PTS-STARTPTS[v31];
+[0:a]atrim=start=2132:end=2140,asetpts=PTS-STARTPTS[a31];
+
+# LT: you can be who you want to be;
+[1:v]trim=start=2142:end=2198,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v32];
+[0:a]atrim=start=2142:end=2198,asetpts=PTS-STARTPTS[a32];
+
+# ME: you can create whatever you want;
+[2:v]trim=start=2703:end=2755,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v33];
+[0:a]atrim=start=2703:end=2755,asetpts=PTS-STARTPTS[a33];
+
+# US: 'and being a right-handed person';
+[0:v]trim=start=2756:end=2778,setpts=PTS-STARTPTS[v34];
+[0:a]atrim=start=2756:end=2778,asetpts=PTS-STARTPTS[a34];
+
+# LT: LT attacking heteronormative again;
+[1:v]trim=start=2778:end=2800,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v35];
+[0:a]atrim=start=2778:end=2800,asetpts=PTS-STARTPTS[a35];
+
+# US: we are protecting ourselves.;
+[0:v]trim=start=2800:end=2813,setpts=PTS-STARTPTS[v36];
+[0:a]atrim=start=2800:end=2813,asetpts=PTS-STARTPTS[a36];
+
+# ME: to implicate yourself;
+[2:v]trim=start=2813:end=2840,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v37];
+[0:a]atrim=start=2813:end=2840,asetpts=PTS-STARTPTS[a37];
+
+# US: why are these hard?;
+[0:v]trim=start=2840:end=2843,setpts=PTS-STARTPTS[v38];
+[0:a]atrim=start=2840:end=2843,asetpts=PTS-STARTPTS[a38];
+
+# LT: being vulnerable is hard;
+[1:v]trim=start=2843:end=2867,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v39];
+[0:a]atrim=start=2843:end=2867,asetpts=PTS-STARTPTS[a39];
+
+# SPLIT: us laughing;
+[0:v]trim=start=2867:end=2872,setpts=PTS-STARTPTS[v40];
+[0:a]atrim=start=2867:end=2872,asetpts=PTS-STARTPTS[a40];
+
+# LT: being vulnerable is hard x2 (family freedom);
+[1:v]trim=start=2872:end=2914,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v41];
+[0:a]atrim=start=2872:end=2914,asetpts=PTS-STARTPTS[a41];
+
+# US: i don't care what you think;
+[0:v]trim=start=2914:end=2925,setpts=PTS-STARTPTS[v42];
+[0:a]atrim=start=2914:end=2925,asetpts=PTS-STARTPTS[a42];
+
+# LT: heternormatives don't work for me;
+[1:v]trim=start=3097:end=3207,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v43];
+[0:a]atrim=start=3097:end=3207,asetpts=PTS-STARTPTS[a43];
+
+# ME: BF in a box doesn't exist;
+[2:v]trim=start=3207:end=3312,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v44];
+[0:a]atrim=start=3207:end=3312,asetpts=PTS-STARTPTS[a44];
+
+# US: lead to next question;
+[0:v]trim=start=3370:end=3377,setpts=PTS-STARTPTS[v45];
+[0:a]atrim=start=3370:end=3377,asetpts=PTS-STARTPTS[a45];
+
+# ME: daddy aspect.;
+[2:v]trim=start=3377:end=3395,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v46];
+[0:a]atrim=start=3377:end=3395,asetpts=PTS-STARTPTS[a46];
+
+# LT: the 'Daddy' thing.;
+[1:v]trim=start=3395:end=3581,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v47];
+[0:a]atrim=start=3395:end=3581,asetpts=PTS-STARTPTS[a47];
+
+# ME: would there be as many gay guys if we had better fathers?;
+[2:v]trim=start=3581:end=3669,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v48];
+[0:a]atrim=start=3581:end=3669,asetpts=PTS-STARTPTS[a48];
+
+# US: Would it be the same?;
+[0:v]trim=start=3669:end=3695,setpts=PTS-STARTPTS[v49];
+[0:a]atrim=start=3669:end=3695,asetpts=PTS-STARTPTS[a49];
+
+# US: dad-joke;
+[0:v]trim=start=3814:end=3852,setpts=PTS-STARTPTS[v50];
+[0:a]atrim=start=3814:end=3852,asetpts=PTS-STARTPTS[a50];
+
+# US: ending/fin;
+[0:v]trim=start=3862.75:end=3885,setpts=PTS-STARTPTS[v51];
+[0:a]atrim=start=3862.75:end=3885,asetpts=PTS-STARTPTS[a51];
+
+[v0][v1][v2][v3][v4][v5][v6][v7][v8][v9][v10]concat=n=11:v=1:a=0[vp0];
+[v11][v12][v13][v14][v15][v16][v17][v18][v19]concat=n=9:v=1:a=0[vp1];
+[v20][v21][v22][v23][v24][v25][v26][v27][v28][v29]concat=n=10:v=1:a=0[vp2];
+[v30][v31][v32][v33][v34][v35][v36][v37][v38][v39]concat=n=10:v=1:a=0[vp3];
+[v40][v41][v42][v43][v44][v45][v46][v47][v48][v49]concat=n=10:v=1:a=0[vp4];
+[v50][v51]concat=n=2:v=1:a=0[vp5];
+[vp0][vp1][vp2][vp3][vp4][vp5]concat=n=6:v=1:a=0[video];
+
+[a0][a1][a2][a3][a4][a5][a6][a7][a8][a9][a10]concat=n=11:v=0:a=1[ap0];
+[a11][a12][a13][a14][a15][a16][a17][a18][a19]concat=n=9:v=0:a=1[ap1];
+[a20][a21][a22][a23][a24][a25][a26][a27][a28][a29]concat=n=10:v=0:a=1[ap2];
+[a30][a31][a32][a33][a34][a35][a36][a37][a38][a39]concat=n=10:v=0:a=1[ap3];
+[a40][a41][a42][a43][a44][a45][a46][a47][a48][a49]concat=n=10:v=0:a=1[ap4];
+[a50][a51]concat=n=2:v=0:a=1[ap5];
+[ap0][ap1][ap2][ap3][ap4][ap5]concat=n=6:v=0:a=1[audio];
+
+#[v0][v1][v2][v3][v4][v5][v6][v7][v8][v9][v10][v11][v12][v13][v14][v15][v16][v17][v18][v19][v20][v21][v22][v23][v24][v25][v26][v27][v28][v29][v30][v31][v32][v33][v34][v35][v36][v37][v38][v39][v40][v41][v42][v43][v44][v45][v46][v47][v48][v49][v50][v51]concat=n=52:v=1:a=0[video];
+#[a0][a1][a2][a3][a4][a5][a6][a7][a8][a9][a10][a11][a12][a13][a14][a15][a16][a17][a18][a19][a20][a21][a22][a23][a24][a25][a26][a27][a28][a29][a30][a31][a32][a33][a34][a35][a36][a37][a38][a39][a40][a41][a42][a43][a44][a45][a46][a47][a48][a49][a50][a51]concat=n=52:v=0:a=1[audio];
