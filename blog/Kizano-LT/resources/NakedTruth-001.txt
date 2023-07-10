@@ -1,20 +1,22 @@
 # Mapping: 0=Both, 1=LT, 2=Me;
-[0:v]trim=start=7:end=71.5,setpts=PTS-STARTPTS[vWelcomeUs];
+
+### WELCOME!
+[0:v]trim=start=7:end=71.5,setpts=PTS-STARTPTS[vus0];
 [0:a]atrim=start=7:end=71.5,asetpts=PTS-STARTPTS[a0];
 
-[2:v]trim=start=11.0:duration=2.3,pad=1280:720:100:0,setpts=(PTS-STARTPTS)+(4.25/TB),fade=in:st=4.25:d=0.1:alpha=1,fade=out:st=6.45:d=0.1:alpha=1[vWelcomeMe0];
-[2:v]trim=start=52.25:duration=19.5,pad=1280:720:100:0,zoompan=zoom=pzoom+0.0006:d=0:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1280x720:fps=30,fade=in:st=0:d=0.5:alpha=1,setpts=(PTS-STARTPTS)+(45.25/TB)[vWelcomeMe1];
-[vWelcomeUs][vWelcomeMe0]overlay=0:0:enable='between(t,4.25,6.55)',setpts=PTS-STARTPTS[vWelcomeMe];
-[vWelcomeMe][vWelcomeMe1]overlay=0:0:enable='gt(t,45.25)':eof_action=endall:shortest=1[v0];
+[2:v]trim=start=11.0:duration=2.3,pad=1280:720:100:0,setpts=(PTS-STARTPTS)+(4.25/TB),fade=in:st=4.25:d=0.1:alpha=1,fade=out:st=6.45:d=0.1:alpha=1[vme0];
+[2:v]trim=start=52.25:duration=19.5,pad=1280:720:100:0,zoompan=zoom=pzoom+0.0006:d=0:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1280x720:fps=30,fade=in:st=0:d=0.5:alpha=1,setpts=(PTS-STARTPTS)+(45.25/TB)[vme1];
+[vus0][vme0]overlay=0:0:enable='between(t,4.25,6.55)',setpts=PTS-STARTPTS[vsplit0];
+[vsplit0][vme1]overlay=0:0:enable='gt(t,45.25)':eof_action=endall:shortest=1[v0];
 
 # ME: I tried re-creating that environment;
 [2:v]trim=start=83.7:end=103,pad=1280:720:100:0,setpts=(PTS-STARTPTS),zoompan=zoom=pzoom+0.0002:d=0:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1280x720:fps=30[v1];
 [0:a]atrim=start=83.7:end=103,asetpts=PTS-STARTPTS[a1];
 
-# LT: I think monogomy has a place in LGBT;
-[1:v]trim=start=103:end=133.5,setpts=(PTS-STARTPTS)[vlt0];
-[2:v]trim=start=103:end=133.5,crop=654:720:213:0,pad=1280:720:0:0,setpts=(PTS-STARTPTS)[vme0];
-[vme0][vlt0]overlay=654:0,setpts=PTS-STARTPTS[v2];
+# SPLIT: I think monogomy has a place in LGBT;
+[1:v]trim=start=103:end=133.5,setpts=(PTS-STARTPTS)[vlt_1];
+[2:v]trim=start=103:end=133.5,crop=654:720:213:0,pad=1280:720:0:0,setpts=(PTS-STARTPTS)[vme_1];
+[vme_1][vlt_1]overlay=654:0,setpts=PTS-STARTPTS[v2];
 [0:a]atrim=start=103:end=133.5,asetpts=PTS-STARTPTS[a2];
 
 # ME: the 'shape' I have drawn for myself.;
@@ -22,7 +24,7 @@
 [0:a]atrim=start=158:end=241.5,asetpts=PTS-STARTPTS[a3];
 
 # LT: (transition from last timestamp) family 'shape';
-[1:v]trim=start=252:end=295,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v4];
+[1:v]trim=start=252:end=295,pad=1280:720:326:0,setpts=(PTS-STARTPTS),zoompan=zoom='if(lte(zoom,1),1.2,pzoom-0.0002)':d=0:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1280x720:fps=30[v4];
 [0:a]atrim=start=252:end=295,asetpts=PTS-STARTPTS[a4];
 
 # US: feel what you do, no one way better than other.;
@@ -30,62 +32,102 @@
 [0:a]atrim=start=295:end=302,asetpts=PTS-STARTPTS[a5];
 
 # LT: it took a while. not everyone can be 1st priority.;
-[1:v]trim=start=302:end=325,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v6];
+[1:v]trim=start=302:end=325,pad=1280:720:326:0,setpts=(PTS-STARTPTS),zoompan=zoom=pzoom+0.0002:d=0:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1280x720:fps=30[v6];
 [0:a]atrim=start=302:end=325,asetpts=PTS-STARTPTS[a6];
 
 # LT: you gotta take care of yourself.;
 [1:v]trim=start=332:end=380,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v7];
 [0:a]atrim=start=332:end=380,asetpts=PTS-STARTPTS[a7];
 
+### Chapter 1
+[v0][v1][v2][v3][v4][v5][v6][v7]concat=n=8:v=1:a=0,setpts=PTS-STARTPTS[vch0];
+[a0][a1][a2][a3][a4][a5][a6][a7]concat=n=8:v=0:a=1,asetpts=PTS-STARTPTS[ach0];
+
 # ME: heirarchy types (splice in video clip from other at 390.5) -> 'The Self';
-[2:v]trim=start=382:end=387,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[vpreHeteroHomo];
-[0:a]atrim=start=382:end=387,asetpts=PTS-STARTPTS[apreHeteroHomo];
+[2:v]trim=start=382:end=387,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[vme_2];
+[0:a]atrim=start=382:end=387,asetpts=PTS-STARTPTS[ame_2];
 
-    # slow-motion transition to grayscale image to @polyamfam's video
-    [4:v]trim=start=0:end=29.01,fps=30,pad=1280:720:100:0,setpts=PTS-STARTPTS[vgrayBackground];
-    [2:v]trim=start=387:end=390.5,pad=1280:720:100:0,setpts=(PTS-STARTPTS)*1.5,fade=out:st=3.0:d=2.5:alpha=1[vgrayTransition];
-    [vgrayBackground][vgrayTransition]overlay=eof_action=pass:repeatlast=1,setpts=PTS-STARTPTS[vgraySlowMow];
-    [0:a]atrim=start=387:end=390.5,asetpts=(PTS-STARTPTS)*1.5,atempo=0.5[agrayTransition];
+# slow-motion transition to grayscale image to @polyamfam's video
+[4:v]fps=30,trim=start=0:end=5.5,pad=1280:720:100:0,setpts=PTS-STARTPTS[vgrayBackground];
+[2:v]trim=start=387:end=390.5,pad=1280:720:100:0,setpts=(PTS-STARTPTS)*1.5,fade=out:st=3.0:d=2.5:alpha=1[vgrayTransition];
+[vgrayBackground][vgrayTransition]overlay=eof_action=endall:shortest=1,trim=start=0:end=5.5,setpts=PTS-STARTPTS[vgraySlowMow];
+[0:a]atrim=start=387:end=390.5,asetpts=(PTS-STARTPTS)*1.5,atempo=0.5,atrim=start=0:end=5.5,asetpts=PTS-STARTPTS[agrayTransition];
 
-    # Prescriptive vs descriptive heirarchies; (20.26s)
-    [3:v]trim=start=11.17:end=31.43,setpts=(PTS-STARTPTS)+(8.5/TB),scale=406x720,setsar=1:1,fps=30,fade=in:st=0:d=0.5:alpha=1,fade=out:st=25:d=1:alpha=1[vpreRxHeirarchy];
-    [3:a]atrim=start=11.17:end=31.43,adelay=8.5s:all=1,asetpts=(PTS-STARTPTS)+(8.5/TB)[apreRxHeirarchy];
+# Prescriptive vs descriptive heirarchies; (20.26s)
+[4:v]fps=30,trim=start=0:end=20.26,pad=1280:720:100:0,setpts=PTS-STARTPTS[grayRxHeirarchy];
+[3:v]fps=30,trim=start=11.17:end=31.43,setpts=(PTS-STARTPTS),scale=406x720,setsar=1:1,fade=in:st=0:d=0.5:alpha=1,fade=out:st=19.26:d=1:alpha=1[vpreRxHeirarchy];
+[3:a]atrim=start=11.17:end=31.43,asetpts=PTS-STARTPTS[aRxHeirarchy];
+[grayRxHeirarchy][vpreRxHeirarchy]overlay=440:0,setpts=PTS-STARTPTS[vRxHeirarchy];
 
-# Merge them together
-[vgraySlowMow][vpreRxHeirarchy]overlay=(W-w)/2:0:eof_action=pass:enable='gt(t,5.5)'[vRxHeirarchy];
-[agrayTransition][apreRxHeirarchy]amix[aRxHeirarchy];
+# Play me on rewind for a few seconds coming back into focus.
+[4:v]fps=30,trim=start=0:end=3.5,pad=1280:720:100:0,setpts=PTS-STARTPTS[grayRewind];
+[2:v]trim=start=387:end=390.5,pad=1280:720:100:0,hue=s=0,reverse,setpts=PTS-STARTPTS[rewind];
+[0:a]atrim=start=387:end=390.5,areverse,asetpts=(PTS-STARTPTS)[arewind];
+[grayRewind][rewind]overlay,setpts=PTS-STARTPTS[vrewind];
 
-[2:v]trim=start=387:end=390.5,pad=1280:720:100:0,reverse,fade=in:st=0:d=2,setpts=(PTS-STARTPTS)+(25.76/TB)[vrewind];
-[0:a]atrim=start=387:end=390.5,areverse,adelay=25.76s:all=1,asetpts=(PTS-STARTPTS)+(25.76/TB)[arewind];
+[2:v]trim=start=387:end=410,pad=1280:720:100:0,setpts=PTS-STARTPTS[vpostHeteroHomo];
+[0:a]atrim=start=387:end=410,asetpts=PTS-STARTPTS[apostHeteroHomo];
 
-[vRxHeirarchy][vrewind]overlay=0:0:enable='gt(t,26.75)':shortest=1,setpts=PTS-STARTPTS[vpostRxHeirarchy];
-[arewind][aRxHeirarchy]amix[aPostRxHeirarchy];
+[vme_2][vgraySlowMow][vRxHeirarchy][vrewind][vpostHeteroHomo]concat=n=5:v=1:a=0,setpts=PTS-STARTPTS[v8];
+[ame_2][agrayTransition][aRxHeirarchy][arewind][apostHeteroHomo]concat=n=5:v=0:a=1,asetpts=PTS-STARTPTS[a8];
 
-[2:v]trim=start=391:end=410,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[vpostHeteroHomo];
-[0:a]atrim=start=391:end=410,asetpts=NB_CONSUMED_SAMPLES/SR/TB[apostHeteroHomo];
+# SPLIT: LT says "relationships are work."
+[1:v]trim=start=649:end=662,setpts=(PTS-STARTPTS)[vlt2];
+[2:v]trim=start=649:end=662,crop=654:720:213:0,pad=1280:720:0:0,setpts=(PTS-STARTPTS)[vme2];
+[vme2][vlt2]overlay=654:0,setpts=PTS-STARTPTS[vsplit2];
+[0:a]atrim=start=649:end=662,asetpts=PTS-STARTPTS[asplit2];
 
-[vpostRxHeirarchy][vpostHeteroHomo]concat=v=1:a=0,setpts=PTS-STARTPTS[vHeteroHomo];
-[aPostRxHeirarchy][apostHeteroHomo]concat=v=0:a=1[aHeteroHomo];
+# LT: I only have so much time
+[1:v]trim=start=662:end=689,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[vLTTime];
+[0:a]atrim=start=662:end=689,asetpts=PTS-STARTPTS[aLTTime];
 
-# Overlay @polyamfam's video on top of me talking about it:
-[vpreHeteroHomo][vHeteroHomo]concat=v=1:a=0,setpts=PTS-STARTPTS[v8];
-[apreHeteroHomo][aHeteroHomo]concat=v=0:a=1[a8];
+# SPLIT: 06:55 in result; "I think that's hard for people; limited time"
+[1:v]trim=start=689:end=732,setpts=(PTS-STARTPTS)[vlt3];
+[2:v]trim=start=689:end=732,crop=654:720:213:0,pad=1280:720:0:0,setpts=(PTS-STARTPTS)[vme3];
+[vme3][vlt3]overlay=654:0,setpts=PTS-STARTPTS[vsplit3];
+[0:a]atrim=start=689:end=732,asetpts=PTS-STARTPTS[asplit3];
 
-# LT: I only have so much time;
-[1:v]trim=start=649:end=744,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v9];
-[0:a]atrim=start=649:end=744,asetpts=PTS-STARTPTS[a9];
+# LT: it's not an indictment against anyone, it's protecting what I have.
+[1:v]trim=start=732:end=744,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[vLThome];
+[0:a]atrim=start=732:end=744,asetpts=PTS-STARTPTS[aLThome];
+
+[vsplit2][vLTTime][vsplit3][vLThome]concat=n=4:v=1:a=0,setpts=PTS-STARTPTS[v9];
+[asplit2][aLTTime][asplit3][aLThome]concat=n=4:v=0:a=1,asetpts=PTS-STARTPTS[a9];
 
 # US: stands the test of time;
 [0:v]trim=start=744:end=787,setpts=PTS-STARTPTS[v10];
 [0:a]atrim=start=744:end=787,asetpts=PTS-STARTPTS[a10];
 
+[vch0][v8][v9][v10]concat=n=4:v=1:a=0,setpts=PTS-STARTPTS[vch1];
+[ach0][a8][a9][a10]concat=n=4:v=0:a=1,asetpts=PTS-STARTPTS[ach1];
+
+### Chapter 2
 # ME: BF in a box;
-[2:v]trim=start=787:end=800,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v11];
-[0:a]atrim=start=787:end=800,asetpts=PTS-STARTPTS[a11];
+[2:v]trim=start=787:end=797,pad=1280:720:100:0,setpts=PTS-STARTPTS,zoompan=zoom=pzoom+0.0002:d=0:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s=1280x720:fps=30[vme_2];
+[0:a]atrim=start=787:end=797,asetpts=PTS-STARTPTS[ame_2];
+
+# SPLIT: bf ready-made (start=0:08:33.800)
+[1:v]trim=start=797:end=804,setpts=(PTS-STARTPTS)[vlt4];
+[2:v]trim=start=797:end=804,crop=654:720:213:0,pad=1280:720:0:0,setpts=(PTS-STARTPTS)[vme4];
+[vme4][vlt4]overlay=654:0,setpts=PTS-STARTPTS[vsplit4];
+[0:a]atrim=start=797:end=804,asetpts=PTS-STARTPTS[asplit4];
+
+[vme_2][vsplit4]concat=n=2:v=1:a=0,setpts=PTS-STARTPTS[v11];
+[ame_2][asplit4]concat=n=2:v=0:a=1,asetpts=PTS-STARTPTS[a11];
+
+# LT: "The One" doesn't exist (start=0:08:46.800; end=0:09:16.8)
+[1:v]trim=start=808:end=845,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[vlt_2];
+[0:a]atrim=start=808:end=845,asetpts=PTS-STARTPTS[alt_2];
 
 # LT: one person may be on other side of earth;
-[1:v]trim=start=800:end=845,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v12];
-[0:a]atrim=start=800:end=845,asetpts=PTS-STARTPTS[a12];
+[1:v]trim=start=823:end=845,setpts=(PTS-STARTPTS)[vlt5];
+[2:v]trim=start=823:end=845,crop=654:720:213:0,pad=1280:720:0:0,setpts=(PTS-STARTPTS)[vme5];
+[vme5][vlt5]overlay=654:0,setpts=PTS-STARTPTS[vsplit5];
+[0:a]atrim=start=823:end=845,asetpts=PTS-STARTPTS[asplit5];
+
+[vlt_2][vsplit5]concat=n=2:v=1:a=0,setpts=PTS-STARTPTS[v12];
+[alt_2][asplit5]concat=n=2:v=0:a=1,asetpts=PTS-STARTPTS[a12];
+
 
 # ME: growing with someone;
 [2:v]trim=start=845:end=918,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v13];
@@ -243,21 +285,19 @@
 [0:v]trim=start=3862.75:end=3885,setpts=PTS-STARTPTS[v51];
 [0:a]atrim=start=3862.75:end=3885,asetpts=PTS-STARTPTS[a51];
 
-[v0][v1][v2][v3][v4][v5][v6][v7][v8][v9][v10]concat=n=11:v=1:a=0[vp0];
-[v11][v12][v13][v14][v15][v16][v17][v18][v19]concat=n=9:v=1:a=0[vp1];
+[vch1][v11][v12][v13][v14][v15][v16][v17][v18][v19]concat=n=10:v=1:a=0[vp1];
 [v20][v21][v22][v23][v24][v25][v26][v27][v28][v29]concat=n=10:v=1:a=0[vp2];
 [v30][v31][v32][v33][v34][v35][v36][v37][v38][v39]concat=n=10:v=1:a=0[vp3];
 [v40][v41][v42][v43][v44][v45][v46][v47][v48][v49]concat=n=10:v=1:a=0[vp4];
 [v50][v51]concat=n=2:v=1:a=0[vp5];
-[vp0][vp1][vp2][vp3][vp4][vp5]concat=n=6:v=1:a=0[video];
+[vp1][vp2][vp3][vp4][vp5]concat=n=5:v=1:a=0[video];
 
-[a0][a1][a2][a3][a4][a5][a6][a7][a8][a9][a10]concat=n=11:v=0:a=1[ap0];
-[a11][a12][a13][a14][a15][a16][a17][a18][a19]concat=n=9:v=0:a=1[ap1];
+[ach1][a11][a12][a13][a14][a15][a16][a17][a18][a19]concat=n=10:v=0:a=1[ap1];
 [a20][a21][a22][a23][a24][a25][a26][a27][a28][a29]concat=n=10:v=0:a=1[ap2];
 [a30][a31][a32][a33][a34][a35][a36][a37][a38][a39]concat=n=10:v=0:a=1[ap3];
 [a40][a41][a42][a43][a44][a45][a46][a47][a48][a49]concat=n=10:v=0:a=1[ap4];
 [a50][a51]concat=n=2:v=0:a=1[ap5];
-[ap0][ap1][ap2][ap3][ap4][ap5]concat=n=6:v=0:a=1[audio];
+[ap1][ap2][ap3][ap4][ap5]concat=n=5:v=0:a=1[audio];
 
 #[v0][v1][v2][v3][v4][v5][v6][v7][v8][v9][v10][v11][v12][v13][v14][v15][v16][v17][v18][v19][v20][v21][v22][v23][v24][v25][v26][v27][v28][v29][v30][v31][v32][v33][v34][v35][v36][v37][v38][v39][v40][v41][v42][v43][v44][v45][v46][v47][v48][v49][v50][v51]concat=n=52:v=1:a=0[video];
 #[a0][a1][a2][a3][a4][a5][a6][a7][a8][a9][a10][a11][a12][a13][a14][a15][a16][a17][a18][a19][a20][a21][a22][a23][a24][a25][a26][a27][a28][a29][a30][a31][a32][a33][a34][a35][a36][a37][a38][a39][a40][a41][a42][a43][a44][a45][a46][a47][a48][a49][a50][a51]concat=n=52:v=0:a=1[audio];
