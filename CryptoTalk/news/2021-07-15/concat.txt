@@ -1,7 +1,0 @@
-file './00.ts'
-file './01.ts'
-file './02.ts'
-file './03.ts'
-file './04.ts'
-file './05.ts'
-file './06.ts'

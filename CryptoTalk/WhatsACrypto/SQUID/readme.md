@@ -1,3 +1,0 @@
-
-# SQUID Coin Review
-
