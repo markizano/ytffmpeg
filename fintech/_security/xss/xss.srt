@@ -1,0 +1,604 @@
+1
+00:00:00.000 --> 00:00:02.320
+If you're trying to get into information
+
+2
+00:00:02.320 --> 00:00:05.040
+security, let's talk about XSS
+
+3
+00:00:05.104 --> 00:00:06.105
+(Cross-Site Scripting).
+
+4
+00:00:06.480 --> 00:00:09.000
+Cross-site scripting is whenever perfectly
+
+5
+00:00:09.000 --> 00:00:11.360
+benign, otherwise trusted websites
+
+6
+00:00:11.360 --> 00:00:11.960
+that seem
+
+7
+00:00:11.960 --> 00:00:14.480
+perfectly fine to visit end up sending
+
+8
+00:00:14.480 --> 00:00:16.440
+infections to your own workstation.
+
+9
+00:00:16.860 --> 00:00:19.700
+This can allow your website, even
+
+10
+00:00:19.700 --> 00:00:21.500
+if it is perfectly legit, even though
+
+11
+00:00:21.500 --> 00:00:22.200
+it is perfectly
+
+12
+00:00:22.200 --> 00:00:25.140
+fine, even though it is trusted, can
+
+13
+00:00:25.140 --> 00:00:27.800
+end up becoming detrusted or untrusted
+
+14
+00:00:27.800 --> 00:00:28.980
+because you
+
+15
+00:00:28.980 --> 00:00:30.540
+end up serving malicious code.
+
+16
+00:00:31.080 --> 00:00:31.840
+That's a big no-no.
+
+17
+00:00:32.640 --> 00:00:34.960
+Remember that page we did on URLs?
+
+18
+00:00:35.800 --> 00:00:40.660
+Well, just imagine that URL has instructions
+
+19
+00:00:40.660 --> 00:00:42.520
+to tell your computer to give the
+
+20
+00:00:42.520 --> 00:00:43.120
+hacker your
+
+21
+00:00:43.120 --> 00:00:45.060
+IP address, the internals of your
+
+22
+00:00:45.060 --> 00:00:47.000
+network, it might even poke at a
+
+23
+00:00:47.000 --> 00:00:47.760
+couple of systems
+
+24
+00:00:47.760 --> 00:00:49.180
+within your local setup that you have
+
+25
+00:00:49.180 --> 00:00:51.380
+going on there and send a nice
+
+26
+00:00:51.380 --> 00:00:52.160
+little payload of
+
+27
+00:00:52.160 --> 00:00:54.120
+that information right off to the
+
+28
+00:00:54.120 --> 00:00:55.700
+hacker server so he knows exactly
+
+29
+00:00:55.700 --> 00:00:56.740
+how to attack you next.
+
+30
+00:00:57.400 --> 00:00:59.700
+You know those WYSIWYG text boxes?
+
+31
+00:01:00.360 --> 00:01:02.160
+Well, anyways, we call them WYSIWYG
+
+32
+00:01:02.160 --> 00:01:04.420
+because "what you see is what you get".
+
+33
+00:01:05.200 --> 00:01:06.560
+And that text box that's got all
+
+34
+00:01:06.560 --> 00:01:08.220
+that pre-formatted stuff inside of
+
+35
+00:01:08.220 --> 00:01:10.320
+it, well... let's just say
+
+36
+00:01:10.320 --> 00:01:11.440
+I had a little fun with the
+
+37
+00:01:11.440 --> 00:01:13.140
+University of Phoenix before they
+
+38
+00:01:13.140 --> 00:01:14.240
+knew that this was a thing.
+
+39
+00:01:14.820 --> 00:01:16.040
+Or, they knew.
+
+40
+00:01:16.340 --> 00:01:17.520
+It was part of the classes.
+
+41
+00:01:17.740 --> 00:01:18.400
+They had to know.
+
+42
+00:01:18.500 --> 00:01:19.180
+I told them.
+
+43
+00:01:19.680 --> 00:01:21.740
+And I managed to get the text
+
+44
+00:01:21.740 --> 00:01:24.280
+box to store script data, so whenever
+
+45
+00:01:24.280 --> 00:01:25.400
+this rendered back
+
+46
+00:01:25.400 --> 00:01:28.280
+on the screen, it would alert with
+
+47
+00:01:28.280 --> 00:01:29.900
+your cookies and your login data.
+
+48
+00:01:30.120 --> 00:01:31.640
+And I could optionally have it send
+
+49
+00:01:31.640 --> 00:01:33.740
+that information to my server if I
+
+50
+00:01:33.740 --> 00:01:34.500
+wanted to get
+
+51
+00:01:34.500 --> 00:01:36.380
+access to one of the teacher's consoles.
+
+52
+00:01:37.660 --> 00:01:39.740
+That was a scary prospect, and I
+
+53
+00:01:39.740 --> 00:01:41.000
+tried telling them about this.
+
+54
+00:01:41.640 --> 00:01:43.120
+And it wasn't until I told somebody
+
+55
+00:01:43.120 --> 00:01:44.220
+who knew somebody who knew somebody
+
+56
+00:01:44.220 --> 00:01:44.800
+who was in on the
+
+57
+00:01:45.340 --> 00:01:47.280
+developments that it actually got fixed.
+
+58
+00:01:48.260 --> 00:01:50.480
+That's a scary, scary prospect there.
+
+59
+00:01:51.140 --> 00:01:52.980
+I mean, can you imagine visiting your
+
+60
+00:01:52.980 --> 00:01:54.680
+favorite website and then it suddenly
+
+61
+00:01:54.680 --> 00:01:55.220
+just start
+
+62
+00:01:55.220 --> 00:01:56.360
+acting all kind of funky?
+
+63
+00:01:57.040 --> 00:01:58.540
+Yeah, I'd be kind of creeped out too.
+
+64
+00:01:58.960 --> 00:02:00.840
+So that's why you want to protect
+
+65
+00:02:00.840 --> 00:02:03.040
+against cross-site scripting.
+
+66
+00:02:03.700 --> 00:02:05.260
+And the way you do this is
+
+67
+00:02:05.260 --> 00:02:08.500
+to validate your input, escape your output.
+
+68
+00:02:08.920 --> 00:02:10.860
+Any information that comes in from
+
+69
+00:02:10.860 --> 00:02:13.080
+the user, assume it is tainted.
+
+70
+00:02:13.440 --> 00:02:15.320
+Assume that it can't be trusted.
+
+71
+00:02:15.720 --> 00:02:17.960
+Assume that it already has those scripts
+
+72
+00:02:17.960 --> 00:02:18.480
+inside of it.
+
+73
+00:02:18.500 --> 00:02:19.480
+How do you disarm them?
+
+74
+00:02:19.940 --> 00:02:21.900
+Well, first, if you're expecting a
+
+75
+00:02:21.900 --> 00:02:23.760
+phone number, validate against a phone
+
+76
+00:02:23.760 --> 00:02:24.240
+number regular
+
+77
+00:02:24.240 --> 00:02:24.740
+expression.
+
+78
+00:02:25.220 --> 00:02:27.340
+If you're expecting an email, validate
+
+79
+00:02:27.340 --> 00:02:29.020
+against an email regular expression.
+
+80
+00:02:29.300 --> 00:02:30.540
+Same thing with IP address.
+
+81
+00:02:30.740 --> 00:02:31.620
+Same thing with names.
+
+82
+00:02:31.940 --> 00:02:33.220
+Same thing with phone book addresses.
+
+83
+00:02:33.400 --> 00:02:35.500
+There's postal validation systems
+
+84
+00:02:35.500 --> 00:02:36.720
+out there that you can take the
+
+85
+00:02:36.720 --> 00:02:38.820
+postal address, send
+
+86
+00:02:38.820 --> 00:02:41.700
+it off to USPS, FedEx, UPS, they
+
+87
+00:02:41.700 --> 00:02:44.020
+all got APIs, and you can verify
+
+88
+00:02:44.020 --> 00:02:45.160
+that that postal address
+
+89
+00:02:45.160 --> 00:02:47.500
+exists, is valid, and can be delivered.
+
+90
+00:02:48.940 --> 00:02:51.000
+And then, now that you've validated
+
+91
+00:02:51.000 --> 00:02:53.360
+the information, you're going to escape
+
+92
+00:02:53.360 --> 00:02:54.580
+the output before you
+
+93
+00:02:54.580 --> 00:02:56.300
+print to any other stream, meaning,
+
+94
+00:02:57.060 --> 00:02:59.020
+if you write to the database, you
+
+95
+00:02:59.020 --> 00:03:00.280
+use reserve placeholders
+
+96
+00:03:00.280 --> 00:03:02.980
+to indicate this is data, or properly
+
+97
+00:03:02.980 --> 00:03:04.720
+using the escape functions that will
+
+98
+00:03:04.720 --> 00:03:05.540
+take any characters
+
+99
+00:03:05.540 --> 00:03:07.200
+that represent special characters
+
+100
+00:03:07.200 --> 00:03:09.300
+and automatically escape them out.
+
+101
+00:03:10.000 --> 00:03:11.400
+MySQL, I'm looking at you.
+
+102
+00:03:12.100 --> 00:03:13.480
+This is why I love MongoDB.
+
+103
+00:03:13.720 --> 00:03:14.920
+I don't have to worry about escaping
+
+104
+00:03:14.920 --> 00:03:16.580
+data because it's stored as the data
+
+105
+00:03:16.580 --> 00:03:17.360
+structure itself.
+
+106
+00:03:17.360 --> 00:03:19.560
+If you're going to print to HTML,
+
+107
+00:03:19.780 --> 00:03:21.640
+make sure you use HTML entities to
+
+108
+00:03:21.640 --> 00:03:22.640
+escape output so
+
+109
+00:03:22.640 --> 00:03:25.520
+that it appears as entities, not as
+
+110
+00:03:25.520 --> 00:03:26.880
+the raw characters themselves.
+
+111
+00:03:27.040 --> 00:03:28.460
+We don't want those script tags showing
+
+112
+00:03:28.460 --> 00:03:29.180
+up in the output.
+
+113
+00:03:30.160 --> 00:03:31.780
+We do, but we want to see
+
+114
+00:03:31.780 --> 00:03:33.380
+the script tags, not have them hidden
+
+115
+00:03:33.380 --> 00:03:34.260
+and the scripts execute
+
+116
+00:03:34.260 --> 00:03:34.820
+in the background.
+
+117
+00:03:36.080 --> 00:03:38.080
+If you have output that's being spit
+
+118
+00:03:38.080 --> 00:03:40.160
+out to CSS, the same rules apply.
+
+119
+00:03:40.400 --> 00:03:42.000
+Escape for CSS because there's stuff
+
+120
+00:03:42.000 --> 00:03:44.260
+that can happen in just decorating
+
+121
+00:03:44.260 --> 00:03:44.840
+a page.
+
+122
+00:03:44.840 --> 00:03:46.720
+Can you imagine the remote exploits
+
+123
+00:03:46.720 --> 00:03:48.220
+that are available for trying to request
+
+124
+00:03:48.220 --> 00:03:48.720
+an image?
+
+125
+00:03:49.880 --> 00:03:50.960
+That was a little fast.
+
+126
+00:03:51.200 --> 00:03:52.540
+Let's run through that one more time.
+
+127
+00:03:53.260 --> 00:03:54.520
+User input, bad.
+
+128
+00:03:55.780 --> 00:03:57.520
+We take it, we validate it.
+
+129
+00:03:57.760 --> 00:03:59.240
+You can sanitize it, that's optional.
+
+130
+00:04:00.440 --> 00:04:02.760
+Then you escape it before it goes
+
+131
+00:04:02.760 --> 00:04:03.360
+anywhere else.
+
+132
+00:04:05.140 --> 00:04:07.340
+So we take our data, we make
+
+133
+00:04:07.340 --> 00:04:08.380
+sure it's what we expect it's going
+
+134
+00:04:08.380 --> 00:04:09.620
+to be, and then before
+
+135
+00:04:09.620 --> 00:04:11.320
+we print to any stream outside of
+
+136
+00:04:11.320 --> 00:04:12.720
+that, we want to make sure that
+
+137
+00:04:12.720 --> 00:04:14.600
+we escape it, meaning
+
+138
+00:04:14.600 --> 00:04:16.600
+the backslash, the quotes, whatever
+
+139
+00:04:16.600 --> 00:04:17.100
+that is.
+
+140
+00:04:17.780 --> 00:04:20.340
+It's different per something you're
+
+141
+00:04:20.340 --> 00:04:22.020
+talking to, be it the browser as
+
+142
+00:04:22.020 --> 00:04:23.700
+HTML, be it the database
+
+143
+00:04:23.700 --> 00:04:26.300
+as SQL, as NoSQL, as whatever solution
+
+144
+00:04:26.300 --> 00:04:26.880
+you're using.
+
+145
+00:04:27.820 --> 00:04:29.960
+The whatever third-party API, if you're
+
+146
+00:04:29.960 --> 00:04:31.280
+sending things off to them, you want
+
+147
+00:04:31.280 --> 00:04:31.600
+to make sure
+
+148
+00:04:31.600 --> 00:04:34.600
+you URL encode, JSON encode, YAML
+
+149
+00:04:34.600 --> 00:04:36.020
+encode, however you want to do it.
+
+150
+00:04:37.400 --> 00:04:39.100
+Curious, what techniques have you
+
+151
+00:04:39.100 --> 00:04:41.700
+used to protect against cross-site scripting?
+

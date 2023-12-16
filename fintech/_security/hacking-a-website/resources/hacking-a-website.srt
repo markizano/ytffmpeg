@@ -1,0 +1,1063 @@
+1
+00:00:00.000 --> 00:00:03.380
+So let's talk about hacking and security.
+
+2
+00:00:04.080 --> 00:00:05.740
+Now, before we get started, I want
+
+3
+00:00:05.740 --> 00:00:05.940
+to make
+
+4
+00:00:05.940 --> 00:00:07.580
+sure you understand that Kizano's Fintech
+
+5
+00:00:07.580 --> 00:00:10.380
+does not condone the use of hacking to
+
+6
+00:00:10.380 --> 00:00:11.960
+steal some company's information,
+
+7
+00:00:12.400 --> 00:00:13.960
+to deal damages to another person,
+
+8
+00:00:14.100 --> 00:00:14.460
+to perform
+
+9
+00:00:14.460 --> 00:00:16.000
+damage to IP or to some other
+
+10
+00:00:16.000 --> 00:00:18.880
+company. Please hack ethically outside
+
+11
+00:00:18.880 --> 00:00:19.240
+of the
+
+12
+00:00:19.240 --> 00:00:21.200
+context of a contractual agreement
+
+13
+00:00:21.200 --> 00:00:22.860
+between you and the entity where you
+
+14
+00:00:22.860 --> 00:00:24.660
+have their express permission to perform
+
+15
+00:00:24.660 --> 00:00:26.360
+the operations discussed in this video.
+
+16
+00:00:26.360 --> 00:00:28.640
+Don't do anything illegal. Don't be
+
+17
+00:00:28.640 --> 00:00:29.820
+dumb. Don't do anything you're not
+
+18
+00:00:29.820 --> 00:00:30.280
+supposed to.
+
+19
+00:00:30.440 --> 00:00:32.900
+This is for edutainment purposes only.
+
+20
+00:00:34.380 --> 00:00:37.840
+But first, black tourmaline has properties
+
+21
+00:00:37.840 --> 00:00:39.940
+of the earth, is attuned to the
+
+22
+00:00:39.940 --> 00:00:42.420
+root chakra, can purify your space,
+
+23
+00:00:42.960 --> 00:00:43.880
+and also
+
+24
+00:00:43.880 --> 00:00:45.900
+dons purification of the energies
+
+25
+00:00:45.900 --> 00:00:47.640
+around you. It's a great traveling
+
+26
+00:00:47.640 --> 00:00:48.580
+companion and
+
+27
+00:00:48.580 --> 00:00:51.300
+one of my favorite stones. Fascinating,
+
+28
+00:00:51.360 --> 00:00:52.052
+isn't it?
+
+29
+00:00:52.336 --> 00:00:55.540
+So how does a website get hacked, you
+
+30
+00:00:55.540 --> 00:00:57.700
+might be wondering. You know this
+
+31
+00:00:57.700 --> 00:01:01.120
+login screen accepts user input and if
+
+32
+00:01:01.120 --> 00:01:02.920
+someone's not careful and doesn't
+
+33
+00:01:02.920 --> 00:01:05.680
+validate their input and escape their
+
+34
+00:01:05.680 --> 00:01:07.900
+output before they take these textboxes
+
+35
+00:01:07.900 --> 00:01:11.580
+and go and query the database, oftentimes
+
+36
+00:01:11.580 --> 00:01:14.040
+people find SQL injections inside
+
+37
+00:01:14.040 --> 00:01:16.260
+of these text boxes. Because a lot
+
+38
+00:01:16.260 --> 00:01:16.460
+of the
+
+39
+00:01:16.460 --> 00:01:18.520
+times people don't take the time to
+
+40
+00:01:18.520 --> 00:01:20.620
+make sure that their output that's being
+
+41
+00:01:20.620 --> 00:01:24.500
+coming from untrusted sources is sanitized
+
+42
+00:01:24.500 --> 00:01:25.080
+and actually
+
+43
+00:01:25.080 --> 00:01:26.760
+represents the data that they expect
+
+44
+00:01:26.760 --> 00:01:28.380
+it to be. A lot of times
+
+45
+00:01:28.380 --> 00:01:29.240
+hackers will go and
+
+46
+00:01:29.240 --> 00:01:31.720
+find these inputs and have scripts
+
+47
+00:01:31.720 --> 00:01:33.700
+that automatically go and attempt
+
+48
+00:01:33.700 --> 00:01:34.340
+to inject
+
+49
+00:01:34.340 --> 00:01:36.380
+them with input that the application
+
+50
+00:01:36.380 --> 00:01:39.480
+wasn't expecting. So if, as a software
+
+51
+00:01:39.480 --> 00:01:41.580
+engineer, you are not vigilant as
+
+52
+00:01:41.580 --> 00:01:44.000
+far as making sure that untrusted information
+
+53
+00:01:44.000 --> 00:01:47.140
+is sanitized and cleansed before sending
+
+54
+00:01:47.140 --> 00:01:49.460
+it off to another source, you could be
+
+55
+00:01:49.460 --> 00:01:51.620
+opening yourself up for exploit. And
+
+56
+00:01:51.620 --> 00:01:54.880
+we all know and are probably quite annoyed
+
+57
+00:01:54.880 --> 00:01:57.320
+with that captcha box that checks
+
+58
+00:01:57.320 --> 00:01:58.840
+to make sure that you're actually human.
+
+59
+00:01:59.300 --> 00:02:00.980
+Well that's there to make sure that
+
+60
+00:02:00.980 --> 00:02:03.460
+robots aren't able to continuously poke
+
+61
+00:02:03.460 --> 00:02:04.780
+at the login page to see if
+
+62
+00:02:04.780 --> 00:02:06.680
+they can try and authenticate. Because
+
+63
+00:02:06.680 --> 00:02:07.520
+bots can't
+
+64
+00:02:07.520 --> 00:02:08.980
+tell what those pictures are. And
+
+65
+00:02:08.980 --> 00:02:11.120
+so this is a mechanism that is
+
+66
+00:02:11.120 --> 00:02:12.320
+used to ensure
+
+67
+00:02:12.320 --> 00:02:13.920
+that someone can't brute force your
+
+68
+00:02:13.920 --> 00:02:17.140
+login. Because if you don't put some kind
+
+69
+00:02:17.140 --> 00:02:19.000
+of barrier in place to make it
+
+70
+00:02:19.000 --> 00:02:21.500
+difficult, or rather to increase the
+
+71
+00:02:21.500 --> 00:02:22.760
+cost of attack
+
+72
+00:02:22.760 --> 00:02:25.280
+of trying to guess at someone's password,
+
+73
+00:02:26.220 --> 00:02:27.340
+they can sit there and poke at
+
+74
+00:02:27.340 --> 00:02:29.040
+your site all day long and you'll
+
+75
+00:02:29.040 --> 00:02:30.700
+be none the wiser. And eventually
+
+76
+00:02:30.700 --> 00:02:31.220
+find a way
+
+77
+00:02:31.220 --> 00:02:33.700
+to get in. And we all know
+
+78
+00:02:33.700 --> 00:02:37.000
+about these arduous forms that tediously
+
+79
+00:02:37.000 --> 00:02:37.920
+require us
+
+80
+00:02:37.920 --> 00:02:39.500
+to enter this information over and
+
+81
+00:02:39.500 --> 00:02:41.180
+over again. Boy I can't wait till
+
+82
+00:02:41.180 --> 00:02:41.620
+we get one
+
+83
+00:02:41.620 --> 00:02:43.180
+touch Auth where you just say *bink*
+
+84
+00:02:43.180 --> 00:02:44.860
+and information is shared
+
+85
+00:02:44.860 --> 00:02:45.320
+with who
+
+86
+00:02:45.320 --> 00:02:47.560
+you specifically authorize, when you
+
+87
+00:02:47.560 --> 00:02:49.460
+specifically authorize them, and for how
+
+88
+00:02:49.460 --> 00:02:51.100
+long they get that access. But until
+
+89
+00:02:51.100 --> 00:02:53.060
+that day comes around, we still got
+
+90
+00:02:53.060 --> 00:02:53.500
+these text
+
+91
+00:02:53.500 --> 00:02:56.160
+boxes to fill in. Did you know
+
+92
+00:02:56.160 --> 00:02:57.900
+that these text boxes are also a
+
+93
+00:02:57.900 --> 00:03:00.220
+treasure trove for hackers? They love
+
+94
+00:03:00.220 --> 00:03:02.820
+to find these inputs. Why? Because
+
+95
+00:03:02.820 --> 00:03:03.640
+it allows
+
+96
+00:03:03.640 --> 00:03:05.720
+them to poke at the site and
+
+97
+00:03:05.720 --> 00:03:08.120
+see what more can they do. Because
+
+98
+00:03:08.120 --> 00:03:08.860
+if I can get
+
+99
+00:03:08.860 --> 00:03:10.860
+your database to dump the contents
+
+100
+00:03:10.860 --> 00:03:13.700
+of the user database table right here on
+
+101
+00:03:13.700 --> 00:03:16.500
+the page, that's a treasure trove
+
+102
+00:03:16.500 --> 00:03:19.040
+of information right there. If I can get
+
+103
+00:03:19.040 --> 00:03:21.220
+your site to spit out a stacktrace
+
+104
+00:03:21.220 --> 00:03:23.160
+and show me where the files
+
+105
+00:03:23.160 --> 00:03:23.980
+are on the file
+
+106
+00:03:23.980 --> 00:03:25.960
+system, that's more information I
+
+107
+00:03:25.960 --> 00:03:27.800
+can use in my reconnaissance to better
+
+108
+00:03:27.800 --> 00:03:29.760
+understand the lay of the land within
+
+109
+00:03:29.760 --> 00:03:33.280
+your current setup. If I can take these
+
+110
+00:03:33.280 --> 00:03:36.360
+inputs and make your server do something
+
+111
+00:03:36.360 --> 00:03:39.620
+that it wasn't intended to do, especially
+
+112
+00:03:39.620 --> 00:03:41.760
+if I could take text from these
+
+113
+00:03:41.760 --> 00:03:44.060
+boxes and put it into some kind
+
+114
+00:03:44.060 --> 00:03:44.760
+of execution
+
+115
+00:03:44.760 --> 00:03:47.320
+space. Because people sometimes love
+
+116
+00:03:47.320 --> 00:03:50.000
+to take input from users and run
+
+117
+00:03:50.000 --> 00:03:50.440
+it inside
+
+118
+00:03:50.440 --> 00:03:54.140
+of an eval function or evaluate, which
+
+119
+00:03:54.140 --> 00:03:56.580
+basically says take any string and
+
+120
+00:03:56.580 --> 00:03:59.360
+execute it as code. That's extremely
+
+121
+00:03:59.360 --> 00:04:02.500
+dangerous for unsanitized and unverified
+
+122
+00:04:02.500 --> 00:04:05.680
+input from the end user. Why? Because
+
+123
+00:04:05.680 --> 00:04:07.480
+I can get your server to go
+
+124
+00:04:07.480 --> 00:04:08.220
+and download a
+
+125
+00:04:08.220 --> 00:04:10.080
+malicious package and infect your
+126
+00:04:10.080 --> 00:04:12.860
+site. I can convince your server to
+
+127
+00:04:12.860 --> 00:04:13.700
+go out and
+
+128
+00:04:13.700 --> 00:04:16.000
+do things on your behalf and it
+
+129
+00:04:16.000 --> 00:04:17.320
+will look as if it's coming from
+
+130
+00:04:17.320 --> 00:04:18.380
+your website.
+
+131
+00:04:18.860 --> 00:04:20.680
+Now you're blacklisted. Now Google
+
+132
+00:04:20.680 --> 00:04:22.600
+thinks you're a hacked website. Now
+
+133
+00:04:22.600 --> 00:04:23.080
+you get the
+
+134
+00:04:23.080 --> 00:04:24.240
+red banner at the top of the
+
+135
+00:04:24.240 --> 00:04:26.440
+site or completely blocked altogether because
+
+136
+00:04:26.440 --> 00:04:28.360
+you're not on the safe browsing list.
+
+137
+00:04:29.180 --> 00:04:31.880
+So let's say a hacker got access
+
+138
+00:04:31.880 --> 00:04:32.300
+to your
+
+139
+00:04:32.300 --> 00:04:34.500
+server. They've got it compromised now.
+
+140
+00:04:34.900 --> 00:04:37.900
+They found a way to get into your
+
+141
+00:04:37.900 --> 00:04:40.060
+application and get it to execute
+
+142
+00:04:40.060 --> 00:04:42.660
+some code that it wasn't expecting.
+
+143
+00:04:43.480 --> 00:04:44.240
+Let's say
+
+144
+00:04:44.240 --> 00:04:45.840
+there's a server out there that it
+
+145
+00:04:45.840 --> 00:04:48.200
+already has access to. They've already
+
+146
+00:04:48.200 --> 00:04:51.020
+compromised this server. What happens
+
+147
+00:04:51.020 --> 00:04:56.260
+next? They can say, hey server, my new
+
+148
+00:04:56.260 --> 00:04:58.440
+minion, I want you to go and
+
+149
+00:04:58.440 --> 00:05:00.660
+download some infected software that
+
+150
+00:05:00.660 --> 00:05:01.140
+I've got
+
+151
+00:05:01.140 --> 00:05:03.360
+control of. And this software is going
+
+152
+00:05:03.360 --> 00:05:06.360
+to give me more access to your systems.
+
+153
+00:05:07.780 --> 00:05:10.380
+So if you have a fleet of
+
+154
+00:05:10.380 --> 00:05:12.140
+servers that are sitting inside of
+
+155
+00:05:12.140 --> 00:05:13.340
+your network and
+
+156
+00:05:13.340 --> 00:05:16.380
+one of them gets compromised and now
+
+157
+00:05:16.380 --> 00:05:19.540
+they've got control over it, they
+
+158
+00:05:19.540 --> 00:05:19.860
+can go
+
+159
+00:05:19.860 --> 00:05:22.480
+and get control to the rest of
+
+160
+00:05:22.480 --> 00:05:25.840
+those servers as well. From this point
+
+161
+00:05:25.840 --> 00:05:26.540
+they can
+
+162
+00:05:26.540 --> 00:05:28.720
+do a network scan to see what
+
+163
+00:05:28.720 --> 00:05:30.760
+that server can see as far as
+
+164
+00:05:30.760 --> 00:05:31.360
+its internal
+
+165
+00:05:31.360 --> 00:05:33.620
+network is concerned. So even though
+
+166
+00:05:33.620 --> 00:05:36.080
+you may be behind a VPC, even
+
+167
+00:05:36.080 --> 00:05:36.700
+though this
+
+168
+00:05:36.700 --> 00:05:38.500
+particular server may be segmented
+
+169
+00:05:38.500 --> 00:05:40.580
+off from the rest of the network, the
+
+170
+00:05:40.580 --> 00:05:42.240
+servers that are inside of that local
+
+171
+00:05:42.240 --> 00:05:44.760
+network are still possible to be
+
+172
+00:05:44.760 --> 00:05:47.080
+compromised. This software that they've
+
+173
+00:05:47.080 --> 00:05:50.300
+downloaded can now start a crypto miner
+
+174
+00:05:50.300 --> 00:05:54.280
+and use and abuse the resources available
+
+175
+00:05:54.280 --> 00:05:57.220
+to your system. It can deface
+
+176
+00:05:57.220 --> 00:05:59.740
+your website such that anytime somebody
+
+177
+00:05:59.740 --> 00:06:02.160
+comes to visit it, they also get
+
+178
+00:06:02.160 --> 00:06:04.500
+infected with malware. Be it on mobile,
+
+179
+00:06:04.820 --> 00:06:07.800
+desktop, any kind of client that comes and
+
+180
+00:06:07.800 --> 00:06:10.100
+accesses the server could become infected
+
+181
+00:06:10.100 --> 00:06:12.560
+because it touched the infected server.
+
+182
+00:06:13.320 --> 00:06:15.660
+Now what does that infected part mean?
+
+183
+00:06:16.040 --> 00:06:19.120
+It means code executed outside of the
+
+184
+00:06:19.120 --> 00:06:21.140
+context that it was designated to
+
+185
+00:06:21.140 --> 00:06:24.140
+execute. So even though the program was
+
+186
+00:06:24.140 --> 00:06:26.000
+running inside of the application
+
+187
+00:06:26.000 --> 00:06:29.560
+on a server, somewhere in that program it
+
+188
+00:06:29.560 --> 00:06:32.540
+evaluated a string and it broke execution
+
+189
+00:06:32.540 --> 00:06:34.460
+context. And so now the
+
+190
+00:06:34.460 --> 00:06:37.120
+application, that string that the
+
+191
+00:06:37.120 --> 00:06:39.580
+hacker fed into the application told
+
+192
+00:06:39.580 --> 00:06:40.260
+it, gave
+
+193
+00:06:40.260 --> 00:06:42.320
+it the instructions it needed to go
+
+194
+00:06:42.320 --> 00:06:44.540
+and do something it wasn't supposed to.
+
+195
+00:06:44.240 --> 00:06:44.241
+ 
+
+196
+00:06:44.850 --> 00:06:47.420
+So this is why things like protection
+
+197
+00:06:47.420 --> 00:06:49.480
+against cross-site scripting (XSS) or
+
+198
+00:06:49.480 --> 00:06:52.280
+cross-site request forgery (CSRF/XSRF) are important
+
+199
+00:06:52.280 --> 00:06:53.960
+tactics to make sure that you use to
+
+200
+00:06:53.960 --> 00:06:56.560
+protect yourself against exploit on
+
+201
+00:06:56.560 --> 00:06:59.640
+the website's side. This is why the networking
+
+202
+00:06:59.640 --> 00:07:02.040
+team is critical to ensure security
+
+203
+00:07:02.040 --> 00:07:05.000
+against exploits because firewalls and
+
+204
+00:07:05.000 --> 00:07:07.140
+other network partitions can prevent
+
+205
+00:07:07.140 --> 00:07:09.220
+stuff like this from happening. Even
+
+206
+00:07:09.220 --> 00:07:11.300
+though port 80 and 443 are open,
+
+207
+00:07:11.840 --> 00:07:13.920
+you should also have an application firewall
+
+208
+00:07:13.920 --> 00:07:17.180
+or even an outbound firewall to prevent
+
+209
+00:07:17.180 --> 00:07:19.760
+your application, if it is compromised,
+
+210
+00:07:20.260 --> 00:07:22.660
+from compromising things even further.
+
+211
+00:07:23.400 --> 00:07:24.680
+And this is why in my networks
+
+212
+00:07:24.680 --> 00:07:25.300
+I always
+
+213
+00:07:25.300 --> 00:07:27.540
+run a two-way firewall. It's not
+
+214
+00:07:27.540 --> 00:07:30.580
+just input but also output. And so
+
+215
+00:07:30.580 --> 00:07:31.340
+if I see
+
+216
+00:07:31.340 --> 00:07:33.680
+something from within my network reaching
+
+217
+00:07:33.680 --> 00:07:36.220
+out to some place like China,
+
+218
+00:07:36.420 --> 00:07:39.460
+Russia, another country, a known hacked
+
+219
+00:07:39.460 --> 00:07:42.240
+server, something's wrong. Something's wrong.
+
+220
+00:07:42.240 --> 00:07:45.300
+And I've seen my internal firewalls
+
+221
+00:07:45.300 --> 00:07:48.340
+block outbound traffic, preventing me
+
+222
+00:07:48.340 --> 00:07:50.640
+from getting infected further. So
+
+223
+00:07:50.640 --> 00:07:52.080
+it's important to keep that in mind
+
+224
+00:07:52.080 --> 00:07:52.540
+as well.
+
+225
+00:07:53.500 --> 00:07:55.840
+Network partitioning and segregating
+
+226
+00:07:55.840 --> 00:07:58.360
+off your servers such that only your
+
+227
+00:07:58.360 --> 00:08:00.020
+application servers would be impacted.
+
+228
+00:08:00.740 --> 00:08:02.820
+Can you imagine if the database sat in
+
+229
+00:08:02.820 --> 00:08:04.880
+the same location and that server
+
+230
+00:08:04.880 --> 00:08:07.760
+got compromised as well? If they got access
+
+231
+00:08:07.760 --> 00:08:10.200
+to the database, and not talking about
+
+232
+00:08:10.200 --> 00:08:12.560
+just talking to the database as a client
+
+233
+00:08:12.560 --> 00:08:14.300
+like a MySQL client or a MongoDB
+
+234
+00:08:14.300 --> 00:08:17.160
+client, I'm talking about SSH or getting root
+
+235
+00:08:17.160 --> 00:08:19.200
+access to the server behind the database.
+
+236
+00:08:20.020 --> 00:08:22.040
+That's a very dangerous situation as
+
+237
+00:08:22.040 --> 00:08:24.580
+well. We want to avoid that by
+
+238
+00:08:24.580 --> 00:08:28.680
+making sure that we validate our input, sanitize
+
+239
+00:08:28.680 --> 00:08:31.680
+and escape our output, make sure firewalls
+
+240
+00:08:31.680 --> 00:08:33.600
+are in place to protect our
+
+241
+00:08:33.600 --> 00:08:35.760
+systems, so that people can't just
+
+242
+00:08:35.760 --> 00:08:38.000
+willy-nilly connect to services that may
+
+243
+00:08:38.000 --> 00:08:41.200
+be running on our servers. An application
+
+244
+00:08:41.200 --> 00:08:43.260
+firewall that understands
+
+245
+00:08:43.260 --> 00:08:45.360
+the input that's being received, so
+
+246
+00:08:45.360 --> 00:08:48.080
+that if it were to perceive an injection
+
+247
+00:08:48.080 --> 00:08:50.340
+attack or some kind of cross-request
+
+248
+00:08:50.340 --> 00:08:53.140
+forgery attack, the application firewall
+
+249
+00:08:53.140 --> 00:08:55.160
+itself would be intelligent enough
+
+250
+00:08:55.160 --> 00:08:56.320
+to be able to figure that out,
+
+251
+00:08:56.780 --> 00:08:57.120
+and would
+
+252
+00:08:57.120 --> 00:08:58.920
+better be able to protect your application
+
+253
+00:08:58.920 --> 00:09:00.220
+from exploits.
+
+254
+00:09:01.474 --> 00:09:03.326
+Hi, my name is Markizano Draconus,
+
+255
+00:09:03.400 --> 00:09:05.512
+and I run Kizano's FinTech Channel,
+
+256
+00:09:05.568 --> 00:09:08:298
+where I take you from Zero to Master in IT and DevOps.
+
+257
+00:09:08.448 --> 00:09:09.799
+But did you also know
+
+258
+00:09:09.804 --> 00:09:12.519
+I'm a licensed massage therapist in Dallas, Texas?
+
+259
+00:09:12.652 --> 00:09:14.737
+If you're looking for a holistic alternative
+
+260
+00:09:14.767 --> 00:09:15.905
+to health and well-being,
+
+261
+00:09:16.000 --> 00:09:18.208
+you can go to massage.markizano.net
+
+262
+00:09:18.240 --> 00:09:20.126
+where you can schedule a massage with me today.
+
+263
+00:09:20.326 --> 00:09:23.029
+If you use the coupon code "RELAX2023"
+
+264
+00:09:23.129 --> 00:09:24.297
+before the end of this month (31-OCT-2023),
+
+265
+00:09:24.304 --> 00:09:26.416
+I'll give you $10 off your next massage.  =)
+
+266
+00:09:26.699 --> 00:09:28.551
+I look forward to seeing you on the table.
+

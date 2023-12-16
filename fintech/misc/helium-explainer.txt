@@ -1,0 +1,42 @@
+<h1>Helium, A History</h1>
+
+<h2>What is Helium Mining?</h2>
+Mining with Wi-Fi.
+
+How does Helium Mining work? Helium mining uses radio wave technology compared to conventional 
+crypto mining, which relies on powerful gear such as ASICs or GPUs. As a result, it uses a lot less 
+energy than traditional crypto-mining techniques.
+
+Low latency
+Low bandwidth
+Constant access to Internet.
+Beacons used to transmit small packets of data.
+
+Trackers and other users of the network would come with HNT tokens.
+
+HNT tokens would be used to transmit info like Geolocation and other metrics to the target server.
+
+Used to be able to build your own.
+(not sponsored) Bobcat, Nebra, and MNTD took up the helm on building boxes that were pre-built.
+Manufacturing and shipping were a nightmare. I waited nearly 10 months for the delivery of my Bobcat
+miner. I was so excited to get into it, I bought a 2nd miner and it's sitting at a friend's house.
+
+After it's all said and done, I paid some odd $450 for each miner and now you can find them on the
+2nd hand market for almost $100 and fresh ones may be shipping for as low as $200.
+
+They originally had their own blockchain, but have since migrated to Solana.
+
+I am currently sitting on maybe $30 in HNT tokens and probably $8 in their IOT tokens.
+
+They started offering a 5G alternative so you could provide and support 5G right there in your home.
+However, I never got to acquire one of these (kinda deflated after losing so much before on other
+crypto ventures).
+
+My take on Helium is that it was a great concept, but poor implementation.
+
+I would have liked to see more of this expand into regular Wi-Fi networks and supporting high-bandwidth
+stuff. I didn't like that it was so token focused and it seems that has settled now that the rewards
+are in the hands of the few validators and the workers get the scraps leftover as per the usual.
+
+
+

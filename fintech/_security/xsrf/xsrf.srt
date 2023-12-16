@@ -1,0 +1,532 @@
+1
+00:00:00.000 --> 00:00:01.520
+Oh, you're not gonna want to miss
+
+2
+00:00:01.520 --> 00:00:03.800
+this one. Let's talk about cross-site
+
+3
+00:00:03.800 --> 00:00:04.780
+request forgery.
+
+4
+00:00:05.320 --> 00:00:06.880
+This is a scary one. You're gonna
+
+5
+00:00:06.880 --> 00:00:08.140
+want to know about this one, I'm
+
+6
+00:00:08.140 --> 00:00:08.600
+telling you.
+
+7
+00:00:09.220 --> 00:00:10.960
+Say you're just cruising in the website,
+
+8
+00:00:11.260 --> 00:00:13.060
+cruising the web like normal. You
+
+9
+00:00:13.060 --> 00:00:13.840
+visit your bank,
+
+10
+00:00:13.960 --> 00:00:15.360
+you log in, you check your balance.
+
+11
+00:00:15.420 --> 00:00:17.140
+Okay, fine. Everything's good. You
+
+12
+00:00:17.140 --> 00:00:17.720
+close the tab.
+
+13
+00:00:18.260 --> 00:00:20.360
+You didn't log out. You get an
+
+14
+00:00:20.360 --> 00:00:22.000
+email. Your account's been locked
+
+15
+00:00:22.000 --> 00:00:22.740
+down. It looks like
+
+16
+00:00:22.740 --> 00:00:24.440
+it's from your bank or from Coinbase
+
+17
+00:00:24.440 --> 00:00:25.680
+or some site. I don't know. It
+
+18
+00:00:25.680 --> 00:00:26.420
+catches your attention
+
+19
+00:00:26.420 --> 00:00:28.360
+just enough to get you to click
+
+20
+00:00:28.360 --> 00:00:31.440
+on it impulsively. Oh, shit. I went
+
+21
+00:00:31.440 --> 00:00:32.680
+to the site. It got redirected
+
+22
+00:00:32.680 --> 00:00:34.860
+real quick and then blank page. I
+
+23
+00:00:34.860 --> 00:00:37.200
+don't know what happened. I guess
+
+24
+00:00:37.200 --> 00:00:37.520
+I'm okay.
+
+25
+00:00:38.900 --> 00:00:40.700
+I didn't, I didn't, you know, I
+
+26
+00:00:40.700 --> 00:00:41.700
+clicked on the link. The link didn't
+
+27
+00:00:41.700 --> 00:00:42.760
+do anything. I guess the
+
+28
+00:00:42.760 --> 00:00:45.540
+hacker's attempt failed, right? Nah.
+
+29
+00:00:46.660 --> 00:00:47.820
+Next day you go back to your
+
+30
+00:00:47.820 --> 00:00:48.940
+bank account. You find out
+
+31
+00:00:49.420 --> 00:00:52.940
+it's been drained. Why? Cross-site
+
+32
+00:00:52.940 --> 00:00:54.980
+request forgery means somebody else can
+
+33
+00:00:54.980 --> 00:00:57.960
+make your workstation do something
+
+34
+00:00:57.960 --> 00:01:01.240
+on your behalf. You visited the website.
+
+35
+00:01:01.440 --> 00:01:01.980
+They bounced
+
+36
+00:01:01.980 --> 00:01:03.740
+off your workstation. They bounced
+
+37
+00:01:03.740 --> 00:01:06.100
+the request off your workstation because
+
+38
+00:01:06.100 --> 00:01:06.860
+you visited it.
+
+39
+00:01:06.960 --> 00:01:08.540
+You clicked on it. You went to
+
+40
+00:01:08.540 --> 00:01:09.840
+the site. Your cookies are there.
+
+41
+00:01:10.580 --> 00:01:11.560
+All they gotta do is say,
+
+42
+00:01:11.740 --> 00:01:14.440
+hey, bank, can you send all these
+
+43
+00:01:14.440 --> 00:01:17.160
+dollars over to this account over
+
+44
+00:01:17.160 --> 00:01:18.620
+here? Bank's like, hey,
+
+45
+00:01:19.040 --> 00:01:20.400
+looks like you asked for it. You
+
+46
+00:01:20.400 --> 00:01:21.740
+just logged in. You didn't log out.
+
+47
+00:01:22.540 --> 00:01:23.340
+Sure, why not?
+
+48
+00:01:24.580 --> 00:01:26.900
+Cross-site request forgery is whenever
+
+49
+00:01:26.900 --> 00:01:30.560
+someone invokes access where they
+
+50
+00:01:30.560 --> 00:01:31.340
+shouldn't have it.
+
+51
+00:01:31.700 --> 00:01:33.560
+Where they shouldn't because they're
+
+52
+00:01:33.560 --> 00:01:35.000
+not authenticated because they aren't
+
+53
+00:01:35.000 --> 00:01:35.580
+you. But
+
+54
+00:01:35.580 --> 00:01:37.460
+guess what? They took advantage of
+
+55
+00:01:37.460 --> 00:01:40.500
+you and used you to send your
+
+56
+00:01:40.500 --> 00:01:42.960
+money elsewhere. That's a scary
+
+57
+00:01:42.960 --> 00:01:44.420
+prospect, isn't it? You'd want to
+
+58
+00:01:44.420 --> 00:01:45.620
+pay attention to that, wouldn't you?
+
+59
+00:01:46.620 --> 00:01:47.740
+For one, I'm going to tell
+
+60
+00:01:47.740 --> 00:01:49.140
+you right now that logout button is
+
+61
+00:01:49.140 --> 00:01:50.380
+there for a reason. You should use
+
+62
+00:01:50.380 --> 00:01:51.260
+it because it clears your
+
+63
+00:01:51.260 --> 00:01:52.920
+sessions and tells the server that
+
+64
+00:01:52.920 --> 00:01:54.460
+you are done with the website and
+
+65
+00:01:54.460 --> 00:01:55.260
+makes it so that whatever
+
+66
+00:01:55.260 --> 00:01:57.000
+authentication tokens you have or
+
+67
+00:01:57.000 --> 00:02:00.200
+had have since been revoked. Don't
+
+68
+00:02:00.200 --> 00:02:01.800
+rely on the site to log you
+
+69
+00:02:01.800 --> 00:02:03.740
+out over the next 15 minutes or
+
+70
+00:02:03.740 --> 00:02:06.700
+so. One way to mitigate against this
+
+71
+00:02:06.700 --> 00:02:09.200
+is as time goes on through
+
+72
+00:02:09.200 --> 00:02:10.980
+the user's visit through your application,
+
+73
+00:02:11.680 --> 00:02:13.760
+they may attempt to, when they first
+
+74
+00:02:13.760 --> 00:02:14.480
+visit your site,
+
+75
+00:02:14.600 --> 00:02:15.700
+they're going to get back a cookie
+
+76
+00:02:15.700 --> 00:02:17.180
+that gives them your session cookies
+
+77
+00:02:17.180 --> 00:02:18.220
+so you know who they are.
+
+78
+00:02:18.220 --> 00:02:20.100
+That's the whole notification button
+
+79
+00:02:20.100 --> 00:02:21.760
+at the bottom. GDPR says that you
+
+80
+00:02:21.760 --> 00:02:22.480
+now have to notify
+
+81
+00:02:22.480 --> 00:02:24.400
+people whenever this cookie shows
+
+82
+00:02:24.400 --> 00:02:26.460
+up or that you use this cookie
+
+83
+00:02:26.460 --> 00:02:27.340
+to keep track of them while
+
+84
+00:02:27.340 --> 00:02:29.040
+they're on the site. Then when the
+
+85
+00:02:29.040 --> 00:02:31.580
+user tries to log in, MFA or
+
+86
+00:02:31.580 --> 00:02:33.100
+multi-factor authentication is
+
+87
+00:02:33.100 --> 00:02:35.720
+then used to verify that the user's
+
+88
+00:02:35.720 --> 00:02:37.380
+login or the submitted token that
+
+89
+00:02:37.380 --> 00:02:38.440
+was sent during the login
+
+90
+00:02:38.440 --> 00:02:41.200
+is actually correct. An alternative
+
+91
+00:02:41.200 --> 00:02:43.300
+way to solve this and I would
+
+92
+00:02:43.300 --> 00:02:45.040
+even just add it on as additional
+
+93
+00:02:45.040 --> 00:02:48.100
+security is using a CSRF token or
+
+94
+00:02:48.100 --> 00:02:50.840
+an XSRF token, which basically is
+
+95
+00:02:50.840 --> 00:02:52.400
+a randomly generated piece of
+
+96
+00:02:52.400 --> 00:02:53.940
+data that you send to the browser.
+
+97
+00:02:54.800 --> 00:02:56.560
+When the user makes a login and
+
+98
+00:02:56.560 --> 00:02:57.840
+sends that information back,
+
+99
+00:02:57.900 --> 00:02:59.360
+it's sent back as a hidden field.
+
+100
+00:02:59.980 --> 00:03:01.980
+You give the user an invisible piece
+
+101
+00:03:01.980 --> 00:03:03.220
+of data that only you
+
+102
+00:03:03.220 --> 00:03:05.520
+know they have. They must send that
+
+103
+00:03:05.520 --> 00:03:07.220
+back to you in order to make
+
+104
+00:03:07.220 --> 00:03:08.420
+sure that they are the person
+
+105
+00:03:08.420 --> 00:03:09.680
+who's actually making the request
+
+106
+00:03:09.680 --> 00:03:12.980
+and that token expires within 5, 10,
+
+107
+00:03:13.060 --> 00:03:15.960
+15 minutes. Such that you end
+
+108
+00:03:15.960 --> 00:03:17.760
+up with a situation where this user
+
+109
+00:03:17.760 --> 00:03:19.440
+has been given a piece of information
+
+110
+00:03:19.440 --> 00:03:20.780
+that can only be used once
+
+111
+00:03:21.380 --> 00:03:22.820
+and can only be used during a
+
+112
+00:03:22.820 --> 00:03:24.460
+specific period of time. Once they've
+
+113
+00:03:24.460 --> 00:03:25.540
+attempted to log in,
+
+114
+00:03:25.880 --> 00:03:27.460
+that token may no longer be repeated.
+
+115
+00:03:27.600 --> 00:03:29.300
+That token may no longer be used again.
+
+116
+00:03:30.660 --> 00:03:32.320
+And that's another means by which
+
+117
+00:03:32.320 --> 00:03:35.140
+you can try to protect against CSRF
+
+118
+00:03:35.140 --> 00:03:36.700
+attacks. Another way is
+
+119
+00:03:36.700 --> 00:03:38.740
+CAPTCHA. Another way is the authentication
+
+120
+00:03:38.740 --> 00:03:41.060
+tokens. Another way is the YubiKeys.
+
+121
+00:03:42.180 --> 00:03:43.940
+In closing, this is why
+
+122
+00:03:43.940 --> 00:03:46.200
+it is absolutely critical that you
+
+123
+00:03:46.200 --> 00:03:47.940
+set up multi-factor authentication
+
+124
+00:03:47.940 --> 00:03:48.920
+so that whenever
+
+125
+00:03:48.920 --> 00:03:50.900
+anybody tries to perform anything
+
+126
+00:03:50.900 --> 00:03:54.140
+on your behalf, it's done with those
+
+127
+00:03:54.140 --> 00:03:55.460
+tokens that you have saved
+
+128
+00:03:55.460 --> 00:03:57.780
+to your multi-factor authentication
+
+129
+00:03:57.780 --> 00:04:00.060
+application, device, whatever you
+
+130
+00:04:00.060 --> 00:04:00.820
+happen to be using.
+
+131
+00:04:01.840 --> 00:04:03.620
+Please stay safe, change your passwords
+
+132
+00:04:03.620 --> 00:04:05.140
+on a regular basis, and I'll see
+
+133
+00:04:05.140 --> 00:04:06.240
+you on the next video.
+

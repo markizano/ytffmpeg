@@ -1,0 +1,1160 @@
+1
+0:00:00.000 --> 0:00:01.320
+Greetings and welcome to Kisela's
+
+2
+0:00:01.320 --> 0:00:02.460
+Fintech channel where I take you
+
+3
+0:00:02.460 --> 0:00:03.940
+from zero to master and IT
+
+4
+0:00:03.940 --> 0:00:04.440
+and DevOps.
+
+5
+0:00:04.700 --> 0:00:05.680
+In today's video we're going to
+
+6
+0:00:05.680 --> 0:00:07.200
+be talking about some audio options
+
+7
+0:00:07.200 --> 0:00:08.280
+that I have been trying to
+
+8
+0:00:08.280 --> 0:00:08.700
+put together.
+
+9
+0:00:09.120 --> 0:00:10.820
+This is kind of sort of
+
+10
+0:00:10.820 --> 0:00:12.580
+an informal thing. I just have
+
+11
+0:00:12.580 --> 0:00:14.640
+a few audio options here available
+
+12
+0:00:14.640 --> 0:00:15.200
+to me
+
+13
+0:00:15.200 --> 0:00:17.000
+and I wanted to present those
+
+14
+0:00:17.000 --> 0:00:18.200
+to you here so that you
+
+15
+0:00:18.200 --> 0:00:19.800
+can have a better idea of
+
+16
+0:00:19.800 --> 0:00:21.160
+what some things may sound like
+
+17
+0:00:21.160 --> 0:00:22.700
+depending on what tools I have
+
+18
+0:00:22.700 --> 0:00:23.360
+available to me.
+
+19
+0:00:23.860 --> 0:00:26.420
+We have some AirPods here which
+
+20
+0:00:26.420 --> 0:00:27.420
+is kind of gloss over the
+
+21
+0:00:27.420 --> 0:00:28.980
+fact that on Linux there's additional
+
+22
+0:00:28.980 --> 0:00:30.620
+software and settings and configuration
+
+23
+0:00:30.620 --> 0:00:31.560
+that need to be made.
+
+24
+0:00:31.860 --> 0:00:33.480
+Just make these things available so
+
+25
+0:00:33.480 --> 0:00:34.820
+thank you Apple. I appreciate the
+
+26
+0:00:34.820 --> 0:00:35.300
+extra work.
+
+27
+0:00:35.620 --> 0:00:36.580
+It'd be great to just connect
+
+28
+0:00:36.580 --> 0:00:37.740
+to them Bluetooth and just plug
+
+29
+0:00:37.740 --> 0:00:40.460
+and play but you know, got
+
+30
+0:00:40.460 --> 0:00:40.960
+to do what you got to
+
+31
+0:00:40.960 --> 0:00:41.660
+do when it comes to Linux.
+
+32
+0:00:42.300 --> 0:00:45.060
+I also have these lavalier microphones.
+
+33
+0:00:45.680 --> 0:00:47.500
+I found these on Amazon. Go
+
+34
+0:00:47.500 --> 0:00:48.300
+ahead and pull up the product
+
+35
+0:00:48.300 --> 0:00:49.240
+detail page here.
+
+36
+0:00:50.280 --> 0:00:52.300
+I just found something that was
+
+37
+0:00:52.300 --> 0:00:54.420
+within a decent price range that
+
+38
+0:00:54.420 --> 0:00:56.240
+I could use and would allow
+
+39
+0:00:56.240 --> 0:00:57.040
+me to be able to get
+
+40
+0:00:57.040 --> 0:00:58.680
+wireless audio.
+
+41
+0:00:58.920 --> 0:01:00.160
+So sometimes I have my phone
+
+42
+0:01:00.160 --> 0:01:01.280
+set up here in the middle
+
+43
+0:01:01.280 --> 0:01:02.620
+of the room and it's just
+
+44
+0:01:02.620 --> 0:01:04.040
+not feasible for me to have
+
+45
+0:01:04.040 --> 0:01:06.800
+a wired headset streaming from the
+
+46
+0:01:06.800 --> 0:01:07.020
+phone.
+
+47
+0:01:07.960 --> 0:01:10.660
+I'm afraid my voice isn't well
+
+48
+0:01:10.660 --> 0:01:12.180
+enough to travel across the room
+
+49
+0:01:12.180 --> 0:01:13.680
+and catch with all the acoustics.
+
+50
+0:01:14.740 --> 0:01:18.240
+So having this connected also mumps
+
+51
+0:01:18.240 --> 0:01:19.680
+with my necklace somewhere.
+
+52
+0:01:20.500 --> 0:01:21.540
+And so sometimes you see me
+
+53
+0:01:21.540 --> 0:01:25.080
+go without it because it's incredibly
+
+54
+0:01:25.080 --> 0:01:26.780
+painful hearing that in the audio.
+
+55
+0:01:27.260 --> 0:01:29.140
+Trust me, I hear you. I'm
+
+56
+0:01:29.140 --> 0:01:29.520
+with you.
+
+57
+0:01:29.760 --> 0:01:31.840
+And well, when you're going with
+
+58
+0:01:31.840 --> 0:01:33.700
+what you've got and trying not
+
+59
+0:01:33.700 --> 0:01:35.120
+to dump thousands of dollars in
+
+60
+0:01:35.120 --> 0:01:35.720
+new hardware,
+
+61
+0:01:36.900 --> 0:01:38.280
+well, this is what I've had
+
+62
+0:01:38.280 --> 0:01:39.660
+available to me up until now
+
+63
+0:01:39.660 --> 0:01:41.440
+and I just want to kind
+
+64
+0:01:41.440 --> 0:01:42.340
+of sort of put this together
+
+65
+0:01:42.340 --> 0:01:43.800
+so that you could see in
+
+66
+0:01:43.800 --> 0:01:44.440
+real time
+
+67
+0:01:44.440 --> 0:01:46.560
+a screenshot of kind of sort
+
+68
+0:01:46.560 --> 0:01:47.940
+of what's going on here and
+
+69
+0:01:47.940 --> 0:01:49.860
+what's happening and see what's going
+
+70
+0:01:49.860 --> 0:01:50.200
+on here.
+
+71
+0:01:50.640 --> 0:01:52.820
+So I also have a webcam.
+
+72
+0:01:53.160 --> 0:01:54.680
+That's what you're watching me on
+
+73
+0:01:54.680 --> 0:01:56.280
+right now that is USB connected
+
+74
+0:01:56.280 --> 0:01:57.180
+into my laptop.
+
+75
+0:01:57.180 --> 0:01:58.460
+And I have to raise my
+
+76
+0:01:58.460 --> 0:01:59.560
+voice just a little bit just
+
+77
+0:01:59.560 --> 0:02:01.080
+to make sure that the webcam
+
+78
+0:02:01.080 --> 0:02:02.740
+is capable of hearing me.
+
+79
+0:02:02.960 --> 0:02:04.780
+Here on the screen share here,
+
+80
+0:02:04.900 --> 0:02:06.300
+I've got a Pabu control setup
+
+81
+0:02:06.300 --> 0:02:07.920
+so that you can see what
+
+82
+0:02:07.920 --> 0:02:09.620
+options there are available to me
+
+83
+0:02:09.620 --> 0:02:10.960
+as far as input devices are
+
+84
+0:02:10.960 --> 0:02:11.360
+concerned.
+
+85
+0:02:12.060 --> 0:02:14.360
+And I can also select what
+
+86
+0:02:14.360 --> 0:02:16.300
+kind of configuration I want. You'll
+
+87
+0:02:16.300 --> 0:02:17.860
+see that as I select those
+
+88
+0:02:17.860 --> 0:02:18.320
+over here.
+
+89
+0:02:18.880 --> 0:02:20.040
+In this other window, I've got
+
+90
+0:02:20.040 --> 0:02:21.920
+my Bluetooth connection here and I
+
+91
+0:02:21.920 --> 0:02:22.940
+guess I can go ahead and
+
+92
+0:02:22.940 --> 0:02:24.340
+start off with the AirPods.
+
+93
+0:02:24.660 --> 0:02:26.840
+We can connect those in very
+
+94
+0:02:26.840 --> 0:02:27.100
+quick.
+
+95
+0:02:28.640 --> 0:02:33.020
+And once those are connected, what
+
+96
+0:02:33.020 --> 0:02:33.840
+I can do is I can
+
+97
+0:02:33.840 --> 0:02:36.780
+shift the recording to actually watch
+
+98
+0:02:36.780 --> 0:02:37.640
+for the AirPods.
+
+99
+0:02:37.880 --> 0:02:39.020
+I need to configure them first.
+
+100
+0:02:39.800 --> 0:02:41.780
+Yeah, in AirPods, they actually have
+
+101
+0:02:41.780 --> 0:02:43.300
+two settings. You may not know
+
+102
+0:02:43.300 --> 0:02:45.060
+this, but there's the hands-free
+
+103
+0:02:45.060 --> 0:02:47.460
+headset and there's also just the
+
+104
+0:02:47.460 --> 0:02:47.760
+playback.
+
+105
+0:02:48.020 --> 0:02:51.020
+They do produce unique outputs and
+
+106
+0:02:51.020 --> 0:02:53.420
+I was going to demonstrate switching
+
+107
+0:02:53.420 --> 0:02:54.420
+over to the AirPods, but it
+
+108
+0:02:54.420 --> 0:02:57.280
+seems you've already been switched
+
+109
+0:02:57.280 --> 0:02:57.600
+over.
+
+110
+0:02:57.900 --> 0:02:58.960
+So that's just wonderful.
+
+111
+0:03:02.160 --> 0:03:03.720
+I could switch the audio back
+
+112
+0:03:03.720 --> 0:03:05.340
+to the webcam and now you
+
+113
+0:03:05.340 --> 0:03:07.040
+can hear back-to-back with
+
+114
+0:03:07.040 --> 0:03:08.700
+a little bit more intention of
+
+115
+0:03:08.700 --> 0:03:09.500
+what it looks like when I
+
+116
+0:03:09.500 --> 0:03:11.400
+switch to the AirPods.
+
+117
+0:03:12.040 --> 0:03:15.580
+And that audio can play out
+
+118
+0:03:15.580 --> 0:03:16.180
+for you right there.
+
+119
+0:03:16.560 --> 0:03:19.240
+I did experiment with the Kodak.
+
+120
+0:03:19.660 --> 0:03:21.560
+It looks like it doesn't have
+
+121
+0:03:21.560 --> 0:03:24.300
+any visible audio effect that I
+
+122
+0:03:24.300 --> 0:03:24.940
+could detect.
+
+123
+0:03:25.420 --> 0:03:26.980
+I'm guessing it's just a matter
+
+124
+0:03:26.980 --> 0:03:28.800
+of how this information gets transmitted
+
+125
+0:03:28.800 --> 0:03:29.360
+over Bluetooth.
+
+126
+0:03:30.020 --> 0:03:31.220
+I read something about that as
+
+127
+0:03:31.220 --> 0:03:32.680
+I was trying to understand how
+
+128
+0:03:32.680 --> 0:03:35.900
+audio works when it comes to
+
+129
+0:03:35.900 --> 0:03:38.680
+especially the Bluetooth devices because
+
+130
+0:03:38.680 --> 0:03:39.400
+I was trying to find the
+
+131
+0:03:39.400 --> 0:03:40.280
+best audio options.
+
+132
+0:03:41.280 --> 0:03:42.680
+But seeing as that is, I
+
+133
+0:03:42.680 --> 0:03:43.580
+can go ahead and switch over
+
+134
+0:03:43.580 --> 0:03:45.160
+to the next one, which is
+
+135
+0:03:45.160 --> 0:03:46.460
+this lot of their microphone here.
+
+136
+0:03:46.840 --> 0:03:48.360
+If I press the button and
+
+137
+0:03:48.360 --> 0:03:49.860
+that activates it, turns it on.
+
+138
+0:03:50.060 --> 0:03:51.260
+It's got a USB charger on
+
+139
+0:03:51.260 --> 0:03:52.160
+the side so that I can
+
+140
+0:03:52.160 --> 0:03:53.080
+keep it charged up.
+
+141
+0:03:53.640 --> 0:03:54.580
+I can use it as an
+
+142
+0:03:54.580 --> 0:03:55.820
+input device here. I'm going to
+
+143
+0:03:55.820 --> 0:03:56.700
+go ahead and also switch it
+
+144
+0:03:56.700 --> 0:03:57.760
+back to the webcam.
+
+145
+0:04:06.500 --> 0:04:07.560
+We're going to go ahead and
+
+146
+0:04:07.560 --> 0:04:12.760
+connect the microphone in. It's got
+
+147
+0:04:12.760 --> 0:04:14.180
+two pieces that connect here.
+
+148
+0:04:15.720 --> 0:04:17.600
+Press your button, they turn on,
+
+149
+0:04:17.860 --> 0:04:19.280
+they pair automatically. There's no
+
+150
+0:04:19.280 --> 0:04:20.980
+need for me to make any
+
+151
+0:04:20.980 --> 0:04:22.540
+connections there, which is great.
+
+152
+0:04:23.300 --> 0:04:27.420
+It's just connecting go. The input
+
+153
+0:04:27.420 --> 0:04:29.040
+is 3.5mm, so that means
+
+154
+0:04:29.040 --> 0:04:30.400
+there's no additional drivers that
+
+155
+0:04:30.400 --> 0:04:30.820
+are required.
+
+156
+0:04:32.140 --> 0:04:33.380
+If I switch the audio over
+
+157
+0:04:33.380 --> 0:04:38.180
+to this and say analog stereo,
+
+158
+0:04:42.420 --> 0:04:47.640
+and now you should be hearing
+
+159
+0:04:47.640 --> 0:04:48.920
+me out of the microphone.
+
+160
+0:04:49.780 --> 0:04:52.140
+With this, the distance really does
+
+161
+0:04:52.140 --> 0:04:53.960
+make a difference as far as
+
+162
+0:04:53.960 --> 0:04:55.380
+how this audio sounds.
+
+163
+0:04:56.020 --> 0:04:57.800
+I've also tried experimenting with
+
+164
+0:04:57.800 --> 0:04:59.560
+the volume marker just to see
+
+165
+0:04:59.560 --> 0:05:01.500
+what sounded good, what sounded bad.
+
+166
+0:05:02.140 --> 0:05:03.580
+Sometimes I could turn it up
+
+167
+0:05:03.580 --> 0:05:05.060
+and it would sound really, really
+
+168
+0:05:05.060 --> 0:05:05.580
+distorted.
+
+169
+0:05:06.540 --> 0:05:08.320
+I'd leave it in a mid
+
+170
+0:05:08.320 --> 0:05:10.840
+-45 range and then give myself
+
+171
+0:05:10.840 --> 0:05:12.460
+enough speaking distance so that my
+
+172
+0:05:12.460 --> 0:05:13.620
+voice had a chance to travel,
+
+173
+0:05:13.880 --> 0:05:15.700
+and dissipate a little bit because
+
+174
+0:05:15.700 --> 0:05:17.020
+if it's right up next to
+
+175
+0:05:17.020 --> 0:05:18.900
+me, it sounds really distorted. It's
+
+176
+0:05:18.900 --> 0:05:19.460
+just not pleasant.
+
+177
+0:05:20.300 --> 0:05:23.340
+Next, we've got the wired headset.
+
+178
+0:05:23.660 --> 0:05:26.620
+3.5mm, totally plain, simple.
+
+179
+0:05:27.740 --> 0:05:28.740
+I use it for listening to
+
+180
+0:05:28.740 --> 0:05:31.920
+music and having phone calls, and
+
+181
+0:05:31.920 --> 0:05:33.100
+they have served me well.
+
+182
+0:05:34.280 --> 0:05:35.380
+I feel like I get the
+
+183
+0:05:35.380 --> 0:05:37.760
+best audio from this, so we
+
+184
+0:05:37.760 --> 0:05:38.560
+can plug this one in.
+
+185
+0:05:39.640 --> 0:05:41.400
+Now, you should be hearing me
+
+186
+0:05:41.400 --> 0:05:43.960
+out of the headset stereo.
+
+187
+0:05:44.540 --> 0:05:45.620
+I apologize if there was some
+
+188
+0:05:45.620 --> 0:05:46.380
+audio in there before.
+
+189
+0:05:47.300 --> 0:05:49.980
+There is an internal microphone. I
+
+190
+0:05:49.980 --> 0:05:51.300
+can show you that here right
+
+191
+0:05:51.300 --> 0:05:51.580
+now.
+
+192
+0:05:51.980 --> 0:05:53.820
+Speaker warning, you're going to want
+
+193
+0:05:53.820 --> 0:05:54.960
+to turn the speakers down for
+
+194
+0:05:54.960 --> 0:05:55.640
+just a moment.
+
+195
+0:05:56.440 --> 0:06:00.100
+And now you can hear all
+
+196
+0:06:00.100 --> 0:06:03.120
+the wonderful fan noise of what's
+
+197
+0:06:03.120 --> 0:06:03.980
+going on in the computer.
+
+198
+0:06:04.280 --> 0:06:05.660
+That is the built-in microphone
+
+199
+0:06:05.660 --> 0:06:07.180
+to the computer. I usually leave
+
+200
+0:06:07.180 --> 0:06:08.500
+that muted so that you can't
+
+201
+0:06:08.500 --> 0:06:08.860
+hear it.
+
+202
+0:06:11.160 --> 0:06:14.500
+Now, if I change this back
+
+203
+0:06:14.500 --> 0:06:15.760
+to the headset, you should be
+
+204
+0:06:15.760 --> 0:06:17.000
+hearing me out of this thing.
+
+205
+0:06:17.240 --> 0:06:19.200
+And it shouldn't sound that bad,
+
+206
+0:06:19.320 --> 0:06:23.540
+except when it makes those connections
+
+207
+0:06:23.540 --> 0:06:24.680
+with my necklace.
+
+208
+0:06:25.260 --> 0:06:26.800
+That is also not pleasant. It's
+
+209
+0:06:26.800 --> 0:06:27.520
+kind of one of the reasons
+
+210
+0:06:27.520 --> 0:06:28.940
+why I either don't wear this
+
+211
+0:06:28.940 --> 0:06:32.100
+when I'm using this, or pretty
+
+212
+0:06:32.100 --> 0:06:32.480
+much that.
+
+213
+0:06:33.360 --> 0:06:34.820
+I'm also going to splice in
+
+214
+0:06:34.820 --> 0:06:36.720
+some audio from my phone, because
+
+215
+0:06:36.720 --> 0:06:38.320
+I think it's important to understand
+
+216
+0:06:38.320 --> 0:06:40.960
+all the devices that I have
+
+217
+0:06:40.960 --> 0:06:41.940
+to my avail,
+
+218
+0:06:42.520 --> 0:06:43.720
+and what those sound like as
+
+219
+0:06:43.720 --> 0:06:45.100
+well, because I wanted to put
+
+220
+0:06:45.100 --> 0:06:46.140
+all of this stuff in there
+
+221
+0:06:46.140 --> 0:06:47.000
+back to back to back.
+
+222
+0:06:47.640 --> 0:06:50.400
+Now, there are two apps in
+
+223
+0:06:50.400 --> 0:06:51.500
+my phone that I'm actually going
+
+224
+0:06:51.500 --> 0:06:53.060
+to demonstrate in the recordings that
+
+225
+0:06:53.060 --> 0:06:54.300
+I'm going to splice into the
+
+226
+0:06:54.300 --> 0:06:54.880
+video here.
+
+227
+0:06:55.740 --> 0:06:57.120
+One of them is the built
+
+228
+0:06:57.120 --> 0:06:58.460
+-in application that came with the
+
+229
+0:06:58.460 --> 0:07:00.100
+phone, and the other is called
+
+230
+0:07:00.100 --> 0:07:00.740
+X Camera.
+
+231
+0:07:00.740 --> 0:07:01.840
+I found this on the App
+
+232
+0:07:01.840 --> 0:07:03.660
+Store, and they've actually been responsive
+
+233
+0:07:03.660 --> 0:07:06.140
+with me with regards to actually
+
+234
+0:07:06.140 --> 0:07:07.720
+providing improvements to the application,
+
+235
+0:07:07.980 --> 0:07:09.820
+because what really dazzled me was
+
+236
+0:07:09.820 --> 0:07:11.340
+this application actually pulled the
+
+237
+0:07:11.340 --> 0:07:13.440
+horsepower out of this 108 megapixel
+
+238
+0:07:13.440 --> 0:07:15.360
+camera that I have been dying
+
+239
+0:07:15.360 --> 0:07:17.800
+to take advantage of.
+
+240
+0:07:17.900 --> 0:07:19.300
+I felt like the default application
+
+241
+0:07:19.300 --> 0:07:20.520
+just did not do the camera
+
+242
+0:07:20.520 --> 0:07:20.900
+justice.
+
+243
+0:07:21.980 --> 0:07:25.120
+So, this is a recording of
+
+244
+0:07:25.120 --> 0:07:26.100
+what it looks like with me
+
+245
+0:07:26.100 --> 0:07:27.860
+speaking directly to the phone with
+
+246
+0:07:27.860 --> 0:07:28.920
+no added microphones.
+
+247
+0:07:29.840 --> 0:07:31.140
+As you can see, the sound
+
+248
+0:07:31.140 --> 0:07:33.420
+is fairly decent, and it also
+
+249
+0:07:33.420 --> 0:07:34.920
+depends on how far away from
+
+250
+0:07:34.920 --> 0:07:37.100
+my face the phone is as
+
+251
+0:07:37.100 --> 0:07:38.260
+far as the audio is concerned.
+
+252
+0:07:38.960 --> 0:07:39.820
+Now, in order for me to
+
+253
+0:07:39.820 --> 0:07:41.000
+change the stream, I do have
+
+254
+0:07:41.000 --> 0:07:42.060
+to stop the recording here on
+
+255
+0:07:42.060 --> 0:07:43.280
+the phone, in order for me
+
+256
+0:07:43.280 --> 0:07:44.020
+to be able to use any
+
+257
+0:07:44.020 --> 0:07:45.020
+of the 3.5 million years.
+
+258
+0:07:46.860 --> 0:07:52.260
+And so, now this is what
+
+259
+0:07:52.260 --> 0:07:53.540
+it sounds like with the wired
+
+260
+0:07:53.540 --> 0:07:55.180
+headset connected to my device as
+
+261
+0:07:55.180 --> 0:07:55.420
+well.
+
+262
+0:07:56.300 --> 0:07:57.900
+As you can see, I feel
+
+263
+0:07:57.900 --> 0:07:59.120
+like this is where the best
+
+264
+0:07:59.120 --> 0:08:01.100
+audio is going to be captured
+
+265
+0:08:01.100 --> 0:08:02.300
+as far as what I can
+
+266
+0:08:02.300 --> 0:08:03.780
+use within this device itself.
+
+267
+0:08:04.580 --> 0:08:05.820
+I can pause the video in
+
+268
+0:08:05.820 --> 0:08:06.760
+this clip here, and I can
+
+269
+0:08:06.760 --> 0:08:07.580
+show you what it sounds like
+
+270
+0:08:07.580 --> 0:08:08.920
+when I use the lavalier microphone.
+
+271
+0:08:11.660 --> 0:08:19.620
+So, this is what it sounds
+
+272
+0:08:19.620 --> 0:08:21.100
+like with the lavalier microphone.
+
+273
+0:08:21.240 --> 0:08:23.160
+This is with the added 3
+
+274
+0:08:23.160 --> 0:08:24.620
+.5 millimeter. I switched over to
+
+275
+0:08:24.620 --> 0:08:24.900
+this.
+
+276
+0:08:25.120 --> 0:08:27.200
+So, now you can hear the
+
+277
+0:08:27.200 --> 0:08:30.340
+bass and how the distance has
+
+278
+0:08:30.340 --> 0:08:32.440
+an effect on how the audio
+
+279
+0:08:32.440 --> 0:08:32.840
+sounds.
+
+280
+0:08:32.980 --> 0:08:34.780
+I don't have any microphone controls
+
+281
+0:08:34.780 --> 0:08:37.140
+within the phone itself, so whatever
+
+282
+0:08:37.140 --> 0:08:38.460
+it gives me is whatever it
+
+283
+0:08:38.460 --> 0:08:38.860
+gives me.
+
+284
+0:08:39.080 --> 0:08:40.860
+That's all you get. Android is
+
+285
+0:08:40.860 --> 0:08:43.720
+really bad at managing audio. I'm
+
+286
+0:08:43.720 --> 0:08:44.600
+pretty sure it just cut out
+
+287
+0:08:44.600 --> 0:08:44.820
+too.
+
+288
+0:08:45.400 --> 0:08:46.360
+So, we can add that to
+
+289
+0:08:46.360 --> 0:08:47.360
+the review as well for this
+
+290
+0:08:47.360 --> 0:08:47.580
+thing.
+

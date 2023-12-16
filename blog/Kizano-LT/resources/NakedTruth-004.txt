@@ -1,0 +1,42 @@
+# ME: Recap on what we've covered so far;
+[2:v]trim=start=1601:end=1710,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v21];
+[0:a]atrim=start=1601:end=1710,asetpts=PTS-STARTPTS[a21];
+
+# LT: medical preferences;
+[1:v]trim=start=1710:end=1755,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v22];
+[0:a]atrim=start=1710:end=1755,asetpts=PTS-STARTPTS[a22];
+
+# US: gabbing about healthcare;
+[0:v]trim=start=1755:end=1784,setpts=PTS-STARTPTS[v23];
+[0:a]atrim=start=1755:end=1784,asetpts=PTS-STARTPTS[a23];
+
+# LT: heteronormative not good for healthcare;
+[1:v]trim=start=1784:end=1860,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v24];
+[0:a]atrim=start=1784:end=1860,asetpts=PTS-STARTPTS[a24];
+
+# US: misgendered, doctor trust;
+[0:v]trim=start=1860:end=1884,setpts=PTS-STARTPTS[v25];
+[0:a]atrim=start=1860:end=1884,asetpts=PTS-STARTPTS[a25];
+
+# LT: going to doc;
+[1:v]trim=start=1884:end=1895,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v26];
+[0:a]atrim=start=1884:end=1895,asetpts=PTS-STARTPTS[a26];
+
+# US: accepting LGBT+;
+[0:v]trim=start=1920:end=1952,setpts=PTS-STARTPTS[v27];
+[0:a]atrim=start=1920:end=1952,asetpts=PTS-STARTPTS[a27];
+
+# ME: agency of self (last 3s can be used for fading transition);
+[2:v]trim=start=1952:end=1977,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v28];
+[0:a]atrim=start=1952:end=1977,asetpts=PTS-STARTPTS[a28];
+
+# US: gender freedom, happiness of freedom, not enslavement;
+[0:v]trim=start=1980:end=2038,setpts=PTS-STARTPTS[v29];
+[0:a]atrim=start=1980:end=2038,asetpts=PTS-STARTPTS[a29];
+
+# ME: thank you for being here (2s transition);
+[2:v]trim=start=2038:end=2130,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v30];
+[0:a]atrim=start=2038:end=2130,asetpts=PTS-STARTPTS[a30];
+
+[v21][v22][v23][v24][v25][v26][v27][v28][v29][v30]concat=n=10:v=1:a=0,setpts=PTS-STARTPTS[video];
+[a21][a22][a23][a24][a25][a26][a27][a28][a29][a30]concat=n=10:v=0:a=1,asetpts=PTS-STARTPTS[audio];

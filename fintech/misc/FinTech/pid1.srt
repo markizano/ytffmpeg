@@ -1,0 +1,1080 @@
+1
+00:00:00.000 --> 00:00:03.080
+So I might make some friends and
+
+2
+00:00:03.080 --> 00:00:05.000
+enemies and frenemies with this one. ;)
+
+3
+00:00:06.080 --> 00:00:06.800
+Let's talk
+
+4
+00:00:06.800 --> 00:00:11.360
+about PID 1 on Linux. Way back
+
+5
+00:00:11.360 --> 00:00:12.800
+in the day we only had two
+
+6
+00:00:12.800 --> 00:00:13.640
+options, sysv-init
+
+7
+00:00:13.640 --> 00:00:15.460
+and upstart. Even before then
+
+8
+00:00:15.460 --> 00:00:17.840
+there were fewer options than that
+
+9
+00:00:17.840 --> 00:00:18.780
+as far as
+
+10
+00:00:18.780 --> 00:00:21.460
+what you could use to initialize the
+
+11
+00:00:21.460 --> 00:00:24.380
+system. How does the computer boot and
+
+12
+00:00:24.380 --> 00:00:27.100
+how does it know where the monitor
+
+13
+00:00:27.100 --> 00:00:28.660
+is, where the hard drive is, where
+
+14
+00:00:28.660 --> 00:00:30.100
+the PCI
+
+15
+00:00:30.100 --> 00:00:31.440
+bus is, how to find all those
+
+16
+00:00:31.440 --> 00:00:32.900
+things, talk to the memory circuits
+
+17
+00:00:32.900 --> 00:00:33.720
+and be able
+
+18
+00:00:33.720 --> 00:00:35.640
+to, store data in there.
+
+19
+00:00:35.760 --> 00:00:38.800
+How much processor power is available and
+
+20
+00:00:38.800 --> 00:00:41.380
+communicating with it and organizing
+
+21
+00:00:41.380 --> 00:00:42.960
+all this information, how to store
+
+22
+00:00:42.960 --> 00:00:43.180
+it on
+
+23
+00:00:43.180 --> 00:00:45.640
+the disk. There's a lot that's
+
+24
+00:00:45.640 --> 00:00:47.900
+involved with booting your computer up
+
+25
+00:00:47.900 --> 00:00:49.660
+and just getting it going so that
+
+26
+00:00:49.660 --> 00:00:51.540
+once it is connected to the graphics
+
+27
+00:00:51.540 --> 00:00:52.020
+card, the
+
+28
+00:00:52.020 --> 00:00:54.680
+monitor, the hard drive, and all the
+
+29
+00:00:54.680 --> 00:00:56.400
+peripherals, and the Bluetooth, and all
+
+30
+00:00:56.400 --> 00:00:58.020
+the devices, and the microphone, and
+
+31
+00:00:58.020 --> 00:00:59.500
+the headset, and everything that you
+
+32
+00:00:59.500 --> 00:01:00.580
+use to
+
+33
+00:01:00.580 --> 00:01:03.120
+talk to your computer. Yeah, process
+
+34
+00:01:03.120 --> 00:01:05.380
+one has got to kick off all
+
+35
+00:01:05.380 --> 00:01:05.940
+those things,
+
+36
+00:01:06.080 --> 00:01:08.280
+connect to all those pieces, and then
+
+37
+00:01:08.280 --> 00:01:10.100
+start allowing you to be able to
+
+38
+00:01:10.100 --> 00:01:12.980
+interface with those things. Process
+
+39
+00:01:12.980 --> 00:01:17.300
+one is what stands above the kernel which
+
+40
+00:01:17.300 --> 00:01:19.600
+is the actual decision maker, the
+
+41
+00:01:19.600 --> 00:01:24.800
+real brain behind the computer. Process
+
+42
+00:01:24.800 --> 00:01:25.480
+one is
+
+43
+00:01:25.480 --> 00:01:26.560
+what you can use to start in
+
+44
+00:01:26.560 --> 00:01:30.360
+Linux. Sysv-init, Upstart, they're both pretty
+
+45
+00:01:30.360 --> 00:01:33.240
+similar in their setups. Upstart requires
+
+46
+00:01:33.240 --> 00:01:34.860
+just a little bit different
+
+47
+00:01:34.860 --> 00:01:36.540
+configuration. It's like bash but
+
+48
+00:01:36.540 --> 00:01:39.460
+not really bash. Where is that OpenRC
+
+49
+00:01:39.460 --> 00:01:43.880
+That's open RC. Sysvnit is the
+
+50
+00:01:43.880 --> 00:01:45.340
+most common and most of the
+
+51
+00:01:45.340 --> 00:01:48.260
+distributions in Linux would use Sysvnit
+
+52
+00:01:48.260 --> 00:01:50.360
+as the main process one
+
+53
+00:01:50.360 --> 00:01:53.060
+option that you would use in Linux.
+
+54
+00:01:53.280 --> 00:01:55.140
+You also have the option for Upstart,
+
+55
+00:01:55.320 --> 00:01:55.600
+so if
+
+56
+00:01:55.600 --> 00:01:57.100
+you knew that, the way you would
+
+57
+00:01:57.100 --> 00:01:58.640
+start and stop your services was a
+
+58
+00:01:58.640 --> 00:01:58.920
+little bit
+
+59
+00:01:58.920 --> 00:02:02.620
+different. Let me see if I can
+
+60
+00:02:02.620 --> 00:02:04.720
+throw some examples up for you. And
+
+61
+00:02:04.720 --> 00:02:06.120
+so from a user's
+
+62
+00:02:06.120 --> 00:02:08.560
+perspective, you just had to know
+
+63
+00:02:08.560 --> 00:02:11.300
+what command, or style, or way of
+
+64
+00:02:11.300 --> 00:02:11.920
+being able to
+
+65
+00:02:11.920 --> 00:02:15.260
+start and stop service would enable
+
+66
+00:02:15.260 --> 00:02:16.500
+you to be able to manage the
+
+67
+00:02:16.500 --> 00:02:17.440
+system. Upstart
+
+68
+00:02:17.440 --> 00:02:18.580
+had its own way to do things.
+
+69
+00:02:18.700 --> 00:02:20.000
+OpenRC had its own way of doing
+
+70
+00:02:20.000 --> 00:02:20.780
+things. Systemd
+
+71
+00:02:20.780 --> 00:02:22.060
+had its own way of doing things
+
+72
+00:02:22.060 --> 00:02:25.260
+as far as starting and stopping services. And
+
+73
+00:02:25.260 --> 00:02:28.440
+from a package management perspective,
+
+74
+00:02:29.040 --> 00:02:31.280
+you know, from a developer's perspective, if
+
+75
+00:02:31.280 --> 00:02:33.100
+you're developing a piece of software
+
+76
+00:02:33.100 --> 00:02:34.780
+and you want to be able to
+
+77
+00:02:34.780 --> 00:02:35.560
+deploy that
+
+78
+00:02:35.560 --> 00:02:38.340
+piece of software in a Linux type
+
+79
+00:02:38.340 --> 00:02:41.320
+of environment, you had to package your
+
+80
+00:02:41.320 --> 00:02:42.800
+application so that it would work
+
+81
+00:02:42.800 --> 00:02:44.520
+with all of these different kinds
+
+82
+00:02:44.520 --> 00:02:45.280
+of systems.
+
+83
+00:02:46.400 --> 00:02:48.100
+Now, this is the part that's probably
+
+84
+00:02:48.100 --> 00:02:51.220
+gonna ruffle some feathers, but hey, it
+
+85
+00:02:51.220 --> 00:02:54.200
+needs to be said. Sysvnit, it worked.
+
+86
+00:02:54.480 --> 00:02:56.300
+Probably because it stood the test of
+
+87
+00:02:56.300 --> 00:02:57.900
+time. Probably because it had so much
+
+88
+00:02:57.900 --> 00:02:59.220
+contributions and it got to a point
+
+89
+00:02:59.220 --> 00:03:00.960
+where it was like, alright, we know
+
+90
+00:03:00.960 --> 00:03:02.660
+that these are the limitations of this
+
+91
+00:03:02.660 --> 00:03:05.380
+particular type of setup, but it works.
+
+92
+00:03:05.720 --> 00:03:07.500
+You basically had shell scripts that sat
+
+93
+00:03:07.500 --> 00:03:09.540
+inside of a directory, they were registered
+
+94
+00:03:09.540 --> 00:03:10.760
+with this service command, it
+
+95
+00:03:10.760 --> 00:03:12.540
+found those services that you had
+
+96
+00:03:12.540 --> 00:03:14.680
+inside of that directory, and basically
+
+97
+00:03:14.680 --> 00:03:15.080
+you had
+
+98
+00:03:15.080 --> 00:03:16.760
+start and stop switches that you could
+
+99
+00:03:16.760 --> 00:03:18.620
+tell the service to start and stop. It
+
+100
+00:03:18.620 --> 00:03:20.300
+was great. On a Linux box, you
+
+101
+00:03:20.300 --> 00:03:21.700
+can start, you can stop your service,
+
+102
+00:03:21.900 --> 00:03:22.200
+have a nice
+
+103
+00:03:22.200 --> 00:03:25.320
+day. Upstart said you had to run
+
+104
+00:03:25.320 --> 00:03:28.180
+it a little bit different. OpenRC
+
+105
+00:03:28.180 --> 00:03:29.120
+also had
+
+106
+00:03:29.120 --> 00:03:30.760
+its own way of starting and stopping
+
+107
+00:03:30.760 --> 00:03:33.100
+the services, but those scripts were
+
+108
+00:03:33.100 --> 00:03:33.440
+not the
+
+109
+00:03:33.440 --> 00:03:36.060
+same as what was supported by these
+
+110
+00:03:36.060 --> 00:03:38.140
+two systems. These scripts were
+
+111
+00:03:38.140 --> 00:03:40.060
+sort of bash, but not really. It
+
+112
+00:03:40.060 --> 00:03:42.820
+was its own OpenRC DSL, domain specific
+
+113
+00:03:42.820 --> 00:03:44.420
+language, that kind of sort of sat
+
+114
+00:03:44.420 --> 00:03:45.540
+on as a layer and you had
+
+115
+00:03:45.540 --> 00:03:46.140
+to use their shell
+
+116
+00:03:46.140 --> 00:03:47.680
+scripts or you could use your own
+
+117
+00:03:47.680 --> 00:03:50.600
+bash scripts or any type of executable, but
+
+118
+00:03:50.600 --> 00:03:52.280
+they offered it as an option and
+
+119
+00:03:52.280 --> 00:03:55.000
+it was something that also provided
+
+120
+00:03:55.000 --> 00:03:55.880
+a lot of
+
+121
+00:03:55.880 --> 00:03:57.800
+the same functionality that I saw
+
+122
+00:03:57.800 --> 00:04:02.520
+Systemd trying to handle as far as
+
+123
+00:04:02.520 --> 00:04:03.000
+trying to
+
+124
+00:04:03.000 --> 00:04:05.040
+create a consistent ecosystem and
+
+125
+00:04:05.040 --> 00:04:07.740
+a consistent environment in which the
+
+126
+00:04:07.740 --> 00:04:09.720
+developer doesn't have to worry about
+
+127
+00:04:09.720 --> 00:04:12.160
+any of the differences or deltas that
+
+128
+00:04:12.160 --> 00:04:13.700
+would exist as far as hardware is
+
+129
+00:04:13.700 --> 00:04:14.980
+concerned, because you shouldn't.
+
+130
+00:04:15.040 --> 00:04:15.560
+As a
+
+131
+00:04:15.560 --> 00:04:16.960
+developer, when I go to write my
+
+132
+00:04:16.960 --> 00:04:19.220
+code, I shouldn't have to care about
+
+133
+00:04:19.220 --> 00:04:19.640
+whether you
+
+134
+00:04:19.640 --> 00:04:21.740
+have an Intel or an AMD processor.
+
+135
+00:04:22.000 --> 00:04:23.440
+I shouldn't have to care if you
+
+136
+00:04:23.440 --> 00:04:25.420
+have, you
+
+137
+00:04:25.420 --> 00:04:27.960
+know, two cores or 32 cores. I
+
+138
+00:04:27.960 --> 00:04:29.420
+should be able to write my program
+
+139
+00:04:29.420 --> 00:04:30.660
+and it can
+
+140
+00:04:30.660 --> 00:04:33.220
+describe what its boundaries are and
+
+141
+00:04:33.220 --> 00:04:34.980
+the computer will automatically figure out
+
+142
+00:04:34.980 --> 00:04:36.680
+how much capacity it can allocate
+
+143
+00:04:36.680 --> 00:04:38.820
+to my program and I don't have
+
+144
+00:04:38.820 --> 00:04:39.080
+to do
+
+145
+00:04:39.080 --> 00:04:40.840
+calculations from within my scripts
+
+146
+00:04:40.840 --> 00:04:42.980
+and programs to be able to talk
+
+147
+00:04:42.980 --> 00:04:43.320
+to the
+
+148
+00:04:43.320 --> 00:04:45.600
+processor specifically, unless I want
+
+149
+00:04:45.600 --> 00:04:48.220
+to take advantage of those specific
+
+150
+00:04:48.220 --> 00:04:50.240
+adapters, drivers or capabilities
+
+151
+00:04:50.240 --> 00:04:53.860
+within that processor. Well, then
+
+152
+00:04:53.860 --> 00:04:54.780
+came along James
+
+153
+00:04:54.780 --> 00:04:56.540
+Pottering and he decided to release
+
+154
+00:04:56.540 --> 00:05:00.000
+Systemd and the challenges that I faced
+
+155
+00:05:00.000 --> 00:05:02.320
+with this was not only was the
+
+156
+00:05:02.320 --> 00:05:04.940
+implementation not a single focus
+
+157
+00:05:04.940 --> 00:05:05.500
+on a
+
+158
+00:05:05.500 --> 00:05:07.420
+single responsibility, it was a responsibility
+
+159
+00:05:07.420 --> 00:05:09.440
+that globbed into so much
+
+160
+00:05:09.440 --> 00:05:12.620
+of the Linux ecosystem that just polluted
+
+161
+00:05:12.620 --> 00:05:15.680
+this idea of do one thing and do
+
+162
+00:05:15.680 --> 00:05:17.020
+it well. That was one of the
+
+163
+00:05:17.020 --> 00:05:18.280
+things about Linux and one of the
+
+164
+00:05:18.280 --> 00:05:18.880
+reasons why it
+
+165
+00:05:18.880 --> 00:05:21.300
+worked was because its whole paradigm
+
+166
+00:05:21.300 --> 00:05:23.340
+is based on this idea of a
+
+167
+00:05:23.340 --> 00:05:24.100
+single principle
+
+168
+00:05:24.100 --> 00:05:26.880
+of responsibility and you assign that
+
+169
+00:05:26.880 --> 00:05:29.500
+to a single algorithm that describes what
+
+170
+00:05:29.500 --> 00:05:31.160
+that particular thing is supposed
+
+171
+00:05:31.160 --> 00:05:32.920
+to do and that way you can
+
+172
+00:05:32.920 --> 00:05:33.920
+build upon that
+
+173
+00:05:33.920 --> 00:05:35.940
+and it's a modular component that
+
+174
+00:05:35.940 --> 00:05:38.920
+can be reused through other components within
+
+175
+00:05:38.920 --> 00:05:42.820
+the system. And one of the reasons
+
+176
+00:05:42.820 --> 00:05:45.060
+why I feel like Systemd had such
+
+177
+00:05:45.060 --> 00:05:45.720
+a struggle
+
+178
+00:05:45.720 --> 00:05:48.300
+coming, I'm being really nice, why
+
+179
+00:05:48.300 --> 00:05:49.780
+Systemd was shit software for its
+
+180
+00:05:49.780 --> 00:05:53.740
+beginnings, it's it's it was because
+
+181
+00:05:53.740 --> 00:05:56.240
+if you saw some of the email threads
+
+182
+00:05:56.240 --> 00:06:00.220
+between Pottering and Torvalds, I
+
+183
+00:06:00.220 --> 00:06:05.020
+see what he was trying to do,
+
+184
+00:06:05.220 --> 00:06:05.660
+it's just
+
+185
+00:06:05.660 --> 00:06:07.360
+the way he went about it was
+
+186
+00:06:07.360 --> 00:06:09.980
+just, and it shows in its implementation
+
+187
+00:06:09.980 --> 00:06:10.700
+and its
+
+188
+00:06:10.700 --> 00:06:13.540
+bugginess and the way it has this
+
+189
+00:06:13.540 --> 00:06:16.160
+weird kind of, what are you really
+
+190
+00:06:16.160 --> 00:06:17.760
+doing? Because I
+
+191
+00:06:17.760 --> 00:06:19.940
+have a two-way firewall, my traffic
+
+192
+00:06:19.940 --> 00:06:22.700
+is not blocked just inbound, my traffic is
+
+193
+00:06:22.700 --> 00:06:25.400
+also blocked outbound as well, so
+
+194
+00:06:25.400 --> 00:06:27.220
+when I see things hit the inside
+
+195
+00:06:27.220 --> 00:06:27.940
+of my firewall
+
+196
+00:06:27.940 --> 00:06:29.980
+that normally should not be hitting
+
+197
+00:06:29.980 --> 00:06:31.820
+the inside of my firewall, I go
+
+198
+00:06:31.820 --> 00:06:32.400
+snooping and
+
+199
+00:06:32.400 --> 00:06:33.400
+trying to figure out where is it
+
+200
+00:06:33.400 --> 00:06:34.940
+coming from because I want to know,
+
+201
+00:06:35.180 --> 00:06:36.080
+I must know
+
+202
+00:06:36.080 --> 00:06:38.560
+and when I come to find that
+
+203
+00:06:38.560 --> 00:06:40.600
+my operating system was the source
+
+204
+00:06:40.600 --> 00:06:41.400
+of the network
+
+205
+00:06:41.400 --> 00:06:46.060
+traffic, we got issues. Systemd, why
+
+206
+00:06:46.060 --> 00:06:47.200
+the hell are you reaching out to
+
+207
+00:06:47.200 --> 00:06:47.700
+China and
+
+208
+00:06:47.700 --> 00:06:49.460
+Russia and Microsoft? Why are you
+
+209
+00:06:49.460 --> 00:06:50.920
+sending information up to them? Why
+
+210
+00:06:50.920 --> 00:06:51.100
+are you
+
+211
+00:06:51.100 --> 00:06:53.080
+talking to them by default? Where
+
+212
+00:06:53.080 --> 00:06:56.940
+was that coming from? When I found
+
+213
+00:06:56.940 --> 00:06:57.420
+out that
+
+214
+00:06:57.420 --> 00:06:59.680
+it was because of misconfigurations
+
+215
+00:06:59.680 --> 00:07:01.240
+and all kinds of personal stuff that they
+
+216
+00:07:01.240 --> 00:07:03.460
+had going on, I stepped away. I
+
+217
+00:07:03.460 --> 00:07:04.860
+said I have I want nothing to
+
+218
+00:07:04.860 --> 00:07:05.180
+do with that
+
+219
+00:07:05.180 --> 00:07:06.460
+project and none of my servers will
+
+220
+00:07:06.460 --> 00:07:07.720
+touch it and if I can help
+
+221
+00:07:07.720 --> 00:07:08.000
+it I'm gonna
+
+222
+00:07:08.000 --> 00:07:09.780
+keep on you know our job from
+
+223
+00:07:09.780 --> 00:07:12.140
+having to deal with that nonsense
+
+224
+00:07:12.140 --> 00:07:12.860
+until it has a
+
+225
+00:07:12.860 --> 00:07:16.480
+chance to mature because clearly this
+
+226
+00:07:16.480 --> 00:07:19.080
+project needs to stand the test of time
+
+227
+00:07:19.080 --> 00:07:22.140
+before I'm willing to put a leg
+
+228
+00:07:22.140 --> 00:07:24.040
+on it and when I saw systems
+
+229
+00:07:24.040 --> 00:07:25.440
+like Debian and
+
+230
+00:07:25.440 --> 00:07:31.260
+Ubuntu go and adopt Systemd, I didn't
+
+231
+00:07:31.260 --> 00:07:32.440
+agree with how they went about that
+
+232
+00:07:32.440 --> 00:07:34.580
+either. I didn't like how it was
+
+233
+00:07:34.580 --> 00:07:36.260
+this is now going to be the
+
+234
+00:07:36.260 --> 00:07:37.540
+default and no we
+
+235
+00:07:37.540 --> 00:07:39.040
+are not going to support anything
+
+236
+00:07:39.040 --> 00:07:42.520
+but Systemd going forward. Like whose
+
+237
+00:07:43.120 --> 00:07:44.580
+authoritarianship came through and
+
+238
+00:07:44.580 --> 00:07:47.840
+just swept in it freedom from everything? So
+
+239
+00:07:47.840 --> 00:07:50.560
+this is why I use Dev1 is
+
+240
+00:07:50.560 --> 00:07:52.880
+because we forked away from Debian
+
+241
+00:07:52.880 --> 00:07:53.660
+which is the
+
+242
+00:07:53.660 --> 00:07:57.320
+original predecessor to Ubuntu. Dev1
+
+243
+00:07:57.320 --> 00:08:00.220
+is a fork of Debian that maintains your
+
+244
+00:08:00.220 --> 00:08:02.580
+freedom. You may choose any of these
+
+245
+00:08:02.580 --> 00:08:04.500
+that you like. If you want Systemd
+
+246
+00:08:04.500 --> 00:08:05.300
+you can go
+
+247
+00:08:05.300 --> 00:08:07.940
+to Debian but if not we maintain
+
+248
+00:08:07.940 --> 00:08:09.640
+the option for you to be able
+
+249
+00:08:09.640 --> 00:08:10.200
+to select
+
+250
+00:08:10.200 --> 00:08:13.820
+process 1 in your system and so
+
+251
+00:08:13.820 --> 00:08:15.080
+for those of you that don't know
+
+252
+00:08:15.080 --> 00:08:17.000
+Debian is
+
+253
+00:08:17.000 --> 00:08:19.360
+the original operating system. Ubuntu
+
+254
+00:08:19.360 --> 00:08:23.140
+is a fork of that. Also Kubuntu, Shubuntu,
+
+255
+00:08:23.540 --> 00:08:25.480
+Mint, Ubuntu Mint, all the other Ubuntu
+
+256
+00:08:25.480 --> 00:08:27.940
+derivatives they're all forks of Ubuntu
+
+257
+00:08:27.940 --> 00:08:29.740
+and Ubuntu is a fork of Debian.
+
+258
+00:08:29.920 --> 00:08:32.360
+Debian is the original OG. Red Hat
+
+259
+00:08:32.360 --> 00:08:33.380
+is also the
+
+260
+00:08:33.380 --> 00:08:37.280
+original OG and they gave way to
+
+261
+00:08:37.280 --> 00:08:39.460
+CentOS which for some reason they
+
+262
+00:08:39.460 --> 00:08:39.780
+just dropped
+
+263
+00:08:39.780 --> 00:08:42.520
+support off of that and Fedora which
+
+264
+00:08:42.520 --> 00:08:45.460
+is another Red Hat based operating system
+
+265
+00:08:45.460 --> 00:08:47.500
+that you can use for desktop that's
+
+266
+00:08:47.500 --> 00:08:49.420
+based off of the K desktop environment.
+
+267
+00:08:50.700 --> 00:08:54.400
+Dev1 is a fork of Debian that
+
+268
+00:08:54.400 --> 00:08:56.700
+offers the option for you to be
+
+269
+00:08:56.700 --> 00:08:57.380
+able to select
+
+270
+00:08:57.380 --> 00:08:59.640
+process 1 in your operating system.
+

@@ -1,0 +1,28 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/VID_20231023_114307077.mkv" },
+        { "i": "resources/VID_20231023_114453045.mkv" },
+        { "i": "resources/VID_20231023_114741323.mkv" },
+        { "i": "resources/VID_20231023_114931888.mkv" },
+        { "i": "resources/VID_20231023_115041276.mkv" },
+        { "i": "resources/VID_20231023_115114624.mkv" },
+        { "i": "resources/VID_20231023_115643829.mkv" },
+        { "i": "resources/VID_20231023_121731016.mkv" },
+        { "loop": "true", "i": "resources/bleeping-computer-ssh-keys-stolen.png" },
+        { "loop": "true", "i": "/home/YouTube/resources/openai.png" }
+      ],
+      "output": "build/local-admin-rights.mp4",
+      "filter_complex": [
+        "[9:v]fps=30,format=yuv420p,trim=start=0:end=5,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
+        "[8:v]format=yuv420p,trim=start=0:end=8,fps=59.94,setpts=(PTS-STARTPTS)+(103/TB),fade=in:st=103:d=3:alpha=1,fade=out:st=108:d=2:alpha=1[sshKeys]",
+        "[0:v][1:v][2:v][3:v][4:v][5:v][6:v][7:v]concat=n=8,scale=720x1280,setsar=1:1[_v]",
+        "[_v][sshKeys]overlay=(W-w)/2:(H-h)/2:enable='between(t,103,111)',pad=864:1536:72:80,scale=720:1280,setsar=1:1[__v]",
+        "[__v][disclaim]overlay=W-w-100:20:enable='between(t,0,5)',subtitles=build/local-admin-rights.srt:force_style='FontName=Impact,OutlineColour=&H40000000,BorderStyle=3'[video]",
+        "[0:a][1:a][2:a][3:a][4:a][5:a][6:a][7:a]concat=n=8:v=0:a=1,aresample=44100,aresample=48000,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[audio]"
+      ]
+    }
+  ]
+}
+

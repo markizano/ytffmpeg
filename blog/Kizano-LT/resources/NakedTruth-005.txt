@@ -1,0 +1,46 @@
+# US: transition to visibility (2s transition);
+[0:v]trim=start=2132:end=2140,setpts=PTS-STARTPTS[v31];
+[0:a]atrim=start=2132:end=2140,asetpts=PTS-STARTPTS[a31];
+
+# LT: you can be who you want to be;
+[1:v]trim=start=2142:end=2198,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v32];
+[0:a]atrim=start=2142:end=2198,asetpts=PTS-STARTPTS[a32];
+
+# ME: you can create whatever you want;
+[2:v]trim=start=2703:end=2755,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v33];
+[0:a]atrim=start=2703:end=2755,asetpts=PTS-STARTPTS[a33];
+
+# US: 'and being a right-handed person';
+[0:v]trim=start=2756:end=2778,setpts=PTS-STARTPTS[v34];
+[0:a]atrim=start=2756:end=2778,asetpts=PTS-STARTPTS[a34];
+
+# LT: LT attacking heteronormative again;
+[1:v]trim=start=2778:end=2800,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v35];
+[0:a]atrim=start=2778:end=2800,asetpts=PTS-STARTPTS[a35];
+
+# US: we are protecting ourselves.;
+[0:v]trim=start=2800:end=2813,setpts=PTS-STARTPTS[v36];
+[0:a]atrim=start=2800:end=2813,asetpts=PTS-STARTPTS[a36];
+
+# ME: to implicate yourself;
+[2:v]trim=start=2813:end=2840,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v37];
+[0:a]atrim=start=2813:end=2840,asetpts=PTS-STARTPTS[a37];
+
+# US: why are these hard?;
+[0:v]trim=start=2840:end=2843,setpts=PTS-STARTPTS[v38];
+[0:a]atrim=start=2840:end=2843,asetpts=PTS-STARTPTS[a38];
+
+# LT: being vulnerable is hard;
+[1:v]trim=start=2843:end=2867,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v39];
+[0:a]atrim=start=2843:end=2867,asetpts=PTS-STARTPTS[a39];
+
+# SPLIT: us laughing;
+[0:v]trim=start=2867:end=2872,setpts=PTS-STARTPTS[v40];
+[0:a]atrim=start=2867:end=2872,asetpts=PTS-STARTPTS[a40];
+
+# LT: being vulnerable is hard x2 (family freedom);
+[1:v]trim=start=2872:end=2914,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v41];
+[0:a]atrim=start=2872:end=2914,asetpts=PTS-STARTPTS[a41];
+
+[v31][v32][v33][v34][v35][v36][v37][v38][v39][v40][v41]concat=n=11:v=1:a=0,setpts=PTS-STARTPTS[video];
+[a31][a32][a33][a34][a35][a36][a37][a38][a39][a40][a41]concat=n=11:v=0:a=1,asetpts=PTS-STARTPTS[audio];

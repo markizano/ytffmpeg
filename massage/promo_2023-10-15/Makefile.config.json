@@ -1,0 +1,50 @@
+{
+  "videos": [
+    {
+      "input": [ { "i": "resources/screen-20231015-105216.mp4" } ],
+      "output": "build/book-with-me.mp4",
+      "attributes": [ "no-audio" ],
+      "filter_complex": [
+        "[0:v]crop=1080:1920:0:225,scale=720x1280,setsar=1:1,split=4[v0][v1][v2][v3]",
+        "[v0]trim=start=0:end=4.133,setpts=PTS-STARTPTS[vid0]",
+        "[v1]trim=start=8:end=12.72,setpts=PTS-STARTPTS[vid1]",
+        "[v2]trim=start=12.72:end=30.121,setpts=(PTS-STARTPTS)*0.25[vid2]",
+        "[v3]trim=start=35:end=38,setpts=PTS-STARTPTS[vid3]",
+        "[vid0][vid1][vid2][vid3]concat=n=4,setpts=(PTS-STARTPTS)*0.5[video]"
+      ]
+    },
+    {
+      "require": "build/book-with-me.mp4",
+      "input": [
+        { "i": "resources/acupressure-promo.mkv" },
+        { "i": "build/book-with-me.mp4" },
+        { "i": "build/coupon-code_relax2023.mkv" },
+        { "loop": "true", "i": "/home/YouTube/resources/openai.png" }
+      ],
+      "output": "build/acupressure-promo_2023-10-15.mp4",
+      "filter_complex": [
+        "[3:v]fps=30,format=yuv420p,trim=start=0:end=5,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
+
+        "[0:v]scale=720x1280,setsar=1:1,fps=30,trim=start=0:end=19.5,setpts=PTS-STARTPTS[_v]",
+        "[0:a]atrim=start=0:end=19.5,asetpts=PTS-STARTPTS[a0]",
+
+        "[_v]drawtext=font=DejaVuSans:text=massage.markizano.net:fontcolor=white:fontsize=50:box=1:boxcolor=0x0b8c81@0.8:boxborderw=25:x=50:y=100:enable='between(t, 13, 16)'[v0]",
+        "[1:v]setpts=(PTS)+(15.3/TB),fade=in:st=15.3:d=1,fade=out:st=22.77:d=1[booking]",
+
+        "[2:v]fps=30,trim=start=0:end=8.47,setpts=PTS-STARTPTS[v1]",
+        "[2:a]atrim=start=0:end=8.47,asetpts=PTS-STARTPTS[a1]",
+
+
+        "[0:v]scale=720x1280,setsar=1:1,fps=30,trim=start=19.5:end=31,setpts=PTS-STARTPTS[v2]",
+        "[0:a]atrim=start=19.5:end=31,asetpts=PTS-STARTPTS[a2]",
+
+        "[v0][v1][v2]concat=n=3[_vid]",
+        "[a0][a1][a2]concat=n=3:v=0:a=1[audio]",
+
+        "[_vid][booking]overlay=enable='between(t, 15.3, 23.77)',pad=864:1536:72:80,scale=720:1280,setsar=1:1,subtitles=build/acupressure-promo_2023-10-15.srt:force_style='FontName=Impact,OutlineColour=&H40000000,BorderStyle=3'[__v]",
+        "[__v][disclaim]overlay=W-w-100:20:enable='between(t,0,5)'[video]"
+      ]
+    }
+  ]
+}
+

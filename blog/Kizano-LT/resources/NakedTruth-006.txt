@@ -1,0 +1,42 @@
+# US: i don't care what you think;
+[0:v]trim=start=2914:end=2925,setpts=PTS-STARTPTS[v42];
+[0:a]atrim=start=2914:end=2925,asetpts=PTS-STARTPTS[a42];
+
+# LT: heternormatives don't work for me;
+[1:v]trim=start=3097:end=3207,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v43];
+[0:a]atrim=start=3097:end=3207,asetpts=PTS-STARTPTS[a43];
+
+# ME: BF in a box doesn't exist;
+[2:v]trim=start=3207:end=3312,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v44];
+[0:a]atrim=start=3207:end=3312,asetpts=PTS-STARTPTS[a44];
+
+# US: lead to next question;
+[0:v]trim=start=3370:end=3377,setpts=PTS-STARTPTS[v45];
+[0:a]atrim=start=3370:end=3377,asetpts=PTS-STARTPTS[a45];
+
+# ME: daddy aspect.;
+[2:v]trim=start=3377:end=3395,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v46];
+[0:a]atrim=start=3377:end=3395,asetpts=PTS-STARTPTS[a46];
+
+# LT: the 'Daddy' thing.;
+[1:v]trim=start=3395:end=3581,pad=1280:720:326:0,setpts=(PTS-STARTPTS)[v47];
+[0:a]atrim=start=3395:end=3581,asetpts=PTS-STARTPTS[a47];
+
+# ME: would there be as many gay guys if we had better fathers?;
+[2:v]trim=start=3581:end=3669,pad=1280:720:100:0,setpts=(PTS-STARTPTS)[v48];
+[0:a]atrim=start=3581:end=3669,asetpts=PTS-STARTPTS[a48];
+
+# US: Would it be the same?;
+[0:v]trim=start=3669:end=3695,setpts=PTS-STARTPTS[v49];
+[0:a]atrim=start=3669:end=3695,asetpts=PTS-STARTPTS[a49];
+
+# US: dad-joke;
+[0:v]trim=start=3814:end=3852,setpts=PTS-STARTPTS[v50];
+[0:a]atrim=start=3814:end=3852,asetpts=PTS-STARTPTS[a50];
+
+# US: ending/fin;
+[0:v]trim=start=3862.75:end=3885,setpts=PTS-STARTPTS[v51];
+[0:a]atrim=start=3862.75:end=3885,asetpts=PTS-STARTPTS[a51];
+
+[v42][v43][v44][v45][v46][v47][v48][v49][v50][v51]concat=n=10:v=1:a=0[video];
+[a42][a43][a44][a45][a46][a47][a48][a49][a50][a51]concat=n=10:v=0:a=1[audio];

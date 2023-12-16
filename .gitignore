@@ -52,3 +52,4 @@ Makefile
 
 # Products of my own compilations
 *.filter_complex
+*.zip

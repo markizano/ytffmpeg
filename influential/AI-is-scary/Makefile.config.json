@@ -1,0 +1,174 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/7e932ed02117318e2433a6062afcc6f3.mp4" },
+        { "i": "resources/duet-with-jlawro.mkv" },
+        { "loop": "true", "i": "/home/YouTube/resources/openai.png" }
+      ],
+      "output": "build/duet-with-jlawro.mp4",
+      "filter_complex": [
+        "[0:v]fps=59.97,trim=start=0:end=6,setpts=PTS-STARTPTS[v0]",
+        "[0:a]atrim=start=0:end=6,asetpts=PTS-STARTPTS[a0]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=373:end=386.167,setpts=PTS-STARTPTS[v1]",
+        "[1:a]volume=1.2,atrim=start=373:end=386.167,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a1]",
+
+        "[0:v]fps=59.97,trim=start=6:end=27.578,setpts=PTS-STARTPTS[v2]",
+        "[0:a]atrim=start=6:end=27.578,asetpts=PTS-STARTPTS[a2]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=416.133:end=424.567,setpts=PTS-STARTPTS[v3]",
+        "[1:a]volume=1.2,atrim=start=416.133:end=424.567,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a3]",
+
+        "[0:v]fps=59.97,trim=start=27.594:end=32.482,setpts=PTS-STARTPTS[v4]",
+        "[0:a]atrim=start=27.594:end=32.482,asetpts=PTS-STARTPTS[a4]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=439.5:end=452.233,setpts=PTS-STARTPTS[v5]",
+        "[1:a]volume=1.2,atrim=start=439.5:end=452.233,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a5]",
+
+        "[0:v]fps=59.97,trim=start=32.493:end=47.848,setpts=PTS-STARTPTS[v6]",
+        "[0:a]atrim=start=32.493:end=47.848,asetpts=PTS-STARTPTS[a6]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=469:end=513.833,setpts=PTS-STARTPTS[v7]",
+        "[1:a]volume=1.2,atrim=start=469:end=513.833,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a7]",
+
+        "[0:v]fps=59.97,trim=start=47.893:end=77.911,setpts=PTS-STARTPTS[v8]",
+        "[0:a]atrim=start=47.893:end=77.911,asetpts=PTS-STARTPTS[a8]",
+
+        "# I beg to differ...",
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=549.7:end=579.5,setpts=PTS-STARTPTS[v9p0]",
+        "[1:a]volume=1.2,atrim=start=549.7:end=579.5,asetpts=PTS-STARTPTS[a9p0]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=581.5:end=588.5,setpts=PTS-STARTPTS[v9p1]",
+        "[1:a]volume=1.2,atrim=start=581.5:end=588.5,asetpts=PTS-STARTPTS[a9p1]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=591.1:end=620.8,setpts=PTS-STARTPTS[v9p2]",
+        "[1:a]volume=1.2,atrim=start=591.1:end=620.8,asetpts=PTS-STARTPTS[a9p2]",
+
+        "[v9p0][a9p0] [v9p1][a9p1] [v9p2][a9p2] concat=n=3:v=1:a=1[v9][a9]",
+
+        "[0:v]fps=59.97,trim=start=78:end=121.305,setpts=PTS-STARTPTS[v10]",
+        "[0:a]atrim=start=78:end=121.305,asetpts=PTS-STARTPTS[a10]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=665.5:end=697.2,setpts=PTS-STARTPTS[v11]",
+        "[1:a]volume=1.2,atrim=start=665.5:end=697.2,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a11]",
+
+        "[0:v]fps=59.97,trim=start=121.326:end=130.297,setpts=PTS-STARTPTS[v12]",
+        "[0:a]atrim=start=121.326:end=130.297,asetpts=PTS-STARTPTS[a12]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=709.333:end=718.88,setpts=PTS-STARTPTS[v13]",
+        "[1:a]volume=1.2,atrim=start=709.333:end=718.88,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a13]",
+
+        "[0:v]fps=59.97,trim=start=131.333:end=135.853,setpts=PTS-STARTPTS[v14]",
+        "[0:a]atrim=start=131.067:end=135.853,asetpts=PTS-STARTPTS[a14]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=725.3:end=726.4,setpts=PTS-STARTPTS[v15]",
+        "[1:a]volume=1.2,atrim=start=725.3:end=726.4,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a15]",
+
+        "[0:v]fps=59.97,trim=start=135.897:end=146.58,setpts=PTS-STARTPTS[v16]",
+        "[0:a]atrim=start=135.897:end=146.58,asetpts=PTS-STARTPTS[a16]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=736.9:end=740.5,setpts=PTS-STARTPTS[v17]",
+        "[1:a]volume=1.2,atrim=start=736.9:end=740.5,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a17]",
+
+        "[0:v]fps=59.97,trim=start=146.58:end=204.655,setpts=PTS-STARTPTS[v18]",
+        "[0:a]atrim=start=146.58:end=204.655,asetpts=PTS-STARTPTS[a18]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=799:end=814.6,setpts=PTS-STARTPTS[v19]",
+        "[1:a]volume=1.2,atrim=start=799:end=814.6,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a19]",
+
+        "[0:v]fps=59.97,trim=start=204.714:end=209.209,setpts=PTS-STARTPTS[v20]",
+        "[0:a]atrim=start=204.714:end=209.209,asetpts=PTS-STARTPTS[a20]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=821.4:end=822.9,setpts=PTS-STARTPTS[v21]",
+        "[1:a]volume=1.2,atrim=start=821.4:end=822.9,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a21]",
+
+        "[0:v]fps=59.97,trim=start=209.214:end=250,setpts=PTS-STARTPTS[v22]",
+        "[0:a]atrim=start=209.214:end=250,asetpts=PTS-STARTPTS[a22]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=865:end=885,setpts=PTS-STARTPTS[v23]",
+        "[1:a]volume=1.2,atrim=start=865:end=885,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a23]",
+
+        "[0:v]fps=59.97,trim=start=250.067:end=284.885,setpts=PTS-STARTPTS[v24]",
+        "[0:a]atrim=start=250.067:end=284.885,asetpts=PTS-STARTPTS[a24]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=938:end=958.8,setpts=PTS-STARTPTS[v25]",
+        "[1:a]volume=1.2,atrim=start=938:end=958.8,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a25]",
+
+        "[0:v]fps=59.97,trim=start=284.897:end=297.097,setpts=PTS-STARTPTS[v26]",
+        "[0:a]atrim=start=284.897:end=297.097,asetpts=PTS-STARTPTS[a26]",
+
+        "# Elect not to embark--",
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=972:end=1001.5,setpts=PTS-STARTPTS[v27p0]",
+        "[1:a]volume=1.2,atrim=start=972:end=1001.5,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a27p0]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=1003.9:end=1015.667,setpts=PTS-STARTPTS[v27p1]",
+        "[1:a]volume=1.2,atrim=start=1003.9:end=1015.667,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a27p1]",
+
+        "[v27p0][a27p0] [v27p1][a27p1] concat=n=2:v=1:a=1[v27][a27]",
+
+        "[0:v]fps=59.97,trim=start=297.097:end=311.478,setpts=PTS-STARTPTS[v28]",
+        "[0:a]atrim=start=297.097:end=311.478,asetpts=PTS-STARTPTS[a28]",
+
+        "[1:v]scale=576x1024,setsar=1:1,fps=59.97,trim=start=1037.5:end=1046,setpts=PTS-STARTPTS[v29]",
+        "[1:a]volume=1.2,atrim=start=1037.5:end=1046,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a29]",
+
+        "# the aresample/aformat are to make voice2text work since pcm_s161e defaults to 44100Hz.",
+        "[v0][v1][v2][v3][v4][v5][v6][v7][v8][v9][v10][v11][v12][v13][v14][v15][v16][v17][v18][v19][v20][v21][v22][v23][v24][v25][v26][v27][v28][v29]concat=n=30,setpts=(PTS-STARTPTS)*0.984[vsub]",
+        "[a0][a1][a2][a3][a4][a5][a6][a7][a8][a9][a10][a11][a12][a13][a14][a15][a16][a17][a18][a19][a20][a21][a22][a23][a24][a25][a26][a27][a28][a29]concat=n=30:v=0:a=1,asetpts=(PTS-STARTPTS)*0.984,aresample=44100:async=1000,aformat=sample_fmts=s16:sample_rates=48000:channel_layouts=stereo[audio]",
+
+        "[vsub]pad=720:1280:72:128,subtitles=build/duet-with-jlawro.srt:force_style='OutlineColour=&H40000000,BorderStyle=3'[_v]",
+        "[2:v]fps=30,trim=start=0:end=5,setpts=PTS-STARTPTS,fade=in:st=0:d=1,fade=out:st=4:d=1[disclaim]",
+        "[_v][disclaim]overlay=W-w-100:0[video]"
+      ]
+    }, {
+      "input": [
+        { "i": "resources/7e932ed02117318e2433a6062afcc6f3.mp4" },
+        { "i": "resources/duet-with-jlawro.mkv" }
+      ],
+      "attributes": [ "no-video" ],
+      "codec": { "audio": "pcm_s16le" },
+      "output": "build/duet-with-jlawro.wav",
+      "filter_complex": [
+        "# Generated from grep -v v Makefile.config.json | grep -vP \"$whitespace\" ",
+        "[0:a]volume=0,atrim=start=0:end=6,asetpts=PTS-STARTPTS[a0]",
+        "[1:a]atrim=start=373:end=386.167,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a1]",
+        "[0:a]volume=0,atrim=start=6:end=27.578,asetpts=PTS-STARTPTS[a2]",
+        "[1:a]atrim=start=416.133:end=424.567,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a3]",
+        "[0:a]volume=0,atrim=start=27.594:end=32.482,asetpts=PTS-STARTPTS[a4]",
+        "[1:a]atrim=start=439.5:end=452.233,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a5]",
+        "[0:a]volume=0,atrim=start=32.493:end=47.848,asetpts=PTS-STARTPTS[a6]",
+        "[1:a]atrim=start=469:end=513.833,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a7]",
+        "[0:a]volume=0,atrim=start=47.893:end=77.911,asetpts=PTS-STARTPTS[a8]",
+        "[1:a]atrim=start=549.7:end=579.5,asetpts=PTS-STARTPTS[a9p0]",
+        "[1:a]atrim=start=581.5:end=588.5,asetpts=PTS-STARTPTS[a9p1]",
+        "[1:a]atrim=start=591.1:end=620.8,asetpts=PTS-STARTPTS[a9p2]",
+        "[a9p0][a9p1][a9p2] concat=n=3:v=0:a=1[a9]",
+        "[0:a]volume=0,atrim=start=78:end=121.305,asetpts=PTS-STARTPTS[a10]",
+        "[1:a]atrim=start=665.5:end=697.2,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a11]",
+        "[0:a]volume=0,atrim=start=121.326:end=130.297,asetpts=PTS-STARTPTS[a12]",
+        "[1:a]atrim=start=709.333:end=718.88,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a13]",
+        "[0:a]volume=0,atrim=start=131.067:end=135.853,asetpts=PTS-STARTPTS[a14]",
+        "[1:a]atrim=start=725.3:end=726.4,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a15]",
+        "[0:a]volume=0,atrim=start=135.897:end=146.58,asetpts=PTS-STARTPTS[a16]",
+        "[1:a]atrim=start=736.9:end=740.5,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a17]",
+        "[0:a]volume=0,atrim=start=146.58:end=204.655,asetpts=PTS-STARTPTS[a18]",
+        "[1:a]atrim=start=799:end=814.6,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a19]",
+        "[0:a]volume=0,atrim=start=204.714:end=209.209,asetpts=PTS-STARTPTS[a20]",
+        "[1:a]atrim=start=821.4:end=822.9,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a21]",
+        "[0:a]volume=0,atrim=start=209.214:end=250,asetpts=PTS-STARTPTS[a22]",
+        "[1:a]atrim=start=865:end=885,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a23]",
+        "[0:a]volume=0,atrim=start=250.067:end=284.885,asetpts=PTS-STARTPTS[a24]",
+        "[1:a]atrim=start=938:end=958.8,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a25]",
+        "[0:a]volume=0,atrim=start=284.897:end=297.097,asetpts=PTS-STARTPTS[a26]",
+        "[1:a]atrim=start=972:end=1001.5,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a27p0]",
+        "[1:a]atrim=start=1003.9:end=1015.667,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a27p1]",
+        "[a27p0][a27p1]concat=n=2:v=0:a=1[a27]",
+        "[0:a]volume=0,atrim=start=297.097:end=311.478,asetpts=PTS-STARTPTS[a28]",
+        "[1:a]atrim=start=1037.5:end=1046,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[a29]",
+        "[a0][a1][a2][a3][a4][a5][a6][a7][a8][a9][a10][a11][a12][a13][a14][a15][a16][a17][a18][a19][a20][a21][a22][a23][a24][a25][a26][a27][a28][a29]concat=n=30:v=0:a=1,asetpts=(PTS-STARTPTS)*0.984,aresample=44100:async=1000,aformat=sample_fmts=s16:sample_rates=48000:channel_layouts=stereo[audio]"
+      ]
+    }
+  ]
+}
+

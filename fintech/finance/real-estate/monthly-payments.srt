@@ -1,0 +1,460 @@
+1
+00:00:00.000 --> 00:00:02.960
+So, I just asked ChatGPT to help
+
+2
+00:00:02.960 --> 00:00:04.300
+me out with some real estate questions
+
+3
+00:00:04.300 --> 00:00:04.940
+that I've got here
+
+4
+00:00:04.940 --> 00:00:06.980
+and I just wanted to highlight some
+
+5
+00:00:06.980 --> 00:00:07.880
+things for you here.
+
+6
+00:00:08.520 --> 00:00:11.560
+I asked ChatGPT first if it could
+
+7
+00:00:11.560 --> 00:00:13.100
+tell me what the average rate is
+
+8
+00:00:13.100 --> 00:00:15.100
+for tax properties
+
+9
+00:00:15.100 --> 00:00:17.260
+in Dallas and it turns out
+
+10
+00:00:17.260 --> 00:00:18.980
+2.18% is about the average in
+
+11
+00:00:18.980 --> 00:00:20.640
+North Dallas County.
+
+12
+00:00:21.600 --> 00:00:22.360
+Okay, cool.
+
+13
+00:00:22.460 --> 00:00:23.920
+So let's assume we got a $285,000
+
+14
+00:00:23.920 --> 00:00:26.140
+house with a $20,000 payment.
+
+15
+00:00:26.140 --> 00:00:27.420
+And the interest is going to be
+
+16
+00:00:27.420 --> 00:00:30.060
+a 7.54% fixed for 30 years.
+
+17
+00:00:30.540 --> 00:00:31.940
+What will the payments look like?
+
+18
+00:00:32.360 --> 00:00:33.820
+Well, I was kind of shocked it
+
+19
+00:00:33.820 --> 00:00:35.240
+actually gave me the equations and
+
+20
+00:00:35.240 --> 00:00:35.940
+talked it through.
+
+21
+00:00:36.660 --> 00:00:38.420
+The monthly payments for
+
+22
+00:00:38.420 --> 00:00:39.900
+just the house by itself is going
+
+23
+00:00:39.900 --> 00:00:41.580
+to be $1854.76.
+
+24
+00:00:42.880 --> 00:00:45.120
+So with that in mind, let's say
+
+25
+00:00:45.120 --> 00:00:47.220
+we had a 2.2% property
+
+26
+00:00:47.220 --> 00:00:49.620
+tax in PMI until the loan has
+
+27
+00:00:49.620 --> 00:00:50.500
+20% equity.
+
+28
+00:00:50.720 --> 00:00:52.160
+What would the payments be then?
+
+29
+00:00:52.160 --> 00:00:54.980
+Because I know I'm not (dumb) -- I know
+
+30
+00:00:54.980 --> 00:00:56.240
+it ain't as simple as just paying
+
+31
+00:00:56.240 --> 00:00:56.760
+on the house.
+
+32
+00:00:56.900 --> 00:00:58.420
+You also got taxes, insurance and
+
+33
+00:00:58.420 --> 00:00:59.660
+insurance on top of the insurance
+
+34
+00:00:59.660 --> 00:01:01.780
+and well, I was grateful
+
+35
+00:01:01.780 --> 00:01:03.160
+that we went through, you know, all
+
+36
+00:01:03.160 --> 00:01:04.620
+of that as well and came to
+
+37
+00:01:04.620 --> 00:01:06.080
+$2,487.
+
+38
+00:01:06.320 --> 00:01:07.620
+Holy cow!
+
+39
+00:01:08.620 --> 00:01:10.700
+I'm currently doing $1,572 for my
+
+40
+00:01:10.700 --> 00:01:13.440
+apartment and this is a level of
+
+41
+00:01:13.440 --> 00:01:14.320
+lifestyle inflation
+
+42
+00:01:14.320 --> 00:01:16.740
+that I have just not seen before.
+
+43
+00:01:16.860 --> 00:01:18.100
+How in the world?
+
+44
+00:01:19.080 --> 00:01:21.400
+So, just to entertain the idea, let's
+
+45
+00:01:21.400 --> 00:01:22.600
+say we drop the rates back down
+
+46
+00:01:22.600 --> 00:01:24.140
+to 3.25%.
+
+47
+00:01:24.140 --> 00:01:25.920
+What could that do to the monthly payments?
+
+48
+00:01:26.620 --> 00:01:28.860
+Well, with PMI, insurance, taxes and
+
+49
+00:01:28.860 --> 00:01:30.080
+all that fun stuff, it would drop
+
+50
+00:01:30.080 --> 00:01:30.460
+the monthly
+
+51
+00:01:30.460 --> 00:01:33.720
+payments down to $1,786, which is
+
+52
+00:01:33.720 --> 00:01:34.700
+actually what I'm targeting.
+
+53
+00:01:35.060 --> 00:01:36.720
+So I'm not wrong for looking for
+
+54
+00:01:36.720 --> 00:01:38.960
+houses that are less than $285 because
+
+55
+00:01:38.960 --> 00:01:40.520
+with a $20,000
+
+56
+00:01:40.520 --> 00:01:43.500
+down payment and let's say I get
+
+57
+00:01:43.500 --> 00:01:45.980
+to refinance with interest rates at
+
+58
+00:01:45.980 --> 00:01:47.060
+a more reasonable amount,
+
+59
+00:01:47.060 --> 00:01:48.660
+you know, 5 or 7 years from
+
+60
+00:01:48.660 --> 00:01:50.840
+now, well, that's going to save me
+
+61
+00:01:50.840 --> 00:01:51.740
+a ton of money later.
+
+62
+00:01:53.120 --> 00:01:55.340
+So here's a breakdown, I just asked
+
+63
+00:01:55.340 --> 00:01:57.300
+you to put together a table of
+
+64
+00:01:57.300 --> 00:01:58.020
+what would happen
+
+65
+00:01:58.020 --> 00:02:01.220
+for various house prices, what it
+
+66
+00:02:01.220 --> 00:02:02.660
+would take for the $20,000 down
+
+67
+00:02:02.660 --> 00:02:03.440
+payment that would be
+
+68
+00:02:03.440 --> 00:02:05.220
+put in for it and then what
+
+69
+00:02:05.220 --> 00:02:06.860
+would the monthly payments just look like.
+
+70
+00:02:07.100 --> 00:02:08.360
+I understand these are just estimates,
+
+71
+00:02:08.500 --> 00:02:09.400
+I know there's all kinds of other
+
+72
+00:02:09.400 --> 00:02:10.020
+stuff to consider
+
+73
+00:02:10.500 --> 00:02:13.360
+but just a ballpark figure to say,
+
+74
+00:02:13.640 --> 00:02:15.460
+yeah, you buy a 3.25% house,
+
+75
+00:02:16.040 --> 00:02:16.780
+you're going to be paying
+
+76
+00:02:16.780 --> 00:02:18.180
+$2,100 a month.
+
+77
+00:02:19.700 --> 00:02:21.440
+After tax tags and title, that's going
+
+78
+00:02:21.440 --> 00:02:23.500
+to be $2,900 a month.
+
+79
+00:02:24.200 --> 00:02:26.860
+That's almost $3,000, like that's
+
+80
+00:02:26.860 --> 00:02:28.180
+twice the rent that I pay right
+
+81
+00:02:28.180 --> 00:02:30.380
+now for a 3.25% house
+
+82
+00:02:30.380 --> 00:02:32.800
+and a $20,000 down payment, that's
+
+83
+00:02:32.800 --> 00:02:33.920
+just... WoW.
+
+84
+00:02:34.680 --> 00:02:38.560
+So these values would be greatly affected
+
+85
+00:02:38.560 --> 00:02:40.460
+if interest rates were lower.
+
+86
+00:02:40.940 --> 00:02:42.360
+I noticed the one thing that really
+
+87
+00:02:42.360 --> 00:02:45.420
+triggered a lower monthly payment
+
+88
+00:02:45.420 --> 00:02:47.160
+is if the interest
+
+89
+00:02:47.160 --> 00:02:48.000
+rates were lower.
+
+90
+00:02:48.600 --> 00:02:50.080
+So everybody's talking about Wall
+
+91
+00:02:50.080 --> 00:02:51.600
+Street's buying up houses and the
+
+92
+00:02:51.600 --> 00:02:52.440
+housing market crash
+
+93
+00:02:52.440 --> 00:02:54.920
+or whatever, blah blah blah, no, it's
+
+94
+00:02:54.920 --> 00:02:55.600
+interest rates.
+
+95
+00:02:55.880 --> 00:02:57.380
+They're really high right now and
+
+96
+00:02:57.380 --> 00:02:58.640
+it's causing the monthly payments
+
+97
+00:02:58.640 --> 00:02:59.560
+on houses to be really
+
+98
+00:02:59.560 --> 00:03:01.340
+high, which is what's causing people
+
+99
+00:03:01.340 --> 00:03:03.840
+to not want to move around as
+
+100
+00:03:03.840 --> 00:03:04.740
+far as real estate
+
+101
+00:03:04.740 --> 00:03:05.260
+is concerned.
+
+102
+00:03:06.000 --> 00:03:07.760
+Now, I'm not saying that that's every
+
+103
+00:03:07.760 --> 00:03:09.840
+house deal ever, but like I'm just
+
+104
+00:03:09.840 --> 00:03:10.900
+a guy who works
+
+105
+00:03:10.900 --> 00:03:12.860
+in IT, who's been living in an
+
+106
+00:03:12.860 --> 00:03:14.160
+apartment for the last five years
+
+107
+00:03:14.160 --> 00:03:15.000
+and is ready to move
+
+108
+00:03:15.000 --> 00:03:15.600
+into a house.
+
+109
+00:03:16.240 --> 00:03:18.200
+I've, you know, been in the same
+
+110
+00:03:18.200 --> 00:03:19.500
+place and it just makes sense.
+
+111
+00:03:19.600 --> 00:03:20.260
+It's like, why not?
+
+112
+00:03:20.400 --> 00:03:21.280
+I'm going to be here a while,
+
+113
+00:03:21.440 --> 00:03:22.780
+so why not?
+
+114
+00:03:23.120 --> 00:03:25.000
+And as I really try to step
+
+115
+00:03:25.000 --> 00:03:30.820
+into it, holy cow, wow, ummmm...
+

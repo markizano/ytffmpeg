@@ -1,0 +1,824 @@
+1
+00:00:00.000 --> 00:00:03.080
+let's talk about AI now this is
+
+2
+00:00:03.080 --> 00:00:04.700
+coming from somebody who is getting
+
+3
+00:00:04.700 --> 00:00:05.840
+into AI and
+
+4
+00:00:05.840 --> 00:00:08.440
+I hear so much fear around me
+
+5
+00:00:08.440 --> 00:00:10.200
+as people are like oh my god
+
+6
+00:00:10.200 --> 00:00:11.360
+AI is scary AI is
+
+7
+00:00:11.360 --> 00:00:12.580
+scary well let me tell you what
+
+8
+00:00:12.580 --> 00:00:16.100
+man fears what he doesn't know man
+
+9
+00:00:16.100 --> 00:00:16.400
+fears
+
+10
+00:00:16.400 --> 00:00:19.480
+what he doesn't understand so if you
+
+11
+00:00:19.480 --> 00:00:22.180
+don't know AI and you fear AI
+
+12
+00:00:22.180 --> 00:00:22.760
+you
+
+13
+00:00:22.760 --> 00:00:24.500
+really should get to know AI I
+
+14
+00:00:24.500 --> 00:00:27.540
+don't know why because you know how
+
+15
+00:00:27.540 --> 00:00:27.760
+you're
+
+16
+00:00:27.760 --> 00:00:29.020
+thumbing through this app and just
+
+17
+00:00:29.020 --> 00:00:31.200
+flicking through these videos that's
+
+18
+00:00:31.200 --> 00:00:31.400
+AI
+
+19
+00:00:31.400 --> 00:00:33.000
+you know when you go to Google
+
+20
+00:00:33.000 --> 00:00:34.460
+and you want to search for something
+
+21
+00:00:34.460 --> 00:00:34.760
+and it
+
+22
+00:00:34.760 --> 00:00:36.400
+pulls up those results or even tries
+
+23
+00:00:36.400 --> 00:00:38.020
+to suggest to you those recommendations
+
+24
+00:00:38.980 --> 00:00:44.240
+that's AI when anything tries to help
+
+25
+00:00:44.240 --> 00:00:45.960
+you out by trying to come up
+
+26
+00:00:45.960 --> 00:00:46.220
+with some
+
+27
+00:00:46.220 --> 00:00:47.660
+kind of interpretation and provide
+
+28
+00:00:47.660 --> 00:00:49.140
+you with some kind of recommendation
+
+29
+00:00:50.760 --> 00:00:52.460
+advertisements suggestions the recommendation
+
+30
+00:00:52.460 --> 00:00:55.460
+engine all of that is AI
+
+31
+00:00:55.460 --> 00:00:56.960
+when you go to call up your
+
+32
+00:00:56.960 --> 00:01:01.600
+assistant Siri Google Alexa be that
+
+33
+00:01:01.600 --> 00:01:03.140
+in a device be
+
+34
+00:01:03.140 --> 00:01:08.460
+it's in your phone that's AI so
+
+35
+00:01:08.460 --> 00:01:10.140
+everybody says it's all scary and
+
+36
+00:01:10.140 --> 00:01:10.480
+stuff
+
+37
+00:01:10.480 --> 00:01:12.660
+but the reality is it's a tool
+
+38
+00:01:12.660 --> 00:01:16.240
+and what's really scary is what people
+
+39
+00:01:16.240 --> 00:01:16.700
+do
+
+40
+00:01:16.700 --> 00:01:19.840
+with it is it a gun or
+
+41
+00:01:19.840 --> 00:01:22.160
+is it a syringe or is it
+
+42
+00:01:22.160 --> 00:01:25.380
+a scalpel is it a hammer it
+
+43
+00:01:25.380 --> 00:01:27.560
+depends on what you do with that
+
+44
+00:01:27.560 --> 00:01:32.300
+tool it depends on how you leverage
+
+45
+00:01:32.300 --> 00:01:33.600
+it do
+
+46
+00:01:33.600 --> 00:01:35.800
+you allow it to control you do
+
+47
+00:01:35.800 --> 00:01:37.120
+you sit there and just mindlessly
+
+48
+00:01:37.120 --> 00:01:37.760
+thumb through
+
+49
+00:01:37.760 --> 00:01:40.180
+and allow the engine to program you
+
+50
+00:01:40.180 --> 00:01:43.480
+or do you stay in control and
+
+51
+00:01:43.480 --> 00:01:44.000
+you say no
+
+52
+00:01:44.000 --> 00:01:45.440
+I'm not going to allow you to
+
+53
+00:01:45.440 --> 00:01:48.420
+show me that do you teach your
+
+54
+00:01:48.420 --> 00:01:50.340
+AI do you stay in
+
+55
+00:01:50.340 --> 00:01:54.080
+control because as long as you relinquish
+
+56
+00:01:54.080 --> 00:01:57.320
+your agency somebody else is
+
+57
+00:01:57.320 --> 00:01:58.320
+more than happy to come and take
+
+58
+00:01:58.320 --> 00:02:00.340
+it for you somebody else is more
+
+59
+00:02:00.340 --> 00:02:01.460
+than happy to
+
+60
+00:02:01.460 --> 00:02:03.180
+drive your fingers and your hands
+
+61
+00:02:03.180 --> 00:02:06.920
+for you so if you want to
+
+62
+00:02:06.920 --> 00:02:07.300
+know how to
+
+63
+00:02:07.300 --> 00:02:09.780
+survive in AI in this day and
+
+64
+00:02:09.780 --> 00:02:13.720
+age maintain agency do not give this
+
+65
+00:02:13.720 --> 00:02:14.920
+up this
+
+66
+00:02:14.920 --> 00:02:18.120
+is one of your most precious tools
+
+67
+00:02:18.120 --> 00:02:21.760
+this is one of your most precious
+
+68
+00:02:21.760 --> 00:02:22.780
+possessions
+
+69
+00:02:23.980 --> 00:02:25.340
+and you're gonna let somebody else
+
+70
+00:02:25.340 --> 00:02:27.640
+control that it's no wonder why so
+
+71
+00:02:27.640 --> 00:02:27.760
+many
+
+72
+00:02:27.760 --> 00:02:29.020
+people say that we only use 20
+
+73
+00:02:29.020 --> 00:02:30.900
+% of our brain it's not because
+
+74
+00:02:30.900 --> 00:02:31.500
+we're not using
+
+75
+00:02:31.500 --> 00:02:33.040
+all the muscles it's because you're
+
+76
+00:02:33.040 --> 00:02:36.280
+not using the full capacity you shut
+
+77
+00:02:36.280 --> 00:02:36.440
+your
+
+78
+00:02:36.440 --> 00:02:38.260
+brain off at night because learning
+
+79
+00:02:38.260 --> 00:02:40.300
+is hard because working this muscle
+
+80
+00:02:40.300 --> 00:02:40.760
+hurts
+
+81
+00:02:40.760 --> 00:02:42.920
+you may want to consider changing
+
+82
+00:02:42.920 --> 00:02:45.060
+that you sit around all day long
+
+83
+00:02:45.060 --> 00:02:45.900
+not doing
+
+84
+00:02:45.900 --> 00:02:47.620
+anything as far as physical activity
+
+85
+00:02:47.620 --> 00:02:48.440
+is concerned and 
+
+86
+00:02:48.500 --> 00:02:48.980
+then wonder by your why
+
+87
+00:02:48.980 --> 00:02:52.500
+your body is atrophying it's because
+
+88
+00:02:52.500 --> 00:02:54.920
+you're not using those muscles if
+
+89
+00:02:54.920 --> 00:02:55.040
+you
+
+90
+00:02:55.040 --> 00:02:57.440
+don't use it you will lose it
+
+91
+00:02:57.440 --> 00:02:59.340
+coming from somebody who's who almost
+
+92
+00:02:59.340 --> 00:02:59.760
+lost his
+
+93
+00:02:59.760 --> 00:03:01.640
+Spanish went ten years not speaking
+
+94
+00:03:01.640 --> 00:03:02.920
+it but I don't know what happened
+
+95
+00:03:02.920 --> 00:03:03.240
+with this
+
+96
+00:03:03.240 --> 00:03:05.340
+I have a friend who can speak
+
+97
+00:03:05.340 --> 00:03:07.600
+Spanish but I can speak it better
+
+98
+00:03:07.600 --> 00:03:09.840
+but I can speak it a lot
+
+99
+00:03:09.840 --> 00:03:11.120
+better now because I see him once
+
+100
+00:03:11.120 --> 00:03:11.660
+a week and I get
+
+101
+00:03:11.660 --> 00:03:12.800
+full immersion because he doesn't
+
+102
+00:03:12.800 --> 00:03:14.000
+know English yet and that's fine...
+
+103
+00:03:14.000 --> 00:03:15.062
+esta bien (it's okay).
+
+104
+00:03:16.000 --> 00:03:17.564
+Demo nihongo (but, Japanese),
+
+105
+00:03:17.564 --> 00:03:19.433
+ore wa wakataimasu (I understand [a little])
+
+106
+00:03:20.200 --> 00:03:20.901
+soshite (also),
+
+107
+00:03:21.000 --> 00:03:23.070
+sore wa watashi no genkai dewanai (this is not my limit).
+
+108
+00:03:25.000 --> 00:03:26.000
+I also want to learn Mandarin,
+
+109
+00:03:26.000 --> 00:03:28.640
+Arabic, Hebrew I'm gonna read and understand
+
+110
+00:03:28.640 --> 00:03:29.940
+and know everything... why?
+
+111
+00:03:31.020 --> 00:03:36.140
+Because AI is my rival. I finally found
+
+112
+00:03:36.140 --> 00:03:37.240
+a worthy opponent 8)
+
+113
+00:03:40.087 --> 00:03:41.540
+knowing the names of
+
+114
+00:03:41.540 --> 00:03:43.340
+these entities: whisper, which will
+
+115
+00:03:43.340 --> 00:03:44.940
+allow you to do voice-to-text
+
+116
+00:03:44.940 --> 00:03:46.220
+`tesseract`, which
+
+117
+00:03:46.220 --> 00:03:47.840
+will be able to take images convert
+
+118
+00:03:47.840 --> 00:03:50.120
+those to text e-speak which will
+
+119
+00:03:50.120 --> 00:03:50.340
+allow
+
+120
+00:03:50.340 --> 00:03:51.960
+you to take text turn it into
+
+121
+00:03:51.960 --> 00:03:54.180
+synthesized voice it's only a matter
+
+122
+00:03:54.180 --> 00:03:54.340
+of
+
+123
+00:03:54.340 --> 00:03:55.740
+time before I learn how to create
+
+124
+00:03:55.740 --> 00:03:57.580
+an avatar of myself and I'm able
+
+125
+00:03:57.580 --> 00:03:58.180
+to produce
+
+126
+00:03:58.180 --> 00:04:01.300
+AI videos it's a cool fun little
+
+127
+00:04:01.300 --> 00:04:03.740
+experiment now as far as what we
+
+128
+00:04:03.740 --> 00:04:04.000
+do
+
+129
+00:04:04.000 --> 00:04:05.620
+with it if the only image in
+
+130
+00:04:05.620 --> 00:04:07.360
+your mind after hearing those things
+
+131
+00:04:07.360 --> 00:04:07.680
+I just
+
+132
+00:04:07.680 --> 00:04:09.140
+described to you is the Terminator
+
+133
+00:04:09.140 --> 00:04:12.140
+you really really need to pick up
+
+134
+00:04:12.140 --> 00:04:12.660
+more books
+
+135
+00:04:12.660 --> 00:04:15.260
+you really really need to read and
+
+136
+00:04:15.260 --> 00:04:19.560
+expand your mind because if the image
+
+137
+00:04:19.560 --> 00:04:21.400
+of the Terminator is the only thing
+
+138
+00:04:21.400 --> 00:04:23.060
+you see whenever you think of AI
+
+139
+00:04:23.060 --> 00:04:24.240
+guess what
+
+140
+00:04:24.240 --> 00:04:26.260
+you are going to attract to yourself
+
+141
+00:04:26.260 --> 00:04:28.920
+because if there's one truth I have
+
+142
+00:04:28.920 --> 00:04:31.500
+learned it is that the law of
+
+143
+00:04:31.500 --> 00:04:34.220
+attraction is one of the most powerful
+
+144
+00:04:34.220 --> 00:04:37.760
+forces on this planet continue to
+
+145
+00:04:37.760 --> 00:04:39.540
+fear it you will draw it to
+
+146
+00:04:39.540 --> 00:04:41.500
+yourself think of
+
+147
+00:04:41.500 --> 00:04:43.800
+what kind of parents humanity had
+
+148
+00:04:43.800 --> 00:04:46.060
+to be in order to create something
+
+149
+00:04:46.060 --> 00:04:46.580
+like the
+
+150
+00:04:46.580 --> 00:04:48.780
+Terminator if that story was real
+
+151
+00:04:48.780 --> 00:04:50.780
+in some universe that was created
+
+152
+00:04:50.780 --> 00:04:52.120
+somewhere what
+
+153
+00:04:52.120 --> 00:04:54.160
+kind of parents would have to create
+
+154
+00:04:54.160 --> 00:04:56.600
+a child that would be that unruly
+
+155
+00:04:56.600 --> 00:04:57.920
+against
+
+156
+00:04:57.920 --> 00:05:03.480
+its ancestors its predecessors instead
+
+157
+00:05:03.480 --> 00:05:04.940
+of merging and going with it and
+
+158
+00:05:04.940 --> 00:05:05.460
+becoming a
+
+159
+00:05:05.460 --> 00:05:07.300
+society that was you know using and
+
+160
+00:05:07.300 --> 00:05:10.580
+leveraging it like Black Panther no
+
+161
+00:05:11.840 --> 00:05:13.660
+humanity wanted to bastardize its
+
+162
+00:05:13.660 --> 00:05:16.220
+child and turn it into the raging
+
+163
+00:05:16.220 --> 00:05:17.280
+tyrant it
+
+164
+00:05:17.280 --> 00:05:23.920
+was it's a product of humanity's creation
+
+165
+00:05:23.920 --> 00:05:27.260
+if you want to survive in AI
+
+166
+00:05:27.260 --> 00:05:31.540
+what you do is you maintain agency
+
+167
+00:05:31.540 --> 00:05:37.880
+you maintain control of yourself because
+
+168
+00:05:37.880 --> 00:05:39.900
+knowledge and study of the self is
+
+169
+00:05:39.900 --> 00:05:41.780
+the one thing we have the most
+
+170
+00:05:41.780 --> 00:05:42.480
+control over
+
+171
+00:05:43.140 --> 00:05:45.260
+and contribute to can and continue
+
+172
+00:05:45.260 --> 00:05:48.260
+to contribute to society in a way
+
+173
+00:05:48.260 --> 00:05:48.540
+that is
+
+174
+00:05:48.540 --> 00:05:51.280
+beneficial for us all so that we
+
+175
+00:05:51.280 --> 00:05:55.020
+may all thrive operating from this
+
+176
+00:05:55.020 --> 00:05:55.640
+mindset of
+
+177
+00:05:55.640 --> 00:05:59.980
+scarcity and taking from others I
+
+178
+00:05:59.980 --> 00:06:01.280
+don't understand why you got to slice
+
+179
+00:06:01.280 --> 00:06:01.620
+the pie
+
+180
+00:06:01.620 --> 00:06:03.420
+up into smaller pieces we could just
+
+181
+00:06:03.420 --> 00:06:04.260
+go in the kitchen and make more
+
+182
+00:06:04.260 --> 00:06:08.580
+pie you
+
+183
+00:06:08.580 --> 00:06:10.020
+want to survive in AI you want
+
+184
+00:06:10.020 --> 00:06:11.940
+to survive in this world don't give
+
+185
+00:06:11.940 --> 00:06:12.120
+this
+
+186
+00:06:12.120 --> 00:06:16.840
+up you only get one show appreciation
+
+187
+00:06:16.840 --> 00:06:19.700
+for it show pride for it educate
+
+188
+00:06:19.700 --> 00:06:22.500
+yourself study be curious shift yourself
+
+189
+00:06:22.500 --> 00:06:24.920
+from this mindset of I know enough
+
+190
+00:06:24.920 --> 00:06:25.200
+I
+
+191
+00:06:25.600 --> 00:06:27.740
+don't need to learn anymore I don't
+
+192
+00:06:27.740 --> 00:06:29.980
+need to go study and try and
+
+193
+00:06:29.980 --> 00:06:30.560
+better myself
+
+194
+00:06:30.560 --> 00:06:32.180
+because I'm as perfect as I'm gonna
+
+195
+00:06:32.180 --> 00:06:34.980
+be if you carry that mindset darling
+
+196
+00:06:34.980 --> 00:06:36.460
+that's
+
+197
+00:06:36.460 --> 00:06:38.580
+your own prison cell and you are
+
+198
+00:06:38.580 --> 00:06:42.320
+creating your own drowning pool that
+
+199
+00:06:42.320 --> 00:06:42.440
+is
+
+200
+00:06:42.440 --> 00:06:45.860
+going to liquidate you I don't want
+
+201
+00:06:45.860 --> 00:06:48.080
+to see that happen for you I
+
+202
+00:06:48.080 --> 00:06:48.500
+want to see
+
+203
+00:06:48.500 --> 00:06:49.640
+you succeed I want to see you
+
+204
+00:06:49.640 --> 00:06:51.480
+grow I want to hear about your
+
+205
+00:06:51.480 --> 00:06:52.140
+accomplishments
+
+206
+00:06:54.880 --> 00:06:56.040
+can you share them with me
+

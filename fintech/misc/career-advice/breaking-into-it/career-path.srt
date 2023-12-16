@@ -1,0 +1,1132 @@
+1
+00:00:01.020 --> 00:00:02.840
+So, let's talk about your career path.
+
+2
+00:00:03.600 --> 00:00:05.680
+Now, this is more directive rather than
+
+3
+00:00:06.060 --> 00:00:07.400
+prescriptive. So, take this with a
+
+4
+00:00:07.400 --> 00:00:08.880
+grain of salt. It's not a
+
+5
+00:00:08.880 --> 00:00:09.480
+one-size-fits-all
+
+6
+00:00:09.480 --> 00:00:10.780
+kind of thing. It's just a general
+
+7
+00:00:10.780 --> 00:00:12.820
+pattern that I've seen in the industry.
+
+8
+00:00:13.240 --> 00:00:15.400
+If you're new to IT, you typically
+
+9
+00:00:15.400 --> 00:00:16.820
+are going to go down one of three
+
+10
+00:00:16.820 --> 00:00:18.280
+different routes. Either you're going
+
+11
+00:00:18.280 --> 00:00:19.560
+to be social, you're going to be
+
+12
+00:00:19.560 --> 00:00:20.240
+design heavy,
+
+13
+00:00:20.560 --> 00:00:21.440
+or you're going to be functional.
+
+14
+00:00:21.760 --> 00:00:24.740
+I chose functional. Let me expand
+
+15
+00:00:24.740 --> 00:00:25.360
+on that just a
+
+16
+00:00:25.360 --> 00:00:27.020
+little bit further here. If you're
+
+17
+00:00:27.020 --> 00:00:28.760
+going down the social path, that's typically
+
+18
+00:00:28.760 --> 00:00:29.980
+going to be your business analyst,
+
+19
+00:00:30.360 --> 00:00:32.660
+your release manager, your project manager,
+
+20
+00:00:32.820 --> 00:00:34.800
+maybe even middle management. Social,
+
+21
+00:00:35.040 --> 00:00:36.000
+I tend to think of it as
+
+22
+00:00:36.000 --> 00:00:36.600
+like people
+
+23
+00:00:36.600 --> 00:00:38.060
+management or peopling because you
+
+24
+00:00:38.060 --> 00:00:40.360
+like to deal with people. Your helpdesk --
+
+25
+00:00:40.600 --> 00:00:42.100
+(let me hold on, pause before I
+
+26
+00:00:42.100 --> 00:00:44.440
+get there.) Your designs are going
+
+27
+00:00:44.440 --> 00:00:45.220
+to be more like
+
+28
+00:00:45.220 --> 00:00:46.640
+your Photoshop, your Illustrator,
+
+29
+00:00:46.800 --> 00:00:48.480
+your Adobe products. If you're getting into
+
+30
+00:00:48.480 --> 00:00:50.100
+gaming, that could be a thing too,
+
+31
+00:00:50.200 --> 00:00:51.680
+(but I have also learned from experience that
+
+32
+00:00:51.680 --> 00:00:54.060
+gaming can also be very function heavy
+
+33
+00:00:54.060 --> 00:00:56.300
+too with the whole geometry, graphics, and
+
+34
+00:00:56.300 --> 00:00:58.360
+trying to understand how to draw pixels
+
+35
+00:00:58.360 --> 00:01:00.620
+on the screen.) But there's also the user
+
+36
+00:01:00.620 --> 00:01:03.520
+experience or UX. Some people also
+
+37
+00:01:03.520 --> 00:01:05.040
+call this MX, which is like the membership
+
+38
+00:01:05.040 --> 00:01:07.980
+experience. The idea is to have flows
+
+39
+00:01:07.980 --> 00:01:10.200
+and designs that actually work and cohesive.
+
+40
+00:01:10.500 --> 00:01:12.420
+You know, first name, last name, email
+
+41
+00:01:12.420 --> 00:01:15.200
+address, password. What order do those go
+
+42
+00:01:15.200 --> 00:01:16.760
+in? How is this supposed to look?
+
+43
+00:01:16.820 --> 00:01:18.480
+It's supposed to ease and flow this
+
+44
+00:01:18.480 --> 00:01:18.900
+way to
+
+45
+00:01:18.900 --> 00:01:20.420
+make it simple to navigate and to
+
+46
+00:01:20.420 --> 00:01:23.080
+just intuitively figure things out. Designs
+
+47
+00:01:23.080 --> 00:01:25.440
+are good at that. Function is going
+
+48
+00:01:25.440 --> 00:01:27.200
+to be your DevOps, your cloud ops, your
+
+49
+00:01:27.200 --> 00:01:28.900
+information security, your operation
+
+50
+00:01:28.900 --> 00:01:31.280
+security, programming, things that deal
+
+51
+00:01:31.280 --> 00:01:34.480
+with the actual way things work, the
+
+52
+00:01:34.480 --> 00:01:36.660
+function of it. Is it aesthetic? Is
+
+53
+00:01:36.660 --> 00:01:37.740
+it not
+
+54
+00:01:37.740 --> 00:01:40.320
+only aesthetic? Does it meet the business
+
+55
+00:01:40.320 --> 00:01:42.660
+requirements and does the function match
+
+56
+00:01:42.660 --> 00:01:44.960
+with the social such that the things
+
+57
+00:01:44.960 --> 00:01:47.140
+do what they're supposed to do? And the
+
+58
+00:01:47.140 --> 00:01:49.040
+three of these together are all part
+
+59
+00:01:49.040 --> 00:01:51.240
+of a team. So there's somebody who's
+
+60
+00:01:51.240 --> 00:01:51.380
+going to
+
+61
+00:01:51.380 --> 00:01:52.740
+be dealing with the people, somebody
+
+62
+00:01:52.740 --> 00:01:54.140
+who's going to be making it look pretty,
+
+63
+00:01:54.580 --> 00:01:55.840
+and somebody who's going to be helping
+
+64
+00:01:55.840 --> 00:01:57.900
+to make it work. If you can
+
+65
+00:01:57.900 --> 00:01:58.400
+find somebody
+
+66
+00:01:58.400 --> 00:02:00.680
+who can do all three, they're unicorns.
+
+67
+00:02:00.860 --> 00:02:03.320
+You're a rarity. But most people
+
+68
+00:02:03.320 --> 00:02:04.980
+specialize in something. And if one
+
+69
+00:02:04.980 --> 00:02:09.180
+of these is calling to you, then certain
+
+70
+00:02:09.180 --> 00:02:11.180
+types and jobs that you are going
+
+71
+00:02:11.180 --> 00:02:12.580
+to want to apply for, that are
+
+72
+00:02:12.580 --> 00:02:13.080
+going to get
+
+73
+00:02:13.080 --> 00:02:14.400
+you to the places where you want
+
+74
+00:02:14.400 --> 00:02:17.040
+to go, and hopefully these give you enough
+
+75
+00:02:17.040 --> 00:02:19.420
+exposure so that you can glean off
+
+76
+00:02:19.420 --> 00:02:21.520
+of what people are doing related to these
+
+77
+00:02:21.520 --> 00:02:23.120
+fields, related to these areas, getting
+
+78
+00:02:23.120 --> 00:02:24.360
+these jobs. If you get a help
+
+79
+00:02:24.360 --> 00:02:25.520
+desk job, if
+
+80
+00:02:25.520 --> 00:02:27.680
+you get a reception job. When I
+
+81
+00:02:27.680 --> 00:02:29.160
+say receptionist, I mean there's somebody
+
+82
+00:02:29.160 --> 00:02:30.260
+that works in the front off in
+
+83
+00:02:30.260 --> 00:02:32.240
+the office, like when people go and actually
+
+84
+00:02:32.240 --> 00:02:33.460
+work in the office, and you notice
+
+85
+00:02:33.460 --> 00:02:34.600
+there's always somebody there to like
+
+86
+00:02:34.600 --> 00:02:36.580
+greet the guests, let them come in,
+
+87
+00:02:36.660 --> 00:02:37.860
+show them around, make sure to get their
+
+88
+00:02:37.860 --> 00:02:39.580
+badges, make sure their security is
+
+89
+00:02:39.580 --> 00:02:40.620
+in check, and all that fun stuff.
+
+90
+00:02:41.080 --> 00:02:41.580
+You know,
+
+91
+00:02:41.600 --> 00:02:43.400
+having this job can expose you to
+
+92
+00:02:43.400 --> 00:02:45.400
+various things. Having help desk can
+
+93
+00:02:45.400 --> 00:02:46.080
+expose you
+
+94
+00:02:46.080 --> 00:02:47.360
+to being able to work with people,
+
+95
+00:02:47.480 --> 00:02:49.520
+so that you can evolve into project
+
+96
+00:02:49.520 --> 00:02:50.960
+management, release management, and
+
+97
+00:02:50.960 --> 00:02:53.040
+get into those upper, I would say,
+
+98
+00:02:53.940 --> 00:02:55.580
+just past
+
+99
+00:02:55.580 --> 00:02:57.440
+entry-level jobs that are like just
+
+100
+00:02:57.440 --> 00:03:00.560
+a slight upgrade from this. If you're a
+
+101
+00:03:01.240 --> 00:03:02.280
+function guy, you're gonna want to
+
+102
+00:03:02.280 --> 00:03:04.020
+get into data entry jobs, working
+
+103
+00:03:04.020 --> 00:03:04.560
+with Excel,
+
+104
+00:03:04.700 --> 00:03:07.140
+working with CSV files. If you're
+
+105
+00:03:07.140 --> 00:03:08.340
+savvy enough and you want to try
+
+106
+00:03:08.340 --> 00:03:08.960
+your hand at
+
+107
+00:03:08.960 --> 00:03:10.360
+some things, you can get into API
+
+108
+00:03:10.360 --> 00:03:12.600
+development itself. You can get into being
+
+109
+00:03:12.600 --> 00:03:14.280
+a web dev. I highly recommend the
+
+110
+00:03:14.280 --> 00:03:16.580
+Linux Plus certification, and whatever
+
+111
+00:03:16.580 --> 00:03:17.040
+it takes
+
+112
+00:03:17.040 --> 00:03:18.980
+to get to understand and know Linux
+
+113
+00:03:18.980 --> 00:03:21.320
+better. If you know it inside and
+
+114
+00:03:21.320 --> 00:03:21.840
+out, I
+
+115
+00:03:21.840 --> 00:03:24.800
+promise you, function people, you
+
+116
+00:03:24.800 --> 00:03:27.120
+are going to succeed very well if you
+
+117
+00:03:27.120 --> 00:03:29.360
+learn how to use Linux. I'm not
+
+118
+00:03:29.360 --> 00:03:31.260
+gonna speak about things I don't know, because
+
+119
+00:03:31.260 --> 00:03:33.320
+I avoided design like a plague during
+
+120
+00:03:33.320 --> 00:03:35.700
+my early years, because I tried and
+
+121
+00:03:35.700 --> 00:03:35.900
+I was
+
+122
+00:03:35.900 --> 00:03:36.620
+just like, I'm not good at that.
+
+123
+00:03:36.660 --> 00:03:37.460
+I know I'm not good at that,
+
+124
+00:03:37.560 --> 00:03:38.480
+and I'm not gonna
+
+125
+00:03:38.480 --> 00:03:40.060
+put the efforts in it just yet,
+
+126
+00:03:40.100 --> 00:03:42.380
+trying to figure it out. So unfortunately,
+
+127
+00:03:42.580 --> 00:03:42.820
+I kind
+
+128
+00:03:42.820 --> 00:03:44.720
+of pigeonholed myself into a place
+
+129
+00:03:44.720 --> 00:03:46.300
+where I don't know the design space
+
+130
+00:03:46.300 --> 00:03:46.760
+as well as
+
+131
+00:03:46.760 --> 00:03:48.860
+I should or could; so if you could
+
+132
+00:03:48.860 --> 00:03:49.940
+drop a comment below and you know
+
+133
+00:03:49.940 --> 00:03:50.300
+something I
+
+134
+00:03:50.300 --> 00:03:52.560
+don't, I would appreciate that. And
+
+135
+00:03:52.560 --> 00:03:53.860
+then finally, we'll close this up
+
+136
+00:03:53.860 --> 00:03:54.280
+with some
+
+137
+00:03:54.280 --> 00:03:55.500
+points that you're gonna want to take
+
+138
+00:03:55.500 --> 00:03:56.760
+home. Don't let this be the end
+
+139
+00:03:56.760 --> 00:03:56.980
+of this
+
+140
+00:03:56.980 --> 00:03:58.700
+conversation, and don't let this be
+
+141
+00:03:58.700 --> 00:04:00.040
+the one video you watch and say,
+
+142
+00:04:00.120 --> 00:04:01.960
+oh I tried. If
+
+143
+00:04:01.960 --> 00:04:03.180
+there's one thing about IT and there's
+
+144
+00:04:03.180 --> 00:04:05.060
+one thing I learned, persistence is key.
+
+145
+00:04:05.060 --> 00:04:07.480
+Consistency is key, and if you have
+
+146
+00:04:07.480 --> 00:04:09.400
+a passion for it, it works all
+
+147
+00:04:09.400 --> 00:04:09.980
+the more to
+
+148
+00:04:09.980 --> 00:04:11.520
+your favor. You want to make sure
+
+149
+00:04:11.520 --> 00:04:13.240
+that your resume is on point. You
+
+150
+00:04:13.240 --> 00:04:13.560
+want to make
+
+151
+00:04:13.560 --> 00:04:16.580
+sure that it's got all the details
+
+152
+00:04:16.580 --> 00:04:18.240
+that are needed to be able to
+
+153
+00:04:18.240 --> 00:04:18.900
+contact with
+
+154
+00:04:18.900 --> 00:04:20.360
+you at the header, at the top,
+
+155
+00:04:20.640 --> 00:04:22.540
+need to be visible. You get one
+
+156
+00:04:22.540 --> 00:04:23.480
+of three things. You
+
+157
+00:04:23.480 --> 00:04:25.460
+either get to emphasize your experience,
+
+158
+00:04:26.020 --> 00:04:28.840
+your skills, or your education. Whatever
+
+159
+00:04:28.840 --> 00:04:30.860
+you value most goes at the top,
+
+160
+00:04:31.760 --> 00:04:34.900
+and sort in that order. And at
+
+161
+00:04:34.900 --> 00:04:35.600
+least that's how I
+
+162
+00:04:35.600 --> 00:04:38.440
+set up my resumes. I also kind
+
+163
+00:04:38.440 --> 00:04:39.340
+of sort out how I notice about
+
+164
+00:04:39.340 --> 00:04:39.960
+people whenever I
+
+165
+00:04:39.960 --> 00:04:41.940
+look at their resumes. Schedule interviews.
+
+166
+00:04:42.320 --> 00:04:43.820
+Be the active one. Be the one
+
+167
+00:04:43.820 --> 00:04:45.280
+that is putting yourself on people's
+
+168
+00:04:45.280 --> 00:04:48.580
+calendars. Follow up. Get on them. Make
+
+169
+00:04:48.580 --> 00:04:49.720
+sure that they know that you're here.
+
+170
+00:04:50.040 --> 00:04:51.720
+Make sure that they know that you are
+
+171
+00:04:51.720 --> 00:04:53.480
+ready and available for work, that
+
+172
+00:04:53.480 --> 00:04:55.420
+you're excited, that you want to know
+
+173
+00:04:55.420 --> 00:04:56.340
+about any
+
+174
+00:04:56.340 --> 00:04:57.740
+of the opportunities that possibly
+
+175
+00:04:57.740 --> 00:04:59.780
+could be to help you get going,
+
+176
+00:04:59.960 --> 00:05:00.920
+because you
+
+177
+00:05:00.920 --> 00:05:03.320
+want to work. In this economy, in
+
+178
+00:05:03.320 --> 00:05:04.840
+this current state where we're,
+
+179
+00:05:04.900 --> 00:05:06.120
+we're tipping on the verge of recession
+
+180
+00:05:06.120 --> 00:05:07.980
+and the tight monetary policy and
+
+181
+00:05:07.980 --> 00:05:09.200
+everything, people are kind of scared.
+
+182
+00:05:09.300 --> 00:05:10.100
+I don't know if they want to spend
+
+183
+00:05:10.100 --> 00:05:11.680
+their money. Guess what? That's when
+
+184
+00:05:11.680 --> 00:05:12.580
+you step in the door and you
+
+185
+00:05:12.580 --> 00:05:14.120
+say, look, I may
+
+186
+00:05:14.120 --> 00:05:15.540
+I know everything up in here, but
+
+187
+00:05:15.540 --> 00:05:17.940
+I'm willing to learn what I need to
+
+188
+00:05:17.940 --> 00:05:20.300
+learn. And as someone who is new
+
+189
+00:05:20.300 --> 00:05:21.760
+to this, I come with a fresh
+
+190
+00:05:21.760 --> 00:05:23.800
+perspective, and I'm
+
+191
+00:05:23.800 --> 00:05:25.420
+also willing to do what it takes
+
+192
+00:05:25.420 --> 00:05:27.320
+to get the job done. And I'm
+
+193
+00:05:27.320 --> 00:05:27.820
+willing to make
+
+194
+00:05:27.820 --> 00:05:29.560
+myself available in order to make
+
+195
+00:05:29.560 --> 00:05:31.040
+this happen. And for the duration
+
+196
+00:05:31.040 --> 00:05:31.520
+of time that
+
+197
+00:05:31.520 --> 00:05:32.880
+I'm here, I'm gonna make
+
+198
+00:05:32.880 --> 00:05:33.800
+sure that I do a good job.
+
+199
+00:05:34.560 --> 00:05:35.080
+Find others and
+
+200
+00:05:35.080 --> 00:05:36.780
+continue to network with wherever
+
+201
+00:05:36.780 --> 00:05:38.700
+you happen to be. So if you
+
+202
+00:05:38.700 --> 00:05:39.600
+are trying to get
+
+203
+00:05:39.600 --> 00:05:41.260
+into the programming space, go find
+
+204
+00:05:41.260 --> 00:05:43.260
+the programming chats. IRC is where you're
+
+205
+00:05:43.260 --> 00:05:44.700
+gonna find a bunch of them libera.chat
+
+206
+00:05:44.700 --> 00:05:46.320
+Not sponsored, but...
+
+207
+00:05:46.420 --> 00:05:47.180
+I hang out
+
+208
+00:05:47.180 --> 00:05:49.860
+there too as Markizano. You also,
+
+209
+00:05:50.200 --> 00:05:51.940
+you know, people who go and file
+
+210
+00:05:51.940 --> 00:05:53.240
+resumes on
+
+211
+00:05:53.240 --> 00:05:54.620
+LinkedIn and like just leave it at
+
+212
+00:05:54.620 --> 00:05:56.340
+that. There's a reason why they're
+
+213
+00:05:56.340 --> 00:05:56.640
+not getting
+
+214
+00:05:56.640 --> 00:05:59.020
+a job. Follow up. Find people that
+
+215
+00:05:59.020 --> 00:06:00.760
+work there. Bug them. Be like, hey,
+
+216
+00:06:00.840 --> 00:06:01.040
+I've been
+
+217
+00:06:01.040 --> 00:06:02.020
+looking at your company. I'm talking
+
+218
+00:06:02.020 --> 00:06:03.160
+with HR. I was wondering if you
+
+219
+00:06:03.160 --> 00:06:03.500
+could help me
+
+220
+00:06:03.500 --> 00:06:04.880
+out because like I'm wondering what
+
+221
+00:06:04.880 --> 00:06:05.980
+you guys are working on. You know,
+
+222
+00:06:06.000 --> 00:06:06.160
+I don't
+
+223
+00:06:06.160 --> 00:06:06.980
+want to be too creepy and all
+
+224
+00:06:06.980 --> 00:06:08.320
+that, but like I really would love
+
+225
+00:06:08.320 --> 00:06:08.780
+to work here.
+
+226
+00:06:08.880 --> 00:06:10.320
+I'm passionate about what you guys
+
+227
+00:06:10.320 --> 00:06:11.920
+got going on, and I want to
+
+228
+00:06:11.920 --> 00:06:12.660
+help you guys out.
+
+229
+00:06:13.680 --> 00:06:15.420
+And I've wanted to take that strategy.
+
+230
+00:06:15.700 --> 00:06:19.440
+I've wanted to explore the concept of
+
+231
+00:06:20.380 --> 00:06:22.340
+what if you get on the good
+
+232
+00:06:22.340 --> 00:06:24.360
+graces of the team rather than going
+
+233
+00:06:24.360 --> 00:06:25.820
+through the front door. You go and
+
+234
+00:06:25.820 --> 00:06:26.800
+you talk to the team, and you
+
+235
+00:06:26.800 --> 00:06:27.100
+get on their
+
+236
+00:06:27.100 --> 00:06:28.720
+good rapport, and now the team's talking
+
+237
+00:06:28.720 --> 00:06:33.000
+to HR. You're talking to HR...
+
+238
+00:06:33.860 --> 00:06:35.280
+I don't know for certain.
+
+239
+00:06:35.380 --> 00:06:36.720
+That's not a tried-and-true, but
+
+240
+00:06:36.720 --> 00:06:37.220
+I'm curious.
+
+241
+00:06:37.420 --> 00:06:38.140
+Would you be willing to try it
+
+242
+00:06:38.140 --> 00:06:38.940
+out and find out? And let me
+
+243
+00:06:38.940 --> 00:06:39.320
+know in the comments (I heard this from Alex Hormozi)
+
+244
+00:06:39.320 --> 00:06:42.060
+below. I'd be curious to know. And
+
+245
+00:06:42.060 --> 00:06:43.160
+the last thing I would leave you
+
+246
+00:06:43.160 --> 00:06:43.680
+with is
+
+247
+00:06:43.680 --> 00:06:44.760
+don't turn your brain off at night.
+
+248
+00:06:44.780 --> 00:06:46.360
+If you have time on your hands,
+
+249
+00:06:46.400 --> 00:06:47.060
+you have time
+
+250
+00:06:47.060 --> 00:06:49.600
+to read. Go to W3schools.com. Find
+
+251
+00:06:49.600 --> 00:06:52.500
+anything and everything you can about the
+
+252
+00:06:52.500 --> 00:06:53.900
+technologies you want to get into.
+
+253
+00:06:54.100 --> 00:06:55.200
+See if you can find yourself a
+
+254
+00:06:55.200 --> 00:06:56.300
+home lab. See if
+
+255
+00:06:56.300 --> 00:06:58.120
+you can find online free resources
+
+256
+00:06:58.120 --> 00:06:59.500
+that let you set up a terminal,
+
+257
+00:06:59.660 --> 00:07:00.240
+a console, a
+
+258
+00:07:00.240 --> 00:07:01.940
+server. Run on the free tier on
+
+259
+00:07:01.940 --> 00:07:03.760
+AWS... something to give you some
+
+260
+00:07:03.760 --> 00:07:04.800
+experience so
+
+261
+00:07:04.800 --> 00:07:05.940
+that you can actually go do the
+
+262
+00:07:05.940 --> 00:07:08.420
+things. Because there is no better
+
+263
+00:07:08.420 --> 00:07:09.280
+way to learn
+
+264
+00:07:09.280 --> 00:07:10.240
+how to do this stuff than to
+
+265
+00:07:10.240 --> 00:07:11.920
+do it. Than to set up your
+
+266
+00:07:11.920 --> 00:07:13.340
+own prototype.
+
+267
+00:07:13.340 --> 00:07:14.280
+That was one of the things that
+
+268
+00:07:14.280 --> 00:07:15.300
+I had to do in order to
+
+269
+00:07:15.300 --> 00:07:16.760
+learn the four major
+
+270
+00:07:16.760 --> 00:07:18.640
+softwares out there. Chef, Ansible,
+
+271
+00:07:18.800 --> 00:07:22.440
+Puppet, and SaltStack. I set up, I
+
+272
+00:07:22.440 --> 00:07:23.100
+used a test
+
+273
+00:07:23.100 --> 00:07:24.880
+lab and set up a mock interface
+
+274
+00:07:24.880 --> 00:07:27.100
+of an instance of what all of those
+
+275
+00:07:27.100 --> 00:07:28.780
+technologies would look like. How
+
+276
+00:07:28.780 --> 00:07:30.120
+would it work and function and and
+
+277
+00:07:30.120 --> 00:07:31.940
+and. It
+
+278
+00:07:31.940 --> 00:07:33.300
+takes a bit of work. It takes
+
+279
+00:07:33.300 --> 00:07:35.240
+some tenacity. But IT can be a
+
+280
+00:07:35.240 --> 00:07:35.860
+lot of fun, a
+
+281
+00:07:35.860 --> 00:07:38.280
+lot of rewarding. Mentally, emotionally,
+
+282
+00:07:38.960 --> 00:07:40.720
+financially. You're gonna love it.
+
+283
+00:07:40.960 --> 00:07:41.260
+Welcome.
+

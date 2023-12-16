@@ -1,0 +1,308 @@
+1
+00:00:00.000 --> 00:00:02.680
+Why yes, yes we can =)
+
+2
+00:00:02.920 --> 00:00:06.600
+Let's talk about business analysts. Now the good business
+
+3
+00:00:06.600 --> 00:00:08.060
+analysts that I've worked with in
+
+4
+00:00:08.060 --> 00:00:09.820
+the past have been the kind that
+
+5
+00:00:09.820 --> 00:00:10.280
+are the
+
+6
+00:00:10.280 --> 00:00:11.940
+ones that interface with engineering
+
+7
+00:00:11.940 --> 00:00:14.280
+and QA. They interface with the project
+
+8
+00:00:14.280 --> 00:00:15.940
+managers and they interface with the
+
+9
+00:00:15.940 --> 00:00:18.540
+customer. The business analyst's job
+
+10
+00:00:18.540 --> 00:00:18.940
+is to
+
+11
+00:00:18.940 --> 00:00:20.660
+go in with the project manager and
+
+12
+00:00:20.660 --> 00:00:22.800
+with the customer and to understand the
+
+13
+00:00:22.800 --> 00:00:24.540
+business need. They are the authority
+
+14
+00:00:24.540 --> 00:00:26.880
+on trying to decipher what it is
+
+15
+00:00:26.880 --> 00:00:27.520
+the CEO is
+
+16
+00:00:27.520 --> 00:00:29.560
+talking about. Whenever he says he
+
+17
+00:00:29.560 --> 00:00:31.940
+needs this product that's got these features
+
+18
+00:00:31.940 --> 00:00:33.860
+and we want the buttons this way,
+
+19
+00:00:34.000 --> 00:00:35.320
+we want this that way, the project
+
+20
+00:00:35.320 --> 00:00:35.900
+manager is
+
+21
+00:00:35.900 --> 00:00:37.860
+there to help structure the release
+
+22
+00:00:37.860 --> 00:00:40.660
+cycle so that the SDLC (Software
+
+23
+00:00:40.660 --> 00:00:43.180
+Development LifeCycle) processes like
+
+24
+00:00:43.180 --> 00:00:45.220
+it's supposed to. It is there for
+
+25
+00:00:45.220 --> 00:00:46.900
+efficiency and to help expedite things
+
+26
+00:00:46.900 --> 00:00:48.720
+and unblock blockers and such like that.
+
+27
+00:00:49.300 --> 00:00:51.460
+The project manager is kind of sort
+
+28
+00:00:51.460 --> 00:00:53.600
+of for the structure of the project itself
+
+29
+00:00:53.600 --> 00:00:55.800
+whereas the business analyst is going
+
+30
+00:00:55.800 --> 00:00:58.300
+to be the authority on if there are
+
+31
+00:00:58.300 --> 00:01:00.040
+features or business requirements
+
+32
+00:01:00.040 --> 00:01:02.460
+that we're working on within a particular
+
+33
+00:01:02.460 --> 00:01:04.820
+project. The business analyst is the
+
+34
+00:01:04.820 --> 00:01:07.560
+authority to go to on the decision if
+
+35
+00:01:07.560 --> 00:01:08.840
+there's anything that needs to be
+
+36
+00:01:08.840 --> 00:01:11.180
+made as far as what direction do
+
+37
+00:01:11.180 --> 00:01:11.500
+we go.
+
+38
+00:01:11.940 --> 00:01:14.440
+Do we really want something on the
+
+39
+00:01:14.440 --> 00:01:15.620
+home page that's going to trigger
+
+40
+00:01:15.620 --> 00:01:16.240
+a query in
+
+41
+00:01:16.240 --> 00:01:19.000
+the background for a statistic or
+
+42
+00:01:19.000 --> 00:01:20.200
+do we want to try and cache
+
+43
+00:01:20.200 --> 00:01:20.960
+that for later or
+
+44
+00:01:20.960 --> 00:01:22.260
+save that for later or something like
+
+45
+00:01:22.260 --> 00:01:23.860
+that you know something somebody has to
+
+46
+00:01:23.860 --> 00:01:26.180
+click on to initiate an action so
+
+47
+00:01:26.180 --> 00:01:28.080
+that it doesn't draw the servers down
+
+48
+00:01:28.080 --> 00:01:28.500
+as such.
+
+49
+00:01:29.220 --> 00:01:31.160
+The business analyst is technical
+
+50
+00:01:31.160 --> 00:01:32.760
+enough to be able to interface with the
+
+51
+00:01:32.760 --> 00:01:35.120
+engineering team kind of sort of on
+
+52
+00:01:35.120 --> 00:01:38.040
+a high level. A project manager typically is
+
+53
+00:01:38.040 --> 00:01:39.160
+the one who's going to be more
+
+54
+00:01:39.160 --> 00:01:41.400
+savvy because they interface with the
+
+55
+00:01:41.400 --> 00:01:42.840
+engineering and the QA teams more
+
+56
+00:01:42.840 --> 00:01:44.560
+and the project manager is kind of
+
+57
+00:01:44.560 --> 00:01:44.740
+sort of
+
+58
+00:01:44.740 --> 00:01:45.740
+there to kind of sort of tee
+
+59
+00:01:45.740 --> 00:01:46.900
+off and take care of some things
+
+60
+00:01:46.900 --> 00:01:47.820
+but the business
+
+61
+00:01:47.820 --> 00:01:50.920
+analyst is also that customer relations
+
+62
+00:01:50.920 --> 00:01:53.300
+style and type of role where
+
+63
+00:01:53.300 --> 00:01:54.740
+you're going to be making
+
+64
+00:01:54.740 --> 00:01:56.400
+sure the customer is comfortable and
+
+65
+00:01:56.400 --> 00:01:57.280
+okay and
+
+66
+00:01:57.280 --> 00:01:59.380
+happy and that their needs have been
+
+67
+00:01:59.380 --> 00:02:01.940
+serviced. If we present a product or
+
+68
+00:02:01.940 --> 00:02:04.020
+some kind of service to them that
+
+69
+00:02:04.020 --> 00:02:06.300
+they understand what it does how it can
+
+70
+00:02:06.300 --> 00:02:08.680
+benefit what happens and also possibly
+
+71
+00:02:08.680 --> 00:02:10.580
+even facilitate some sales because it's
+
+72
+00:02:10.580 --> 00:02:12.580
+some kind of a relationship that somebody
+
+73
+00:02:12.580 --> 00:02:14.580
+has to serve that is that customers
+
+74
+00:02:14.580 --> 00:02:17.040
+dedicated line to go talk to when
+
+75
+00:02:17.040 --> 00:02:19.360
+it comes to updates to a particular software
+
+76
+00:02:19.360 --> 00:02:20.600
+that you happen to be working for
+
+77
+00:02:20.600 --> 00:02:22.280
+within a company or an organization.
+

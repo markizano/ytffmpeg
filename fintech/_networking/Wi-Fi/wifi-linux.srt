@@ -1,0 +1,288 @@
+1
+00:00:00.620 --> 00:00:02.440
+If you want the text version of
+
+2
+00:00:02.440 --> 00:00:03.720
+this, you can go to my blog
+
+3
+00:00:03.720 --> 00:00:05.620
+at blog.markizano.net.
+
+4
+00:00:06.580 --> 00:00:08.400
+There I've got the instructions on
+
+5
+00:00:08.400 --> 00:00:10.220
+a post that I just recently made
+
+6
+00:00:10.220 --> 00:00:10.920
+on how to connect
+
+7
+00:00:10.920 --> 00:00:13.500
+to Wi-Fi in Linux using just
+
+8
+00:00:13.500 --> 00:00:16.680
+two commands, `wpa_supplicant` and `dhclient`.
+
+9
+00:00:16.920 --> 00:00:18.600
+If you're ever in a situation where
+
+10
+00:00:18.600 --> 00:00:20.520
+your network manager isn't behaving
+
+11
+00:00:20.520 --> 00:00:22.100
+or if you want to explore
+
+12
+00:00:22.100 --> 00:00:24.720
+more about how you connect to a
+
+13
+00:00:24.720 --> 00:00:26.460
+Wi-Fi network in Linux without using
+
+14
+00:00:26.460 --> 00:00:27.180
+a network manager,
+
+15
+00:00:27.180 --> 00:00:29.140
+you can use these commands to help
+
+16
+00:00:29.140 --> 00:00:31.980
+get a better understanding of what
+
+17
+00:00:31.980 --> 00:00:32.980
+happens under the hood
+
+18
+00:00:32.980 --> 00:00:34.940
+when it comes to connecting to a
+
+19
+00:00:34.940 --> 00:00:35.600
+wireless network.
+
+20
+00:00:36.060 --> 00:00:37.780
+You simply have to make sure that
+
+21
+00:00:37.780 --> 00:00:38.900
+some packages are installed.
+
+22
+00:00:39.540 --> 00:00:41.140
+It does include a couple more steps,
+
+23
+00:00:41.440 --> 00:00:42.460
+but I think it's worth it for
+
+24
+00:00:42.460 --> 00:00:43.180
+the control that I
+
+25
+00:00:43.180 --> 00:00:44.580
+get over being able to connect to
+
+26
+00:00:44.580 --> 00:00:44.960
+the network.
+
+27
+00:00:45.560 --> 00:00:48.420
+You can use `wpa_passphrase` to create
+
+28
+00:00:48.420 --> 00:00:51.480
+the Wi-Fi key that this client
+
+29
+00:00:51.480 --> 00:00:53.120
+will use to perform the
+
+30
+00:00:53.120 --> 00:00:53.480
+encryption.
+
+31
+00:00:54.600 --> 00:00:55.960
+Connecting to the wireless network
+
+32
+00:00:55.960 --> 00:00:57.460
+uses `wpa_supplicant`.
+
+33
+00:00:57.740 --> 00:00:59.620
+This handles the heavy lifting as
+
+34
+00:00:59.620 --> 00:01:01.880
+far as encryption and decryption and
+
+35
+00:01:01.880 --> 00:01:03.180
+talking to the router itself
+
+36
+00:01:03.180 --> 00:01:05.180
+so that whenever you're talking to
+
+37
+00:01:05.180 --> 00:01:07.560
+the wireless router, you don't have
+
+38
+00:01:07.560 --> 00:01:08.760
+to worry about using
+
+39
+00:01:08.760 --> 00:01:10.460
+any keys or doing any kind of encryption.
+
+40
+00:01:10.680 --> 00:01:11.400
+This does it for you.
+
+41
+00:01:12.040 --> 00:01:13.800
+And then finally, you'll get the IP
+
+42
+00:01:13.800 --> 00:01:15.360
+address using dhclient.
+
+43
+00:01:15.600 --> 00:01:17.680
+This will allow you to actually communicate
+
+44
+00:01:17.680 --> 00:01:19.140
+with other devices on the network.
+
+45
+00:01:19.620 --> 00:01:21.340
+It's interesting because the way Linux
+
+46
+00:01:21.340 --> 00:01:23.160
+works is you "Do one thing, and
+
+47
+00:01:23.160 --> 00:01:23.840
+you do it well."
+
+48
+00:01:24.160 --> 00:01:25.420
+You've got one thing that actually
+
+49
+00:01:25.420 --> 00:01:27.080
+talks to the Wi-Fi router itself,
+
+50
+00:01:27.280 --> 00:01:28.260
+and it breaks that
+
+51
+00:01:28.260 --> 00:01:30.300
+down separate from getting an IP address
+
+52
+00:01:30.300 --> 00:01:32.940
+and routing yourself within that network after
+
+53
+00:01:32.940 --> 00:01:35.600
+the encryption has already been decrypted.
+
+54
+00:01:36.020 --> 00:01:37.400
+If you have any questions or if
+
+55
+00:01:37.400 --> 00:01:39.160
+you have any issues, I included some
+
+56
+00:01:39.160 --> 00:01:40.100
+additional tips that
+
+57
+00:01:40.100 --> 00:01:42.560
+you should check out in case because,
+
+58
+00:01:42.920 --> 00:01:44.940
+well, I ran into these problems myself.
+
+59
+00:01:45.640 --> 00:01:47.660
+And also, I've got some scripts on
+
+60
+00:01:47.660 --> 00:01:51.680
+Gist GitHub where you can totally
+
+61
+00:01:51.680 --> 00:01:52.780
+customize this and
+
+62
+00:01:52.780 --> 00:01:53.560
+make it a service.
+
+63
+00:01:53.920 --> 00:01:56.340
+If you want to have some fun,
+
+64
+00:01:56.520 --> 00:01:58.480
+install it on your system, make sure
+
+65
+00:01:58.480 --> 00:02:00.080
+those programs are
+
+66
+00:02:00.080 --> 00:02:02.180
+there installed, and voila, service
+
+67
+00:02:02.180 --> 00:02:03.580
+start and stop Wi-Fi.
+
+68
+00:02:04.280 --> 00:02:04.920
+It'd be awesome.
+
+69
+00:02:05.500 --> 00:02:06.160
+Let me know what you think in
+
+70
+00:02:06.160 --> 00:02:06.600
+the comments.
+
+71
+00:02:06.900 --> 00:02:07.780
+Looking forward to seeing you.
+
+72
+00:02:08.060 --> 00:02:08.360
+Cheers!
+

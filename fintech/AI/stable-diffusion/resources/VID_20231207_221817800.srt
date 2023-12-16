@@ -1,0 +1,208 @@
+1
+00:00:00.000 --> 00:00:01.520
+I'm going to show you what real-time
+
+2
+00:00:01.520 --> 00:00:02.840
+image generation looks like
+
+3
+00:00:02.840 --> 00:00:04.200
+with Stable Diffusion Turbo.
+
+4
+00:00:04.700 --> 00:00:09.080
+Attack on Titan, a 4K soldier.
+
+5
+00:00:09.260 --> 00:00:10.380
+Me: (I probably should just stitch it,
+
+6
+00:00:10.520 --> 00:00:10.940
+but oh well.)
+
+7
+00:00:11.200 --> 00:00:16.180
+Beautiful landscape scenery with vast
+
+8
+00:00:16.180 --> 00:00:22.120
+buildings sprawled out across the image.
+
+9
+00:00:23.060 --> 00:00:27.820
+Night standing on a cliff overlooking
+
+10
+00:00:27.820 --> 00:00:28.860
+the town.
+
+11
+00:00:29.440 --> 00:00:30.660
+ 
+
+12
+00:00:30.660 --> 00:00:31.320
+ 
+
+13
+00:00:31.760 --> 00:00:34.440
+ 
+
+14
+00:00:34.440 --> 00:00:36.120
+ 
+
+15
+00:00:36.300 --> 00:00:38.940
+ 
+
+16
+00:00:40.980 --> 00:00:41.940
+ 
+
+17
+00:00:42.520 --> 00:00:44.400
+So, I pretty much copied that prompt.
+
+18
+00:00:45.960 --> 00:00:50.460
+I managed to find the Turbo SDXL
+
+19
+00:00:50.460 --> 00:00:51.560
+version of the safe tensors.
+
+20
+00:00:52.380 --> 00:00:53.680
+Managed to copy the prompt.
+
+21
+00:00:54.000 --> 00:00:55.560
+I don't exactly know what he does
+
+22
+00:00:55.560 --> 00:00:57.920
+for all of his parameters, but hey,
+
+23
+00:00:58.180 --> 00:00:59.100
+I got it working.
+
+24
+00:01:00.040 --> 00:01:00.600
+And, uh.
+
+25
+00:01:01.000 --> 00:01:02.380
+See all of the different generations
+
+26
+00:01:02.380 --> 00:01:04.420
+that are possible with this prompt.
+
+27
+00:01:04.600 --> 00:01:05.820
+And it's just going to keep generating.
+
+28
+00:01:06.200 --> 00:01:07.500
+And now this was all done with
+
+29
+00:01:07.500 --> 00:01:10.080
+Comfy UI on GitHub using the latest
+
+30
+00:01:10.080 --> 00:01:11.720
+and greatest Stable Diffusion Turbo
+
+31
+00:01:11.720 --> 00:01:13.600
+that was released by Stability AI.
+
+32
+00:01:16.020 --> 00:01:17.760
+So, that's exactly what that is.
+
+33
+00:01:18.960 --> 00:01:20.640
+I mean, I don't exactly know what
+
+34
+00:01:20.640 --> 00:01:21.780
+I'm doing with all of this as
+
+35
+00:01:21.780 --> 00:01:23.560
+I dip into it and try to
+
+36
+00:01:23.560 --> 00:01:24.180
+figure it out.
+
+37
+00:01:24.500 --> 00:01:25.860
+But, I know I need to learn it.
+
+38
+00:01:26.340 --> 00:01:29.140
+And, this is, like, really cool.
+
+39
+00:01:29.740 --> 00:01:31.620
+I mean, you just download and go.
+
+40
+00:01:31.620 --> 00:01:37.120
+And, I mean, they give you such
+
+41
+00:01:37.120 --> 00:01:39.120
+incredible options that you can use
+
+42
+00:01:39.120 --> 00:01:41.440
+to, like, truly control and fine-tune
+
+43
+00:01:41.440 --> 00:01:44.220
+how you want any and everything to
+
+44
+00:01:44.220 --> 00:01:46.060
+show up in the results.
+
+45
+00:01:50.480 --> 00:01:51.820
+Oh yeah, and I haven't quite yet
+
+46
+00:01:51.820 --> 00:01:53.680
+figured out how he got it to
+
+47
+00:01:53.680 --> 00:01:54.480
+auto-generate.
+
+48
+00:01:55.760 --> 00:01:56.600
+I changed the seed.
+
+49
+00:01:57.160 --> 00:01:58.320
+This isn't moving as fast.
+
+50
+00:01:59.660 --> 00:02:01.120
+But, it did generate an image.
+
+51
+00:02:01.960 --> 00:02:02.620
+Man, that's kewl!
+
+52
+00:02:03.280 --> 00:02:03.980
+That's kewl, man!
+

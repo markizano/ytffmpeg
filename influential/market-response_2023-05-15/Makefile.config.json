@@ -1,0 +1,49 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/4690030d10caa55b161f5aa46e78006e.mp4" },
+        { "i": "resources/VID_20230515_112403114.mp4" },
+        { "loop": "true", "i": "resources/ORC.png" },
+        { "loop": "true", "i": "resources/PRT.png" },
+        { "loop": "true", "i": "resources/EFC.png" },
+        { "loop": "true", "i": "resources/AGNC.png" }
+      ],
+      "output": "build/market-response.mp4",
+      "filter_complex": [
+        "[0:v]fps=30,trim=start=145:end=153.5,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[v0]",
+        "[0:a]atrim=start=145:end=153.5,asetpts=PTS-STARTPTS[a0]",
+
+        "[1:v]fps=30,trim=start=0:end=9.5,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[v1]",
+        "[1:a]atrim=start=0:end=9.5,asetpts=PTS-STARTPTS[a1]",
+
+        "[1:v]fps=30,trim=start=9.5:end=11,setpts=PTS-STARTPTS,scale=368x654,setsar=1:1[vORC]",
+        "[1:a]atrim=start=9.5:end=11,asetpts=PTS-STARTPTS[a2]",
+        "[2:v]fps=30,trim=start=0:end=1.5,setpts=PTS-STARTPTS,format=yuv420p,setsar=1:1[oORC]",
+        "[oORC][vORC]overlay=W-w:H-h:shortest=1[v2]",
+
+        "[1:v]fps=30,trim=start=11:end=12,setpts=PTS-STARTPTS,scale=368x654,setsar=1:1[vPRT]",
+        "[1:a]atrim=start=11:end=12,asetpts=PTS-STARTPTS[a3]",
+        "[3:v]fps=30,trim=start=0:end=1.5,setpts=PTS-STARTPTS,format=yuv420p,setsar=1:1[oPRT]",
+        "[oPRT][vPRT]overlay=W-w:H-h:shortest=1[v3]",
+
+        "[1:v]fps=30,trim=start=12:end=13.5,setpts=PTS-STARTPTS,scale=368x654,setsar=1:1[vEFC]",
+        "[1:a]atrim=start=12:end=13.5,asetpts=PTS-STARTPTS[a4]",
+        "[4:v]fps=30,trim=start=0:end=1.5,setpts=PTS-STARTPTS,format=yuv420p,setsar=1:1[oEFC]",
+        "[oEFC][vEFC]overlay=W-w:H-h:shortest=1[v4]",
+
+        "[1:v]fps=30,trim=start=13.5:end=14.3,setpts=PTS-STARTPTS,scale=368x654,setsar=1:1[vAGNC]",
+        "[1:a]atrim=start=13.5:end=14.3,asetpts=PTS-STARTPTS[a5]",
+        "[5:v]fps=30,trim=start=0:end=1.5,setpts=PTS-STARTPTS,format=yuv420p,setsar=1:1[oAGNC]",
+        "[oAGNC][vAGNC]overlay=W-w:H-h:shortest=1[v5]",
+
+        "[1:v]fps=30,trim=start=14.3:end=647.077,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[v6]",
+        "[1:a]atrim=start=14.3:end=647.077,asetpts=PTS-STARTPTS[a6]",
+
+        "[v0][v1][v2][v3][v4][v5][v6]concat=n=7[video]",
+        "[a0][a1][a2][a3][a4][a5][a6]concat=v=0:a=1:n=7[audio]"
+      ]
+    }
+  ]
+}
+

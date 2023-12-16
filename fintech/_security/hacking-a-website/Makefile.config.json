@@ -1,0 +1,28 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/VID_20231023_104813963.mkv" },
+        { "i": "resources/VID_20231023_105523189.mkv" },
+        { "i": "resources/VID_20231023_105948927.mkv" },
+        { "i": "resources/VID_20231023_110144164.mkv" },
+        { "i": "resources/VID_20231023_110320794.mkv" },
+        { "i": "resources/VID_20231023_110827470.mkv" },
+        { "i": "resources/VID_20231023_111629684.mkv" },
+        { "i": "resources/VID_20231023_111827611.mkv" },
+        { "i": "resources/VID_20231023_112021074.mkv" },
+        { "i": "resources/VID_20231023_112110279.mkv" },
+        { "i": "../local-admin-rights/resources/VID_20231023_121731016.mkv" },
+        { "loop": "true", "i": "/home/YouTube/resources/openai.png" }
+      ],
+      "output": "build/hacking-a-website.mp4",
+      "filter_complex": [
+        "[11:v]fps=30,format=yuv420p,trim=start=0:end=5,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
+        "[0:v][1:v][2:v][3:v][4:v][5:v][6:v][7:v][8:v][9:v][10:v]concat=n=11,scale=720x1280,setsar=1:1,pad=864:1536:72:80,scale=720:1280,setsar=1:1[_v]",
+        "[_v][disclaim]overlay=W-w-100:20:enable='between(t,0,5)',subtitles=resources/hacking-a-website.srt:force_style='FontName=Impact,OutlineColour=&H40000000,BorderStyle=3'[video]",
+        "[0:a][1:a][2:a][3:a][4:a][5:a][6:a][7:a][8:a][9:a][10:a]concat=n=11:v=0:a=1,aresample=44100,aresample=48000,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[audio]"
+      ]
+    }
+  ]
+}
+

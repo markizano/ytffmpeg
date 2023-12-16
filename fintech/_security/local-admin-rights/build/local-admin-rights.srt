@@ -1,0 +1,708 @@
+1
+00:00:00.000 --> 00:00:03.180
+So let's talk about Local Admin Rights.
+
+2
+00:00:03.780 --> 00:00:07.020
+But first, this is Pyrite. Element of
+
+3
+00:00:07.020 --> 00:00:09.900
+fire and earth, tuned to the chakra
+
+4
+00:00:09.900 --> 00:00:14.020
+of the solar plexus. Oftentimes represents
+
+5
+00:00:14.020 --> 00:00:16.780
+manifestation and willpower and can
+
+6
+00:00:16.780 --> 00:00:19.660
+be used as a good luck charm. Fascinating.
+
+7
+00:00:20.340 --> 00:00:22.560
+I see a lot of security gurus
+
+8
+00:00:22.560 --> 00:00:24.940
+out there talking about how they deny
+
+9
+00:00:24.940 --> 00:00:25.780
+access to
+
+10
+00:00:25.780 --> 00:00:28.080
+developers when they want admin rights
+
+11
+00:00:28.080 --> 00:00:31.240
+to their local workstation. And I see
+
+12
+00:00:31.240 --> 00:00:32.480
+some attempts at trying to make some
+
+13
+00:00:32.480 --> 00:00:35.040
+explanations. Some of them make sense, but
+
+14
+00:00:35.040 --> 00:00:36.800
+also some of them from the developers
+
+15
+00:00:36.800 --> 00:00:39.400
+perspective probably still leave them
+
+16
+00:00:39.400 --> 00:00:41.760
+wondering or feeling, why can't I
+
+17
+00:00:41.760 --> 00:00:43.200
+have admin rights to my workstation?
+
+18
+00:00:44.140 --> 00:00:44.400
+Well it
+
+19
+00:00:44.400 --> 00:00:46.540
+comes from the principle of least
+
+20
+00:00:46.540 --> 00:00:48.680
+privilege. You see, as someone who comes
+
+21
+00:00:48.680 --> 00:00:50.360
+in and pretty much does line developer
+
+22
+00:00:50.360 --> 00:00:53.620
+work, there isn't that much access that
+
+23
+00:00:53.620 --> 00:00:55.560
+is really necessary for the engineer
+
+24
+00:00:55.560 --> 00:00:58.100
+on their local workstation when they have
+
+25
+00:00:58.100 --> 00:01:00.100
+access to a server environment that
+
+26
+00:01:00.100 --> 00:01:03.200
+has the complete suite of all the software
+
+27
+00:01:03.200 --> 00:01:04.540
+and everything they need running.
+
+28
+00:01:05.120 --> 00:01:07.720
+Not to mention the structure and the
+
+29
+00:01:07.720 --> 00:01:08.140
+setup that
+
+30
+00:01:08.140 --> 00:01:10.600
+is required for having that particular
+
+31
+00:01:10.600 --> 00:01:13.320
+application execute in whatever kind of
+
+32
+00:01:13.320 --> 00:01:14.580
+environment they're using for their
+
+33
+00:01:14.580 --> 00:01:16.920
+development. If you have done some
+
+34
+00:01:16.920 --> 00:01:18.920
+modicum of software engineering at
+
+35
+00:01:18.920 --> 00:01:20.580
+some point, you have run into the
+
+36
+00:01:20.580 --> 00:01:21.280
+concept of
+
+37
+00:01:21.280 --> 00:01:23.980
+dependencies. Your software oftentimes
+
+38
+00:01:23.980 --> 00:01:26.940
+needs to install additional dependencies
+
+39
+00:01:26.940 --> 00:01:29.440
+from other repositories. Somebody
+
+40
+00:01:29.440 --> 00:01:31.100
+else has written that code, so why
+
+41
+00:01:31.100 --> 00:01:31.520
+should you?
+
+42
+00:01:31.880 --> 00:01:34.060
+Totally get it. Perfectly understandable.
+
+43
+00:01:34.880 --> 00:01:36.460
+I'm a little late to this post because
+
+44
+00:01:36.460 --> 00:01:37.720
+this has been published for quite
+
+45
+00:01:37.720 --> 00:01:40.440
+some time, but it's important to understand.
+
+46
+00:01:41.240 --> 00:01:43.200
+Hackers have gone out and they've
+
+47
+00:01:43.200 --> 00:01:45.680
+actually infected these repositories. Now
+
+48
+00:01:45.680 --> 00:01:47.580
+I'm not saying every package has been
+
+49
+00:01:47.580 --> 00:01:50.880
+infected, and it's also not as simple as
+
+50
+00:01:50.880 --> 00:01:52.620
+we'll just avoid those packages, right?
+
+51
+00:01:53.720 --> 00:01:56.800
+Also, this is not a new concept either.
+
+52
+00:01:57.120 --> 00:01:59.160
+This actually has been around for
+
+53
+00:01:59.160 --> 00:02:02.400
+as long as code has existed. Hackers
+
+54
+00:02:02.400 --> 00:02:02.800
+will go
+
+55
+00:02:02.800 --> 00:02:05.460
+and they'll infect the packages and
+
+56
+00:02:05.460 --> 00:02:07.660
+they may use this concept called
+
+57
+00:02:07.660 --> 00:02:09.800
+typosquatting*, which is using those
+
+58
+00:02:09.800 --> 00:02:11.540
+funny characters that are part of
+
+59
+00:02:11.540 --> 00:02:11.860
+a Latin
+
+60
+00:02:11.860 --> 00:02:13.860
+alphabet that look like the same character
+
+61
+00:02:13.860 --> 00:02:16.320
+they represent. Like an "á"
+
+62
+00:02:16.320 --> 00:02:18.260
+You cannot just brush
+
+63
+00:02:18.260 --> 00:02:19.380
+over the accent because you think
+
+64
+00:02:19.380 --> 00:02:19.660
+it's a
+
+65
+00:02:19.660 --> 00:02:22.340
+typo, right? No, it's called typosquatting,
+
+66
+00:02:22.820 --> 00:02:24.280
+and it's something to pay attention to.
+
+67
+00:02:24.940 --> 00:02:25.980
+If there's a package you're looking
+
+68
+00:02:25.980 --> 00:02:27.700
+to install, you copy and paste the
+
+69
+00:02:27.700 --> 00:02:28.040
+name of
+
+70
+00:02:28.040 --> 00:02:29.480
+the website and it happens to have
+
+71
+00:02:29.480 --> 00:02:32.340
+the name messed up or named very
+
+72
+00:02:32.340 --> 00:02:33.280
+similar, you
+
+73
+00:02:33.280 --> 00:02:34.880
+know, name the same package with a
+
+74
+00:02:34.880 --> 00:02:35.940
+"-dev" at the end of it
+
+75
+00:02:35.940 --> 00:02:36.640
+to indicate that it
+
+76
+00:02:36.640 --> 00:02:37.860
+might be a developer's package of
+
+77
+00:02:37.860 --> 00:02:40.680
+sorts. People do all kinds of things
+
+78
+00:02:40.680 --> 00:02:41.280
+to get you
+
+79
+00:02:41.280 --> 00:02:43.940
+to install malicious software. Well,
+
+80
+00:02:44.400 --> 00:02:46.780
+what happens when that software hits your
+
+81
+00:02:46.780 --> 00:02:48.760
+workstation? When your workstation
+
+82
+00:02:48.760 --> 00:02:51.340
+is connected to the company VPN and your
+
+83
+00:02:51.340 --> 00:02:52.920
+workstation can access the internal
+
+84
+00:02:52.920 --> 00:02:55.100
+guts and the internal network of
+
+85
+00:02:55.100 --> 00:02:57.160
+everything that the company needs
+
+86
+00:02:57.160 --> 00:02:58.160
+as far as how it gets its
+
+87
+00:02:58.160 --> 00:02:59.840
+work done? What if you
+
+88
+00:02:59.840 --> 00:03:01.580
+as the developer, the engineer, had
+
+89
+00:03:01.580 --> 00:03:03.380
+access to the production environment
+
+90
+00:03:03.380 --> 00:03:05.960
+where we make our money, where our
+
+91
+00:03:05.960 --> 00:03:08.300
+customer information is, where our
+
+92
+00:03:08.300 --> 00:03:11.120
+PII, personally identifiable information,
+
+93
+00:03:11.400 --> 00:03:16.280
+is stored? The risk of all of
+
+94
+00:03:16.280 --> 00:03:18.400
+that coming down because the developer
+
+95
+00:03:18.400 --> 00:03:21.500
+installed a bad package by accident, by
+
+96
+00:03:21.500 --> 00:03:24.040
+intention, by bad copy and paste,
+
+97
+00:03:24.480 --> 00:03:28.540
+by spoofing, who knows? In security,
+
+98
+00:03:28.960 --> 00:03:29.520
+it's a
+
+99
+00:03:29.520 --> 00:03:32.980
+matter of measuring the risk versus
+
+100
+00:03:32.980 --> 00:03:36.320
+the protection of the data. If the
+
+101
+00:03:36.320 --> 00:03:37.360
+risk is
+
+102
+00:03:37.360 --> 00:03:40.040
+greater than the information we're
+
+103
+00:03:40.040 --> 00:03:42.380
+trying to protect, then yeah, we're
+
+104
+00:03:42.380 --> 00:03:45.300
+going to increase the cost of attack.
+
+105
+00:03:46.040 --> 00:03:47.460
+And as far as I can tell,
+
+106
+00:03:47.640 --> 00:03:48.240
+as far as my
+
+107
+00:03:48.240 --> 00:03:50.560
+interpretation is concerned, security
+
+108
+00:03:50.560 --> 00:03:52.460
+isn't about being completely blanketing,
+
+109
+00:03:52.700 --> 00:03:54.500
+total, white glove;
+
+110
+00:03:54.620 --> 00:03:56.980
+everything perfectly clean. It's about
+
+111
+00:03:56.980 --> 00:03:59.620
+increasing the cost of attack to make
+
+112
+00:03:59.620 --> 00:04:02.460
+it more expensive to exploit the system and
+
+113
+00:04:02.460 --> 00:04:03.540
+to do something you're not supposed
+
+114
+00:04:03.540 --> 00:04:06.080
+to, than it would be to use
+
+115
+00:04:06.080 --> 00:04:06.660
+the application
+
+116
+00:04:06.660 --> 00:04:08.760
+like it was supposed to, as it
+
+117
+00:04:08.760 --> 00:04:12.040
+was intended. So in security, if I
+
+118
+00:04:12.040 --> 00:04:12.360
+can make
+
+119
+00:04:12.360 --> 00:04:14.200
+it really expensive to attack us,
+
+120
+00:04:14.380 --> 00:04:16.460
+but really cheap to just use us,
+
+121
+00:04:17.520 --> 00:04:19.060
+hey, that's a
+
+122
+00:04:19.060 --> 00:04:21.760
+win-win, right? So the reason why
+
+123
+00:04:21.760 --> 00:04:24.360
+you don't have admin rights on your local
+
+124
+00:04:24.360 --> 00:04:27.140
+workstation is because it's too much
+
+125
+00:04:27.140 --> 00:04:28.580
+of a risk to the company to
+
+126
+00:04:28.580 --> 00:04:29.480
+allow you to be
+
+127
+00:04:29.480 --> 00:04:31.620
+able to do that. Until, as an
+
+128
+00:04:31.620 --> 00:04:33.060
+engineer, as a developer, and you
+
+129
+00:04:33.060 --> 00:04:33.900
+get that senior rank
+
+130
+00:04:33.900 --> 00:04:35.520
+and you are able to prove that
+
+131
+00:04:35.520 --> 00:04:38.520
+you're diligent enough to protect yourself
+
+132
+00:04:38.520 --> 00:04:40.560
+against exploits -- Actually I think
+
+133
+00:04:40.560 --> 00:04:42.300
+it's just becoming a general practice more
+
+134
+00:04:42.300 --> 00:04:44.980
+as time goes on. Because we've had
+
+135
+00:04:44.980 --> 00:04:47.480
+far too many instances where employees get
+
+136
+00:04:47.480 --> 00:04:49.220
+exploited. Companies are not treating
+
+137
+00:04:49.220 --> 00:04:50.780
+their employees like they should be. So
+
+138
+00:04:50.780 --> 00:04:52.240
+it makes it really easy to compromise
+
+139
+00:04:52.240 --> 00:04:54.080
+the employees, get in their head,
+
+140
+00:04:54.280 --> 00:04:54.600
+and get
+
+141
+00:04:54.600 --> 00:04:55.580
+them to think that they can get
+
+142
+00:04:55.580 --> 00:04:56.660
+back at the company for something.
+
+143
+00:04:57.280 --> 00:04:58.200
+And it's just
+
+144
+00:04:58.200 --> 00:05:01.240
+not worth the risk. So with that
+
+145
+00:05:01.240 --> 00:05:03.800
+in mind, please have a little bit more
+
+146
+00:05:03.800 --> 00:05:06.640
+patience with your security. Have
+
+147
+00:05:06.640 --> 00:05:08.780
+a little bit more patience with those that
+
+148
+00:05:08.780 --> 00:05:11.460
+are trying to balance the scales between,
+
+149
+00:05:11.460 --> 00:05:14.180
+is it usable? Is it functional? Can
+
+150
+00:05:14.180 --> 00:05:15.000
+I get my job done?
+
+151
+00:05:15.080 --> 00:05:16.000
+Can I be effective?
+
+152
+00:05:16.220 --> 00:05:19.080
+Can I be fast and still affordable?
+
+153
+00:05:19.820 --> 00:05:20.980
+Versus, can I
+
+154
+00:05:20.980 --> 00:05:23.720
+be compliant? Can I be secure? Because
+
+155
+00:05:23.720 --> 00:05:26.620
+the most secure thing that you could
+
+156
+00:05:26.620 --> 00:05:27.100
+ever do
+
+157
+00:05:27.100 --> 00:05:28.660
+is just unplug the ethernet cable.
+
+158
+00:05:29.740 --> 00:05:32.360
+Simple as that. But then you can't get
+
+159
+00:05:32.360 --> 00:05:34.920
+anything done. So it's a toss-up.
+
+160
+00:05:35.080 --> 00:05:37.320
+It's a balance between functionality and security.
+
+161
+00:05:37.320 --> 00:05:39.780
+Hi, my name is Markizano
+
+162
+00:05:39.780 --> 00:05:42.100
+Draconus and I run Kizano's FinTech
+
+163
+00:05:42.100 --> 00:05:43.620
+channel where I take you from Zero
+
+164
+00:05:43.620 --> 00:05:46.120
+to master in IT and DevOps.
+
+165
+00:05:46.120 --> 00:05:46.440
+But did you also know
+
+166
+00:05:46.440 --> 00:05:48.440
+I'm a licensed massage therapist
+
+167
+00:05:48.440 --> 00:05:50.260
+in Dallas, Texas? If you're
+
+168
+00:05:50.260 --> 00:05:51.660
+looking for a holistic alternative
+
+169
+00:05:51.660 --> 00:05:53.460
+to health and well-being, you can
+
+170
+00:05:53.460 --> 00:05:53.700
+go to
+
+171
+00:05:53.700 --> 00:05:55.900
+massage.markizano.net where you can
+
+172
+00:05:55.900 --> 00:05:57.180
+schedule a massage with me today.
+
+173
+00:05:57.700 --> 00:05:58.180
+If you
+
+174
+00:05:58.180 --> 00:06:00.480
+use the coupon code "RELAX2023" before
+
+175
+00:06:00.480 --> 00:06:02.000
+the end of this month, I'll give you
+
+176
+00:06:02.000 --> 00:06:04.120
+$10 off your next massage. =) I look
+
+177
+00:06:04.120 --> 00:06:05.620
+forward to seeing you on the table.
+

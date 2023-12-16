@@ -1,0 +1,684 @@
+1
+00:00:00.000 --> 00:00:01.840
+Artificial intelligence is killing
+
+2
+00:00:01.840 --> 00:00:03.640
+software engineering and coding jobs?
+
+3
+00:00:03.640 --> 00:00:05.960
+And I agree with him
+
+4
+00:00:05.960 --> 00:00:07.400
+Oh, yeah, by the way, happy Sunday
+
+5
+00:00:07.400 --> 00:00:09.620
+Funday y'all and tattoo got finished. =)
+
+6
+00:00:09.660 --> 00:00:10.990
+I'm really proud of that
+
+7
+00:00:11.440 --> 00:00:14.080
+They got colored in lovely. So yeah,
+
+8
+00:00:14.320 --> 00:00:16.020
+nobody's complaining about missing
+
+9
+00:00:16.020 --> 00:00:16.960
+their horse and buggy
+
+10
+00:00:16.960 --> 00:00:18.620
+Nobody's complaining about missing
+
+11
+00:00:18.620 --> 00:00:20.680
+their rotary phone. Nobody wishes
+
+12
+00:00:20.680 --> 00:00:22.700
+that we had our you know, the
+
+13
+00:00:23.300 --> 00:00:25.000
+Cart with the horse attached to it
+
+14
+00:00:25.000 --> 00:00:27.540
+like just like the automobile completely
+
+15
+00:00:27.540 --> 00:00:28.780
+changed that industry
+
+16
+00:00:29.300 --> 00:00:31.240
+Just like the internet completely
+
+17
+00:00:31.240 --> 00:00:33.560
+revolutionized our ability to communicate
+
+18
+00:00:33.560 --> 00:00:35.580
+and connect with each other in ways.
+
+19
+00:00:35.680 --> 00:00:36.940
+We have never seen before
+
+20
+00:00:36.940 --> 00:00:39.740
+So also has social media introduced
+
+21
+00:00:39.740 --> 00:00:41.500
+problems with emotional intelligence
+
+22
+00:00:41.500 --> 00:00:44.540
+So too has AI introduced security
+
+23
+00:00:44.540 --> 00:00:46.220
+exploits where I can trick it to
+
+24
+00:00:46.220 --> 00:00:48.680
+send me the raw information for Sam
+
+25
+00:00:48.680 --> 00:00:49.520
+Bankman Freid's
+
+26
+00:00:49.520 --> 00:00:50.780
+actual information
+
+27
+00:00:50.780 --> 00:00:53.180
+Sorry SBF was crypto and that was
+
+28
+00:00:53.180 --> 00:00:55.220
+so last year. :rolling_eyes: I'm sorry Sam Altman
+
+29
+00:00:56.460 --> 00:00:58.600
+But yeah, I mean there's just all
+
+30
+00:00:58.600 --> 00:01:00.540
+this, you know fear-mongering talk
+
+31
+00:01:00.540 --> 00:01:01.660
+about "oh my god
+
+32
+00:01:01.660 --> 00:01:03.400
+AI is going to replace the jobs"...
+
+33
+00:01:03.400 --> 00:01:04.360
+What jobs?
+
+34
+00:01:04.880 --> 00:01:06.940
+But the ones that don't serve? What
+
+35
+00:01:06.940 --> 00:01:09.060
+jobs but the ones we don't want
+
+36
+00:01:09.060 --> 00:01:10.800
+to repeat and do the same thing
+
+37
+00:01:10.800 --> 00:01:11.620
+over and over again...
+
+38
+00:01:11.620 --> 00:01:13.860
+There are jobs that I have automated
+
+39
+00:01:13.860 --> 00:01:15.580
+people out of with just the code
+
+40
+00:01:15.580 --> 00:01:17.580
+that I've written as a software engineer
+
+41
+00:01:17.580 --> 00:01:18.680
+as a System
+
+42
+00:01:18.680 --> 00:01:20.460
+Administrator. There is this guy that
+
+43
+00:01:20.460 --> 00:01:22.300
+would go and download a report
+
+44
+00:01:22.300 --> 00:01:23.900
+Look at the report for some certain
+
+45
+00:01:23.900 --> 00:01:25.800
+details and then upload what he got
+
+46
+00:01:25.800 --> 00:01:26.840
+from the report and send it up
+
+47
+00:01:26.840 --> 00:01:27.340
+to somewhere else...
+
+48
+00:01:27.340 --> 00:01:28.940
+I mean, it was the dumbest thing
+
+49
+00:01:28.940 --> 00:01:29.360
+in the world
+
+50
+00:01:29.360 --> 00:01:30.880
+He was like fresh out of college
+
+51
+00:01:30.880 --> 00:01:31.920
+and you know
+
+52
+00:01:31.920 --> 00:01:33.100
+He was good for that job for
+
+53
+00:01:33.100 --> 00:01:33.880
+like the six months
+
+54
+00:01:33.880 --> 00:01:34.780
+It took me to write the code
+
+55
+00:01:34.780 --> 00:01:36.140
+to automate him out of the position
+
+56
+00:01:36.140 --> 00:01:38.340
+and then he eventually got you know
+
+57
+00:01:38.340 --> 00:01:40.620
+Moved on to other things but the
+
+58
+00:01:40.620 --> 00:01:41.980
+idea, you know people talking about
+
+59
+00:01:41.980 --> 00:01:43.420
+AI is gonna you know, trash all
+
+60
+00:01:43.420 --> 00:01:43.820
+these jobs
+
+61
+00:01:43.820 --> 00:01:46.020
+Guess what code has been doing that
+
+62
+00:01:46.020 --> 00:01:47.680
+the Internet has been doing that everything
+
+63
+00:01:47.680 --> 00:01:49.600
+else has been changing the job landscape
+
+64
+00:01:49.600 --> 00:01:51.380
+for years...
+
+65
+00:01:51.940 --> 00:01:55.100
+decades... (10 years) centuries (100 years).
+
+66
+00:01:55.100 --> 00:01:56.420
+It's change. It's happening and
+
+67
+00:01:57.740 --> 00:01:59.560
+There's nothing you can do about it
+
+68
+00:01:59.560 --> 00:02:01.980
+any of us it's going to happen
+
+69
+00:02:01.980 --> 00:02:03.280
+It's just a matter of how do
+
+70
+00:02:03.280 --> 00:02:04.880
+you incorporate that into your life?
+
+71
+00:02:05.260 --> 00:02:07.420
+What matters is what are you doing
+
+72
+00:02:07.420 --> 00:02:10.140
+specifically to accomplish your goals?
+
+73
+00:02:10.280 --> 00:02:12.540
+For example, I
+
+74
+00:02:12.540 --> 00:02:14.440
+thought this picture was beautiful.
+
+75
+00:02:14.440 --> 00:02:16.280
+I managed to get Stable Diffusion
+
+76
+00:02:16.280 --> 00:02:17.700
+installed on my local workstation
+
+77
+00:02:17.700 --> 00:02:19.900
+And oh my god, that is just gorgeous
+
+78
+00:02:19.900 --> 00:02:21.980
+now imagine me being able to write
+
+79
+00:02:21.980 --> 00:02:24.120
+the story about Markizano Draconus and
+
+80
+00:02:24.120 --> 00:02:25.380
+helping you better understand what's
+
+81
+00:02:25.380 --> 00:02:26.680
+going on behind the scenes and why
+
+82
+00:02:26.680 --> 00:02:27.560
+I go by this name
+
+83
+00:02:28.380 --> 00:02:29.940
+because it's something like a middle
+
+84
+00:02:29.940 --> 00:02:31.640
+-earth sci-fi tech like it's a
+
+85
+00:02:31.640 --> 00:02:33.160
+story that meshes all these things together
+
+86
+00:02:33.600 --> 00:02:35.400
+Now with AI I don't have to
+
+87
+00:02:35.400 --> 00:02:37.700
+hire somebody to go in and do
+
+88
+00:02:37.700 --> 00:02:38.980
+all this expensive stuff
+
+89
+00:02:38.980 --> 00:02:40.700
+because I know I'm not easy to
+
+90
+00:02:40.700 --> 00:02:41.300
+work with and
+
+91
+00:02:41.800 --> 00:02:43.100
+I know that it's gonna take a
+
+92
+00:02:43.100 --> 00:02:44.180
+lot of time for me to refine
+
+93
+00:02:44.180 --> 00:02:45.460
+the thoughts that are going on inside
+
+94
+00:02:45.460 --> 00:02:46.260
+in my head because
+
+95
+00:02:46.260 --> 00:02:47.880
+It's my story not theirs
+
+96
+00:02:48.638 --> 00:02:48.639
+ 
+
+97
+00:02:48.640 --> 00:02:50.540
+I also get to publish the story myself
+
+98
+00:02:50.540 --> 00:02:51.820
+and don't have to deal with copyright
+
+99
+00:02:51.820 --> 00:02:53.200
+writers and other people in my business
+
+100
+00:02:53.200 --> 00:02:54.280
+talking about we need to
+
+101
+00:02:54.280 --> 00:02:55.160
+get the sales. We need to get
+
+102
+00:02:55.160 --> 00:02:56.000
+the sales. You need to write the
+
+103
+00:02:56.000 --> 00:02:57.540
+story this way. It's like, no
+
+104
+00:02:57.540 --> 00:02:58.860
+I want to write the story that's
+
+105
+00:02:58.860 --> 00:02:59.740
+entertaining. I want to write the
+
+106
+00:02:59.740 --> 00:03:00.760
+story that comes from the mind.
+
+107
+00:03:00.760 --> 00:03:01.740
+I want to write the story that
+
+108
+00:03:01.740 --> 00:03:03.860
+comes from /my/ mind and the videos
+
+109
+00:03:03.860 --> 00:03:04.980
+that you see me post on TikTok
+
+110
+00:03:04.980 --> 00:03:06.340
+where it says it's been
+
+111
+00:03:06.340 --> 00:03:08.940
+Auto-captioned by whisper that was
+
+112
+00:03:08.940 --> 00:03:10.820
+me downloading AI to my local workstation
+
+113
+00:03:10.820 --> 00:03:12.240
+So I don't have to use CapCut
+
+114
+00:03:12.240 --> 00:03:14.180
+or pay for somebody else to subtitle
+
+115
+00:03:14.180 --> 00:03:14.740
+my stuff!
+
+116
+00:03:15.820 --> 00:03:16.780
+So, yeah
+
+117
+00:03:16.780 --> 00:03:18.460
+It's going to replace jobs and it's
+
+118
+00:03:18.460 --> 00:03:21.000
+going to enable people who are capable
+
+119
+00:03:21.000 --> 00:03:21.600
+who are
+
+120
+00:03:21.600 --> 00:03:23.940
+Willing to dip into AI and use
+
+121
+00:03:23.940 --> 00:03:25.360
+it as a tool rather than fear
+
+122
+00:03:25.360 --> 00:03:26.780
+it like... I don't know
+
+123
+00:03:26.780 --> 00:03:30.940
+Just fear... Why I don't understand why
+
+124
+00:03:30.940 --> 00:03:33.000
+fear is so prominent. I get it.
+
+125
+00:03:33.060 --> 00:03:33.440
+It's unknown
+
+126
+00:03:33.440 --> 00:03:35.300
+But guess what: you get to walk
+
+127
+00:03:35.300 --> 00:03:36.640
+right up to it. You get to
+
+128
+00:03:36.640 --> 00:03:38.420
+read the manuals. The stuff is open source
+
+129
+00:03:38.420 --> 00:03:40.020
+It's accessible for anybody to access.
+
+130
+00:03:40.420 --> 00:03:42.280
+There's nothing stopping you from
+
+131
+00:03:42.280 --> 00:03:43.140
+getting into this stuff
+
+132
+00:03:43.140 --> 00:03:45.080
+There's nothing stopping you from
+
+133
+00:03:45.080 --> 00:03:47.420
+using this rather than fearing it.
+
+134
+00:03:47.560 --> 00:03:49.580
+So don't fall for the hype. Don't
+
+135
+00:03:49.580 --> 00:03:50.300
+fall for the bullshit
+
+136
+00:03:50.300 --> 00:03:53.320
+Go read the docs! RTFM! You'd
+
+137
+00:03:53.320 --> 00:03:55.660
+be surprised -- you'd be shocked
+
+138
+00:03:56.160 --> 00:03:58.220
+just how easy it is to understand
+
+139
+00:03:58.220 --> 00:03:59.980
+the stuff if you just took the
+
+140
+00:03:59.980 --> 00:04:01.080
+time to do it. A
+
+141
+00:04:01.580 --> 00:04:03.000
+majority of the time and the majority
+
+142
+00:04:03.000 --> 00:04:04.060
+of the people that I come across
+
+143
+00:04:04.060 --> 00:04:05.980
+in life who talk about I'm not
+
+144
+00:04:05.980 --> 00:04:07.060
+a technology person
+
+145
+00:04:07.060 --> 00:04:08.800
+I can't understand that stuff. Oh
+
+146
+00:04:08.800 --> 00:04:10.180
+my god, that's way over my head.
+
+147
+00:04:10.260 --> 00:04:12.020
+I know nothing about that bullshit
+
+148
+00:04:12.700 --> 00:04:13.960
+Sit down and read it for about
+
+149
+00:04:13.960 --> 00:04:14.560
+20 minutes...
+
+150
+00:04:15.600 --> 00:04:17.900
+Stick with it for 20 hours... I
+
+151
+00:04:17.900 --> 00:04:20.420
+promise you just being exposed to
+
+152
+00:04:20.420 --> 00:04:22.920
+it. Just watching my videos. My friends
+
+153
+00:04:22.918 --> 00:04:22.919
+ 
+
+154
+00:04:22.920 --> 00:04:26.080
+have become enlightened on IT and how other
+
+155
+00:04:26.080 --> 00:04:27.820
+stuff works and it's not like they
+
+156
+00:04:27.820 --> 00:04:28.800
+have to be some kind of expert
+
+157
+00:04:28.800 --> 00:04:29.140
+in it.
+
+158
+00:04:29.140 --> 00:04:31.100
+I mean just having the visibility
+
+159
+00:04:31.100 --> 00:04:32.460
+into how things work
+
+160
+00:04:33.900 --> 00:04:35.680
+It does amazing wonders for the mind
+
+161
+00:04:35.680 --> 00:04:38.440
+So don't allow you yourself nor
+
+162
+00:04:38.440 --> 00:04:38.441
+
+
+163
+00:04:38.520 --> 00:04:41.920
+your mind to be ruled by that
+
+164
+00:04:41.920 --> 00:04:43.140
+which is evil and that is the
+
+165
+00:04:43.140 --> 00:04:44.680
+negativity and the fear the things
+
+166
+00:04:44.680 --> 00:04:46.040
+that keep you from accomplishing your
+
+167
+00:04:46.040 --> 00:04:48.720
+goals, child for you are capable! You
+
+168
+00:04:48.720 --> 00:04:50.300
+are worthy. You have value
+
+169
+00:04:52.380 --> 00:04:52.880
+and
+
+170
+00:04:52.880 --> 00:04:53.680
+I believe in you
+
+171
+00:04:54.260 --> 00:04:55.320
+That's what that means. 8)
+

@@ -1,0 +1,25 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/VID_20230528_193003150.mp4" },
+        { "i": "resources/VID_20230528_193925990.mp4" }
+      ],
+      "output": "build/fried-ice-cream.mp4",
+      "metadata": {
+        "title": "Fried Ice Cream"
+      },
+      "filter_complex": [
+        "[0:v]fps=30,trim=start=0:end=80,setpts=PTS-STARTPTS[v0]",
+        "[0:a]atrim=start=0:end=80,asetpts=PTS-STARTPTS[a0]",
+
+        "[1:v]fps=30,trim=start=0:end=9.8,setpts=PTS-STARTPTS[v1]",
+        "[1:a]atrim=start=0:end=9.8,asetpts=PTS-STARTPTS[a1]",
+
+        "[v0][v1]concat,scale=720x1280,setsar=1:1,fps=29[video]",
+        "[a0][a1]concat=v=0:a=1[audio]"
+      ]
+    }
+  ]
+}
+

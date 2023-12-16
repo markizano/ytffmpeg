@@ -1,0 +1,41 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/7b022ef01cb33d474bc0b85359445685.mp4" },
+        { "i": "resources/VID_20231210_100625828.mkv" },
+        { "t": "5", "loop": "true", "framerate": "29", "i": "/home/YouTube/resources/openai.png" },
+        { "i": "resources/VID_20231210_100625828.srt" }
+      ],
+      "output": "build/opinion-on-ai_2023-12-10.mp4",
+      "metadata": {
+        "title": "AI: Opinion on AI 2023-12-10",
+        "author": "Markizano Draconus",
+        "credits": "Captions by Whisper from OpenAI",
+        "description": "I agree, here's my opinion on #AI and what I am seeing in the wild! #artificialIntelligence #openai #samaltman",
+        "website": "https://markizano.net/",
+        "twitter": "@Markizano",
+        "youtube": "@KizanosFinTech",
+        "blog": "https://blog.markizano.net/",
+        "x-platform": "TikTok"
+      },
+      "attributes": [
+        "subs"
+      ],
+      "map": {
+        "subs": "3:s"
+      },
+      "filter_complex": [
+        "[0:v]fps=29,trim=start=0:end=4,setpts=PTS-STARTPTS,pad=720:1280:72:40,setsar=1:1,fade=out:d=0.5:st=3.5[v0]",
+        "[0:a]atrim=start=0:end=4,asetpts=PTS-STARTPTS[a0]",
+        "[1:v]fps=29,scale=720x1280,pad=864:1536:72:80,scale=720x1280,setsar=1:1,fade=in:st=0:d=0.5[v1]",
+        "[v0][v1]concat[vid]",
+        "[vid]subtitles=resources/VID_20231210_100625828.srt:force_style='FontName=Impact,OutlineColour=&H40000000,BorderStyle=3'[_v]",
+        "[1:a]volume=1.5,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[a1]",
+        "[2:v]format=yuv420p,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
+        "[_v][disclaim]overlay=W-w-100:0:enable='between(t,0,5)',setpts=PTS-STARTPTS[video]",
+        "[a0][a1]concat=v=0:a=1[audio]"
+      ]
+    }
+  ]
+}
