@@ -1,6 +1,0 @@
-
-# Debian/Ubuntu
-
-# RHEL
-
-# Gentoo

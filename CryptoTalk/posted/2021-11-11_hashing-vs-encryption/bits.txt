@@ -1,3 +1,0 @@
-             * bits
-256 bits / 8 = 64 chars
-    8 bits in a byte
