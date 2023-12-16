@@ -142,29 +142,47 @@ class FFMPEG(object):
                         fcsOut.write(line)
             result.append(fcsName)
         if 'filter_complex' in config or 'filter_complex_script' in config:
-            if 'no-video' not in config.get('attributes', []):
+            if 'no-video' not in config['attributes']:
                 result.append('-map')
-                result.append('[video]')
-            if 'no-audio' not in config.get('attributes', []):
+                result.append(config.get('map', {}).get('video', '[video]'))
+            if 'no-audio' not in config['attributes']:
                 result.append('-map')
-                result.append('[audio]')
+                result.append(config.get('map', {}).get('audio', '[audio]'))
+            if 'subs' in config['attributes']:
+                result.append('-map')
+                result.append(config.get('map', {}).get('subs', '[subs]'))
 
-        if 'no-audio' not in config.get('attributes', []):
+        if 'no-audio' not in config['attributes']:
             result.append('-c:a')
             result.append(config.get('codec', {}).get('audio', 'aac'))
-        if 'no-video' not in config.get('attributes', []):
+        if 'no-video' not in config['attributes']:
             result.append('-c:v')
             result.append(config.get('codec', {}).get('video', 'h264'))
-        if 'metadata' in config:
-            for name, value in config['metadata'].items():
-                result.append('-metadata')
-                result.append(f'"{name}={value}"')
+        if 'subs' in config['attributes']:
+            result.append('-c:s')
+            result.append(config.get('codec', {}).get('subs', 'mov_text'))
+        if 'maps' in config:
+            for smap in config['maps']:
+                result.append('-map')
+                result.append(smap)
 
         result.append('-map_metadata')
         result.append('-1')
 
+        if 'metadata' not in config:
+            config['metadata'] = {}
+        for name, value in config['metadata'].items():
+            result.append('-metadata')
+            result.append(f'"{name}={value}"')
+        if 'title' not in config['metadata']:
+            result.append('-metadata')
+            result.append('"title="')
+        if 'author' not in config['metadata']:
+            result.append('-metadata')
+            result.append('"author=Markizano Draconus"')
+
         if 'vsync' in config['attributes']:
-            result.append('-vsync 2')
+            result.append('-fps_mode vfr')
 
         if 'movflags' in config:
             movflags = ' '.join(config['movflags'])

@@ -30,7 +30,7 @@ outfile="$(dirname $markdown)/$title.html"
 exec 0>&-
 exec 3>"$outfile"
 echo "$header" >&3
-cmark -t html "$markdown" >&3
+cmark "$markdown" >&3
 echo "$footer" >&3
 exec 3>&-
 
