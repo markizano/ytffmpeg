@@ -1,0 +1,780 @@
+1
+00:00:00.760 --> 00:00:02.560
+So, let's talk about server automation,
+
+2
+00:00:02.980 --> 00:00:03.660
+SaltStack edition.
+
+3
+00:00:04.980 --> 00:00:06.480
+In this video, we're going to talk
+
+4
+00:00:06.480 --> 00:00:08.800
+about what and how modules work.
+
+5
+00:00:09.260 --> 00:00:10.320
+And for reference, if you want to
+
+6
+00:00:10.320 --> 00:00:12.420
+go check out my introduction, my grains,
+
+7
+00:00:12.560 --> 00:00:12.940
+my states
+
+8
+00:00:12.940 --> 00:00:14.580
+and pillar, other videos that I may
+
+9
+00:00:14.580 --> 00:00:16.200
+have done on SaltStack, you're more
+
+10
+00:00:16.200 --> 00:00:16.620
+than welcome to
+
+11
+00:00:16.620 --> 00:00:17.700
+go check those out on my profile
+
+12
+00:00:17.700 --> 00:00:18.220
+as well.
+
+13
+00:00:19.680 --> 00:00:21.980
+So, if you're wondering what a SaltStack
+
+14
+00:00:21.980 --> 00:00:24.720
+module is, it is Python code execution
+
+15
+00:00:24.720 --> 00:00:26.620
+context for
+
+16
+00:00:26.620 --> 00:00:28.520
+whatever *Infrastructure you happen to be writing.
+
+17
+00:00:28.780 --> 00:00:30.340
+So, you can think of it as
+
+18
+00:00:30.340 --> 00:00:32.680
+the data structures basically define
+
+19
+00:00:32.680 --> 00:00:34.560
+and describe using a data
+
+20
+00:00:34.560 --> 00:00:37.420
+structure on how to execute something
+
+21
+00:00:37.420 --> 00:00:38.380
+in the environment.
+
+22
+00:00:38.620 --> 00:00:40.780
+For example, the `file.managed` part,
+
+23
+00:00:41.140 --> 00:00:43.880
+the file is the module that is created.
+
+24
+00:00:44.240 --> 00:00:46.900
+The managed is the function that is
+
+25
+00:00:46.900 --> 00:00:49.260
+invoked with the arguments provided
+
+26
+00:00:49.260 --> 00:00:50.260
+to it as the data
+
+27
+00:00:50.260 --> 00:00:52.640
+structure that is described proceeding
+
+28
+00:00:52.640 --> 00:00:56.600
+that file module description.
+
+29
+00:00:56.600 --> 00:00:59.740
+I also put standalone action in here
+
+30
+00:00:59.740 --> 00:01:02.200
+because it's really easy to turn a
+
+31
+00:01:02.200 --> 00:01:03.280
+custom module into
+
+32
+00:01:03.280 --> 00:01:05.700
+something that just does too much.
+
+33
+00:01:06.420 --> 00:01:08.460
+And so, I also say it can
+
+34
+00:01:08.460 --> 00:01:10.560
+also be code entry point, execution
+
+35
+00:01:10.560 --> 00:01:12.760
+entry point for any software
+
+36
+00:01:12.760 --> 00:01:14.240
+that you happen to be writing.
+
+37
+00:01:14.680 --> 00:01:16.360
+So, for example, one of the questions
+
+38
+00:01:16.360 --> 00:01:18.880
+that we oftentimes asked ourself was
+
+39
+00:01:18.880 --> 00:01:19.700
+how can we
+
+40
+00:01:19.700 --> 00:01:21.860
+be able to test the code that
+
+41
+00:01:21.860 --> 00:01:23.900
+we create that performs some kind
+
+42
+00:01:23.900 --> 00:01:24.600
+of operation?
+
+43
+00:01:24.600 --> 00:01:26.200
+Well, one of the things I thought
+
+44
+00:01:26.200 --> 00:01:28.860
+about doing in custom modules was
+
+45
+00:01:28.860 --> 00:01:30.520
+taking the APIs and
+
+46
+00:01:30.520 --> 00:01:32.000
+the code that we would otherwise write
+
+47
+00:01:32.000 --> 00:01:34.180
+in that modules directory and place
+
+48
+00:01:34.180 --> 00:01:34.720
+it inside
+
+49
+00:01:34.720 --> 00:01:37.440
+of a separate module, a separate pip
+
+50
+00:01:37.440 --> 00:01:38.980
+that was installed that was part of
+
+51
+00:01:38.980 --> 00:01:39.900
+a custom library.
+
+52
+00:01:40.760 --> 00:01:41.900
+I can get into that later.
+
+53
+00:01:42.260 --> 00:01:43.480
+I realize that just like kind of
+
+54
+00:01:43.480 --> 00:01:44.420
+blew it out of the water, but
+
+55
+00:01:44.420 --> 00:01:46.680
+as you dip into modules,
+
+56
+00:01:46.740 --> 00:01:48.280
+you come to find out that there's
+
+57
+00:01:48.280 --> 00:01:50.420
+a lot of Pythonisms available and
+
+58
+00:01:50.420 --> 00:01:52.240
+a lot of Python goody
+
+59
+00:01:52.240 --> 00:01:54.440
+like just like you can import full
+
+60
+00:01:54.440 --> 00:01:56.880
+-blown programs into your modules
+
+61
+00:01:56.880 --> 00:01:57.880
+if you're creating custom
+
+62
+00:01:57.880 --> 00:01:58.400
+modules.
+
+63
+00:01:59.740 --> 00:02:01.040
+So, let's have a look at that
+
+64
+00:02:01.040 --> 00:02:01.940
+module example.
+
+65
+00:02:02.240 --> 00:02:03.620
+You've got file at the root of
+
+66
+00:02:03.620 --> 00:02:04.800
+the file structure at the root of
+
+67
+00:02:04.800 --> 00:02:05.760
+the data structure here.
+
+68
+00:02:05.920 --> 00:02:08.360
+This is a YAML example and manage
+
+69
+00:02:08.360 --> 00:02:09.600
+is just one of the keys here
+
+70
+00:02:09.600 --> 00:02:10.480
+that is described.
+
+71
+00:02:10.880 --> 00:02:11.840
+I'm going to pause here for a
+
+72
+00:02:11.840 --> 00:02:13.500
+moment and point out file managed
+
+73
+00:02:13.500 --> 00:02:16.520
+as described by that is the
+
+74
+00:02:16.520 --> 00:02:18.060
+same thing as if you had file
+
+75
+00:02:18.060 --> 00:02:20.060
+.managed and described everything
+
+76
+00:02:20.060 --> 00:02:21.840
+the same as we're about
+
+77
+00:02:21.840 --> 00:02:23.100
+to go over right here.
+
+78
+00:02:24.060 --> 00:02:26.080
+If you have source set to some
+
+79
+00:02:26.080 --> 00:02:27.720
+salt location, it's going to look
+
+80
+00:02:27.720 --> 00:02:29.060
+on the salt master wherever
+
+81
+00:02:29.060 --> 00:02:30.980
+it says under the file serve and
+
+82
+00:02:30.980 --> 00:02:32.640
+it's going to create a file by
+
+83
+00:02:32.640 --> 00:02:33.240
+this name.
+
+84
+00:02:33.680 --> 00:02:35.400
+You can also create there's another
+
+85
+00:02:35.400 --> 00:02:36.760
+parameter for make directories if
+
+86
+00:02:36.760 --> 00:02:37.320
+you want to have it
+
+87
+00:02:37.320 --> 00:02:39.240
+make the directory leading up to this
+
+88
+00:02:39.240 --> 00:02:41.140
+file for you and then it's also
+
+89
+00:02:41.140 --> 00:02:41.720
+going to set the
+
+90
+00:02:41.720 --> 00:02:42.600
+permissions accordingly.
+
+91
+00:02:42.880 --> 00:02:44.980
+We also found out if you set
+
+92
+00:02:44.980 --> 00:02:46.920
+the permissions like this using the
+
+93
+00:02:46.920 --> 00:02:48.400
+leading zero to indicate
+
+94
+00:02:48.400 --> 00:02:50.320
+that there's no sticky bit explicitly.
+
+95
+00:02:51.220 --> 00:02:53.080
+Oftentimes this can get translated
+
+96
+00:02:53.080 --> 00:02:56.040
+into an integer when being read from YAML.
+
+97
+00:02:56.380 --> 00:02:57.960
+So we decided to create this as
+
+98
+00:02:57.960 --> 00:02:59.880
+a string and that seemed to carry
+
+99
+00:02:59.880 --> 00:03:01.820
+the meaning over into
+
+100
+00:03:01.820 --> 00:03:04.200
+the definition for the file permissions.
+
+101
+00:03:04.880 --> 00:03:08.260
+Now this is an example of a
+
+102
+00:03:08.260 --> 00:03:10.920
+function from the file module.
+
+103
+00:03:11.200 --> 00:03:13.280
+This is also a built-in module
+
+104
+00:03:13.280 --> 00:03:14.800
+to salt stack itself.
+
+105
+00:03:15.680 --> 00:03:17.880
+You can write custom modules that
+
+106
+00:03:17.880 --> 00:03:20.340
+do custom things for you and those
+
+107
+00:03:20.340 --> 00:03:21.020
+are the pieces that
+
+108
+00:03:21.020 --> 00:03:22.560
+I was describing if you wanted to
+
+109
+00:03:22.560 --> 00:03:24.280
+go beyond just making sure that a
+
+110
+00:03:24.280 --> 00:03:25.340
+file was present.
+
+111
+00:03:25.620 --> 00:03:28.500
+For example, I actually created custom
+
+112
+00:03:28.500 --> 00:03:30.500
+modules that perform the deployments
+
+113
+00:03:30.500 --> 00:03:31.920
+for us and we
+
+114
+00:03:31.920 --> 00:03:33.460
+had a specific order in which the
+
+115
+00:03:33.460 --> 00:03:35.120
+applications needed to be started
+
+116
+00:03:35.120 --> 00:03:36.900
+and that had to be pre-configured
+
+117
+00:03:36.900 --> 00:03:38.680
+or predestined based on certain things.
+
+118
+00:03:38.680 --> 00:03:41.300
+I was able to craft custom modules
+
+119
+00:03:41.300 --> 00:03:43.560
+that executed on the deployment for
+
+120
+00:03:43.560 --> 00:03:45.460
+us and we were able
+
+121
+00:03:45.460 --> 00:03:46.800
+to do this in a way that
+
+122
+00:03:46.800 --> 00:03:48.920
+didn't matter what flavor of Linux
+
+123
+00:03:48.920 --> 00:03:51.400
+was being used because we
+
+124
+00:03:51.400 --> 00:03:53.320
+had a few different flavors between
+
+125
+00:03:53.320 --> 00:03:55.600
+Red Hat and Debian and we needed
+
+126
+00:03:55.600 --> 00:03:56.700
+to be able to perform
+
+127
+00:03:56.700 --> 00:03:58.660
+the same operations regardless of
+
+128
+00:03:58.660 --> 00:04:00.360
+the kind or type of environment that
+
+129
+00:04:00.360 --> 00:04:00.860
+we were in.
+
+130
+00:04:01.640 --> 00:04:03.240
+Salt stack was really good at solving
+
+131
+00:04:03.240 --> 00:04:05.360
+that problem for us because among
+
+132
+00:04:05.360 --> 00:04:06.060
+the other tools
+
+133
+00:04:06.060 --> 00:04:08.500
+that basically do configuration as
+
+134
+00:04:08.500 --> 00:04:11.420
+code are able to deploy these things
+
+135
+00:04:11.420 --> 00:04:12.020
+in a way that
+
+136
+00:04:12.020 --> 00:04:13.500
+is uniform across the board.
+
+137
+00:04:14.240 --> 00:04:15.940
+One of the things that I really
+
+138
+00:04:15.940 --> 00:04:18.180
+loved about salt stack was its ubiquitous
+
+139
+00:04:18.180 --> 00:04:19.700
+way of invoking
+
+140
+00:04:19.700 --> 00:04:21.880
+itself so you could use salt call,
+
+141
+00:04:22.240 --> 00:04:24.480
+the module name, and then the arguments
+
+142
+00:04:24.480 --> 00:04:25.100
+that proceeded
+
+143
+00:04:25.100 --> 00:04:28.340
+after that to basically describe what
+
+144
+00:04:28.340 --> 00:04:30.300
+you wanted to invoke and you can
+
+145
+00:04:30.300 --> 00:04:31.380
+invoke it as a module
+
+146
+00:04:31.380 --> 00:04:33.200
+not necessarily as a state as well.
+
+147
+00:04:34.780 --> 00:04:37.180
+I would go and create custom modules
+
+148
+00:04:37.180 --> 00:04:39.500
+that basically say, take my app in
+
+149
+00:04:39.500 --> 00:04:40.960
+the dev environment
+
+150
+00:04:40.960 --> 00:04:43.540
+and deploy a version that we crafted
+
+151
+00:04:43.540 --> 00:04:45.200
+from Jenkins in order to make it
+
+152
+00:04:45.200 --> 00:04:45.940
+possible for this
+
+153
+00:04:45.940 --> 00:04:47.900
+app to be able to get a
+
+154
+00:04:47.900 --> 00:04:49.200
+version of itself out there.
+
+155
+00:04:50.720 --> 00:04:52.340
+I also thought this was a really
+
+156
+00:04:52.340 --> 00:04:54.600
+great way to ensure that deployments
+
+157
+00:04:54.600 --> 00:04:55.740
+got done consistently
+
+158
+00:04:55.740 --> 00:05:00.320
+and also because often times the steps
+
+159
+00:05:00.320 --> 00:05:01.940
+in which something needed to happen
+
+160
+00:05:01.940 --> 00:05:03.440
+may change
+
+161
+00:05:03.440 --> 00:05:05.080
+and so we would be able to
+
+162
+00:05:05.080 --> 00:05:07.000
+team up with the engineering team
+
+163
+00:05:07.000 --> 00:05:08.940
+to make sure that as the
+
+164
+00:05:08.940 --> 00:05:10.800
+necessary requirements were coming
+
+165
+00:05:10.800 --> 00:05:13.160
+in for the deployment itself that
+
+166
+00:05:13.160 --> 00:05:15.160
+we could also put
+
+167
+00:05:15.160 --> 00:05:16.360
+that as part of the release.
+
+168
+00:05:16.680 --> 00:05:18.520
+So if the process itself changed,
+
+169
+00:05:18.920 --> 00:05:20.980
+it was automated and could go through
+
+170
+00:05:20.980 --> 00:05:22.300
+the same review process
+
+171
+00:05:22.640 --> 00:05:25.520
+as the engineering team and DevOps
+
+172
+00:05:25.520 --> 00:05:27.620
+CloudOps would be able to make sure
+
+173
+00:05:27.620 --> 00:05:28.980
+that all the operations
+
+174
+00:05:28.980 --> 00:05:31.560
+were automated in synchrony with the
+
+175
+00:05:31.560 --> 00:05:32.320
+engineering team.
+
+176
+00:05:32.980 --> 00:05:34.040
+I thought this was a really great
+
+177
+00:05:34.040 --> 00:05:36.660
+implementation of salt stack as a
+
+178
+00:05:36.660 --> 00:05:38.800
+tool for not just server
+
+179
+00:05:38.800 --> 00:05:41.340
+automation but also process automation
+
+180
+00:05:41.340 --> 00:05:42.280
+to some extent.
+
+181
+00:05:43.560 --> 00:05:45.000
+So now that you kind of sort
+
+182
+00:05:45.000 --> 00:05:46.200
+of get the gist of how a
+
+183
+00:05:46.200 --> 00:05:47.940
+module works, here's the juicy part.
+
+184
+00:05:48.860 --> 00:05:51.140
+Say you're in an environment, say
+
+185
+00:05:51.140 --> 00:05:53.480
+you're in any environment, and you
+
+186
+00:05:53.480 --> 00:05:54.320
+have stuff going
+
+187
+00:05:54.320 --> 00:05:56.620
+on inside of your environment, be
+
+188
+00:05:56.620 --> 00:05:58.680
+it deployments, be it changes in permissions,
+
+189
+00:05:59.360 --> 00:06:00.060
+be it logs that
+
+190
+00:06:00.060 --> 00:06:01.900
+need to be extracted, there's some
+
+191
+00:06:01.900 --> 00:06:03.620
+operation that you perform in your
+
+192
+00:06:03.620 --> 00:06:04.840
+environment on a
+
+193
+00:06:04.840 --> 00:06:07.260
+routine basis and you had to automate it.
+
+194
+00:06:07.680 --> 00:06:09.260
+What custom module would you write
+
+195
+00:06:09.260 --> 00:06:10.640
+and what would it do?
+

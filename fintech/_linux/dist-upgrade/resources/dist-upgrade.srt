@@ -1,0 +1,1052 @@
+1
+00:00:00.580 --> 00:00:02.340
+Hey guys, it's Markizano.
+
+2
+00:00:02.840 --> 00:00:04.380
+If you're using Linux and you're on
+
+3
+00:00:04.380 --> 00:00:06.080
+Devuan, you may have noticed they
+
+4
+00:00:06.080 --> 00:00:07.000
+had an upgrade recently.
+
+5
+00:00:07.640 --> 00:00:08.780
+I'm a little late to the post
+
+6
+00:00:08.780 --> 00:00:10.500
+here, but if you wanted to upgrade
+
+7
+00:00:10.500 --> 00:00:11.460
+in place without a
+
+8
+00:00:11.460 --> 00:00:13.020
+new install, here's how you would
+
+9
+00:00:13.020 --> 00:00:13.340
+do it.
+
+10
+00:00:13.820 --> 00:00:15.040
+Make sure to have a backup of
+
+11
+00:00:15.040 --> 00:00:16.860
+your systems before you begin.
+
+12
+00:00:17.520 --> 00:00:18.380
+Always have a backup.
+
+13
+00:00:18.980 --> 00:00:19.220
+Yeap.
+
+14
+00:00:20.000 --> 00:00:21.380
+Next, you're going to update your
+
+15
+00:00:21.380 --> 00:00:23.660
+package list here with `apt-get update`
+
+16
+00:00:23.660 --> 00:00:25.460
+and `apt-get upgrade`.
+
+17
+00:00:25.461 --> 00:00:25.462
+ 
+
+18
+00:00:25.680 --> 00:00:27.300
+This is going to install the latest
+
+19
+00:00:27.300 --> 00:00:28.900
+packages and ensure you are up to
+
+20
+00:00:28.900 --> 00:00:29.580
+date with the latest
+
+21
+00:00:29.580 --> 00:00:31.420
+patches for the current version of
+
+22
+00:00:31.420 --> 00:00:32.400
+your operating system.
+
+23
+00:00:33.000 --> 00:00:34.460
+The last thing you want is for
+
+24
+00:00:34.460 --> 00:00:35.800
+your system to be trying to skip
+
+25
+00:00:35.800 --> 00:00:37.260
+an update and trip over
+
+26
+00:00:37.260 --> 00:00:39.180
+itself performing the update, and
+
+27
+00:00:39.180 --> 00:00:40.660
+then your server ends up in surgery.
+
+28
+00:00:41.100 --> 00:00:42.820
+Let's not have an apt-get surgery ;)
+
+29
+00:00:43.280 --> 00:00:44.220
+It's very painful!
+
+30
+00:00:44.860 --> 00:00:46.580
+Next, you're going to disable your
+
+31
+00:00:46.580 --> 00:00:48.260
+foreign packages and repositories
+
+32
+00:00:48.260 --> 00:00:49.300
+by commenting all
+
+33
+00:00:49.300 --> 00:00:52.580
+the files in /etc/apt/sources.list.d/*
+
+34
+00:00:52.960 --> 00:00:55.040
+This will ensure that no foreign software
+
+35
+00:00:55.040 --> 00:00:56.560
+interferes with the upgrade process.
+
+36
+00:00:56.560 --> 00:00:58.840
+Again, we're trying to avoid that
+
+37
+00:00:58.840 --> 00:01:00.020
+apt-get surgery, remember?
+
+38
+00:01:00.720 --> 00:01:02.600
+Once you have your repositories commented
+
+39
+00:01:02.600 --> 00:01:04.680
+out, let's edit the sources.list file,
+
+40
+00:01:04.880 --> 00:01:06.440
+the main
+
+41
+00:01:06.440 --> 00:01:08.080
+file and reduce it down to the
+
+42
+00:01:08.080 --> 00:01:10.480
+very main repository and change the
+
+43
+00:01:10.480 --> 00:01:11.440
+destination from
+
+44
+00:01:11.440 --> 00:01:13.320
+Chimaera to Daedalus.
+
+45
+00:01:13.940 --> 00:01:15.940
+Save the file and exit your text editor.
+
+46
+00:01:16.460 --> 00:01:18.540
+Now you're going to update your local
+
+47
+00:01:18.540 --> 00:01:20.580
+repository cache with `apt-get update`.
+
+48
+00:01:21.220 --> 00:01:23.180
+First, we need to install the latest
+
+49
+00:01:23.180 --> 00:01:26.400
+dpkg and version of aptitude, so
+
+50
+00:01:26.400 --> 00:01:29.212
+`apt-get install dpkg apt`
+
+51
+00:01:29.384 --> 00:01:30.287
+to install those.
+
+52
+00:01:30.800 --> 00:01:33.220
+This was a pattern introduced to ensure
+
+53
+00:01:33.220 --> 00:01:34.840
+that the latest updates from the upstream
+
+54
+00:01:34.840 --> 00:01:35.480
+are used
+
+55
+00:01:35.480 --> 00:01:37.100
+for the upgrade as opposed to the
+
+56
+00:01:37.100 --> 00:01:39.120
+current version, whereas before you
+
+57
+00:01:39.120 --> 00:01:39.660
+would just upgrade
+
+58
+00:01:39.660 --> 00:01:40.060
+from here.
+
+59
+00:01:40.580 --> 00:01:42.140
+Once this is done, you will have
+
+60
+00:01:42.140 --> 00:01:44.824
+the latest versions of the Debian-based
+
+61
+00:01:44.824 --> 00:01:45.080
+package managers.
+
+62
+00:01:45.800 --> 00:01:47.680
+You may see a prompt about news.
+
+63
+00:01:47.680 --> 00:01:49.860
+This is a lesspipe, so you
+
+64
+00:01:49.860 --> 00:01:51.400
+can navigate using the arrow keys,
+
+65
+00:01:51.720 --> 00:01:52.600
+you can use the space bar
+
+66
+00:01:52.600 --> 00:01:54.640
+for the next page, and Q for
+
+67
+00:01:54.640 --> 00:01:55.480
+leaving the message.
+
+68
+00:01:56.480 --> 00:01:57.800
+Take note of what they have to
+
+69
+00:01:57.800 --> 00:01:58.320
+say here, though.
+
+70
+00:01:58.660 --> 00:02:00.340
+Oftentimes, developers are making
+
+71
+00:02:00.340 --> 00:02:02.060
+updates and this is how you get
+
+72
+00:02:02.060 --> 00:02:02.840
+to see what changes
+
+73
+00:02:02.840 --> 00:02:04.140
+are coming in so you can take
+
+74
+00:02:04.140 --> 00:02:05.640
+action accordingly in your system.
+
+75
+00:02:06.860 --> 00:02:09.400
+As the system upgrades, it will ask
+
+76
+00:02:09.400 --> 00:02:10.720
+you about services that need to be
+
+77
+00:02:10.720 --> 00:02:11.980
+restarted and files
+
+78
+00:02:11.980 --> 00:02:13.960
+that may need to be replaced if
+
+79
+00:02:13.960 --> 00:02:15.620
+you change them or if you want
+
+80
+00:02:15.620 --> 00:02:16.380
+to just leave them be.
+
+81
+00:02:16.880 --> 00:02:18.500
+I forgot to include the options that
+
+82
+00:02:18.500 --> 00:02:20.680
+mandate the aptitude leave the system
+
+83
+00:02:20.680 --> 00:02:22.280
+as is, so know
+
+84
+00:02:22.280 --> 00:02:23.720
+that there are ways of suppressing
+
+85
+00:02:23.720 --> 00:02:25.080
+these messages and these actions,
+
+86
+00:02:25.720 --> 00:02:27.200
+and also know that without
+
+87
+00:02:27.200 --> 00:02:29.640
+those updates to your system, you
+
+88
+00:02:29.640 --> 00:02:31.240
+may require some additional tweaking
+
+89
+00:02:31.240 --> 00:02:32.200
+to get it working
+
+90
+00:02:32.200 --> 00:02:33.160
+with the latest software.
+
+91
+00:02:33.620 --> 00:02:35.120
+So be on the lookout for any
+
+92
+00:02:35.120 --> 00:02:38.220
+failed services that fail to restart
+
+93
+00:02:38.220 --> 00:02:39.100
+during this update.
+
+94
+00:02:39.680 --> 00:02:41.320
+When you finish with the upgrade,
+
+95
+00:02:41.500 --> 00:02:42.920
+you may get some additional helpful
+
+96
+00:02:42.920 --> 00:02:43.760
+information to
+
+97
+00:02:43.760 --> 00:02:44.540
+know about your system.
+
+98
+00:02:44.900 --> 00:02:47.000
+For example, I was relieved to find
+
+99
+00:02:47.000 --> 00:02:47.980
+out that you had to set a
+
+100
+00:02:47.980 --> 00:02:49.580
+kernel option now to enable
+
+101
+00:02:49.580 --> 00:02:51.980
+net.ifnames, as depicted here.
+
+102
+00:02:52.700 --> 00:02:54.120
+I was so upset when they decided
+
+103
+00:02:54.120 --> 00:02:55.600
+out of nowhere to change our network
+
+104
+00:02:55.600 --> 00:02:56.540
+interface names on us.
+
+105
+00:02:57.400 --> 00:02:59.580
+"#eth0" in the comments if you agree.
+
+106
+00:03:00.260 --> 00:03:01.900
+Now comes the part where it takes
+
+107
+00:03:01.900 --> 00:03:03.320
+some time to upgrade the system.
+
+108
+00:03:03.880 --> 00:03:05.320
+For this part, I like to ensure
+
+109
+00:03:05.320 --> 00:03:06.740
+that I'm running in a screen session
+
+110
+00:03:06.740 --> 00:03:07.760
+if I'm SSH'd
+
+111
+00:03:07.760 --> 00:03:10.260
+into a server, because I've been disconnected
+
+112
+00:03:10.260 --> 00:03:12.040
+mid-upgrade and let me tell you,
+
+113
+00:03:12.200 --> 00:03:13.355
+that is not sexy...
+
+114
+00:03:13.400 --> 00:03:13.401
+ 
+
+115
+00:03:14.060 --> 00:03:15.980
+Now, this time we're going to use
+
+116
+00:03:15.980 --> 00:03:17.740
+`apt-get dist-upgrade`.
+
+117
+00:03:18.120 --> 00:03:19.860
+This will do a deep inspection of
+
+118
+00:03:19.860 --> 00:03:21.860
+your package listing and ensure that
+
+119
+00:03:21.860 --> 00:03:23.000
+all packages are upgraded
+
+120
+00:03:23.000 --> 00:03:24.000
+to the latest versions.
+
+121
+00:03:24.540 --> 00:03:26.440
+It will also remove old and unused
+
+122
+00:03:26.440 --> 00:03:28.960
+packages, whereas `apt-get upgrade`
+
+123
+00:03:28.960 --> 00:03:29.980
+may leave some things
+
+124
+00:03:29.980 --> 00:03:31.360
+out and kind of sort of do
+
+125
+00:03:31.360 --> 00:03:32.080
+a sloppy job.
+
+126
+00:03:32.900 --> 00:03:34.680
+Again, after downloading packages,
+
+127
+00:03:34.940 --> 00:03:35.800
+it'll print the news.
+
+128
+00:03:36.060 --> 00:03:37.420
+There's a few bullet points, though,
+
+129
+00:03:37.480 --> 00:03:38.500
+that I wanted to call out here:
+
+130
+00:03:39.280 --> 00:03:40.980
+1.) isc-dhcp-server:
+
+131
+00:03:41.360 --> 00:03:43.160
+They are stopping maintenance on their
+
+132
+00:03:43.160 --> 00:03:45.120
+client part, so I'll have to find
+
+133
+00:03:45.120 --> 00:03:45.640
+an alternative
+
+134
+00:03:45.640 --> 00:03:46.860
+to dhclient.
+
+135
+00:03:47.780 --> 00:03:51.180
+2.) nfs-utils is no longer using /etc/default/*
+
+136
+00:03:51.180 --> 00:03:52.100
+for its configuration.
+
+137
+00:03:53.140 --> 00:03:57.540
+Instead, use `/etc/nfs.conf.d/local.conf`
+
+138
+00:03:57.541 --> 00:03:57.542
+ 
+
+139
+00:03:58.540 --> 00:04:00.080
+3.) There's a lot of updates coming in
+
+140
+00:04:00.080 --> 00:04:02.320
+for SSH, but basically, we're getting
+
+141
+00:04:02.320 --> 00:04:02.920
+better hashing
+
+142
+00:04:02.920 --> 00:04:04.780
+algorithms and more secure configurations.
+
+143
+00:04:05.560 --> 00:04:07.820
+4.) You'll no longer need to quote interglob
+
+144
+00:04:07.820 --> 00:04:09.760
+SCP results when targeting on the remote...
+
+145
+00:04:10.140 --> 00:04:11.140
+That is fantastic.
+
+146
+00:04:11.340 --> 00:04:12.540
+I cannot tell you how many times
+
+147
+00:04:12.540 --> 00:04:14.600
+I've tried to SCP a file and
+
+148
+00:04:14.600 --> 00:04:16.180
+get caught by that glob pattern.
+
+149
+00:04:16.181 --> 00:04:16.182
+ 
+
+150
+00:04:16.820 --> 00:04:19.480
+5.) The OpenSSL upgrade breaks how OpenVPN
+
+151
+00:04:19.480 --> 00:04:22.220
+works, so it will need some configuration changes
+
+152
+00:04:22.220 --> 00:04:24.220
+for encryption ciphers to continue working.
+
+153
+00:04:25.400 --> 00:04:27.400
+6.) fgrep and egrep are no longer a
+
+154
+00:04:27.400 --> 00:04:29.600
+thing, so use the respective flags
+
+155
+00:04:29.600 --> 00:04:30.620
+when using grep.
+
+156
+00:04:31.540 --> 00:04:33.240
+Once you've consumed all the updates,
+
+157
+00:04:33.460 --> 00:04:35.480
+use "q" to exit from the lesspipe.
+
+158
+00:04:36.360 --> 00:04:38.180
+And we're off and running to the upgrade.
+
+159
+00:04:39.000 --> 00:04:40.700
+You may have to confirm your keyboard
+
+160
+00:04:40.700 --> 00:04:43.080
+character set and maybe answer a couple
+
+161
+00:04:43.080 --> 00:04:43.840
+of other questions
+
+162
+00:04:43.840 --> 00:04:44.480
+on the upgrade.
+
+163
+00:04:45.440 --> 00:04:47.040
+And after that, the upgrade will tarry
+
+164
+00:04:47.040 --> 00:04:48.680
+on quite nicely if all goes jolly.
+
+165
+00:04:49.660 --> 00:04:51.160
+This isn't actually how fast it goes,
+
+166
+00:04:51.280 --> 00:04:52.460
+but... you get the idea.
+
+167
+00:04:53.780 --> 00:04:56.080
+After the package upgrade is complete,
+
+168
+00:04:56.360 --> 00:04:57.420
+I like to peek around at the
+
+169
+00:04:57.420 --> 00:04:58.260
+new versions of the
+
+170
+00:04:58.260 --> 00:05:00.200
+software I have and make sure the
+
+171
+00:05:00.200 --> 00:05:02.280
+package managers are nice and tidy.
+
+172
+00:05:02.920 --> 00:05:03.805
+You can do this with
+
+173
+00:05:03.936 --> 00:05:06.898
+`apt-get autoremove` and `apt-get autoclean`.
+
+174
+00:05:07.340 --> 00:05:09.340
+Autoremove will remove old packages
+
+175
+00:05:09.340 --> 00:05:11.140
+that are obsolete, not in use, or
+
+176
+00:05:11.140 --> 00:05:11.900
+otherwise not
+
+177
+00:05:11.900 --> 00:05:13.040
+necessary on your system.
+
+178
+00:05:13.520 --> 00:05:14.440
+(No longer a dependency).
+
+179
+00:05:15.300 --> 00:05:16.800
+Autoclean will delete the debian
+
+180
+00:05:16.800 --> 00:05:18.320
+packages downloaded to your local
+
+181
+00:05:18.320 --> 00:05:19.120
+computer's cache.
+
+182
+00:05:19.480 --> 00:05:20.680
+You don't need those consuming your
+
+183
+00:05:20.680 --> 00:05:21.660
+precious disk space!
+
+184
+00:05:22.320 --> 00:05:24.260
+Once I see that no packages are
+
+185
+00:05:24.260 --> 00:05:25.960
+left needing upgrading or cleaning,
+
+186
+00:05:26.260 --> 00:05:27.440
+I will open up the
+
+187
+00:05:27.440 --> 00:05:30.120
+`sources.list` to replace the other
+
+188
+00:05:30.120 --> 00:05:32.160
+repositories for security updates
+
+189
+00:05:32.160 --> 00:05:32.620
+and such.
+
+190
+00:05:33.060 --> 00:05:35.200
+Since we updated `sources.list`, we'll
+
+191
+00:05:35.200 --> 00:05:37.060
+need to run `apt-get update` once
+
+192
+00:05:37.060 --> 00:05:38.480
+more to refresh
+
+193
+00:05:38.480 --> 00:05:39.360
+the package cache.
+
+194
+00:05:40.740 --> 00:05:42.580
+Now, we are going to run one
+
+195
+00:05:42.580 --> 00:05:45.180
+more `apt-get dist-upgrade` in order
+
+196
+00:05:45.180 --> 00:05:46.620
+to ensure security updates
+
+197
+00:05:46.620 --> 00:05:48.740
+and other updates are installed successfully
+
+198
+00:05:48.740 --> 00:05:49.560
+and to completion.
+
+199
+00:05:50.080 --> 00:05:51.700
+This may be a smaller list of
+
+200
+00:05:51.700 --> 00:05:53.620
+packages that need update and a little
+
+201
+00:05:53.620 --> 00:05:54.340
+more minimal than
+
+202
+00:05:54.340 --> 00:05:56.140
+what you just did with the full upgrade.
+
+203
+00:05:56.880 --> 00:05:59.081
+Finally, I will go into `sources.list.d`
+
+204
+00:05:59.102 --> 00:06:01.260
+and enable all of the foreign
+
+205
+00:06:01.260 --> 00:06:03.460
+package repositories
+
+206
+00:06:04.200 --> 00:06:06.600
+from before and edit them to ensure
+
+207
+00:06:06.600 --> 00:06:08.120
+they are on the compatible version
+
+208
+00:06:08.120 --> 00:06:09.220
+of software for
+
+209
+00:06:09.220 --> 00:06:10.760
+the version of Linux that I am running.
+
+210
+00:06:11.320 --> 00:06:12.540
+You know the drill by now.
+
+211
+00:06:12.920 --> 00:06:15.140
+We edited `sources.list`, so we need
+
+212
+00:06:15.140 --> 00:06:17.560
+to run one more `apt-get update`
+
+213
+00:06:17.588 --> 00:06:19.200
+to refresh
+
+214
+00:06:19.200 --> 00:06:21.240
+the package list and the package manager
+
+215
+00:06:21.240 --> 00:06:22.420
+knows where to find all the packages.
+
+216
+00:06:23.060 --> 00:06:24.960
+Then we can use `apt-get upgrade`
+
+217
+00:06:24.960 --> 00:06:27.180
+to ensure those packages are up to date.
+
+218
+00:06:27.900 --> 00:06:29.860
+But first, here's something tricky
+
+219
+00:06:29.860 --> 00:06:31.240
+about aptitude that gets a lot of
+
+220
+00:06:31.240 --> 00:06:31.740
+people since
+
+221
+00:06:31.740 --> 00:06:32.900
+it's a change in behavior.
+
+222
+00:06:33.620 --> 00:06:35.840
+The GPG keys are no longer in
+
+223
+00:06:35.840 --> 00:06:38.280
+a trusted.gpg keyring in the configuration.
+
+224
+00:06:39.060 --> 00:06:41.200
+Instead, each package can store their
+
+225
+00:06:41.200 --> 00:06:44.320
+keys in `/etc/apt/trusted.gpg.d`.
+
+226
+00:06:44.940 --> 00:06:47.420
+So you can run `gpg --no-default-keyring 
+
+227
+00:06:47.420 --> 00:06:49.420
+--keyring /etc/apt/trusted.gpg
+
+228
+00:06:49.420 --> 00:06:53.520
+-a (for ascii armored export)
+
+229
+00:06:55.861 --> 00:06:55.862
+ 
+
+230
+00:06:53.520 --> 00:06:55.860
+--export [KEY]`
+
+231
+00:06:55.860 --> 00:06:56.860
+and then, pipe it to a dedicated
+
+232
+00:06:56.860 --> 00:06:59.700
+file in the trusted.gpg.d directory
+
+233
+00:06:59.700 --> 00:07:00.780
+as depicted here.
+
+234
+00:07:01.180 --> 00:07:02.920
+I have three keys to copy out
+
+235
+00:07:02.920 --> 00:07:04.260
+of the keyring, so you'll see me
+
+236
+00:07:04.260 --> 00:07:05.780
+do that now for MongoDB,
+
+237
+00:07:06.160 --> 00:07:07.680
+NodeJS, and Docker.
+
+238
+00:07:08.320 --> 00:07:10.160
+Once the keys have been exported from
+
+239
+00:07:10.160 --> 00:07:12.100
+the keyring and into their own dedicated file,
+
+240
+00:07:12.540 --> 00:07:14.183
+the subsequent invocation of
+
+241
+00:07:14.340 --> 00:07:16.940
+`apt-get update` should yield no warnings about
+
+242
+00:07:16.940 --> 00:07:17.720
+the keys in
+
+243
+00:07:17.720 --> 00:07:18.140
+the keyring.
+
+244
+00:07:18.720 --> 00:07:20.840
+Now you can `apt-get upgrade` or
+
+245
+00:07:20.840 --> 00:07:22.800
+`apt-get install` the software as needed
+
+246
+00:07:22.800 --> 00:07:24.040
+to get to the latest versions.
+
+247
+00:07:24.041 --> 00:07:24.042
+
+
+248
+00:07:24.580 --> 00:07:26.500
+With that, you're done, and all the
+
+249
+00:07:26.500 --> 00:07:27.400
+updates is set.
+
+250
+00:07:27.640 --> 00:07:29.200
+It's time to reboot into your newly
+
+251
+00:07:29.200 --> 00:07:30.060
+upgraded system.
+
+252
+00:07:30.640 --> 00:07:33.020
+I use `shutdown -F` to
+
+253
+00:07:33.020 --> 00:07:34.860
+force check the file system on the
+
+254
+00:07:34.860 --> 00:07:36.060
+next boot, and then
+
+255
+00:07:36.060 --> 00:07:37.420
+`shutdown -r now` to say reboot.
+
+256
+00:07:37.700 --> 00:07:39.580
+You can also say `shutdown -h now` for
+
+257
+00:07:39.580 --> 00:07:40.560
+halt/shutdown.
+
+258
+00:07:41.420 --> 00:07:42.940
+And that will check to make sure
+
+259
+00:07:42.940 --> 00:07:45.020
+everything is okay on the next boot.
+
+260
+00:07:45.700 --> 00:07:46.360
+Thank you so much.
+
+261
+00:07:46.500 --> 00:07:47.240
+Hope this was helpful.
+
+262
+00:07:47.240 --> 00:07:49.200
+Save it for later, follow for more,
+
+263
+00:07:49.540 --> 00:07:51.240
+and we'll see you on the next one.
+

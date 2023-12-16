@@ -1,0 +1,808 @@
+1
+00:00:00.840 --> 00:00:02.640
+So let's talk about Server Automation:
+
+2
+00:00:03.020 --> 00:00:03.660
+SaltStack Edition. =)
+
+3
+00:00:04.780 --> 00:00:06.740
+Hey guys, it's Markizano, and in this
+
+4
+00:00:06.740 --> 00:00:07.900
+video we're going to talk about the
+
+5
+00:00:07.900 --> 00:00:09.420
+SaltMaster and the SaltMinion.
+
+6
+00:00:09.580 --> 00:00:11.220
+And if you want, and you're curious
+
+7
+00:00:11.220 --> 00:00:12.600
+about this, you can learn more about
+
+8
+00:00:12.600 --> 00:00:14.600
+SaltStack, some grains, some pillar
+
+9
+00:00:14.600 --> 00:00:15.120
+and states,
+
+10
+00:00:15.300 --> 00:00:16.540
+and modules videos that I've done
+
+11
+00:00:16.540 --> 00:00:17.800
+in the past, just if you want
+
+12
+00:00:17.800 --> 00:00:18.300
+to check them out.
+
+13
+00:00:19.260 --> 00:00:21.840
+So, the SaltStack infrastructure is
+
+14
+00:00:21.840 --> 00:00:24.080
+based on a Master and Minion setup,
+
+15
+00:00:24.080 --> 00:00:26.620
+where the Master receives information
+
+16
+00:00:26.620 --> 00:00:29.080
+from the pillar, from the states that
+
+17
+00:00:29.080 --> 00:00:29.760
+you create,
+
+18
+00:00:30.200 --> 00:00:32.200
+and the grains from the SaltMaster
+
+19
+00:00:32.200 --> 00:00:34.380
+itself, and also from any of the
+
+20
+00:00:34.380 --> 00:00:35.940
+Minions, if it wants to consider them.
+
+21
+00:00:36.720 --> 00:00:39.200
+And use that to take that description
+
+22
+00:00:39.200 --> 00:00:40.840
+data structure that you created,
+
+23
+00:00:41.020 --> 00:00:43.540
+in the states, in the pillar, combine
+
+24
+00:00:43.540 --> 00:00:45.400
+all that into a set of instructions,
+
+25
+00:00:45.740 --> 00:00:47.840
+that go and implement those instructions
+
+26
+00:00:47.840 --> 00:00:49.240
+on each of the Minions.
+
+27
+00:00:49.240 --> 00:00:52.140
+So, in a Master-Minion setup like
+
+28
+00:00:52.140 --> 00:00:53.860
+this, you can have an Nginx server,
+
+29
+00:00:54.280 --> 00:00:56.980
+a PHP server, and a MySQL database,
+
+30
+00:00:57.300 --> 00:00:58.220
+just as an example.
+
+31
+00:00:59.000 --> 00:01:00.800
+Yes, I know, my art is just
+
+32
+00:01:00.800 --> 00:01:02.000
+glorious, that's a scale. ;)
+
+33
+00:01:02.540 --> 00:01:05.600
+So, in this setup, you can have
+
+34
+00:01:05.600 --> 00:01:07.980
+a SaltMaster sit here and contain
+
+35
+00:01:07.980 --> 00:01:10.100
+all this information that is a description here.
+
+36
+00:01:10.300 --> 00:01:11.600
+And then what's cool, is you can
+
+37
+00:01:11.600 --> 00:01:13.800
+have multiple web services that are
+
+38
+00:01:13.800 --> 00:01:15.060
+basically the load balancer,
+
+39
+00:01:15.060 --> 00:01:17.720
+that balances the application's activities,
+
+40
+00:01:18.200 --> 00:01:19.780
+as the request gets sent to the
+
+41
+00:01:19.780 --> 00:01:20.800
+application itself.
+
+42
+00:01:21.220 --> 00:01:22.640
+And then the application communicates
+
+43
+00:01:22.640 --> 00:01:25.160
+with the database, so that all that
+
+44
+00:01:25.160 --> 00:01:26.380
+information can communicate.
+
+45
+00:01:26.680 --> 00:01:29.340
+However, what's really nice, is all
+
+46
+00:01:29.340 --> 00:01:31.160
+of that infrastructure can be defined
+
+47
+00:01:31.160 --> 00:01:34.020
+and described just using a data structure.
+
+48
+00:01:34.440 --> 00:01:36.860
+That is what makes this so cool,
+
+49
+00:01:37.300 --> 00:01:38.900
+is you no longer have to go
+
+50
+00:01:38.900 --> 00:01:40.140
+SSH into the server,
+
+51
+00:01:40.140 --> 00:01:42.200
+app get install Nginx, configure Etsy
+
+52
+00:01:42.200 --> 00:01:43.200
+Nginx, blah, blah, blah.
+
+53
+00:01:43.460 --> 00:01:44.980
+Go and configure each of the sites,
+
+54
+00:01:45.400 --> 00:01:46.140
+set all that stuff up.
+
+55
+00:01:46.280 --> 00:01:47.880
+Maybe you have a template, maybe you don't.
+
+56
+00:01:48.180 --> 00:01:49.900
+The application itself could require
+
+57
+00:01:49.900 --> 00:01:52.280
+additional steps to get that application deployed.
+
+58
+00:01:52.620 --> 00:01:54.100
+It may have additional dependencies.
+
+59
+00:01:54.640 --> 00:01:56.180
+Your database server needs to be set up.
+
+60
+00:01:56.280 --> 00:01:57.940
+It's got to have sufficient disk space.
+
+61
+00:01:58.080 --> 00:01:59.480
+It needs to have sufficient configuration
+
+62
+00:01:59.480 --> 00:02:00.160
+in place.
+
+63
+00:02:00.600 --> 00:02:02.060
+And yes, I know there's Amazon RDS,
+
+64
+00:02:02.320 --> 00:02:05.060
+but still, you know, there's things
+
+65
+00:02:05.060 --> 00:02:06.060
+that you can do with Salt,
+
+66
+00:02:06.120 --> 00:02:07.680
+that allow you to be able to
+
+67
+00:02:07.680 --> 00:02:09.940
+set this stuff up in an automated fashion.
+
+68
+00:02:09.940 --> 00:02:11.980
+And using just a data structure.
+
+69
+00:02:12.400 --> 00:02:13.180
+It's really cool.
+
+70
+00:02:14.160 --> 00:02:15.680
+And then what I think is really
+
+71
+00:02:15.680 --> 00:02:18.820
+cool is that with the next step up,
+
+72
+00:02:18.960 --> 00:02:20.200
+what you will be doing is you'll
+
+73
+00:02:20.200 --> 00:02:22.040
+be creating a dev environment, a QA
+
+74
+00:02:22.040 --> 00:02:24.200
+environment, a UAT environment, and
+
+75
+00:02:24.200 --> 00:02:25.140
+a production environment.
+
+76
+00:02:25.600 --> 00:02:27.180
+And the Salt master will be able
+
+77
+00:02:27.180 --> 00:02:29.080
+to command and control the description
+
+78
+00:02:29.080 --> 00:02:30.000
+for all of these.
+
+79
+00:02:30.460 --> 00:02:32.740
+You simply write the states once to
+
+80
+00:02:32.740 --> 00:02:34.180
+describe how you want the environment
+
+81
+00:02:34.180 --> 00:02:34.720
+set up.
+
+82
+00:02:34.720 --> 00:02:36.800
+You use the pillar to populate it
+
+83
+00:02:36.800 --> 00:02:38.220
+with the data so that it knows
+
+84
+00:02:38.220 --> 00:02:40.280
+to watch DEV, QA, UAT, and PROD.
+
+85
+00:02:40.920 --> 00:02:43.860
+And then you can set the configuration
+
+86
+00:02:43.860 --> 00:02:45.740
+up and say, here is a release
+
+87
+00:02:45.740 --> 00:02:47.560
+of the infrastructure as it was,
+
+88
+00:02:47.660 --> 00:02:49.120
+as it were, the day that we
+
+89
+00:02:49.120 --> 00:02:50.520
+decided to perform the deployment.
+
+90
+00:02:51.300 --> 00:02:52.920
+And what's also really cool is with
+
+91
+00:02:52.920 --> 00:02:55.200
+the states in the pillar being flat
+
+92
+00:02:55.200 --> 00:02:55.960
+data structures,
+
+93
+00:02:56.060 --> 00:02:57.040
+what you can do is you can
+
+94
+00:02:57.040 --> 00:02:58.940
+take the states in the pillar, put
+
+95
+00:02:58.940 --> 00:03:00.660
+those inside of a Git repository.
+
+96
+00:03:00.660 --> 00:03:03.120
+Now you have history. Now you have
+
+97
+00:03:03.120 --> 00:03:04.900
+versioning. Now you have control.
+
+98
+00:03:05.320 --> 00:03:06.620
+Now you know who changed what.
+
+99
+00:03:07.000 --> 00:03:08.460
+Now you have a clear description of
+
+100
+00:03:08.460 --> 00:03:10.000
+your environment and your infrastructure
+
+101
+00:03:10.000 --> 00:03:11.480
+without having to wonder,
+
+102
+00:03:11.800 --> 00:03:13.120
+oh crap, did I SSH into that
+
+103
+00:03:13.120 --> 00:03:14.640
+server and make that change to that file?
+
+104
+00:03:14.760 --> 00:03:15.920
+Oh crap, what was that file name?
+
+105
+00:03:15.980 --> 00:03:16.700
+Because guess what?
+
+106
+00:03:17.060 --> 00:03:18.520
+These servers, they're transient.
+
+107
+00:03:18.840 --> 00:03:19.300
+They die.
+
+108
+00:03:19.680 --> 00:03:21.440
+Something can happen. The disk fails.
+
+109
+00:03:21.800 --> 00:03:23.320
+Suddenly Amazon revokes your access.
+
+110
+00:03:23.740 --> 00:03:25.460
+Somebody didn't pay the bill and now
+
+111
+00:03:25.460 --> 00:03:26.580
+the servers have been deleted and
+
+112
+00:03:26.580 --> 00:03:27.120
+taken offline.
+
+113
+00:03:27.120 --> 00:03:28.760
+Somebody else from another department
+
+114
+00:03:28.760 --> 00:03:29.880
+didn't know that you still needed
+
+115
+00:03:29.880 --> 00:03:30.420
+this environment
+
+116
+00:03:30.420 --> 00:03:32.660
+and ended up deleting those servers.
+
+117
+00:03:33.120 --> 00:03:34.280
+I don't care.
+
+118
+00:03:34.700 --> 00:03:36.660
+As long as the configuration is stored
+
+119
+00:03:36.660 --> 00:03:38.220
+within the Salt Master and stored
+
+120
+00:03:38.220 --> 00:03:38.980
+within Git,
+
+121
+00:03:39.520 --> 00:03:40.640
+just as a means by which I
+
+122
+00:03:40.640 --> 00:03:42.540
+can use to keep track of all
+
+123
+00:03:42.540 --> 00:03:43.860
+this infrastructure configuration,
+
+124
+00:03:44.740 --> 00:03:46.360
+it doesn't matter. Delete the environments.
+
+125
+00:03:46.540 --> 00:03:47.800
+I don't care. I can use the
+
+126
+00:03:47.800 --> 00:03:49.820
+salt master and craft a new one
+
+127
+00:03:49.820 --> 00:03:51.160
+in a cinch.
+
+128
+00:03:52.360 --> 00:03:54.960
+Now you've got your one master setup
+
+129
+00:03:54.960 --> 00:03:57.240
+and you've got your one environment setup.
+
+130
+00:03:57.520 --> 00:03:59.820
+This works really great for one customer.
+
+131
+00:04:00.380 --> 00:04:02.420
+Say you have multiple customers.
+
+132
+00:04:03.040 --> 00:04:05.540
+Say customer XYZ has got a few
+
+133
+00:04:05.540 --> 00:04:07.480
+changes that are different from customer ABC.
+
+134
+00:04:07.481 --> 00:04:07.482
+ 
+
+135
+00:04:08.140 --> 00:04:09.920
+And say it's different enough that
+
+136
+00:04:09.920 --> 00:04:11.580
+it's not just data, it's structure.
+
+137
+00:04:11.700 --> 00:04:13.000
+They require a different app.
+
+138
+00:04:13.180 --> 00:04:14.360
+The different app's got to be set
+
+139
+00:04:14.360 --> 00:04:15.140
+up a different way.
+
+140
+00:04:15.540 --> 00:04:17.240
+It needs these dependencies instead.
+
+141
+00:04:17.240 --> 00:04:20.240
+It's got to be on a Red
+
+142
+00:04:20.240 --> 00:04:23.080
+Hat box rather than a Debian box.
+
+143
+00:04:23.400 --> 00:04:24.000
+I don't know.
+
+144
+00:04:24.320 --> 00:04:25.720
+People come up with all kinds of
+
+145
+00:04:25.720 --> 00:04:26.860
+requirements like crazy.
+
+146
+00:04:27.560 --> 00:04:29.120
+And so what's nice about SaltStack
+
+147
+00:04:29.120 --> 00:04:31.160
+is yes, it can handle this.
+
+148
+00:04:32.020 --> 00:04:34.900
+However, the way that I implemented
+
+149
+00:04:34.900 --> 00:04:37.220
+it in the past was this was
+
+150
+00:04:37.220 --> 00:04:38.760
+done using the same salt master.
+
+151
+00:04:38.940 --> 00:04:40.460
+If I were to go back and
+
+152
+00:04:40.460 --> 00:04:42.320
+redo it, I would say one salt
+
+153
+00:04:42.320 --> 00:04:43.280
+master per customer.
+
+154
+00:04:43.280 --> 00:04:46.240
+So one salt master per cluster of
+
+155
+00:04:46.240 --> 00:04:47.620
+setup that you've got going on.
+
+156
+00:04:47.800 --> 00:04:49.640
+One release that can be inside of
+
+157
+00:04:49.640 --> 00:04:50.740
+one Git repository.
+
+158
+00:04:51.240 --> 00:04:52.480
+And if there's another customer that
+
+159
+00:04:52.480 --> 00:04:54.760
+comes in that needs a desperately
+
+160
+00:04:54.760 --> 00:04:56.520
+different setup,
+
+161
+00:04:57.040 --> 00:05:01.640
+then I would set them up on
+
+162
+00:05:01.640 --> 00:05:03.460
+their own Git repository with their
+
+163
+00:05:03.460 --> 00:05:04.440
+own salt master.
+
+164
+00:05:04.580 --> 00:05:06.540
+Possibly copying states between as
+
+165
+00:05:06.540 --> 00:05:08.940
+needed in order to set the infrastructure up.
+
+166
+00:05:08.940 --> 00:05:10.820
+And then would have them on their
+
+167
+00:05:10.820 --> 00:05:13.080
+own release, their own cadence, so
+
+168
+00:05:13.080 --> 00:05:14.120
+that they had their own freedom
+
+169
+00:05:14.120 --> 00:05:16.060
+as far as how their infrastructure
+
+170
+00:05:16.060 --> 00:05:17.980
+made it out into the environments.
+
+171
+00:05:19.120 --> 00:05:21.200
+Also, generally speaking, we found
+
+172
+00:05:21.200 --> 00:05:23.380
+that it depends on what you're doing
+
+173
+00:05:23.380 --> 00:05:24.200
+with SaltStack
+
+174
+00:05:24.200 --> 00:05:25.840
+and what you're doing with the masters
+
+175
+00:05:25.840 --> 00:05:26.400
+and the minions
+
+176
+00:05:26.400 --> 00:05:27.980
+and as far as how much communication
+
+177
+00:05:27.980 --> 00:05:30.580
+is happening in this kind of a setup.
+
+178
+00:05:30.680 --> 00:05:32.300
+But there is a constraint on the
+
+179
+00:05:32.300 --> 00:05:33.220
+salt master itself.
+
+180
+00:05:33.320 --> 00:05:36.420
+In my experience, more than a thousand
+
+181
+00:05:36.420 --> 00:05:38.840
+minions will drag your salt master down.
+
+182
+00:05:38.840 --> 00:05:40.840
+Especially if you don't have the computing
+
+183
+00:05:40.840 --> 00:05:41.960
+power for the salt master
+
+184
+00:05:41.960 --> 00:05:43.900
+to be able to compile the configuration
+
+185
+00:05:43.900 --> 00:05:46.080
+that is needed for each of the minions
+
+186
+00:05:46.080 --> 00:05:47.260
+that are going to be asking for
+
+187
+00:05:47.260 --> 00:05:48.460
+the data from the salt master
+
+188
+00:05:48.460 --> 00:05:50.420
+so that they can populate their state
+
+189
+00:05:50.420 --> 00:05:52.000
+inside of each of the environments.
+
+190
+00:05:53.840 --> 00:05:55.180
+Enter the salt syndic.
+
+191
+00:05:55.940 --> 00:05:56.820
+And I guess that's all you're going
+
+192
+00:05:56.820 --> 00:05:57.500
+to get for this video.
+
+193
+00:05:57.620 --> 00:05:58.560
+If you want to keep in touch,
+
+194
+00:05:58.600 --> 00:05:59.600
+go ahead and hit that follow up button.
+
+195
+00:05:59.660 --> 00:06:00.840
+I've got some more videos coming out.
+
+196
+00:06:01.360 --> 00:06:02.580
+And looking forward to seeing the
+
+197
+00:06:02.580 --> 00:06:03.520
+rest of ya'll. Thank you so much.
+
+198
+00:06:03.520 --> 00:06:05.100
+My name is Markizano Draconus, and
+
+199
+00:06:05.100 --> 00:06:06.720
+I'm here to teach you about IT, DevOps,
+
+200
+00:06:06.960 --> 00:06:08.260
+and all these fun things.
+
+201
+00:06:08.540 --> 00:06:09.640
+Look forward to seeing you on the
+
+202
+00:06:09.640 --> 00:06:10.400
+next one. Thanks!
+

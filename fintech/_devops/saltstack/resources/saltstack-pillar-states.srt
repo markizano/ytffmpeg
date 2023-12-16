@@ -1,0 +1,936 @@
+1
+00:00:00.640 --> 00:00:02.520
+So let's talk about server automation,
+
+2
+00:00:02.880 --> 00:00:05.700
+SaltStack edition! Now I thought this
+
+3
+00:00:05.700 --> 00:00:07.340
+was really ingenious whenever I was
+
+4
+00:00:07.340 --> 00:00:09.640
+first learning about it and it's just
+
+5
+00:00:09.640 --> 00:00:11.100
+really cool exploring how some of
+
+6
+00:00:11.100 --> 00:00:13.900
+these software tools work. So in a previous
+
+7
+00:00:13.900 --> 00:00:15.660
+video we covered the states, which
+
+8
+00:00:15.660 --> 00:00:18.100
+is basically description YAML that
+
+9
+00:00:18.100 --> 00:00:19.460
+describes what your infrastructure
+
+10
+00:00:19.460 --> 00:00:21.660
+is supposed to look like. But if there's
+
+11
+00:00:21.660 --> 00:00:24.040
+custom data or a custom information
+
+12
+00:00:24.040 --> 00:00:26.340
+that you want in order to properly populate
+
+13
+00:00:26.340 --> 00:00:29.040
+a template or to properly name a
+
+14
+00:00:29.040 --> 00:00:30.820
+file if it's part of an application that
+
+15
+00:00:30.820 --> 00:00:32.940
+you're building. The pillar is the
+
+16
+00:00:32.940 --> 00:00:35.400
+data that is used to encompass what
+
+17
+00:00:35.400 --> 00:00:35.720
+you can
+
+18
+00:00:35.720 --> 00:00:38.980
+place inside of your states. To make
+
+19
+00:00:38.980 --> 00:00:40.680
+a programming reference you could
+
+20
+00:00:40.680 --> 00:00:41.000
+think of
+
+21
+00:00:41.000 --> 00:00:43.120
+the states as like the program, the
+
+22
+00:00:43.120 --> 00:00:45.900
+PHP, the Python that defines the structure of
+
+23
+00:00:45.900 --> 00:00:48.120
+the application. The description in
+
+24
+00:00:48.120 --> 00:00:51.460
+data in a data structure format that
+
+25
+00:00:51.460 --> 00:00:52.980
+describes what your infrastructure
+
+26
+00:00:52.980 --> 00:00:56.400
+looks like. Infrastructure as code, but
+
+27
+00:00:56.400 --> 00:00:58.680
+not only as code, as data, as
+
+28
+00:00:58.680 --> 00:01:02.480
+a description object. And then the
+
+29
+00:01:02.480 --> 00:01:04.900
+pillar is yet another data structure
+
+30
+00:01:04.900 --> 00:01:07.500
+that describes information that's
+
+31
+00:01:07.500 --> 00:01:09.380
+supposed to populate the structure
+
+32
+00:01:09.380 --> 00:01:11.420
+that you're building. So this could
+
+33
+00:01:11.420 --> 00:01:11.700
+be like
+
+34
+00:01:11.700 --> 00:01:13.240
+the scaffolding that describes that
+
+35
+00:01:13.240 --> 00:01:15.220
+you want Nginx installed, you want this
+
+36
+00:01:15.220 --> 00:01:16.840
+file here, you want the servers running,
+
+37
+00:01:17.140 --> 00:01:18.220
+you want to have a schedule set,
+
+38
+00:01:18.320 --> 00:01:18.480
+you want
+
+39
+00:01:18.480 --> 00:01:19.740
+to make sure syslog is present, you
+
+40
+00:01:19.740 --> 00:01:20.940
+want to make sure that has this template
+
+41
+00:01:20.940 --> 00:01:23.480
+file. And then the pillar is what
+
+42
+00:01:23.480 --> 00:01:25.400
+populates the information that says okay
+
+43
+00:01:25.400 --> 00:01:27.380
+Nginx inside of this environment I
+
+44
+00:01:27.380 --> 00:01:28.840
+want you to watch after this hosting
+
+45
+00:01:28.840 --> 00:01:30.200
+because this is the dev environment.
+
+46
+00:01:30.580 --> 00:01:31.840
+And because the dev environment is
+
+47
+00:01:31.840 --> 00:01:32.820
+configured this way they're going
+
+48
+00:01:32.820 --> 00:01:34.480
+to need minimal throttling, they only need
+
+49
+00:01:34.480 --> 00:01:35.760
+one environment, they don't need any
+
+50
+00:01:35.760 --> 00:01:37.660
+backup, they don't need HA, we don't need
+
+51
+00:01:37.660 --> 00:01:39.260
+to describe a full structure. I can
+
+52
+00:01:39.260 --> 00:01:41.560
+describe a partial structure of what the
+
+53
+00:01:41.560 --> 00:01:42.820
+development environment needs for
+
+54
+00:01:42.820 --> 00:01:45.280
+a full stack for development and deployments.
+
+55
+00:01:46.000 --> 00:01:47.780
+And then for production that actually
+
+56
+00:01:47.780 --> 00:01:50.180
+has all of the HA, all of
+
+57
+00:01:50.180 --> 00:01:50.780
+the backups in
+
+58
+00:01:50.780 --> 00:01:52.840
+place, everything turned on, and the
+
+59
+00:01:52.840 --> 00:01:54.100
+pillar can describe the differences
+
+60
+00:01:54.100 --> 00:01:55.960
+between those two environments and
+
+61
+00:01:55.960 --> 00:01:57.960
+you only have to describe your environment
+
+62
+00:01:57.960 --> 00:02:00.400
+once. And you can deploy it multiple
+
+63
+00:02:00.400 --> 00:02:03.560
+times using different T's of a data
+
+64
+00:02:03.560 --> 00:02:06.400
+structure inside of the pillar. So
+
+65
+00:02:06.400 --> 00:02:08.360
+this is what's cool about the file structure
+
+66
+00:02:08.360 --> 00:02:11.240
+that is possible in Saltstack. You
+
+67
+00:02:11.240 --> 00:02:13.260
+have your top.sls that describes the
+
+68
+00:02:13.260 --> 00:02:15.120
+environments and says what gets what
+
+69
+00:02:15.120 --> 00:02:18.680
+states. Then you can either use nginx.sls
+
+70
+00:02:18.680 --> 00:02:21.580
+and Salt will honor that inside of
+
+71
+00:02:21.580 --> 00:02:24.000
+the top level. Although what I did
+
+72
+00:02:24.000 --> 00:02:24.720
+was I set
+
+73
+00:02:24.720 --> 00:02:26.780
+a pattern and said no instead of
+
+74
+00:02:26.780 --> 00:02:28.680
+referencing something.sls reference
+
+75
+00:02:28.680 --> 00:02:32.440
+the directory/init.sls. This
+
+76
+00:02:32.440 --> 00:02:34.000
+will ensure that everything is contained
+
+77
+00:02:34.000 --> 00:02:36.160
+within a folder and later if you
+
+78
+00:02:36.160 --> 00:02:37.940
+want to come back add files other states
+
+79
+00:02:37.940 --> 00:02:40.240
+neighbors so to speak you have a
+
+80
+00:02:40.240 --> 00:02:42.000
+directory and you don't have to change
+
+81
+00:02:42.000 --> 00:02:43.960
+it you can just do it. So
+
+82
+00:02:43.960 --> 00:02:46.180
+then inside of that Nginx directory
+
+83
+00:02:46.180 --> 00:02:47.500
+I can create a
+
+84
+00:02:47.500 --> 00:02:49.220
+files directory that contains all
+
+85
+00:02:49.220 --> 00:02:51.420
+the template files related to this
+
+86
+00:02:51.420 --> 00:02:53.140
+particular state that I'm building.
+
+87
+00:02:53.680 --> 00:02:54.800
+And in this way I have the base
+
+88
+00:02:54.800 --> 00:02:56.700
+configuration for Nginx and I also
+
+89
+00:02:56.700 --> 00:02:58.160
+have a template file for describing
+
+90
+00:02:58.160 --> 00:02:58.760
+a site.
+
+91
+00:02:59.140 --> 00:03:00.600
+So if I want to take if
+
+92
+00:03:00.600 --> 00:03:02.740
+I want to describe configuration for
+
+93
+00:03:02.740 --> 00:03:03.160
+a specific
+
+94
+00:03:03.160 --> 00:03:05.080
+site that I'm watching after in the
+
+95
+00:03:05.080 --> 00:03:07.080
+configuration for Nginx I can do that
+
+96
+00:03:07.080 --> 00:03:08.840
+and describe it here in the states.
+
+97
+00:03:09.860 --> 00:03:11.360
+And then likewise I can have a separate
+
+98
+00:03:11.360 --> 00:03:12.820
+state that does not have to be
+
+99
+00:03:12.820 --> 00:03:14.780
+included and can make it something
+
+100
+00:03:14.780 --> 00:03:15.400
+optional that
+
+101
+00:03:15.400 --> 00:03:17.000
+I also look at whenever I'm looking
+
+102
+00:03:17.000 --> 00:03:20.220
+at top.sls. Now here's something the
+
+103
+00:03:20.220 --> 00:03:22.600
+documentation doesn't exactly tell
+
+104
+00:03:22.600 --> 00:03:24.100
+you that you can do to make
+
+105
+00:03:24.100 --> 00:03:24.900
+your life easier
+
+106
+00:03:24.900 --> 00:03:26.280
+whenever you're dealing with salt.
+
+107
+00:03:26.760 --> 00:03:28.960
+The directory structure that I used to
+
+108
+00:03:28.960 --> 00:03:31.660
+describe the pillar mirrors that of
+
+109
+00:03:31.660 --> 00:03:34.720
+the states. This makes it easy and intuitive
+
+110
+00:03:34.720 --> 00:03:36.760
+so if anybody goes into the pillar
+
+111
+00:03:36.760 --> 00:03:39.140
+or the states they know generally
+
+112
+00:03:39.140 --> 00:03:39.680
+where they
+
+113
+00:03:39.680 --> 00:03:41.660
+can find stuff because the structures
+
+114
+00:03:41.660 --> 00:03:44.020
+will generally be the same. So you have
+
+115
+00:03:44.020 --> 00:03:46.260
+your top.sls which in my use
+
+116
+00:03:46.260 --> 00:03:47.820
+case I had known reason not to
+
+117
+00:03:47.820 --> 00:03:48.380
+use the same
+
+118
+00:03:48.380 --> 00:03:50.160
+exact top.sls so I just same
+
+119
+00:03:50.160 --> 00:03:51.740
+linked the both of them together and
+
+120
+00:03:51.740 --> 00:03:52.340
+said just make
+
+121
+00:03:52.340 --> 00:03:53.860
+sure you're referencing the same top
+
+122
+00:03:53.860 --> 00:03:57.420
+level things. And the Nginx directory
+
+123
+00:03:57.420 --> 00:03:59.600
+contains the init.sls file that is
+
+124
+00:03:59.600 --> 00:04:01.140
+needed to describe the baseline
+
+125
+00:04:01.140 --> 00:04:03.180
+configuration for describing this
+
+126
+00:04:03.180 --> 00:04:06.000
+particular setup of Nginx. And then the
+
+127
+00:04:06.000 --> 00:04:08.460
+site.sls reference this particular
+
+128
+00:04:08.460 --> 00:04:10.400
+site that I'm watching after. And if
+
+129
+00:04:10.400 --> 00:04:12.080
+there's a customer specific environment
+
+130
+00:04:12.080 --> 00:04:14.060
+that needs configuration specific to
+
+131
+00:04:14.060 --> 00:04:16.240
+their particular setup then I can
+
+132
+00:04:16.240 --> 00:04:18.140
+do that and change the site as
+
+133
+00:04:18.140 --> 00:04:19.060
+needed on a
+
+134
+00:04:19.060 --> 00:04:20.920
+per customer basis. I thought that
+
+135
+00:04:20.920 --> 00:04:24.000
+was pretty cool. So the documentation the
+
+136
+00:04:24.000 --> 00:04:25.980
+reference novels that describe what
+
+137
+00:04:25.980 --> 00:04:27.640
+all of these functions are in the
+
+138
+00:04:27.640 --> 00:04:28.080
+salt stack
+
+139
+00:04:28.080 --> 00:04:30.400
+documentation will tell you that you
+
+140
+00:04:30.400 --> 00:04:32.500
+can use your top.sls and your
+
+141
+00:04:32.500 --> 00:04:33.120
+Nginx and
+
+142
+00:04:33.120 --> 00:04:34.960
+your other SLS files to describe your
+
+143
+00:04:34.960 --> 00:04:36.860
+states. They'll tell you that you can
+
+144
+00:04:36.860 --> 00:04:38.980
+describe your data structure using
+
+145
+00:04:38.980 --> 00:04:40.480
+the pillar and that you can use
+
+146
+00:04:40.480 --> 00:04:41.440
+the top.sls
+
+147
+00:04:41.440 --> 00:04:43.860
+to reference whatever particular states
+
+148
+00:04:43.860 --> 00:04:45.680
+in pillar objects you want included in
+
+149
+00:04:45.680 --> 00:04:47.300
+your site. What the documentation
+
+150
+00:04:47.300 --> 00:04:49.880
+doesn't talk about is ways in which
+
+151
+00:04:49.880 --> 00:04:50.180
+you can
+
+152
+00:04:50.180 --> 00:04:51.940
+implement this such that it makes
+
+153
+00:04:51.940 --> 00:04:53.200
+sense and it's a little bit more
+
+154
+00:04:53.200 --> 00:04:54.520
+intuitive. And
+
+155
+00:04:54.520 --> 00:04:56.340
+it's something that can that can be
+
+156
+00:04:56.340 --> 00:04:58.580
+used to create either a monolithic
+
+157
+00:04:58.580 --> 00:04:59.260
+setup so
+
+158
+00:04:59.260 --> 00:05:00.640
+for example if I wanted to create
+
+159
+00:05:00.640 --> 00:05:02.420
+a per customer environment I could
+
+160
+00:05:02.420 --> 00:05:02.780
+do that
+
+161
+00:05:02.780 --> 00:05:04.620
+within the pillar and then just dynamically
+
+162
+00:05:04.620 --> 00:05:05.740
+pull in the information I
+
+163
+00:05:05.740 --> 00:05:07.880
+need whenever I'm in the states describing
+
+164
+00:05:07.880 --> 00:05:09.100
+how the server setup goes.
+
+165
+00:05:09.560 --> 00:05:10.940
+This is where all the jinja happens
+
+166
+00:05:10.940 --> 00:05:12.580
+and this is where all the logicing happens
+
+167
+00:05:12.580 --> 00:05:14.160
+whenever I'm thinking about should
+
+168
+00:05:14.160 --> 00:05:15.800
+I include this file should I not include
+
+169
+00:05:15.800 --> 00:05:17.320
+this file should it have this directive
+
+170
+00:05:17.320 --> 00:05:19.620
+you know is it production environment
+
+171
+00:05:19.620 --> 00:05:20.920
+should it have should it contain this
+
+172
+00:05:20.920 --> 00:05:23.720
+configuration I do all the if-then here
+
+173
+00:05:23.720 --> 00:05:25.920
+and I just describe a flat data
+
+174
+00:05:25.920 --> 00:05:27.440
+structure whenever I'm inside of the
+
+175
+00:05:27.440 --> 00:05:30.180
+pillar. By doing that it made it
+
+176
+00:05:30.180 --> 00:05:31.920
+so much easier to work with salt
+
+177
+00:05:31.920 --> 00:05:32.920
+stack and that
+
+178
+00:05:32.920 --> 00:05:34.960
+much more intuitive when it came to
+
+179
+00:05:34.960 --> 00:05:37.080
+designing a system that others would be
+
+180
+00:05:37.080 --> 00:05:38.400
+able to hop on board and say
+
+181
+00:05:38.400 --> 00:05:40.200
+okay how does this stuff work all
+
+182
+00:05:40.200 --> 00:05:40.720
+right read the
+
+183
+00:05:40.720 --> 00:05:44.340
+docs what's going on. This was a
+
+184
+00:05:44.340 --> 00:05:45.800
+way of describing some kind of a
+
+185
+00:05:45.800 --> 00:05:46.260
+pattern and
+
+186
+00:05:46.260 --> 00:05:48.860
+creating some kind of cadence because
+
+187
+00:05:48.860 --> 00:05:50.720
+if the pillar and states were also
+
+188
+00:05:50.720 --> 00:05:53.580
+committed to a github repository now
+
+189
+00:05:53.580 --> 00:05:55.500
+I had an automated way in which
+
+190
+00:05:55.500 --> 00:05:55.780
+I could
+
+191
+00:05:55.780 --> 00:05:57.100
+make a change to our infrastructure
+
+192
+00:05:57.100 --> 00:05:59.240
+commit push the repository the
+
+193
+00:05:59.240 --> 00:06:01.060
+repository would kick off a hook to
+
+194
+00:06:01.060 --> 00:06:03.460
+go update the salt master the salt master
+
+195
+00:06:03.460 --> 00:06:04.840
+would see the changes within a few
+
+196
+00:06:04.840 --> 00:06:07.280
+seconds and now the changes were
+
+197
+00:06:07.280 --> 00:06:08.740
+implemented in the environment they
+
+198
+00:06:08.740 --> 00:06:10.940
+were alive I could then invoke it
+
+199
+00:06:10.940 --> 00:06:11.740
+using salt
+
+200
+00:06:11.740 --> 00:06:14.040
+`salt-call state.highstate` won't
+
+201
+00:06:14.040 --> 00:06:15.700
+put it here sorry that was the other
+
+202
+00:06:15.700 --> 00:06:16.780
+thing that tripped me up it was
+
+203
+00:06:16.780 --> 00:06:18.780
+how do you get all this implemented
+
+204
+00:06:18.780 --> 00:06:19.200
+on the
+
+205
+00:06:19.200 --> 00:06:21.858
+server itself you use `salt-call state.highstate`
+
+206
+00:06:21.860 --> 00:06:23.800
+you run this command on
+
+207
+00:06:23.800 --> 00:06:26.140
+the minion itself and everything that
+
+208
+00:06:26.140 --> 00:06:27.860
+you've described based off of the top.sls
+
+209
+00:06:27.860 --> 00:06:29.960
+gets implemented on the host
+
+210
+00:06:29.960 --> 00:06:31.960
+itself you can also schedule this to
+
+211
+00:06:31.960 --> 00:06:33.600
+execute at regular intervals so that
+
+212
+00:06:33.600 --> 00:06:35.100
+your systems are constantly kept up to
+
+213
+00:06:35.100 --> 00:06:36.960
+date with the states but keep in
+
+214
+00:06:36.960 --> 00:06:38.500
+mind challenges are in place with that
+
+215
+00:06:38.500 --> 00:06:39.980
+because with automated deployment
+
+216
+00:06:39.980 --> 00:06:42.580
+of infrastructure comes with the need to
+
+217
+00:06:42.580 --> 00:06:44.100
+monitor things and so we can cover
+
+218
+00:06:44.100 --> 00:06:46.580
+monitoring in another video but how the
+
+219
+00:06:46.580 --> 00:06:48.180
+states and everything get on the server
+
+220
+00:06:48.180 --> 00:06:50.580
+invoking this call as a command-line
+
+221
+00:06:50.580 --> 00:06:52.140
+function running as root or as the
+
+222
+00:06:52.140 --> 00:06:54.120
+salt user if the salt user happens
+
+223
+00:06:54.120 --> 00:06:54.380
+to be
+
+224
+00:06:54.380 --> 00:06:56.400
+running as root then you'd be able
+
+225
+00:06:56.400 --> 00:06:58.140
+to actually invoke the things that
+
+226
+00:06:58.140 --> 00:06:58.540
+you need
+
+227
+00:06:58.540 --> 00:07:00.980
+in your server automation I don't
+
+228
+00:07:00.980 --> 00:07:03.100
+know I seem to know the salt
+
+229
+00:07:03.100 --> 00:07:03.680
+stuff pretty well
+
+230
+00:07:03.680 --> 00:07:04.720
+because I've worked with it for so
+
+231
+00:07:04.720 --> 00:07:05.860
+many years if you think I should
+
+232
+00:07:05.860 --> 00:07:06.140
+get a
+
+233
+00:07:06.140 --> 00:07:07.400
+certification in it drop a comment
+
+234
+00:07:07.400 --> 00:07:08.600
+below and I'll work on getting that
+

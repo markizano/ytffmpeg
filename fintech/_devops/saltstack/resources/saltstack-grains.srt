@@ -1,0 +1,820 @@
+1
+00:00:00.940 --> 00:00:02.740
+So, let's talk about Server Automation,
+
+2
+00:00:03.220 --> 00:00:03.860
+SaltStack edition.
+
+3
+00:00:04.860 --> 00:00:06.280
+If you're curious about the pillars
+
+4
+00:00:06.280 --> 00:00:07.600
+and the states, I did a video
+
+5
+00:00:07.600 --> 00:00:08.100
+on that.
+
+6
+00:00:08.260 --> 00:00:09.840
+If you're curious about how it actually
+
+7
+00:00:09.840 --> 00:00:12.360
+gets implemented in the environment,
+
+8
+00:00:12.720 --> 00:00:13.320
+I did a video
+
+9
+00:00:13.320 --> 00:00:13.780
+on that.
+
+10
+00:00:14.040 --> 00:00:14.960
+You should go check those out.
+
+11
+00:00:15.520 --> 00:00:16.600
+(If you care, I don't know.
+
+12
+00:00:16.680 --> 00:00:17.980
+I mean, it's just a thing.)
+
+13
+00:00:18.920 --> 00:00:20.540
+So let's talk about grains.
+
+14
+00:00:21.100 --> 00:00:24.100
+Grains in SaltStack are a unique piece
+
+15
+00:00:24.100 --> 00:00:26.740
+of information that identifies a host
+
+16
+00:00:26.740 --> 00:00:28.520
+for a specific piece
+
+17
+00:00:28.520 --> 00:00:29.900
+of information that it contains.
+
+18
+00:00:30.160 --> 00:00:32.340
+For example, how many processors this
+
+19
+00:00:32.340 --> 00:00:33.000
+host may have?
+
+20
+00:00:33.360 --> 00:00:35.280
+How much memory is available to the system?
+
+21
+00:00:35.780 --> 00:00:37.120
+What is the host name of this
+
+22
+00:00:37.120 --> 00:00:37.920
+particular machine?
+
+23
+00:00:38.340 --> 00:00:39.960
+Is it a virtual machine, a container,
+
+24
+00:00:40.200 --> 00:00:41.080
+or is it hardware?
+
+25
+00:00:41.900 --> 00:00:44.520
+And what was useful for our use
+
+26
+00:00:44.520 --> 00:00:46.300
+case was what kind of environment
+
+27
+00:00:46.300 --> 00:00:46.940
+is it in?
+
+28
+00:00:47.520 --> 00:00:49.080
+And also, what's the promotion path?
+
+29
+00:00:49.440 --> 00:00:51.420
+So not only which customer does this
+
+30
+00:00:51.420 --> 00:00:53.680
+environment belong to, but also is
+
+31
+00:00:53.680 --> 00:00:54.920
+it QA, is it DEV,
+
+32
+00:00:54.940 --> 00:00:55.520
+is it PROD?
+
+33
+00:00:56.300 --> 00:00:56.900
+It's good to know.
+
+34
+00:00:57.260 --> 00:00:58.240
+Is it a database server?
+
+35
+00:00:58.240 --> 00:00:59.440
+Is it a web application?
+
+36
+00:00:59.920 --> 00:01:03.700
+Is it a middleware service processing
+
+37
+00:01:03.700 --> 00:01:05.680
+unit, or is it a batch operation
+
+38
+00:01:05.680 --> 00:01:07.020
+that occurs asynchronously?
+
+39
+00:01:07.540 --> 00:01:09.740
+Having these grains inside of your
+
+40
+00:01:09.740 --> 00:01:12.100
+configuration can help you better
+
+41
+00:01:12.100 --> 00:01:13.900
+allocate what servers
+
+42
+00:01:13.900 --> 00:01:16.520
+and what resources belong to what pieces.
+
+43
+00:01:17.080 --> 00:01:18.820
+And what's also great is SaltStack
+
+44
+00:01:18.820 --> 00:01:22.120
+works great for both on-prem and cloud.
+
+45
+00:01:22.480 --> 00:01:24.640
+So if you're on-premises and your
+
+46
+00:01:24.640 --> 00:01:26.700
+servers are local right there in your
+
+47
+00:01:26.700 --> 00:01:27.160
+data center,
+
+48
+00:01:27.160 --> 00:01:29.080
+or you go to a co-location
+
+49
+00:01:29.080 --> 00:01:31.200
+center down the street, doesn't matter,
+
+50
+00:01:31.700 --> 00:01:32.360
+SaltStack will be
+
+51
+00:01:32.360 --> 00:01:34.600
+able to identify your entire inventory
+
+52
+00:01:34.600 --> 00:01:37.180
+and tell you what all they have,
+
+53
+00:01:37.400 --> 00:01:38.280
+and you can create
+
+54
+00:01:38.280 --> 00:01:39.980
+your systems and your setups accordingly.
+
+55
+00:01:40.400 --> 00:01:42.460
+So if you have a particular server
+
+56
+00:01:42.460 --> 00:01:45.240
+size or virtual machine size, you
+
+57
+00:01:45.240 --> 00:01:46.360
+can assign that
+
+58
+00:01:46.360 --> 00:01:48.120
+to a specific environment, and the
+
+59
+00:01:48.120 --> 00:01:50.380
+grains will allow you to execute certain states
+
+60
+00:01:50.380 --> 00:01:52.660
+on certain either types of hosts,
+
+61
+00:01:53.060 --> 00:01:55.380
+sizes of hosts, or whoever may have
+
+62
+00:01:55.380 --> 00:01:56.240
+certain resources
+
+63
+00:01:56.240 --> 00:01:56.780
+available.
+
+64
+00:01:57.700 --> 00:02:00.160
+So going back to our previous example
+
+65
+00:02:00.160 --> 00:02:02.280
+where we were installing Nginx, we
+
+66
+00:02:02.280 --> 00:02:02.760
+wanted to make
+
+67
+00:02:02.760 --> 00:02:04.800
+sure the package was present and installed,
+
+68
+00:02:05.060 --> 00:02:06.700
+that the service was set to running
+
+69
+00:02:06.700 --> 00:02:07.200
+by default
+
+70
+00:02:07.200 --> 00:02:09.160
+when the host came back online, or
+
+71
+00:02:09.160 --> 00:02:11.400
+whenever highstate ran and
+
+72
+00:02:11.400 --> 00:02:12.280
+made sure to enforce
+
+73
+00:02:12.280 --> 00:02:14.060
+the state of the server, and that
+
+74
+00:02:14.060 --> 00:02:15.720
+this particular file was managed,
+
+75
+00:02:15.920 --> 00:02:17.100
+and that it had a particular
+
+76
+00:02:17.100 --> 00:02:18.600
+template file that it was pointing
+
+77
+00:02:18.600 --> 00:02:20.760
+to inside of the SaltStack engine.
+
+78
+00:02:21.040 --> 00:02:22.100
+So let's take a look at that
+
+79
+00:02:22.100 --> 00:02:25.680
+file itself inside of /net/nginx/files/config.tpl.
+
+80
+00:02:25.681 --> 00:02:25.682
+ 
+
+81
+00:02:26.280 --> 00:02:28.080
+Here we actually have the configuration
+
+82
+00:02:28.080 --> 00:02:29.680
+for the Nginx setup.
+
+83
+00:02:30.040 --> 00:02:31.520
+So we've got our server block here
+
+84
+00:02:31.520 --> 00:02:33.220
+that describes some site that it's
+
+85
+00:02:33.220 --> 00:02:34.540
+listening to on port 80.
+
+86
+00:02:34.760 --> 00:02:36.640
+The server name itself could be something
+
+87
+00:02:36.640 --> 00:02:38.820
+dynamic, and therefore you can place
+
+88
+00:02:38.820 --> 00:02:42.220
+Jinja extrapolations
+
+89
+00:02:42.220 --> 00:02:45.040
+to be able to articulate that this
+
+90
+00:02:45.040 --> 00:02:47.220
+is going to render a grain, or
+
+91
+00:02:47.220 --> 00:02:48.380
+a piece of the pillar,
+
+92
+00:02:48.380 --> 00:02:50.860
+depending on where your context sits
+
+93
+00:02:50.860 --> 00:02:53.160
+whenever you're describing the configuration
+
+94
+00:02:53.160 --> 00:02:53.780
+to have
+
+95
+00:02:53.780 --> 00:02:54.320
+it installed.
+
+96
+00:02:55.900 --> 00:02:58.840
+Now SaltStack does offer multiple
+
+97
+00:02:58.840 --> 00:02:59.640
+template engines.
+
+98
+00:02:59.880 --> 00:03:02.260
+The most common one is Jinja, so
+
+99
+00:03:02.260 --> 00:03:03.520
+I'll be using that for the examples
+
+100
+00:03:03.520 --> 00:03:04.020
+in this one.
+
+101
+00:03:04.240 --> 00:03:05.600
+If you want to learn more about
+
+102
+00:03:05.600 --> 00:03:07.380
+the other template engines like Mako,
+
+103
+00:03:07.880 --> 00:03:08.620
+and there's like
+
+104
+00:03:08.620 --> 00:03:09.520
+a couple of others out there I
+
+105
+00:03:09.520 --> 00:03:10.560
+can't rattle off the top of my
+
+106
+00:03:10.560 --> 00:03:12.080
+head, you can definitely
+
+107
+00:03:12.080 --> 00:03:12.760
+look into those.
+
+108
+00:03:12.900 --> 00:03:14.280
+You can definitely include those in
+
+109
+00:03:14.280 --> 00:03:16.100
+your configuration, and you know,
+
+110
+00:03:16.160 --> 00:03:17.420
+whatever template engine suits
+
+111
+00:03:17.420 --> 00:03:18.820
+your fancy is whatever you can do
+
+112
+00:03:18.820 --> 00:03:19.160
+with it.
+
+113
+00:03:19.500 --> 00:03:21.580
+What's nice about template engines
+
+114
+00:03:21.580 --> 00:03:23.600
+is they handle some of the bulk
+
+115
+00:03:23.600 --> 00:03:26.060
+decision making as
+
+116
+00:03:26.060 --> 00:03:28.120
+far as how to render your configuration.
+
+117
+00:03:28.740 --> 00:03:30.460
+So if we're sitting inside of our
+
+118
+00:03:30.460 --> 00:03:32.780
+config.tpl, and let's say we want
+
+119
+00:03:32.780 --> 00:03:34.220
+to check to see if dev
+
+120
+00:03:34.220 --> 00:03:36.260
+is in the fully qualified domain name (FQDN)
+
+121
+00:03:36.260 --> 00:03:38.020
+for this particular configuration
+
+122
+00:03:38.020 --> 00:03:38.700
+that we're setting
+
+123
+00:03:38.700 --> 00:03:41.060
+up, you can put an if statement
+
+124
+00:03:41.060 --> 00:03:43.580
+around that, and this text will only
+
+125
+00:03:43.580 --> 00:03:45.180
+render inside of the
+
+126
+00:03:45.180 --> 00:03:47.360
+configuration for the nginx file that
+
+127
+00:03:47.360 --> 00:03:49.540
+you're creating if this particular
+
+128
+00:03:49.540 --> 00:03:50.880
+condition matches.
+
+129
+00:03:51.560 --> 00:03:53.200
+So some of that previous work that
+
+130
+00:03:53.200 --> 00:03:55.700
+we've done on understanding how programming
+
+131
+00:03:55.700 --> 00:03:57.000
+works is
+
+132
+00:03:57.000 --> 00:03:59.040
+useful in server automation as well,
+
+133
+00:03:59.040 --> 00:04:03.080
+because there's programming scriptability whenever
+
+134
+00:04:03.080 --> 00:04:04.780
+you are automating your setup.
+
+135
+00:04:05.240 --> 00:04:06.440
+I mean, it's a programming language
+
+136
+00:04:06.440 --> 00:04:08.800
+from creating a template.
+
+137
+00:04:09.160 --> 00:04:12.280
+It's almost like a web server environment
+
+138
+00:04:12.280 --> 00:04:13.660
+for your infrastructure.
+
+139
+00:04:14.020 --> 00:04:14.840
+It's really cool.
+
+140
+00:04:15.840 --> 00:04:17.900
+I mean, what's also cool is that
+
+141
+00:04:17.900 --> 00:04:19.400
+you can use this templating engine
+
+142
+00:04:19.400 --> 00:04:20.500
+to your benefit.
+
+143
+00:04:20.740 --> 00:04:22.760
+For example, you can set up a
+
+144
+00:04:22.760 --> 00:04:24.340
+dynamic check to see if it's in
+
+145
+00:04:24.340 --> 00:04:25.220
+the development environment,
+
+146
+00:04:25.760 --> 00:04:26.640
+and if you wanted to, you could
+
+147
+00:04:26.640 --> 00:04:28.200
+also check to see which environment
+
+148
+00:04:28.200 --> 00:04:32.300
+it's in, and which
+
+149
+00:04:32.300 --> 00:04:33.760
+region, which part of the promotion
+
+150
+00:04:33.760 --> 00:04:35.200
+path it's a part of.
+
+151
+00:04:35.620 --> 00:04:37.080
+So like, for example, this environment
+
+152
+00:04:37.080 --> 00:04:39.060
+is customer A, and this particular
+
+153
+00:04:39.060 --> 00:04:40.160
+promotion path is
+
+154
+00:04:40.160 --> 00:04:42.580
+development, not QA, not UAT, not Production.
+
+155
+00:04:43.140 --> 00:04:44.920
+And then you can also match against
+
+156
+00:04:44.920 --> 00:04:47.240
+that particular domain for your specific company.
+
+157
+00:04:47.760 --> 00:04:48.940
+I think this is really cool, and
+
+158
+00:04:48.940 --> 00:04:50.360
+I think it's really powerful, because
+
+159
+00:04:50.360 --> 00:04:51.340
+it allows you to
+
+160
+00:04:51.340 --> 00:04:53.160
+have really dynamic configuration.
+
+161
+00:04:53.680 --> 00:04:55.160
+One of the caveats, though, that they
+
+162
+00:04:55.160 --> 00:04:58.400
+won't tell you about in the documentation
+
+163
+00:04:58.400 --> 00:05:00.040
+is that
+
+164
+00:05:00.040 --> 00:05:00.880
+you need to be careful.
+
+165
+00:05:01.040 --> 00:05:03.040
+With every added bit of complexity,
+
+166
+00:05:03.220 --> 00:05:04.640
+it makes it that much more difficult
+
+167
+00:05:04.640 --> 00:05:05.720
+for other developers
+
+168
+00:05:05.720 --> 00:05:07.280
+and engineers to ramp up.
+
+169
+00:05:07.280 --> 00:05:09.240
+And so I try to keep this
+
+170
+00:05:09.240 --> 00:05:11.660
+in mind, because while this capacity
+
+171
+00:05:11.660 --> 00:05:13.440
+and capability is available
+
+172
+00:05:13.440 --> 00:05:15.460
+to customize to your needs, because
+
+173
+00:05:15.460 --> 00:05:17.400
+when is business ever consistent enough
+
+174
+00:05:17.400 --> 00:05:17.800
+for us to
+
+175
+00:05:17.800 --> 00:05:19.480
+make coherent requirements and have
+
+176
+00:05:19.480 --> 00:05:21.720
+consistent configuration across the
+
+177
+00:05:21.720 --> 00:05:22.200
+board that never
+
+178
+00:05:22.200 --> 00:05:22.580
+changes?
+
+179
+00:05:23.020 --> 00:05:25.760
+Well, that's part of our job in
+
+180
+00:05:25.760 --> 00:05:27.540
+making sure that we can maintain some
+
+181
+00:05:27.540 --> 00:05:28.400
+kind of consistency
+
+182
+00:05:28.400 --> 00:05:28.900
+in place.
+
+183
+00:05:28.920 --> 00:05:31.340
+Because if business comes to you and
+
+184
+00:05:31.340 --> 00:05:32.340
+says, we need you to make these
+
+185
+00:05:32.340 --> 00:05:32.980
+changes, and you
+
+186
+00:05:32.980 --> 00:05:34.780
+say, well, these changes would induce
+
+187
+00:05:34.780 --> 00:05:35.620
+these costs.
+
+188
+00:05:35.970 --> 00:05:37.660
+These changes would induce this work,
+
+189
+00:05:37.780 --> 00:05:41.000
+and these changes would have us to
+
+190
+00:05:41.000 --> 00:05:41.860
+consider this
+
+191
+00:05:41.860 --> 00:05:43.720
+stuff going on here, then you'll be
+
+192
+00:05:43.720 --> 00:05:44.900
+able to bring that to the table
+
+193
+00:05:44.900 --> 00:05:46.520
+and have actual documentation
+
+194
+00:05:46.520 --> 00:05:47.940
+in place, or at least code as
+
+195
+00:05:47.940 --> 00:05:50.000
+documentation to support your backing.
+
+196
+00:05:51.580 --> 00:05:53.160
+One last little piece, I know I
+
+197
+00:05:53.160 --> 00:05:54.020
+just loaded you with a lot.
+
+198
+00:05:54.400 --> 00:05:55.720
+If you can document all of this
+
+199
+00:05:55.720 --> 00:05:57.900
+stuff outside of just code as infrastructure,
+
+200
+00:05:58.280 --> 00:05:58.920
+you also have
+
+201
+00:05:58.920 --> 00:06:00.420
+a company and documentation that can
+
+202
+00:06:00.420 --> 00:06:02.080
+go along with this as well, I
+
+203
+00:06:02.080 --> 00:06:02.900
+promise it is going to
+
+204
+00:06:02.900 --> 00:06:04.360
+help your case so much more.
+
+205
+00:06:04.360 --> 00:06:06.860
+Architecture diagrams go a long way.
+

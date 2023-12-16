@@ -1,0 +1,476 @@
+1
+00:00:00.840 --> 00:00:02.640
+So, let's talk about server automation,
+
+2
+00:00:03.100 --> 00:00:03.800
+SaltStack edition.
+
+3
+00:00:04.700 --> 00:00:06.100
+Hey y'all, it's Markizano.
+
+4
+00:00:06.360 --> 00:00:07.420
+In this video, we're going to talk
+
+5
+00:00:07.420 --> 00:00:09.280
+about Minions and I can't believe
+
+6
+00:00:09.280 --> 00:00:10.120
+it, but I'm actually building
+
+7
+00:00:10.120 --> 00:00:11.060
+quite a library here.
+
+8
+00:00:11.480 --> 00:00:12.660
+I also have six other videos to
+
+9
+00:00:12.660 --> 00:00:14.020
+go check out if you're curious and
+
+10
+00:00:14.020 --> 00:00:15.120
+want to learn more about
+
+11
+00:00:15.120 --> 00:00:15.640
+SaltStack.
+
+12
+00:00:16.540 --> 00:00:19.820
+So, the SaltMinions job is an agent
+
+13
+00:00:19.820 --> 00:00:21.860
+that's running on your *server (excuse me),
+
+14
+00:00:21.860 --> 00:00:22.380
+on your server.
+
+15
+00:00:22.980 --> 00:00:25.800
+It can install the services that you
+
+16
+00:00:25.800 --> 00:00:28.720
+need, like say you're creating a generic
+
+17
+00:00:28.720 --> 00:00:29.820
+web application
+
+18
+00:00:29.820 --> 00:00:32.560
+set up, which requires an Nginx server
+
+19
+00:00:32.560 --> 00:00:34.700
+or Apache to be running, to forward
+
+20
+00:00:34.700 --> 00:00:35.180
+the request
+
+21
+00:00:35.180 --> 00:00:38.180
+down to some PHP, Python, Perl, some
+
+22
+00:00:38.180 --> 00:00:41.020
+application (Java even)
+
+23
+00:00:41.020 --> 00:00:41.740
+you are running
+
+24
+00:00:41.740 --> 00:00:43.920
+that may be talking to some database,
+
+25
+00:00:44.080 --> 00:00:49.520
+be it MySQL, MariaDB, some NoSQL solution
+
+26
+00:00:49.520 --> 00:00:50.120
+like CouchDB
+
+27
+00:00:50.120 --> 00:00:52.900
+or MongoDB, does not matter, SaltStack
+
+28
+00:00:52.900 --> 00:00:54.540
+will be able to go and install
+
+29
+00:00:54.540 --> 00:00:55.760
+it, configure it,
+
+30
+00:00:56.160 --> 00:00:58.400
+service it, and execute against it.
+
+31
+00:00:58.830 --> 00:01:00.460
+What's really cool about SaltStack
+
+32
+00:01:00.460 --> 00:01:02.800
+is you can use configuration directives
+
+33
+00:01:02.800 --> 00:01:03.520
+to describe
+
+34
+00:01:03.520 --> 00:01:05.580
+specifically how you want your server
+
+35
+00:01:05.580 --> 00:01:07.460
+to be set up and even with
+
+36
+00:01:07.460 --> 00:01:09.200
+its custom execution pipeline,
+
+37
+00:01:09.540 --> 00:01:11.620
+you can also execute custom commands
+
+38
+00:01:11.620 --> 00:01:14.040
+to get information from your servers
+
+39
+00:01:14.040 --> 00:01:14.900
+as well.
+
+40
+00:01:15.480 --> 00:01:16.380
+This stuff is really cool.
+
+41
+00:01:17.320 --> 00:01:19.300
+So here's a use case for the
+
+42
+00:01:19.300 --> 00:01:20.580
+execution pipeline.
+
+43
+00:01:20.780 --> 00:01:23.020
+Say you have a SaltMaster who's connected
+
+44
+00:01:23.020 --> 00:01:25.160
+to a set of Minions and we
+
+45
+00:01:25.160 --> 00:01:25.760
+want to find out
+
+46
+00:01:25.760 --> 00:01:27.460
+what version of Nginx is actually
+
+47
+00:01:27.460 --> 00:01:28.880
+installed on each of the machines.
+
+48
+00:01:29.340 --> 00:01:30.960
+From the SaltMaster, you can issue
+
+49
+00:01:30.960 --> 00:01:33.100
+a command to the Minions themselves.
+
+50
+00:01:33.520 --> 00:01:34.980
+The Minions will go and execute the
+
+51
+00:01:34.980 --> 00:01:37.520
+command, get the console output, return
+
+52
+00:01:37.520 --> 00:01:38.160
+that back to
+
+53
+00:01:38.160 --> 00:01:39.940
+the SaltMaster, and you get to see
+
+54
+00:01:39.940 --> 00:01:41.900
+that from a central console point
+
+55
+00:01:41.900 --> 00:01:42.380
+of view.
+
+56
+00:01:42.740 --> 00:01:44.760
+This gives you a central commanding
+
+57
+00:01:44.760 --> 00:01:46.960
+control center where you have full
+
+58
+00:01:46.960 --> 00:01:48.160
+control over every
+
+59
+00:01:48.160 --> 00:01:51.160
+specific aspect of your systems, and
+
+60
+00:01:51.160 --> 00:01:52.040
+as long as you can get the
+
+61
+00:01:52.040 --> 00:01:53.360
+developers out of the boxes,
+
+62
+00:01:54.060 --> 00:01:56.040
+you will have full control over your
+
+63
+00:01:56.040 --> 00:01:56.720
+entire setup.
+
+64
+00:01:57.240 --> 00:01:58.140
+It's really awesome.
+
+65
+00:01:59.080 --> 00:02:02.260
+Oh, what's also really cool is the
+
+66
+00:02:02.260 --> 00:02:05.540
+Salt setup has its own CRON built in.
+
+67
+00:02:05.740 --> 00:02:07.500
+So if you don't have CRON installed,
+
+68
+00:02:07.620 --> 00:02:09.520
+which is really unusual in a Linux environment,
+
+69
+00:02:09.900 --> 00:02:12.220
+probably more common in Windows-like
+
+70
+00:02:12.220 --> 00:02:14.340
+environments where you need something
+
+71
+00:02:14.340 --> 00:02:15.580
+to be executed at
+
+72
+00:02:15.580 --> 00:02:17.580
+specific intervals or scheduled to
+
+73
+00:02:17.580 --> 00:02:19.680
+execute at specific times.
+
+74
+00:02:19.680 --> 00:02:21.920
+SaltStack has a built-in engine that
+
+75
+00:02:21.920 --> 00:02:25.140
+is kept track with the clock so
+
+76
+00:02:25.140 --> 00:02:26.200
+that you can execute
+
+77
+00:02:26.200 --> 00:02:28.820
+things and schedule them at your own needs.
+
+78
+00:02:30.620 --> 00:02:32.760
+Generally speaking, the Minions are
+
+79
+00:02:32.760 --> 00:02:35.380
+present to ensure that there's a communication channel
+
+80
+00:02:35.380 --> 00:02:37.980
+between the SaltMaster and the host
+
+81
+00:02:37.980 --> 00:02:40.440
+itself upon which the Minion is running.
+
+82
+00:02:41.320 --> 00:02:42.820
+And so what this allows you to
+
+83
+00:02:42.820 --> 00:02:45.440
+do is it allows you to always
+
+84
+00:02:45.440 --> 00:02:47.280
+have something available so
+
+85
+00:02:47.280 --> 00:02:48.980
+that you can go and query information
+
+86
+00:02:48.980 --> 00:02:50.880
+off of a specific environment without
+
+87
+00:02:50.880 --> 00:02:51.380
+having to
+
+88
+00:02:51.380 --> 00:02:54.400
+SSH into every single box, which can
+
+89
+00:02:54.400 --> 00:02:55.360
+be very tedious.
+
+90
+00:02:56.420 --> 00:02:58.440
+I really hope this series on SaltStack
+
+91
+00:02:58.440 --> 00:02:58.940
+was helpful.
+
+92
+00:02:59.240 --> 00:03:02.220
+I plan on doing something more formal,
+
+93
+00:03:02.440 --> 00:03:03.980
+more proper on my YouTube channel
+
+94
+00:03:03.980 --> 00:03:04.960
+because I don't
+
+95
+00:03:04.960 --> 00:03:06.340
+like that I currently just take my
+
+96
+00:03:06.340 --> 00:03:07.820
+TikTok videos and post them to YouTube.
+
+97
+00:03:08.380 --> 00:03:09.660
+I want to create content that is
+
+98
+00:03:09.660 --> 00:03:11.580
+specific for the other platform, that
+
+99
+00:03:11.580 --> 00:03:12.240
+is destined for
+
+100
+00:03:12.240 --> 00:03:14.400
+the other platform with, you know,
+
+101
+00:03:14.660 --> 00:03:16.900
+the proper frame ratio.
+
+102
+00:03:17.720 --> 00:03:19.600
+So looking forward to publishing that
+
+103
+00:03:19.600 --> 00:03:20.800
+soon once I get enough of this
+
+104
+00:03:20.800 --> 00:03:21.420
+stuff written out
+
+105
+00:03:21.420 --> 00:03:22.160
+and out of my head.
+
+106
+00:03:22.700 --> 00:03:24.260
+This was just a crude means for
+
+107
+00:03:24.260 --> 00:03:26.300
+me to try and get the explanation
+
+108
+00:03:26.300 --> 00:03:27.640
+out and get awareness
+
+109
+00:03:27.640 --> 00:03:29.540
+set up so that other people can
+
+110
+00:03:29.540 --> 00:03:31.840
+get more involved in open source software
+
+111
+00:03:31.840 --> 00:03:33.360
+because I truly believe
+
+112
+00:03:33.360 --> 00:03:35.120
+that decentralization and open source
+
+113
+00:03:35.120 --> 00:03:35.920
+is the way to go.
+
+114
+00:03:36.360 --> 00:03:38.680
+My name is Markizano Draconus, and
+
+115
+00:03:38.680 --> 00:03:40.340
+I'm here to help you learn about
+
+116
+00:03:40.340 --> 00:03:41.440
+IT and technology.
+
+117
+00:03:41.440 --> 00:03:42.980
+And I look forward to seeing you
+
+118
+00:03:42.980 --> 00:03:43.800
+on the next video.
+
+119
+00:03:44.120 --> 00:03:44.860
+Thank you so much!
+

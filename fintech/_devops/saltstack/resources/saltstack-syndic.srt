@@ -1,0 +1,524 @@
+1
+00:00:00.000 --> 00:00:02.860
+Hey, welcome back. Remember this stuff?
+
+2
+00:00:03.320 --> 00:00:04.700
+If not, you're gonna have to go
+
+3
+00:00:04.700 --> 00:00:05.220
+check it out.
+
+4
+00:00:05.920 --> 00:00:07.040
+For those of you that are just
+
+5
+00:00:07.040 --> 00:00:08.780
+showing up: Welcome! My name is Markizano.
+
+6
+00:00:08.880 --> 00:00:10.140
+We're talking about SaltStack and
+
+7
+00:00:10.140 --> 00:00:12.020
+this is a continuation video of a
+
+8
+00:00:12.020 --> 00:00:12.540
+previous one
+
+9
+00:00:12.540 --> 00:00:14.480
+I did about the Salt Master, the
+
+10
+00:00:14.480 --> 00:00:16.240
+Salt Minions, and we left off on
+
+11
+00:00:16.240 --> 00:00:17.080
+the Salt Syndic.
+
+12
+00:00:17.580 --> 00:00:18.780
+If you haven't seen any of this
+
+13
+00:00:18.780 --> 00:00:20.080
+stuff before, I highly recommend you
+
+14
+00:00:20.080 --> 00:00:21.300
+go check it out. To give you
+
+15
+00:00:21.300 --> 00:00:22.400
+a quick recap here,
+
+16
+00:00:22.560 --> 00:00:24.240
+we've got the Salt Master, which is
+
+17
+00:00:24.240 --> 00:00:26.400
+presiding over the Salt Minions, and
+
+18
+00:00:26.400 --> 00:00:28.220
+it controls the environments around
+
+19
+00:00:28.220 --> 00:00:29.900
+what you have set up going on here.
+
+20
+00:00:30.640 --> 00:00:32.680
+Sometimes you run into places where
+
+21
+00:00:32.680 --> 00:00:35.260
+you've got a few Salt Masters that
+
+22
+00:00:35.260 --> 00:00:36.620
+need to be controlled because
+
+23
+00:00:36.620 --> 00:00:39.160
+the Salt Master is a constraint and
+
+24
+00:00:39.160 --> 00:00:42.180
+can cause you to have an environment where
+
+25
+00:00:42.180 --> 00:00:43.980
+you just can't control everything.
+
+26
+00:00:44.180 --> 00:00:45.380
+You hit a ping out there, you
+
+27
+00:00:45.380 --> 00:00:46.880
+do something, and you don't include
+
+28
+00:00:46.880 --> 00:00:47.960
+a batch operation,
+
+29
+00:00:48.520 --> 00:00:49.920
+and then your Salt Master spends the
+
+30
+00:00:49.920 --> 00:00:51.700
+next 20 minutes responding to a simple
+
+31
+00:00:51.700 --> 00:00:53.060
+data collection request.
+
+32
+00:00:54.140 --> 00:00:56.320
+So what we did to solve that
+
+33
+00:00:56.320 --> 00:00:58.160
+problem was we took advantage of the
+
+34
+00:00:58.160 --> 00:00:58.920
+Salt Syndic.
+
+35
+00:00:58.920 --> 00:01:00.680
+What the Salt Syndic did, it was
+
+36
+00:01:00.680 --> 00:01:02.320
+like a master of masters.
+
+37
+00:01:02.700 --> 00:01:05.260
+It was a coordinator, an expediter
+
+38
+00:01:05.260 --> 00:01:07.520
+of sorts, that allowed us to be
+
+39
+00:01:07.520 --> 00:01:09.300
+able to continue the chain of command
+
+40
+00:01:09.860 --> 00:01:11.920
+in a hierarchical type of environment
+
+41
+00:01:11.920 --> 00:01:12.780
+such that
+
+42
+00:01:12.780 --> 00:01:15.360
+we'd have multiple Salt Masters commanding
+
+43
+00:01:15.360 --> 00:01:17.160
+their local environment and the Salt
+
+44
+00:01:17.160 --> 00:01:18.840
+Syndic would be able to synchronize
+
+45
+00:01:18.840 --> 00:01:20.980
+commands and other information between
+
+46
+00:01:20.980 --> 00:01:23.460
+the Salt Master and the person invoking
+
+47
+00:01:23.460 --> 00:01:25.180
+the command from the command center.
+
+48
+00:01:26.260 --> 00:01:28.280
+This is where the documentation teaches
+
+49
+00:01:28.280 --> 00:01:31.120
+you what you can do, but doesn't
+
+50
+00:01:31.120 --> 00:01:33.180
+exactly show you /how/ to do.
+
+51
+00:01:33.380 --> 00:01:34.520
+I'm going to go through that right now.
+
+52
+00:01:35.420 --> 00:01:37.140
+Now, I know the rabbit hole goes
+
+53
+00:01:37.140 --> 00:01:37.860
+deep with this one.
+
+54
+00:01:38.220 --> 00:01:39.800
+I know this can look really complicated
+
+55
+00:01:39.800 --> 00:01:42.180
+when if it's not done correctly, but
+
+56
+00:01:42.180 --> 00:01:43.260
+if you bear with me here,
+
+57
+00:01:43.460 --> 00:01:44.900
+this is just for example, this is
+
+58
+00:01:44.900 --> 00:01:46.200
+to help you better understand how
+
+59
+00:01:46.200 --> 00:01:46.920
+this stuff works.
+
+60
+00:01:47.420 --> 00:01:49.620
+Implement the solution or the tools
+
+61
+00:01:50.140 --> 00:01:52.640
+for your specifications and what works
+
+62
+00:01:52.640 --> 00:01:53.460
+best for you.
+
+63
+00:01:54.020 --> 00:01:55.720
+This is just an example of how
+
+64
+00:01:55.720 --> 00:01:56.580
+it can work.
+
+65
+00:01:57.080 --> 00:01:59.000
+So you've got a Salt Master, which
+
+66
+00:01:59.000 --> 00:02:00.700
+is like the master of the masters.
+
+67
+00:02:01.000 --> 00:02:03.180
+This contains all the core configuration
+
+68
+00:02:03.180 --> 00:02:05.240
+and everything that is needed to describe
+
+69
+00:02:05.240 --> 00:02:06.860
+everything you could possibly need.
+
+70
+00:02:07.400 --> 00:02:09.500
+The Salt Master of Masters talks to
+
+71
+00:02:09.500 --> 00:02:11.280
+the Salt Master Syncdics or the
+
+72
+00:02:11.280 --> 00:02:11.980
+Salt Syncdic.
+
+73
+00:02:12.440 --> 00:02:14.920
+The Salt Syncdic is strictly just there.
+
+74
+00:02:15.060 --> 00:02:16.980
+It's like a minion that listens for
+
+75
+00:02:16.980 --> 00:02:18.740
+commands from the Salt Master, but
+
+76
+00:02:18.740 --> 00:02:20.360
+it immediately passes them off to
+
+77
+00:02:20.360 --> 00:02:23.000
+other Salt Masters. And those Salt
+
+78
+00:02:23.000 --> 00:02:24.800
+Masters can control the minions of
+
+79
+00:02:24.800 --> 00:02:25.920
+their local environments.
+
+80
+00:02:26.460 --> 00:02:27.800
+And so if I were to set
+
+81
+00:02:27.800 --> 00:02:29.420
+this up again, if I were to
+
+82
+00:02:29.420 --> 00:02:30.780
+redo what I have done in the past,
+
+83
+00:02:30.980 --> 00:02:32.400
+it would be to set this up
+
+84
+00:02:32.400 --> 00:02:34.140
+separate so that you have a master
+
+85
+00:02:34.140 --> 00:02:35.920
+which basically commands Syncdics
+
+86
+00:02:35.920 --> 00:02:37.520
+and each of these are set up
+
+87
+00:02:37.520 --> 00:02:38.180
+per customer.
+
+88
+00:02:38.800 --> 00:02:40.340
+And I would have different configurations
+
+89
+00:02:40.340 --> 00:02:43.380
+per customer that would enable us
+
+90
+00:02:43.380 --> 00:02:43.860
+to have
+
+91
+00:02:43.860 --> 00:02:46.460
+whatever desperate setups we needed
+
+92
+00:02:46.460 --> 00:02:49.040
+in order to serve our customer environments
+
+93
+00:02:49.040 --> 00:02:51.460
+such that you didn't have a giant
+
+94
+00:02:51.460 --> 00:02:52.600
+massive configuration
+
+95
+00:02:53.140 --> 00:02:54.560
+that you know, if I make a
+
+96
+00:02:54.560 --> 00:02:56.160
+change to one customer it affects
+
+97
+00:02:56.160 --> 00:02:58.460
+another customer because we didn't
+
+98
+00:02:58.460 --> 00:03:00.040
+think through the possibility of
+
+99
+00:03:00.040 --> 00:03:01.880
+Oh crap, installing this dependency
+
+100
+00:03:01.880 --> 00:03:03.940
+here changes the dependencies that
+
+101
+00:03:03.940 --> 00:03:05.940
+are here and this application actually
+
+102
+00:03:05.940 --> 00:03:07.120
+needed this version of this
+
+103
+00:03:07.120 --> 00:03:09.620
+back-end library and oh, and you
+
+104
+00:03:09.620 --> 00:03:11.900
+know, oh crap, we upgraded that here now
+
+105
+00:03:11.900 --> 00:03:13.940
+You know it you can see how
+
+106
+00:03:13.940 --> 00:03:15.220
+it becomes dependency hell
+
+107
+00:03:15.980 --> 00:03:16.780
+so by
+
+108
+00:03:17.740 --> 00:03:19.000
+partitioning these things off
+
+109
+00:03:19.000 --> 00:03:21.040
+It allows us to set things up
+
+110
+00:03:21.040 --> 00:03:22.080
+in a way so that they're kind
+
+111
+00:03:22.080 --> 00:03:23.780
+of sort of isolated in their own place
+
+112
+00:03:23.780 --> 00:03:25.520
+And we still get to
+
+113
+00:03:25.520 --> 00:03:27.240
+control these things from a perspective
+
+114
+00:03:27.700 --> 00:03:29.480
+And each of the customers get their
+
+115
+00:03:29.480 --> 00:03:31.340
+own configurations for their own pillar
+
+116
+00:03:31.340 --> 00:03:32.040
+and states
+
+117
+00:03:33.340 --> 00:03:34.920
+So i'm going to stop this one
+
+118
+00:03:34.920 --> 00:03:36.820
+right here because syndic is a complicated
+
+119
+00:03:36.820 --> 00:03:38.120
+enough thought as it is
+
+120
+00:03:38.120 --> 00:03:39.080
+I'll let you go ahead and flick
+
+121
+00:03:39.080 --> 00:03:40.340
+on to your next video. I'll see
+
+122
+00:03:40.340 --> 00:03:41.020
+you on the next one
+
+123
+00:03:41.020 --> 00:03:42.520
+We're going to cover minions in the
+
+124
+00:03:42.520 --> 00:03:44.260
+next video and I'll see you in
+
+125
+00:03:44.260 --> 00:03:44.700
+the next one!
+
+126
+00:03:44.700 --> 00:03:46.520
+My name is Markizano Draconus, and
+
+127
+00:03:46.520 --> 00:03:48.040
+I hope you're enjoying learning about
+
+128
+00:03:48.040 --> 00:03:49.240
+DevOps, CloudOps and all these other
+
+129
+00:03:49.240 --> 00:03:49.720
+fun things
+
+130
+00:03:49.720 --> 00:03:51.260
+Thank you so much. Love you, and
+
+131
+00:03:51.260 --> 00:03:52.060
+we'll see you on the next one! ;)
+

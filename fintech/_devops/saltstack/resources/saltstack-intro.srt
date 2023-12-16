@@ -1,0 +1,1136 @@
+1
+00:00:00.880 --> 00:00:03.020
+So, let's talk about server automation,
+
+2
+00:00:03.540 --> 00:00:04.320
+SaltStack edition.
+
+3
+00:00:05.940 --> 00:00:08.100
+SaltStack is server automation software
+
+4
+00:00:08.100 --> 00:00:11.180
+that uses YAML, which is YAML
+
+5
+00:00:11.180 --> 00:00:12.000
+Ain't Markup Language (Yet Another Markup Language).
+
+6
+00:00:12.960 --> 00:00:16.340
+Imagine using YAML or a configuration
+
+7
+00:00:16.340 --> 00:00:19.120
+format to describe what you want your
+
+8
+00:00:19.120 --> 00:00:20.060
+server environment
+
+9
+00:00:20.060 --> 00:00:22.240
+to look like, and then being able
+
+10
+00:00:22.240 --> 00:00:25.080
+to just deploy your entire infrastructure
+
+11
+00:00:25.080 --> 00:00:26.820
+using description
+
+12
+00:00:26.820 --> 00:00:27.460
+format.
+
+13
+00:00:27.880 --> 00:00:30.180
+So, you don't need to SSH into
+
+14
+00:00:30.180 --> 00:00:32.520
+a server environment to install Nginx
+
+15
+00:00:32.520 --> 00:00:33.660
+and make sure that the service
+
+16
+00:00:33.660 --> 00:00:34.120
+is running.
+
+17
+00:00:34.560 --> 00:00:36.580
+You can just describe that you want
+
+18
+00:00:36.580 --> 00:00:38.720
+that to be created using a simple
+
+19
+00:00:38.720 --> 00:00:39.860
+configuration format.
+
+20
+00:00:40.240 --> 00:00:42.440
+This stuff is absolutely incredible.
+
+21
+00:00:43.240 --> 00:00:45.360
+So, let's take a closer look at that.
+
+22
+00:00:45.460 --> 00:00:47.740
+You've got a top.sls file, which
+
+23
+00:00:47.740 --> 00:00:49.580
+is the entry point into which these
+
+24
+00:00:49.580 --> 00:00:50.220
+things occur.
+
+25
+00:00:50.740 --> 00:00:52.760
+This is where you can match against
+
+26
+00:00:52.760 --> 00:00:53.800
+specific server names.
+
+27
+00:00:54.000 --> 00:00:55.540
+You can match against different grains.
+
+28
+00:00:55.540 --> 00:00:57.240
+You can match against different pieces
+
+29
+00:00:57.240 --> 00:00:59.160
+of information that a server should
+
+30
+00:00:59.160 --> 00:01:00.060
+have, and
+
+31
+00:01:00.060 --> 00:01:01.880
+if that server has that piece of
+
+32
+00:01:01.880 --> 00:01:04.000
+information, for example, a host name
+
+33
+00:01:04.000 --> 00:01:05.080
+for a specific server
+
+34
+00:01:05.740 --> 00:01:07.900
+or a specific grain that you want
+
+35
+00:01:07.900 --> 00:01:09.400
+for a specific piece of data point
+
+36
+00:01:09.400 --> 00:01:10.460
+that you have, you can
+
+37
+00:01:10.460 --> 00:01:12.320
+make sure that it is included in
+
+38
+00:01:12.320 --> 00:01:14.340
+the states that describe what the
+
+39
+00:01:14.340 --> 00:01:15.180
+server environment
+
+40
+00:01:15.180 --> 00:01:16.140
+is like.
+
+41
+00:01:16.560 --> 00:01:18.380
+And then in that state, in the
+
+42
+00:01:18.380 --> 00:01:20.960
+base.sls, which is teed off of
+
+43
+00:01:20.960 --> 00:01:22.920
+the state that's included here,
+
+44
+00:01:22.920 --> 00:01:25.380
+you can describe what kinds of services,
+
+45
+00:01:25.680 --> 00:01:28.880
+packages, files, anything you could
+
+46
+00:01:28.880 --> 00:01:29.980
+ever possibly want
+
+47
+00:01:29.980 --> 00:01:32.160
+to describe in a server environment
+
+48
+00:01:32.160 --> 00:01:35.020
+can be set in place using SaltStack,
+
+49
+00:01:35.400 --> 00:01:36.420
+or any automation
+
+50
+00:01:36.420 --> 00:01:38.120
+software we just happen to be covering here.
+
+51
+00:01:38.500 --> 00:01:40.180
+Chef, Ansible, and Puppet, they all
+
+52
+00:01:40.180 --> 00:01:42.360
+do the same thing, but different ways
+
+53
+00:01:42.360 --> 00:01:42.900
+in which these
+
+54
+00:01:42.900 --> 00:01:43.580
+things are done.
+
+55
+00:01:43.980 --> 00:01:45.800
+I'll go over those in other videos.
+
+56
+00:01:46.780 --> 00:01:48.340
+So, let's look at that in a
+
+57
+00:01:48.340 --> 00:01:49.360
+little bit closer detail.
+
+58
+00:01:49.360 --> 00:01:51.860
+You've got a top.sls file that
+
+59
+00:01:51.860 --> 00:01:54.240
+points out your server and says
+
+60
+00:01:54.240 --> 00:01:55.400
+`net.nginx` needs to be
+
+61
+00:01:55.400 --> 00:01:55.800
+included.
+
+62
+00:01:56.360 --> 00:01:57.520
+-- (excuse me)
+
+63
+00:01:57.520 --> 00:01:58.540
+What you end up doing is you can
+
+64
+00:01:58.540 --> 00:01:59.240
+create a directory
+
+65
+00:01:59.240 --> 00:02:00.780
+in the root of your salt project,
+
+66
+00:02:00.980 --> 00:02:02.760
+this is under the states, and you
+
+67
+00:02:02.760 --> 00:02:04.300
+can create nginx.sls.
+
+68
+00:02:05.260 --> 00:02:08.920
+(blah) -- The dot means that you
+
+69
+00:02:08.920 --> 00:02:11.380
+can create files inside of directories,
+
+70
+00:02:11.520 --> 00:02:12.400
+so anytime you
+
+71
+00:02:12.400 --> 00:02:14.440
+specify something with a dot inside
+
+72
+00:02:14.440 --> 00:02:16.480
+of the top.sls file, and you're
+
+73
+00:02:16.480 --> 00:02:17.420
+specifying states,
+
+74
+00:02:17.420 --> 00:02:20.080
+you can specify states under a subdirectory.
+
+75
+00:02:20.540 --> 00:02:21.960
+Now, personally, what I like to do
+
+76
+00:02:21.960 --> 00:02:23.880
+is, actually I'll talk about directory
+
+77
+00:02:23.880 --> 00:02:24.480
+structures in a
+
+78
+00:02:24.480 --> 00:02:24.800
+little bit.
+
+79
+00:02:25.020 --> 00:02:26.420
+For now, we'll talk about this file
+
+80
+00:02:26.420 --> 00:02:28.500
+and its contents, and I'll get into
+
+81
+00:02:28.500 --> 00:02:29.800
+more about specifically
+
+82
+00:02:29.800 --> 00:02:30.860
+how this stuff works.
+
+83
+00:02:31.360 --> 00:02:33.200
+So you create a directory, you create
+
+84
+00:02:33.200 --> 00:02:35.940
+an sls file called nginx, and this
+
+85
+00:02:35.940 --> 00:02:36.900
+creates the service,
+
+86
+00:02:37.040 --> 00:02:38.560
+so the package makes sure that it
+
+87
+00:02:38.560 --> 00:02:40.420
+gets installed, the service makes
+
+88
+00:02:40.420 --> 00:02:41.620
+sure that it keeps running,
+
+89
+00:02:41.840 --> 00:02:43.720
+and then the file makes sure that
+
+90
+00:02:43.720 --> 00:02:45.900
+it continues to be present, and this
+
+91
+00:02:45.900 --> 00:02:46.840
+configuration file
+
+92
+00:02:46.840 --> 00:02:48.940
+is written to disk, with the name
+
+93
+00:02:48.940 --> 00:02:50.780
+pointing to specifically where you
+
+94
+00:02:50.780 --> 00:02:51.480
+want the file to
+
+95
+00:02:51.480 --> 00:02:51.960
+be stored.
+
+96
+00:02:52.940 --> 00:02:54.980
+So let's step into that file.managed
+
+97
+00:02:54.980 --> 00:02:56.460
+context just a little bit further:
+
+98
+00:02:56.660 --> 00:02:57.580
+We're still inside
+
+99
+00:02:57.580 --> 00:03:00.781
+of the net.nginx.sls file,
+
+100
+00:03:00.881 --> 00:03:01.740
+or the salt state file
+
+101
+00:03:01.740 --> 00:03:02.980
+that describes how
+
+102
+00:03:02.980 --> 00:03:04.480
+we want nginx to be installed.
+
+103
+00:03:05.140 --> 00:03:07.220
+You have a file.managed, which you
+
+104
+00:03:07.220 --> 00:03:08.980
+can allow it to specify a source
+
+105
+00:03:08.980 --> 00:03:10.560
+using the `salt://`
+
+106
+00:03:10.780 --> 00:03:12.160
+which gives you access to the salt
+
+107
+00:03:12.160 --> 00:03:14.100
+file system, where you can find the
+
+108
+00:03:14.100 --> 00:03:15.080
+configuration template
+
+109
+00:03:15.080 --> 00:03:17.140
+for the particular configuration you're
+
+110
+00:03:17.140 --> 00:03:17.860
+trying to install.
+
+111
+00:03:18.260 --> 00:03:19.280
+You can set the mode on the
+
+112
+00:03:19.280 --> 00:03:20.500
+file to make sure that it's readable,
+
+113
+00:03:20.720 --> 00:03:21.540
+that the user and the
+
+114
+00:03:21.540 --> 00:03:22.800
+group are set, if it's not going
+
+115
+00:03:22.800 --> 00:03:25.320
+to be root, or it will default
+
+116
+00:03:25.320 --> 00:03:27.220
+to the running user of
+
+117
+00:03:27.220 --> 00:03:29.520
+the salt engine, and typically salt
+
+118
+00:03:29.520 --> 00:03:30.180
+runs as root.
+
+119
+00:03:30.820 --> 00:03:32.600
+Context specifies variables that you
+
+120
+00:03:32.600 --> 00:03:34.940
+want to give the template that will
+
+121
+00:03:34.940 --> 00:03:35.780
+render it so
+
+122
+00:03:35.780 --> 00:03:37.500
+that these values show up in place
+
+123
+00:03:37.500 --> 00:03:39.220
+of the template placeholders.
+
+124
+00:03:39.700 --> 00:03:41.820
+The template engine is jinja, but
+
+125
+00:03:41.820 --> 00:03:43.340
+it also provides support for some
+
+126
+00:03:43.340 --> 00:03:44.200
+other template engines
+
+127
+00:03:44.200 --> 00:03:44.780
+as well.
+
+128
+00:03:45.740 --> 00:03:48.800
+Now, I'm using an oversimplified configuration
+
+129
+00:03:48.800 --> 00:03:51.040
+template here for illustrative purposes so
+
+130
+00:03:51.040 --> 00:03:52.500
+that you can understand the contents
+
+131
+00:03:52.500 --> 00:03:54.680
+of the configuration file that we
+
+132
+00:03:54.680 --> 00:03:55.400
+have defined here.
+
+133
+00:03:55.540 --> 00:03:57.300
+You have your server block inside
+
+134
+00:03:57.300 --> 00:03:59.540
+of your nginx configuration, and the
+
+135
+00:03:59.540 --> 00:04:00.140
+server name
+
+136
+00:04:00.140 --> 00:04:02.160
+is using the template variable that
+
+137
+00:04:02.160 --> 00:04:04.660
+we created in the salt state itself.
+
+138
+00:04:05.240 --> 00:04:07.180
+And this allows us to create dynamic
+
+139
+00:04:07.180 --> 00:04:09.980
+templates that can render based on
+
+140
+00:04:09.980 --> 00:04:10.720
+whatever information
+
+141
+00:04:10.720 --> 00:04:12.560
+we provided it in the states.
+
+142
+00:04:13.580 --> 00:04:15.320
+Now, here's a part that threw me
+
+143
+00:04:15.320 --> 00:04:16.540
+off whenever I first started getting
+
+144
+00:04:16.540 --> 00:04:17.840
+started with SaltStack
+
+145
+00:04:17.840 --> 00:04:20.080
+was the organization of the
+
+146
+00:04:20.080 --> 00:04:20.880
+files themselves.
+
+147
+00:04:21.640 --> 00:04:23.500
+SaltStack is dynamic in that you
+
+148
+00:04:23.500 --> 00:04:25.020
+can specify a state, and when you
+
+149
+00:04:25.020 --> 00:04:27.640
+do, the .SLS is automatically
+
+150
+00:04:27.640 --> 00:04:30.560
+appended and a dot represents where
+
+151
+00:04:30.560 --> 00:04:32.160
+you can traverse in the file system
+
+152
+00:04:32.160 --> 00:04:32.960
+as far as placing
+
+153
+00:04:32.960 --> 00:04:33.580
+your states.
+
+154
+00:04:34.080 --> 00:04:36.040
+Now, some people probably had a flat
+
+155
+00:04:36.040 --> 00:04:37.760
+directory with all the states right
+
+156
+00:04:37.760 --> 00:04:38.360
+there at the top
+
+157
+00:04:38.360 --> 00:04:40.140
+level, all the files right there at
+
+158
+00:04:40.140 --> 00:04:41.760
+the top level as well, and I
+
+159
+00:04:41.760 --> 00:04:42.400
+thought that would be
+
+160
+00:04:42.400 --> 00:04:43.000
+kind of messy.
+
+161
+00:04:43.600 --> 00:04:45.360
+So, I organized things based off of
+
+162
+00:04:45.360 --> 00:04:46.560
+a top-level category.
+
+163
+00:04:46.760 --> 00:04:48.800
+At a bare minimum, everything, unless
+
+164
+00:04:48.800 --> 00:04:51.320
+it is baseline and is involved in
+
+165
+00:04:51.320 --> 00:04:52.080
+all the servers
+
+166
+00:04:52.080 --> 00:04:53.640
+and every server should have this,
+
+167
+00:04:54.220 --> 00:04:56.040
+unless you meet that criteria, then
+
+168
+00:04:56.040 --> 00:04:56.540
+you don't go
+
+169
+00:04:56.540 --> 00:04:57.660
+in the root of the file system.
+
+170
+00:04:58.080 --> 00:05:00.140
+You go in at least a subdirectory
+
+171
+00:05:00.140 --> 00:05:02.560
+that tries to categorize something
+
+172
+00:05:02.560 --> 00:05:03.300
+that I'm trying to
+
+173
+00:05:03.300 --> 00:05:04.880
+do in the infrastructure.
+
+174
+00:05:05.440 --> 00:05:06.980
+And then anything under that could
+
+175
+00:05:06.980 --> 00:05:09.460
+be application-specific, context-specific,
+
+176
+00:05:09.840 --> 00:05:10.680
+middleware-specific.
+
+177
+00:05:10.680 --> 00:05:13.100
+I place things inside of that directory.
+
+178
+00:05:13.380 --> 00:05:15.620
+So net, for networking, if it has
+
+179
+00:05:15.620 --> 00:05:19.640
+anything to do with DHCP, DNS, Nginx,
+
+180
+00:05:19.880 --> 00:05:21.340
+Apache, web servers,
+
+181
+00:05:21.860 --> 00:05:24.400
+HAProxy, if anything dealt with networking
+
+182
+00:05:24.400 --> 00:05:26.940
+and trying to stitch stuff together, then
+
+183
+00:05:26.940 --> 00:05:28.480
+it would go inside of a network folder.
+
+184
+00:05:28.940 --> 00:05:30.360
+If it was something that was baseline
+
+185
+00:05:30.360 --> 00:05:31.680
+to the system, if it was specific
+
+186
+00:05:31.680 --> 00:05:32.500
+to Linux, then
+
+187
+00:05:32.500 --> 00:05:33.660
+it would go in a Linux folder.
+
+188
+00:05:34.060 --> 00:05:35.820
+If it was something that was, you
+
+189
+00:05:35.820 --> 00:05:38.460
+know, even more, let's say security,
+
+190
+00:05:38.600 --> 00:05:39.060
+that would have
+
+191
+00:05:39.060 --> 00:05:39.620
+its own folder.
+
+192
+00:05:40.520 --> 00:05:42.500
+There's no real prescription around this.
+
+193
+00:05:42.640 --> 00:05:44.380
+It's more directive and organized
+
+194
+00:05:44.380 --> 00:05:45.360
+to your needs.
+
+195
+00:05:45.880 --> 00:05:48.000
+So what happens then is I create
+
+196
+00:05:48.000 --> 00:05:49.820
+another directory for containing everything
+
+197
+00:05:49.820 --> 00:05:50.980
+related to Nginx
+
+198
+00:05:50.980 --> 00:05:51.720
+specifically.
+
+199
+00:05:52.500 --> 00:05:53.980
+Nginx would have its top-level state,
+
+200
+00:05:54.080 --> 00:05:55.840
+it would have its own file, and
+
+201
+00:05:55.840 --> 00:05:56.940
+then there'd be a files
+
+202
+00:05:56.940 --> 00:05:58.860
+directory that contained the templates
+
+203
+00:05:58.860 --> 00:06:00.700
+that were related to Nginx.
+
+204
+00:06:01.020 --> 00:06:02.860
+So in this way, if anyone came
+
+205
+00:06:02.860 --> 00:06:04.420
+to the states and they wanted to
+
+206
+00:06:04.420 --> 00:06:05.240
+understand how the server
+
+207
+00:06:05.240 --> 00:06:07.800
+architecture worked, the top.sls would
+
+208
+00:06:07.800 --> 00:06:09.940
+be the main starting point to direct
+
+209
+00:06:09.940 --> 00:06:10.480
+people where
+
+210
+00:06:10.480 --> 00:06:10.920
+to go.
+
+211
+00:06:11.280 --> 00:06:12.700
+And then all of the subdirectories
+
+212
+00:06:12.700 --> 00:06:13.940
+and everything contained underneath
+
+213
+00:06:13.940 --> 00:06:15.480
+it would be in an organized
+
+214
+00:06:15.480 --> 00:06:17.020
+fashion so that folks would be able
+
+215
+00:06:17.020 --> 00:06:19.100
+to drill their way down to something
+
+216
+00:06:19.100 --> 00:06:19.760
+more specific
+
+217
+00:06:19.760 --> 00:06:20.840
+to what they're related to.
+
+218
+00:06:21.440 --> 00:06:22.900
+It's just a matter of understanding
+
+219
+00:06:22.900 --> 00:06:24.680
+that level of organization and whatever
+
+220
+00:06:24.680 --> 00:06:25.300
+you choose to
+
+221
+00:06:25.300 --> 00:06:25.580
+do.
+
+222
+00:06:26.000 --> 00:06:28.000
+Saltstack is free and open enough
+
+223
+00:06:28.000 --> 00:06:30.000
+that you can elect whatever you like.
+
+224
+00:06:30.400 --> 00:06:33.020
+I just created some patterns, some
+
+225
+00:06:33.020 --> 00:06:35.880
+guardrails to better describe some
+
+226
+00:06:35.880 --> 00:06:36.580
+of the formatting
+
+227
+00:06:36.580 --> 00:06:39.540
+that was left for open interpretation,
+
+228
+00:06:39.760 --> 00:06:41.360
+especially whenever Saltstack was
+
+229
+00:06:41.360 --> 00:06:42.200
+in its infancy.
+
+230
+00:06:43.320 --> 00:06:44.900
+So we're going to cover a little
+
+231
+00:06:44.900 --> 00:06:46.260
+bit of terminology before cutting
+
+232
+00:06:46.260 --> 00:06:47.340
+this video off, and then we're
+
+233
+00:06:47.340 --> 00:06:48.940
+going to talk about some other topics
+
+234
+00:06:48.940 --> 00:06:50.440
+in next videos coming up soon.
+
+235
+00:06:51.080 --> 00:06:53.460
+So states basically defines a state
+
+236
+00:06:53.460 --> 00:06:55.580
+in which the server environment shall exist.
+
+237
+00:06:55.900 --> 00:06:57.340
+You describe this in YAML.
+
+238
+00:06:57.480 --> 00:06:59.380
+You basically say, I want this service here.
+
+239
+00:06:59.380 --> 00:07:00.220
+I want it installed.
+
+240
+00:07:00.340 --> 00:07:00.960
+I want it running.
+
+241
+00:07:01.080 --> 00:07:02.040
+I want these files there.
+
+242
+00:07:02.580 --> 00:07:03.780
+I want this kind of setup and
+
+243
+00:07:03.780 --> 00:07:05.540
+architecture going for this particular
+
+244
+00:07:05.540 --> 00:07:06.420
+server environment.
+
+245
+00:07:07.040 --> 00:07:08.980
+And then any data that you need
+
+246
+00:07:08.980 --> 00:07:11.380
+to populate that server with, anything
+
+247
+00:07:11.380 --> 00:07:12.320
+that might be specific
+
+248
+00:07:12.320 --> 00:07:15.360
+to color it, design it, you know,
+
+249
+00:07:15.360 --> 00:07:17.060
+make sure it represents this website,
+
+250
+00:07:17.260 --> 00:07:17.940
+make sure it covers
+
+251
+00:07:17.940 --> 00:07:19.280
+this host name, make sure it has
+
+252
+00:07:19.280 --> 00:07:20.660
+this specific information inside of
+
+253
+00:07:20.660 --> 00:07:21.800
+this configuration file.
+
+254
+00:07:22.320 --> 00:07:24.760
+Data that needs to populate the state
+
+255
+00:07:24.760 --> 00:07:26.860
+of the server is used using the
+
+256
+00:07:26.860 --> 00:07:28.120
+pillar, a pillar
+
+257
+00:07:28.120 --> 00:07:30.100
+of salt, kind of sort of playing
+
+258
+00:07:30.100 --> 00:07:31.660
+on the same words, but the idea
+
+259
+00:07:31.660 --> 00:07:32.160
+is the same.
+
+260
+00:07:32.660 --> 00:07:34.660
+And then grains or a grain of
+
+261
+00:07:34.660 --> 00:07:36.900
+salt is a unique piece of information
+
+262
+00:07:36.900 --> 00:07:38.580
+that is derived from the
+
+263
+00:07:38.580 --> 00:07:40.880
+server and can be used within the
+
+264
+00:07:40.880 --> 00:07:43.500
+states to say, I'm unique, I'm special,
+
+265
+00:07:43.680 --> 00:07:44.720
+such as what
+
+266
+00:07:44.720 --> 00:07:46.340
+operating system is it running on,
+
+267
+00:07:46.500 --> 00:07:48.580
+how much RAM and CPU and other
+
+268
+00:07:48.580 --> 00:07:49.740
+physical resources are
+
+269
+00:07:49.740 --> 00:07:50.940
+available to the system.
+
+270
+00:07:51.180 --> 00:07:53.020
+What is the host name of the
+
+271
+00:07:53.020 --> 00:07:55.540
+system itself and anything else that
+
+272
+00:07:55.540 --> 00:07:56.980
+we can use to specifically
+
+273
+00:07:56.980 --> 00:07:58.160
+describe the server.
+
+274
+00:07:58.720 --> 00:07:59.660
+Grains can be used.
+
+275
+00:07:59.740 --> 00:08:01.880
+A lot of them are provided and
+
+276
+00:08:01.880 --> 00:08:03.540
+you can also create custom grains
+
+277
+00:08:03.540 --> 00:08:05.600
+as necessary in the configuration
+
+278
+00:08:05.600 --> 00:08:08.400
+of SaltStack and by dynamically assigning
+
+279
+00:08:08.400 --> 00:08:10.140
+them to server environments themselves.
+
+280
+00:08:11.040 --> 00:08:12.340
+If you want to learn more about
+
+281
+00:08:12.340 --> 00:08:13.460
+pillars and grains, you're going to
+
+282
+00:08:13.460 --> 00:08:14.160
+have to hit that follow
+
+283
+00:08:14.160 --> 00:08:15.740
+button and see my other videos and
+
+284
+00:08:15.740 --> 00:08:16.620
+I'll catch you on the next one.
+

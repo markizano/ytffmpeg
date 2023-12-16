@@ -1,0 +1,53 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/virtualization.mp4" },
+        { "loop": "true", "i": "/home/YouTube/resources/openai.png" }
+      ],
+      "output": "build/virtualization.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=0:end=301,setpts=PTS-STARTPTS,scale=720:1280,setsar=1:1[__v]",
+        "[0:a]atrim=start=0:end=301,asetpts=PTS-STARTPTS[_a]",
+
+        "[1:v]fps=30,format=yuv420p,trim=start=0:end=5,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
+        "[__v]pad=864:1536:72:80,scale=720:1280,setsar=1:1,subtitles=resources/virtualization.srt:force_style='FontName=Impact,OutlineColour=&H40000000,BorderStyle=3'[_v]",
+        "[_v][disclaim]overlay=W-w-100:20:enable='between(t,0,5)'[video]",
+        "[_a]afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[audio]"
+
+      ]
+    },
+    {
+      "input": [
+        { "i": "resources/docker-virtualization.mkv" },
+        { "t": "5", "loop": "true", "framerate": "30", "i": "/home/YouTube/resources/openai.png" },
+        { "i": "resources/docker-virtualization.srt" }
+      ],
+      "output": "build/docker-virtualization.mp4",
+      "metadata": {
+        "title": "Virtualization - Docker: Container Virtualization",
+        "author": "Markizano Draconus",
+        "credits": "Captions by Whisper from OpenAI",
+        "description": "Let's talk about #computer #programming #server #automation. #Docker is server containerization software for your infrastructure. Its open source and provides a lot of infrastructure automation tools. This quick video covers the Docker daemon and the fundamentals to how it works. #devops #cloudops #docker ",
+        "website": "https://markizano.net/",
+        "twitter": "@Markizano",
+        "youtube": "@KizanosFinTech",
+        "blog": "https://blog.markizano.net/",
+        "x-platform": "TikTok"
+      },
+      "attributes": [
+        "subs",
+        "not-a-build"
+      ],
+      "map": {
+        "subs": "2:s"
+      },
+      "filter_complex": [
+        "[0:v]scale=720x1280,pad=864:1536:72:80,scale=720x1280,setsar=1:1,subtitles=resources/docker-virtualization.srt:force_style='FontName=Impact,OutlineColour=&H40000000,BorderStyle=3'[_v]",
+        "[1:v]format=yuv420p,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
+        "[_v][disclaim]overlay=W-w-100:0:enable='between(t,0,5)',setpts=PTS-STARTPTS[video]",
+        "[0:a]volume=1.5,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[audio]"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,744 @@
+1
+00:00:00.000 --> 00:00:02.180
+Oh, hey there, it's Markizano
+
+2
+00:00:02.180 --> 00:00:04.420
+and welcome. Let's talk about virtualization:
+
+3
+00:00:05.100 --> 00:00:05.800
+Docker edition.
+
+4
+00:00:07.160 --> 00:00:09.000
+First things first, docker is not
+
+5
+00:00:09.000 --> 00:00:10.960
+a virtual machine. Docker is not a
+
+6
+00:00:10.960 --> 00:00:11.500
+virtual machine!
+
+7
+00:00:11.940 --> 00:00:14.540
+Docker is not a virtual machine!!!
+
+8
+00:00:14.540 --> 00:00:15.720
+I cannot tell you how many times I
+
+9
+00:00:15.720 --> 00:00:16.380
+had to learn this
+
+10
+00:00:16.380 --> 00:00:18.800
+the hard way myself and then had
+
+11
+00:00:18.800 --> 00:00:21.360
+to reinstruct the team because whenever
+
+12
+00:00:21.360 --> 00:00:22.040
+Docker was first
+
+13
+00:00:22.040 --> 00:00:24.160
+coming out, everybody was like, "how
+
+14
+00:00:24.160 --> 00:00:25.700
+do I SSH into the container?" :facepalm:
+
+15
+00:00:28.580 --> 00:00:32.000
+Docker is not a virtual machine. Before
+
+16
+00:00:32.000 --> 00:00:33.720
+I go straight into docker, let's kind
+
+17
+00:00:33.720 --> 00:00:33.940
+of sort
+
+18
+00:00:33.940 --> 00:00:35.500
+of break down some components about
+
+19
+00:00:35.500 --> 00:00:37.520
+how Linux works under the hood. You've
+
+20
+00:00:37.520 --> 00:00:39.140
+got PID1, this
+
+21
+00:00:39.140 --> 00:00:40.980
+can be sysv-init, it can
+
+22
+00:00:40.980 --> 00:00:42.980
+be Upstart, it can be OpenRC, it
+
+23
+00:00:42.980 --> 00:00:47.840
+can be systemd. And that kicks
+
+24
+00:00:47.840 --> 00:00:50.140
+off your X environment, be it Xorg,
+
+25
+00:00:50.300 --> 00:00:52.740
+be it Wayland. Okay, then you've also
+
+26
+00:00:52.740 --> 00:00:53.160
+got your
+
+27
+00:00:53.160 --> 00:00:54.700
+Getty sessions, which is,
+
+28
+00:00:54.940 --> 00:00:56.060
+back in the old days when Linux
+
+29
+00:00:56.060 --> 00:00:56.740
+was connected to
+
+30
+00:00:56.740 --> 00:00:58.740
+a typewriter. This is what allowed
+
+31
+00:00:58.740 --> 00:00:59.760
+you to talk to the to the
+
+32
+00:00:59.760 --> 00:01:01.120
+computer itself. You've
+
+33
+00:01:01.120 --> 00:01:03.720
+also got your SSH daemon. PID1 can
+
+34
+00:01:03.720 --> 00:01:07.720
+also start your docker daemon. While
+
+35
+00:01:07.720 --> 00:01:08.460
+you have your X
+
+36
+00:01:08.460 --> 00:01:10.140
+environment running, it can start
+
+37
+00:01:10.140 --> 00:01:12.180
+other apps, these other apps like
+
+38
+00:01:12.180 --> 00:01:15.400
+your terminal environment
+
+39
+00:01:15.400 --> 00:01:18.040
+emulation, your Chrome browser, your
+
+40
+00:01:18.040 --> 00:01:20.460
+Firefox browser, your Discord client,
+
+41
+00:01:20.720 --> 00:01:21.360
+not server,
+
+42
+00:01:21.360 --> 00:01:23.680
+and xchat, which is like for IRC.
+
+43
+00:01:23.880 --> 00:01:25.000
+I know, I'm sorry, I just dated
+
+44
+00:01:25.000 --> 00:01:25.760
+myself with that one.
+
+45
+00:01:26.180 --> 00:01:30.060
+Have a nice day. Anyways, these apps,
+
+46
+00:01:30.280 --> 00:01:32.080
+they get started by your X environment.
+
+47
+00:01:32.220 --> 00:01:32.460
+These are
+
+48
+00:01:32.460 --> 00:01:34.120
+the graphical sessions that you can
+
+49
+00:01:34.120 --> 00:01:36.940
+look at interact with your display
+
+50
+00:01:36.940 --> 00:01:38.120
+manager, your desktop
+
+51
+00:01:38.120 --> 00:01:39.720
+manager, I'm kind of sort of taking
+
+52
+00:01:39.720 --> 00:01:41.160
+all those concepts and wrapping them
+
+53
+00:01:41.160 --> 00:01:43.700
+up into one block,
+
+54
+00:01:43.800 --> 00:01:45.620
+so to speak to oversimplify it because
+
+55
+00:01:45.620 --> 00:01:47.460
+to break it down that far would
+
+56
+00:01:47.460 --> 00:01:48.080
+be well over
+
+57
+00:01:48.080 --> 00:01:49.320
+too many people's heads too quick.
+
+58
+00:01:49.800 --> 00:01:51.940
+So trying to dip into this as
+
+59
+00:01:51.940 --> 00:01:53.980
+best I can. Docker basically
+
+60
+00:01:53.980 --> 00:01:56.180
+takes these things that are running
+
+61
+00:01:56.180 --> 00:01:58.120
+in your system and puts them inside
+
+62
+00:01:58.120 --> 00:01:59.340
+of their own space
+
+63
+00:01:59.340 --> 00:02:01.480
+so that they look like they came
+
+64
+00:02:01.480 --> 00:02:05.840
+from this, this PID1. Docker emulates
+
+65
+00:02:05.840 --> 00:02:06.900
+the entire Linux
+
+66
+00:02:06.900 --> 00:02:08.480
+environment and makes it consistent
+
+67
+00:02:08.480 --> 00:02:10.480
+so that everything that's happening
+
+68
+00:02:10.480 --> 00:02:11.280
+inside of Linux
+
+69
+00:02:11.280 --> 00:02:14.120
+looks like it came from that one
+
+70
+00:02:14.120 --> 00:02:17.720
+PID or PID1, which happens to be
+
+71
+00:02:17.720 --> 00:02:18.740
+the Docker daemon itself.
+
+72
+00:02:20.020 --> 00:02:22.460
+So what Docker can do is make
+
+73
+00:02:22.460 --> 00:02:24.580
+it so that your Java app, or, for
+
+74
+00:02:24.580 --> 00:02:26.320
+example, the thing that creates
+
+75
+00:02:26.320 --> 00:02:28.280
+the captions for my videos that I
+
+76
+00:02:28.280 --> 00:02:30.660
+use is actually a script written by
+
+77
+00:02:30.660 --> 00:02:32.800
+OpenAI. I imported it into
+
+78
+00:02:32.800 --> 00:02:34.880
+a Docker container and I basically
+
+79
+00:02:34.880 --> 00:02:36.480
+give that container access to the
+
+80
+00:02:36.480 --> 00:02:37.340
+rest of my system,
+
+81
+00:02:37.340 --> 00:02:39.660
+my videos, so that it can pass
+
+82
+00:02:39.660 --> 00:02:41.540
+through the interpreter that goes
+
+83
+00:02:41.540 --> 00:02:42.360
+through and converts
+
+84
+00:02:42.360 --> 00:02:45.260
+my audio stream into subtitles so
+
+85
+00:02:45.260 --> 00:02:46.560
+that you can see the captions below
+
+86
+00:02:46.560 --> 00:02:48.220
+on my videos. Python
+
+87
+00:02:48.220 --> 00:02:49.860
+scripts, any kind of application,
+
+88
+00:02:50.040 --> 00:02:51.420
+whatever it is you have going on,
+
+89
+00:02:51.760 --> 00:02:52.680
+Docker basically
+
+90
+00:02:52.680 --> 00:02:55.040
+makes it so that the environment itself
+
+91
+00:02:55.040 --> 00:02:57.820
+is a consistent landscape across the
+
+92
+00:02:57.820 --> 00:02:58.840
+board and
+
+93
+00:02:58.840 --> 00:03:00.700
+you don't have to worry about what
+
+94
+00:03:00.700 --> 00:03:03.920
+the user has installed. It comes prepackaged inside
+
+95
+00:03:03.920 --> 00:03:06.140
+of your own container so that you
+
+96
+00:03:06.140 --> 00:03:08.400
+have your one PID running inside of
+
+97
+00:03:08.400 --> 00:03:09.240
+its own environment,
+
+98
+00:03:09.620 --> 00:03:11.480
+thinking it's the only application
+
+99
+00:03:11.480 --> 00:03:14.540
+running inside of your Linux-able,
+
+100
+00:03:14.900 --> 00:03:16.500
+MacOS-able,
+
+101
+00:03:16.940 --> 00:03:20.560
+Windows-able environment. Just to
+
+102
+00:03:20.560 --> 00:03:21.560
+type those out so that you can
+
+103
+00:03:21.560 --> 00:03:23.060
+see what they mean, PID1
+
+104
+00:03:23.060 --> 00:03:25.900
+can be sysvinit, openrc, or systemd.
+
+105
+00:03:26.160 --> 00:03:27.820
+If I mispronounce that, I apologize.
+
+106
+00:03:28.020 --> 00:03:28.640
+I've heard it pronounced
+
+107
+00:03:28.640 --> 00:03:32.000
+sysvinit (or "five"), so if you know
+
+108
+00:03:32.000 --> 00:03:33.360
+authoritatively what it means, please
+
+109
+00:03:33.360 --> 00:03:34.160
+drop a comment below.
+
+110
+00:03:34.340 --> 00:03:36.240
+I don't know any better. I just
+
+111
+00:03:36.240 --> 00:03:38.180
+know I prefer it over systemd because
+
+112
+00:03:38.180 --> 00:03:38.940
+it works, it's less
+
+113
+00:03:38.940 --> 00:03:41.620
+buggy, and Pottering just didn't...
+
+114
+00:03:41.620 --> 00:03:44.340
+I don't know. We'll get there. And
+
+115
+00:03:44.340 --> 00:03:45.520
+so here's the magic
+
+116
+00:03:45.520 --> 00:03:47.540
+of how all this stuff works. You
+
+117
+00:03:47.540 --> 00:03:49.360
+can create this thing called a Dockerfile.
+
+118
+00:03:49.900 --> 00:03:51.600
+Use `docker build -t image:version`
+
+119
+00:03:51.600 --> 00:03:53.320
+to tag your image. (I'll type that
+
+120
+00:03:53.320 --> 00:03:54.740
+out here in a second). But your
+
+121
+00:03:54.740 --> 00:03:56.000
+Dockerfile basically
+
+122
+00:03:56.000 --> 00:03:58.780
+describes what you want your image
+
+123
+00:03:58.780 --> 00:04:00.720
+to look like. So you can source
+
+124
+00:04:00.720 --> 00:04:01.520
+it from some other
+
+125
+00:04:01.520 --> 00:04:03.040
+image that somebody else has created.
+
+126
+00:04:03.320 --> 00:04:05.480
+Typically you start from a Linux base,
+
+127
+00:04:05.660 --> 00:04:06.640
+a Macintosh base,
+
+128
+00:04:06.780 --> 00:04:09.420
+or a Windows base if you so
+
+129
+00:04:09.420 --> 00:04:11.440
+decide to containerize Windows. Good
+
+130
+00:04:11.440 --> 00:04:12.560
+luck with that. I wish you luck
+
+131
+00:04:12.560 --> 00:04:14.000
+in that endeavor. And then you can
+
+132
+00:04:14.000 --> 00:04:15.960
+add whatever files, scripts, whoever
+
+133
+00:04:15.960 --> 00:04:16.700
+you need, whatever
+
+134
+00:04:16.700 --> 00:04:18.680
+you want. You can run specific commands.
+
+135
+00:04:18.800 --> 00:04:20.680
+You can tell it to install your dependencies.
+
+136
+00:04:20.680 --> 00:04:22.960
+You can set your entry point to
+
+137
+00:04:22.960 --> 00:04:24.920
+whatever kind of interpreter you want
+
+138
+00:04:24.920 --> 00:04:26.540
+to use. If it's Bash,
+
+139
+00:04:26.580 --> 00:04:28.120
+if it's Python, if it's Perl, if
+
+140
+00:04:28.120 --> 00:04:30.600
+it's PHP, I don't care, doesn't matter...
+
+141
+00:04:30.700 --> 00:04:31.380
+Does it execute?
+
+142
+00:04:31.820 --> 00:04:33.500
+That's all we care about. And then
+
+143
+00:04:33.500 --> 00:04:35.180
+your command can be used to execute
+
+144
+00:04:35.180 --> 00:04:36.620
+whatever specific commands
+
+145
+00:04:36.620 --> 00:04:38.260
+you have going on. This is the
+
+146
+00:04:38.260 --> 00:04:40.820
+entry point that kicks off the application,
+
+147
+00:04:41.020 --> 00:04:41.460
+that starts
+
+148
+00:04:41.460 --> 00:04:43.080
+off everything. So if there's any
+
+149
+00:04:43.080 --> 00:04:44.600
+finishing configurations that need
+
+150
+00:04:44.600 --> 00:04:45.540
+to be put into place
+
+151
+00:04:45.540 --> 00:04:47.140
+because you're inside of a dynamic
+
+152
+00:04:47.140 --> 00:04:49.320
+environment, if there is anything
+
+153
+00:04:49.320 --> 00:04:50.200
+you need to do as far
+
+154
+00:04:50.200 --> 00:04:51.780
+as starting up services, kicking off
+
+155
+00:04:51.780 --> 00:04:55.020
+subprocesses, talking to remote servers, authenticating
+
+156
+00:04:55.020 --> 00:04:57.020
+to whatever, you can do that after
+
+157
+00:04:57.020 --> 00:04:59.260
+you've compiled your image and started
+
+158
+00:04:59.260 --> 00:04:59.900
+your application
+
+159
+00:04:59.900 --> 00:05:02.540
+up. And then it's really as simple
+
+160
+00:05:02.540 --> 00:05:05.660
+as build your image using docker build,
+
+161
+00:05:06.120 --> 00:05:07.040
+`-t` to
+
+162
+00:05:07.040 --> 00:05:08.960
+tag it as a specific name so
+
+163
+00:05:08.960 --> 00:05:10.120
+that you can reference that later.
+
+164
+00:05:11.100 --> 00:05:12.280
+And then you simply
+
+165
+00:05:12.280 --> 00:05:14.420
+use `docker run` to run your container
+
+166
+00:05:14.420 --> 00:05:17.520
+image. Now that is way oversimplified.
+
+167
+00:05:17.700 --> 00:05:18.400
+I am dropping
+
+168
+00:05:18.400 --> 00:05:20.020
+out a lot of details just to
+
+169
+00:05:20.020 --> 00:05:21.880
+get this point across so that you
+
+170
+00:05:21.880 --> 00:05:23.240
+can see how simple it is
+
+171
+00:05:23.820 --> 00:05:26.800
+to craft a custom application, compile
+
+172
+00:05:26.800 --> 00:05:28.580
+it up inside of an image, and
+
+173
+00:05:28.580 --> 00:05:29.620
+then run it inside
+
+174
+00:05:29.620 --> 00:05:31.400
+of a specific environment. You know,
+
+175
+00:05:31.660 --> 00:05:33.940
+just, just go, just, just build and
+
+176
+00:05:33.940 --> 00:05:35.080
+go. It's wonderful.
+
+177
+00:05:35.300 --> 00:05:37.740
+I love it. Want to know what
+
+178
+00:05:37.740 --> 00:05:40.180
+all that extra is? Well, I guess
+
+179
+00:05:40.180 --> 00:05:41.140
+we're over the TikTok limit,
+
+180
+00:05:41.220 --> 00:05:42.320
+so you're going to have to subscribe
+
+181
+00:05:42.320 --> 00:05:46.040
+and find out some more. My name
+
+182
+00:05:46.040 --> 00:05:47.500
+is Markizano Draconus,
+
+183
+00:05:47.500 --> 00:05:48.980
+and I'm here to teach you about
+
+184
+00:05:48.980 --> 00:05:51.040
+IT, DevOps, and CloudOps. I really
+
+185
+00:05:51.040 --> 00:05:51.740
+hope this is helpful,
+
+186
+00:05:52.100 --> 00:05:53.340
+and we'll see you on the next one =)
+

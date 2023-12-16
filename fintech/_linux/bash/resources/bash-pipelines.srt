@@ -1,0 +1,888 @@
+1
+00:00:00.980 --> 00:00:03.820
+Hey guys, it's Markizano. I could
+
+2
+00:00:03.820 --> 00:00:05.300
+do a screen-record, but I don't
+
+3
+00:00:05.300 --> 00:00:06.280
+know how well the framerate
+
+4
+00:00:06.280 --> 00:00:07.760
+would turn over, so this is why
+
+5
+00:00:07.760 --> 00:00:09.760
+I'm recording with my phone. And I
+
+6
+00:00:09.760 --> 00:00:10.640
+wanted to show you something
+
+7
+00:00:10.640 --> 00:00:12.660
+as far as something I learned with
+
+8
+00:00:12.660 --> 00:00:14.280
+Bash Pipelines and something I was
+
+9
+00:00:14.280 --> 00:00:15.800
+exploring with here. I'll
+
+10
+00:00:15.800 --> 00:00:17.260
+break all this stuff down, don't worry,
+
+11
+00:00:17.380 --> 00:00:18.800
+I know the text looks daunting, but
+
+12
+00:00:18.800 --> 00:00:19.520
+it's simpler
+
+13
+00:00:19.520 --> 00:00:21.320
+than you think. And stick around to
+
+14
+00:00:21.320 --> 00:00:22.520
+the end, because I got a nice
+
+15
+00:00:22.520 --> 00:00:23.320
+little treat for you.
+
+16
+00:00:23.800 --> 00:00:29.560
+So, the goal here. I was messing
+
+17
+00:00:29.560 --> 00:00:31.960
+around with FFmpeg, I needed to understand
+
+18
+00:00:31.960 --> 00:00:33.340
+the total sum
+
+19
+00:00:33.340 --> 00:00:35.980
+of its dependencies, and possible
+
+20
+00:00:35.980 --> 00:00:38.000
+dependency of dependencies, and I
+
+21
+00:00:38.000 --> 00:00:38.760
+only needed to go a
+
+22
+00:00:38.760 --> 00:00:40.820
+couple of levels down to figure this
+
+23
+00:00:40.820 --> 00:00:42.480
+out. But it was interesting the way
+
+24
+00:00:42.480 --> 00:00:43.000
+I went about
+
+25
+00:00:43.000 --> 00:00:44.780
+it. So the first thing you do
+
+26
+00:00:44.780 --> 00:00:48.120
+is to show the package contents and
+
+27
+00:00:48.120 --> 00:00:48.920
+get the dependencies
+
+28
+00:00:48.920 --> 00:00:50.620
+from what it describes in its package.
+
+29
+00:00:51.780 --> 00:00:56.380
+Did you know you could use "![command-number]"
+
+30
+00:00:56.381 --> 00:00:56.382
+ 
+
+31
+00:00:56.480 --> 00:00:57.640
+that you ran out of
+
+32
+00:00:57.640 --> 00:00:59.340
+your history, and it will replay that
+
+33
+00:00:59.340 --> 00:01:00.660
+command? Yeah, I thought
+
+34
+00:01:00.660 --> 00:01:03.360
+that was pretty cool too. So, out
+
+35
+00:01:03.360 --> 00:01:05.580
+of this, there's Depends, and it's
+
+36
+00:01:05.580 --> 00:01:06.380
+got a list of dependencies,
+
+37
+00:01:06.560 --> 00:01:10.700
+right? So, give me just that. Alright,
+
+38
+00:01:10.840 --> 00:01:12.140
+cool, so we got our depend line.
+
+39
+00:01:13.080 --> 00:01:14.060
+I don't need the
+
+40
+00:01:14.060 --> 00:01:16.600
+Depends there in the front, so how
+
+41
+00:01:16.600 --> 00:01:17.800
+do I get just the rest of
+
+42
+00:01:17.800 --> 00:01:20.100
+that? Personally, I thought
+
+43
+00:01:20.100 --> 00:01:21.440
+`sed` did a nice job of that.
+
+44
+00:01:21.500 --> 00:01:22.700
+Now I get just the list of
+
+45
+00:01:22.700 --> 00:01:24.340
+dependencies that are from the
+
+46
+00:01:24.340 --> 00:01:27.220
+package output. Next challenge. I
+
+47
+00:01:27.220 --> 00:01:28.760
+want access to just the packages.
+
+48
+00:01:29.100 --> 00:01:30.340
+I see a comma in the
+
+49
+00:01:30.340 --> 00:01:32.020
+list there. I see the version as
+
+50
+00:01:32.020 --> 00:01:33.740
+part of the listing. So I decided
+
+51
+00:01:33.740 --> 00:01:36.540
+to use `read` to strip
+
+52
+00:01:36.540 --> 00:01:39.240
+out just the packages. Sorry, that
+
+53
+00:01:39.240 --> 00:01:40.520
+wasn't supposed to be there. I guess
+
+54
+00:01:40.520 --> 00:01:41.100
+you just got
+
+55
+00:01:41.100 --> 00:01:43.370
+an easter egg. (LOL)
+
+56
+00:01:43.680 --> 00:01:45.689
+So anyways, now we get our package output.
+
+57
+00:01:45.939 --> 00:01:47.840
+Isn't that great? Now, I don't
+
+58
+00:01:47.840 --> 00:01:49.500
+want that version stuff after the
+
+59
+00:01:49.500 --> 00:01:52.262
+fact, so that's what those extra characters were.
+
+60
+00:01:52.261 --> 00:01:52.262
+
+
+61
+00:01:52.400 --> 00:01:53.720
+If you read the man page in bash,
+
+62
+00:01:54.040 --> 00:01:55.780
+you can actually translate your variables
+
+63
+00:01:55.780 --> 00:01:56.620
+right there on the
+
+64
+00:01:56.620 --> 00:02:00.340
+scene, and you don't have to pipe
+
+65
+00:02:00.340 --> 00:02:03.080
+the package through grep, or grep
+
+66
+00:02:03.080 --> 00:02:04.980
+sed, or perl. You can
+
+67
+00:02:04.980 --> 00:02:07.580
+just mutate the variable right there,
+
+68
+00:02:07.740 --> 00:02:10.640
+and boom. The output is right there.
+
+69
+00:02:10.860 --> 00:02:11.220
+I got my
+
+70
+00:02:11.220 --> 00:02:13.900
+list of packages, and so I thought
+
+71
+00:02:13.900 --> 00:02:15.380
+this would be great. I would turn
+
+72
+00:02:15.380 --> 00:02:16.160
+this into a function,
+
+73
+00:02:16.960 --> 00:02:19.820
+and so now it's a function. Yeah,
+
+74
+00:02:19.880 --> 00:02:21.440
+basically, you just specify the name,
+
+75
+00:02:21.620 --> 00:02:22.460
+open, close parentheses
+
+76
+00:02:22.460 --> 00:02:23.800
+to say, hey, this is a function,
+
+77
+00:02:23.940 --> 00:02:25.280
+and then wrap it inside of its
+
+78
+00:02:25.280 --> 00:02:27.020
+own context using the
+
+79
+00:02:27.020 --> 00:02:29.080
+curly brackets, and so now I can,
+
+80
+00:02:29.300 --> 00:02:31.360
+this function access grep into depends,
+
+81
+00:02:31.620 --> 00:02:32.460
+pipe out the dependencies
+
+82
+00:02:32.980 --> 00:02:34.680
+while you get each of the packages,
+
+83
+00:02:35.000 --> 00:02:36.500
+do an `apt-cache show` to show
+
+84
+00:02:36.500 --> 00:02:37.760
+the package contents.
+
+85
+00:02:38.560 --> 00:02:40.280
+We got the list of dependencies here,
+
+86
+00:02:40.600 --> 00:02:41.840
+so yeah, let's go ahead and show
+
+87
+00:02:41.840 --> 00:02:43.420
+the package contents
+
+88
+00:02:43.910 --> 00:02:44.880
+so I can move on to the
+
+89
+00:02:44.880 --> 00:02:46.980
+next thing. So now I can show
+
+90
+00:02:46.980 --> 00:02:49.720
+the contents of ffmpeg, pipe it
+
+91
+00:02:49.720 --> 00:02:51.420
+into my little function here. It will
+
+92
+00:02:51.420 --> 00:02:54.740
+spit out the dependencies from those packages
+
+93
+00:02:54.740 --> 00:02:57.400
+that it pulled out of ffmpeg, and
+
+94
+00:02:57.400 --> 00:02:58.540
+do that one more time because I
+
+95
+00:02:58.540 --> 00:02:59.740
+just want to see, what's
+
+96
+00:02:59.740 --> 00:03:01.520
+the full list of dependencies that
+
+97
+00:03:01.520 --> 00:03:04.340
+are under ffmpeg, and you notice when
+
+98
+00:03:04.340 --> 00:03:05.740
+I do that, boy,
+
+99
+00:03:05.820 --> 00:03:07.160
+that takes a second. That takes a
+
+100
+00:03:07.160 --> 00:03:08.820
+minute. That's a lot of data, and
+
+101
+00:03:08.820 --> 00:03:09.360
+then also took
+
+102
+00:03:09.360 --> 00:03:11.340
+a minute. Let's run it again. Let's
+
+103
+00:03:11.340 --> 00:03:12.520
+make sure that wasn't just cache.
+
+104
+00:03:13.280 --> 00:03:14.320
+Nope, yep, that,
+
+105
+00:03:14.320 --> 00:03:18.740
+that, that, ooh, man, wow, okay. Those
+
+106
+00:03:18.740 --> 00:03:19.880
+of y'all that know what's going
+
+107
+00:03:19.880 --> 00:03:20.940
+on, I'm sure
+
+108
+00:03:20.940 --> 00:03:24.980
+you can see it, right? Okay, so
+
+109
+00:03:24.980 --> 00:03:26.220
+this is just split across a couple
+
+110
+00:03:26.220 --> 00:03:26.980
+of lines here so that
+
+111
+00:03:26.980 --> 00:03:28.760
+you can see what's going on, but
+
+112
+00:03:28.760 --> 00:03:30.360
+we did the same thing where I
+
+113
+00:03:30.360 --> 00:03:31.440
+take the dependencies,
+
+114
+00:03:32.140 --> 00:03:33.620
+I pipe that into sed to strip
+
+115
+00:03:33.620 --> 00:03:35.500
+that out, I go through that same
+
+116
+00:03:35.500 --> 00:03:36.940
+read loop where I strip
+
+117
+00:03:36.940 --> 00:03:38.460
+out just the packages, but instead
+
+118
+00:03:38.460 --> 00:03:41.080
+of doing an `apt-cache show` here, we
+
+119
+00:03:41.080 --> 00:03:42.700
+just echo. When
+
+120
+00:03:42.700 --> 00:03:45.200
+I take this loop, this `while` loop,
+
+121
+00:03:45.560 --> 00:03:47.820
+and I pipe that into `sort` with
+
+122
+00:03:47.820 --> 00:03:48.980
+`-u` to give me the
+
+123
+00:03:48.980 --> 00:03:51.540
+unique names from those packages,
+
+124
+00:03:51.620 --> 00:03:52.820
+because something else I noticed,
+
+125
+00:03:53.420 --> 00:03:54.860
+`libc6`, everything
+
+126
+00:03:54.860 --> 00:03:57.140
+depends on `libc6`, so yeah, it's going
+
+127
+00:03:57.140 --> 00:03:58.180
+to go and ask for that package
+
+128
+00:03:58.180 --> 00:03:59.980
+too. [That's just] Not necessary.
+
+129
+00:04:00.560 --> 00:04:02.860
+We can pipe that into `sort`, and
+
+130
+00:04:02.860 --> 00:04:05.940
+I can say `xargs`. `xargs` takes the
+
+131
+00:04:05.940 --> 00:04:07.380
+input from the previous
+
+132
+00:04:07.380 --> 00:04:10.320
+command and runs the command that
+
+133
+00:04:10.320 --> 00:04:15.620
+you give it as its arguments. So
+
+134
+00:04:15.620 --> 00:04:16.220
+let's break that
+
+135
+00:04:16.220 --> 00:04:17.320
+down just a little bit more. I
+
+136
+00:04:17.320 --> 00:04:18.840
+changed the function so that it would
+
+137
+00:04:18.840 --> 00:04:19.800
+just print out the
+
+138
+00:04:19.800 --> 00:04:22.200
+sorted value, and so we're going to
+
+139
+00:04:22.200 --> 00:04:25.940
+print show ffmpeg, the package, and
+
+140
+00:04:25.940 --> 00:04:26.440
+just give me
+
+141
+00:04:26.440 --> 00:04:29.160
+the dependencies one layer deep, and
+
+142
+00:04:29.160 --> 00:04:32.660
+we get our sorted output. So now,
+
+143
+00:04:32.820 --> 00:04:33.940
+if we output multiple
+
+144
+00:04:33.940 --> 00:04:36.800
+packages in this way, libc6 won't
+
+145
+00:04:36.800 --> 00:04:38.680
+show up multiple times, and it won't
+
+146
+00:04:38.680 --> 00:04:39.500
+go ask the database
+
+147
+00:04:39.500 --> 00:04:42.720
+for that. The second thing is: in
+
+148
+00:04:42.720 --> 00:04:44.820
+this way, we go and we get
+
+149
+00:04:44.820 --> 00:04:45.960
+the full package listing
+
+150
+00:04:45.960 --> 00:04:47.880
+here. We're not asking the database,
+
+151
+00:04:48.180 --> 00:04:49.940
+because apt-cache show, this is a
+
+152
+00:04:49.940 --> 00:04:51.260
+read from disk.
+
+153
+00:04:51.700 --> 00:04:53.380
+This can be an expensive operation.
+
+154
+00:04:53.560 --> 00:04:55.960
+That's why the command took.... -_-
+
+155
+00:04:56.080 --> 00:04:57.180
+a few seconds
+
+156
+00:04:57.180 --> 00:04:58.680
+to execute, because it was putting
+
+157
+00:04:58.680 --> 00:04:59.960
+in a lot of work asking the
+
+158
+00:04:59.960 --> 00:05:01.900
+disk to go and fetch information
+
+159
+00:05:02.380 --> 00:05:03.640
+and bring it back to the console.
+
+160
+00:05:04.480 --> 00:05:07.280
+That was an expensive ask. And so
+
+161
+00:05:07.280 --> 00:05:08.520
+basically, what `xargs`
+
+162
+00:05:08.520 --> 00:05:10.820
+is saying is, take that input, take
+
+163
+00:05:10.820 --> 00:05:12.420
+that list of dependencies that we
+
+164
+00:05:12.420 --> 00:05:14.440
+just got, and run
+
+165
+00:05:14.440 --> 00:05:16.420
+them in apt-cache show, as if
+
+166
+00:05:16.420 --> 00:05:18.360
+they were arguments of the command
+
+167
+00:05:18.360 --> 00:05:21.220
+itself. So `xargs` basically
+
+168
+00:05:21.220 --> 00:05:25.680
+does that.... That's like one execution.
+
+169
+00:05:26.180 --> 00:05:28.660
+That's like one ask from the database
+
+170
+00:05:28.660 --> 00:05:29.220
+to go and get
+
+171
+00:05:29.220 --> 00:05:32.500
+it done. Okay, so this pattern that
+
+172
+00:05:32.500 --> 00:05:34.420
+I just took, I mean, this is
+
+173
+00:05:34.420 --> 00:05:36.000
+physics, you know, reading
+
+174
+00:05:36.000 --> 00:05:37.520
+and writing from the disk, you can't
+
+175
+00:05:37.520 --> 00:05:41.540
+go against nature and ask the disk
+
+176
+00:05:41.540 --> 00:05:42.420
+to provide you more
+
+177
+00:05:42.420 --> 00:05:45.220
+information than is possible. If you
+
+178
+00:05:45.220 --> 00:05:46.460
+go and you make that many requests
+
+179
+00:05:46.460 --> 00:05:47.420
+against it, that
+
+180
+00:05:47.420 --> 00:05:50.280
+many requests, then it's going to
+
+181
+00:05:50.280 --> 00:05:52.860
+cost you that much, right? The same
+
+182
+00:05:52.860 --> 00:05:53.640
+thing goes for
+
+183
+00:05:53.640 --> 00:05:56.000
+people. The same thing goes for, I
+
+184
+00:05:56.000 --> 00:05:57.580
+mean, all that matters here is energy.
+
+185
+00:05:58.280 --> 00:05:59.300
+And so if you
+
+186
+00:05:59.300 --> 00:06:01.000
+get the list of requirements together
+
+187
+00:06:01.000 --> 00:06:03.580
+first, if you come to understand what
+
+188
+00:06:03.580 --> 00:06:04.300
+it is you need
+
+189
+00:06:04.300 --> 00:06:06.520
+before you go and you ask for
+
+190
+00:06:06.520 --> 00:06:08.940
+other resources, you find you get
+
+191
+00:06:08.940 --> 00:06:10.860
+your answers quicker. You
+
+192
+00:06:10.860 --> 00:06:15.500
+find you get your results faster when
+
+193
+00:06:15.500 --> 00:06:17.460
+you come correct with your request.
+
+194
+00:06:18.420 --> 00:06:19.540
+So let this
+
+195
+00:06:19.540 --> 00:06:21.380
+be a lesson beyond just the code
+
+196
+00:06:21.380 --> 00:06:23.840
+that I'm writing here, but also understand
+
+197
+00:06:23.840 --> 00:06:24.520
+that these
+
+198
+00:06:24.520 --> 00:06:29.520
+patterns, they're not unique to just
+
+199
+00:06:29.520 --> 00:06:31.780
+writing code. Some of these things
+
+200
+00:06:31.780 --> 00:06:32.680
+you see and notice
+
+201
+00:06:32.680 --> 00:06:36.300
+in life is because the patterns are
+
+202
+00:06:36.300 --> 00:06:37.360
+the same no matter what you do
+
+203
+00:06:37.360 --> 00:06:39.600
+and where you go. And
+
+204
+00:06:39.600 --> 00:06:42.440
+so now we can go at least
+
+205
+00:06:42.440 --> 00:06:45.780
+a few layers deep. And that was
+
+206
+00:06:45.780 --> 00:06:47.560
+almost an instant response there.
+
+207
+00:06:48.460 --> 00:06:51.540
+You see that? We can ask for
+
+208
+00:06:51.540 --> 00:06:53.020
+dependencies three or four layers
+
+209
+00:06:53.020 --> 00:06:54.240
+deep, and now the code
+
+210
+00:06:54.240 --> 00:06:57.780
+is that much more efficient. So if
+
+211
+00:06:57.780 --> 00:07:00.120
+we better understand ourselves and
+
+212
+00:07:00.120 --> 00:07:01.060
+better understand
+
+213
+00:07:01.660 --> 00:07:04.040
+how we can present well, understand
+
+214
+00:07:04.040 --> 00:07:07.020
+well, have our perspective well, then
+
+215
+00:07:07.020 --> 00:07:08.500
+in other places
+
+216
+00:07:09.090 --> 00:07:10.600
+when we go to pipe those across
+
+217
+00:07:10.600 --> 00:07:13.020
+out to other destinations, we find
+
+218
+00:07:13.020 --> 00:07:14.340
+the results are that
+
+219
+00:07:14.340 --> 00:07:16.980
+much easier to attain. And there's
+
+220
+00:07:16.980 --> 00:07:19.500
+your lesson! :) There's your gem. <3 I hope
+
+221
+00:07:19.500 --> 00:07:20.100
+you enjoy the rest
+
+222
+00:07:20.100 --> 00:07:22.900
+of your day, and have a lovely SaturYaY! \o/
+

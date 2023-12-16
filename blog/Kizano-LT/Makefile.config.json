@@ -67,6 +67,66 @@
       ],
       "output": "build/NakedTruth-001.mp4",
       "filter_complex_script": "resources/NakedTruth-001.txt"
+    },
+    {
+      "require": "build/VID_20230702_144517858.mkv build/20230702.mkv build/VID_20230702_144529513.mkv",
+      "input": [
+        { "i": "build/VID_20230702_144517858.mkv -v verbose" },
+        { "i": "build/20230702.mkv" },
+        { "i": "build/VID_20230702_144529513.mkv" },
+        { "i": "resources/prescriptive-descriptive-heierarchies.mp4" },
+        { "loop": "1", "i": "build/gray-transition.png" }
+      ],
+      "output": "build/NakedTruth-002.mp4",
+      "filter_complex_script": "resources/NakedTruth-002.txt"
+    },
+    {
+      "require": "build/VID_20230702_144517858.mkv build/20230702.mkv build/VID_20230702_144529513.mkv",
+      "input": [
+        { "i": "build/VID_20230702_144517858.mkv -v verbose" },
+        { "i": "build/20230702.mkv" },
+        { "i": "build/VID_20230702_144529513.mkv" },
+        { "i": "resources/prescriptive-descriptive-heierarchies.mp4" },
+        { "loop": "1", "i": "build/gray-transition.png" }
+      ],
+      "output": "build/NakedTruth-003.mp4",
+      "filter_complex_script": "resources/NakedTruth-003.txt"
+    },
+    {
+      "require": "build/VID_20230702_144517858.mkv build/20230702.mkv build/VID_20230702_144529513.mkv",
+      "input": [
+        { "i": "build/VID_20230702_144517858.mkv -v verbose" },
+        { "i": "build/20230702.mkv" },
+        { "i": "build/VID_20230702_144529513.mkv" },
+        { "i": "resources/prescriptive-descriptive-heierarchies.mp4" },
+        { "loop": "1", "i": "build/gray-transition.png" }
+      ],
+      "output": "build/NakedTruth-004.mp4",
+      "filter_complex_script": "resources/NakedTruth-004.txt"
+    },
+    {
+      "require": "build/VID_20230702_144517858.mkv build/20230702.mkv build/VID_20230702_144529513.mkv",
+      "input": [
+        { "i": "build/VID_20230702_144517858.mkv -v verbose" },
+        { "i": "build/20230702.mkv" },
+        { "i": "build/VID_20230702_144529513.mkv" },
+        { "i": "resources/prescriptive-descriptive-heierarchies.mp4" },
+        { "loop": "1", "i": "build/gray-transition.png" }
+      ],
+      "output": "build/NakedTruth-005.mp4",
+      "filter_complex_script": "resources/NakedTruth-005.txt"
+    },
+    {
+      "require": "build/VID_20230702_144517858.mkv build/20230702.mkv build/VID_20230702_144529513.mkv",
+      "input": [
+        { "i": "build/VID_20230702_144517858.mkv -v verbose" },
+        { "i": "build/20230702.mkv" },
+        { "i": "build/VID_20230702_144529513.mkv" },
+        { "i": "resources/prescriptive-descriptive-heierarchies.mp4" },
+        { "loop": "1", "i": "build/gray-transition.png" }
+      ],
+      "output": "build/NakedTruth-006.mp4",
+      "filter_complex_script": "resources/NakedTruth-006.txt"
     }
   ]
 }
