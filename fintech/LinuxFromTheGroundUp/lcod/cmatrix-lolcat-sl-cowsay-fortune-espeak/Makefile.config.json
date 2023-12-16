@@ -1,0 +1,38 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/funsies.mkv" },
+        { "i": "resources/funsies2.mkv" },
+        { "loop": "true", "i": "resources/openai.png" }
+      ],
+      "output": "build/result.mp4",
+      "filter_complex": [
+
+        "[0:v]fps=30,trim=start=4:end=38.267,setpts=PTS-STARTPTS[v0]",
+        "[0:a]atrim=start=4:end=38.267,asetpts=PTS-STARTPTS[a0]",
+
+        "[0:v]fps=30,trim=start=43.5:end=48.5,setpts=PTS-STARTPTS[v1]",
+        "[0:a]atrim=start=43.5:end=48.5,asetpts=PTS-STARTPTS[a1]",
+
+        "[0:v]fps=30,trim=start=58:end=86.5,setpts=PTS-STARTPTS[v2]",
+        "[0:a]atrim=start=58:end=86.5,asetpts=PTS-STARTPTS[a2]",
+
+        "[0:v]fps=30,trim=start=93.5:end=101.33,setpts=PTS-STARTPTS[v3]",
+        "[0:a]atrim=start=93.5:end=101.33,asetpts=PTS-STARTPTS[a3]",
+
+        "[1:v]fps=30,trim=start=21:end=29,setpts=PTS-STARTPTS[v4]",
+        "[1:a]atrim=start=21:end=29,asetpts=PTS-STARTPTS[a4]",
+
+        "[1:v]fps=30,trim=start=34:end=41.2,setpts=PTS-STARTPTS[v5]",
+        "[1:a]atrim=start=34:end=41.2,asetpts=PTS-STARTPTS[a5]",
+
+        "[v0][v1][v2][v3][v4][v5]concat=n=6,scale=720x1056,pad=900:1600:90:120,scale=720:1280,setsar=1:1,format=yuv420p[_v]",
+        "[2:v]fps=30,trim=start=0:end=5,setpts=PTS-STARTPTS,fade=in:st=0:d=1,fade=out:st=4:d=1[disclaim]",
+        "[_v][disclaim]overlay=W-w-100:0,subtitles=build/result.srt[video]",
+        "[a0][a1][a2][a3][a4][a5]concat=n=6:v=0:a=1[audio]"
+      ]
+    }
+  ]
+}
+

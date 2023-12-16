@@ -1,0 +1,50 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/exercise-examples.mkv" },
+        { "loop": "true", "i": "/home/YouTube/resources/openai.png" }
+      ],
+      "output": "build/exercise-examples.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=1:end=83.5,setpts=PTS-STARTPTS[v0]",
+        "[0:a]atrim=start=1:end=83.5,asetpts=PTS-STARTPTS[a0]",
+
+        "[0:v]trim=start=91.5:end=220,setpts=PTS-STARTPTS[v1]",
+        "[0:a]atrim=start=91.5:end=220,asetpts=PTS-STARTPTS[a1]",
+
+        "[0:v]trim=start=225:end=357,setpts=PTS-STARTPTS[v2]",
+        "[0:a]atrim=start=225:end=357,asetpts=PTS-STARTPTS[a2]",
+
+        "[v0][v1][v2]concat=n=3,scale=720:1280,pad=864:1536:72:80,scale=720:1280,setsar=1:1[_v]",
+        "[a0][a1][a2]concat=v=0:a=1:n=3[_a]",
+
+        "[1:v]fps=30,format=yuv420p,trim=start=0:end=5,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
+        "[_v][disclaim]overlay=W-w-100:20:enable='between(t,0,5)',subtitles=resources/exercise-examples.srt:force_style='FontName=Impact,OutlineColour=&H40000000,BorderStyle=3'[video]",
+        "[_a]afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[audio]"
+      ]
+    },
+    {
+      "input": [
+        { "i": "resources/self-care-exercise.mkv" },
+        { "loop": "true", "i": "/home/YouTube/resources/openai.png" }
+      ],
+      "output": "build/self-care-exercise.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=0:end=178.900,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[_v0]",
+        "[0:a]atrim=start=0:end=178.900,asetpts=PTS-STARTPTS[a0]",
+        "[_v0]drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:textfile=resources/time-limits.txt:fontcolor=white:fontsize=50:box=1:boxcolor=0x0b8c81@0.8:boxborderw=25:x=50:y=50:enable='between(t, 24, 30)'[v0]",
+
+        "[0:v]trim=start=180.250:end=342.417,setpts=PTS-STARTPTS,scale=720x1280,setsar=1:1[v1]",
+        "[0:a]atrim=start=180.250:end=342.417,asetpts=PTS-STARTPTS[a1]",
+
+        "[v0][a0][v1][a1]concat=v=1:a=1[__v][_a]",
+        "[1:v]fps=30,format=yuv420p,trim=start=0:end=5,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
+        "[__v]pad=864:1536:72:80,scale=720:1280,setsar=1:1,subtitles=resources/self-care-exercise.srt:force_style='FontName=Impact,OutlineColour=&H40000000,BorderStyle=3'[_v]",
+        "[_v][disclaim]overlay=W-w-100:20:enable='between(t,0,5)'[video]",
+        "[_a]afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[audio]"
+      ]
+    }
+  ]
+}
+

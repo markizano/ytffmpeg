@@ -1,0 +1,332 @@
+1
+0:00:00.000 --> 0:00:04.240
+This is one I could probably do in my sleep because I've been doing it for so long,
+
+2
+0:00:04.240 --> 0:00:09.920
+but, and I probably take it for granted, but I see so many people struggling with this
+
+3
+0:00:09.920 --> 0:00:14.120
+that I just feel like I have to take a shot at trying to help people out here.
+
+4
+0:00:14.120 --> 0:00:16.760
+Let's talk about Linux permissions.
+
+5
+0:00:16.760 --> 0:00:24.000
+I know this is a tough one to get through, and this is going to be my attempt at making it easy for you.
+
+6
+0:00:25.000 --> 0:00:32.000
+Now, if you've used Linux before and you've tried doing the listing on files and directories,
+
+7
+0:00:32.000 --> 0:00:38.000
+you may have seen permissions notated like this through the ls command, and you're like,
+
+8
+0:00:38.000 --> 0:00:40.000
+oh, what does that stuff mean?
+
+9
+0:00:40.000 --> 0:00:47.000
+Well, I'm going to break this down because this is basically a table of access represented as characters,
+
+10
+0:00:47.000 --> 0:00:51.000
+and it's really ingenious because this one line, these few characters,
+
+11
+0:00:51.000 --> 0:00:58.000
+actually carries a lot of significance and can tell you everything you need to know about who can do what.
+
+12
+0:00:58.000 --> 0:01:08.000
+This is a number, but what most people may not quite get or doesn't quite make sense is this is a number in octal.
+
+13
+0:01:08.000 --> 0:01:11.000
+It's a representation of a numeric format.
+
+14
+0:01:11.000 --> 0:01:12.000
+This is a number.
+
+15
+0:01:12.000 --> 0:01:16.000
+It's just an octal rather than in the decimal format that we understand,
+
+16
+0:01:16.000 --> 0:01:22.000
+which means numbers that are permitted here only are from zero to seven.
+
+17
+0:01:22.000 --> 0:01:25.000
+Eight would actually make that an illegal permission.
+
+18
+0:01:25.000 --> 0:01:28.000
+We're going to skip that first character for now.
+
+19
+0:01:28.000 --> 0:01:36.000
+The first three characters after the first character, these first three right now, they represent the user permissions.
+
+20
+0:01:36.000 --> 0:01:41.000
+The next three characters represents the group permissions,
+
+21
+0:01:42.000 --> 0:01:47.000
+and the last three characters represents any other permissions.
+
+22
+0:01:47.000 --> 0:01:51.000
+If you're not this user, if you're not this group, you're other.
+
+23
+0:01:51.000 --> 0:01:57.000
+Now, the reason why I skipped that first character is because it requires special explanation.
+
+24
+0:01:57.000 --> 0:02:06.000
+This first character represents any special properties that may be attributed by what is listed here in the directory listing.
+
+25
+0:02:06.000 --> 0:02:16.000
+That first character could be mean or signified that it is a directory that it has a set UID bit or it may have a sticky bit set.
+
+26
+0:02:16.000 --> 0:02:21.000
+But we're just going to limit the scope here and say this is for any kind of special meaning.
+
+27
+0:02:21.000 --> 0:02:28.000
+So to give you a quick recap here, this notation can be broken down into these pieces here,
+
+28
+0:02:28.000 --> 0:02:35.000
+where the first character represents any kind of special significance around whatever this file is or directory.
+
+29
+0:02:35.000 --> 0:02:40.000
+The first three characters after that represent the user permissions.
+
+30
+0:02:40.000 --> 0:02:47.000
+The next three represent the group permissions, and the final three represent other permissions.
+
+31
+0:02:47.000 --> 0:02:53.000
+Now, this is where things get interesting and I begin to tie the two of them together.
+
+32
+0:02:53.000 --> 0:02:57.000
+If I have zero, then that means there are no permissions granted.
+
+33
+0:02:57.000 --> 0:03:02.000
+If I have one, then that means I have read access.
+
+34
+0:03:02.000 --> 0:03:04.000
+That's where the R comes from.
+
+35
+0:03:04.000 --> 0:03:08.000
+If I have two, then I have write access.
+
+36
+0:03:08.000 --> 0:03:13.000
+That's where a W may come from in that second piece right there.
+
+37
+0:03:13.000 --> 0:03:21.000
+And if I have three, then I have execute, which is denoted by the X.
+
+38
+0:03:21.000 --> 0:03:25.000
+Now, here's where I really start to tie things together.
+
+39
+0:03:25.000 --> 0:03:28.000
+If I have no permissions, that's going to be zero.
+
+40
+0:03:28.000 --> 0:03:33.000
+If I have execute permissions, I'm going to have one.
+
+41
+0:03:33.000 --> 0:03:37.000
+If I have write permissions, then I'm going to have a two.
+
+42
+0:03:37.000 --> 0:03:41.000
+If I have read permissions, then I'm going to have a four.
+
+43
+0:03:41.000 --> 0:03:46.000
+Why is this significant? It's because of bitwise operations.
+
+44
+0:03:46.000 --> 0:03:51.000
+A bitwise operator is basically a simple mathematical operation to the computer,
+
+45
+0:03:51.000 --> 0:03:56.000
+such that it can perform this calculation without having to think too much about it.
+
+46
+0:03:56.000 --> 0:03:59.000
+In this way, you can have read and write permissions.
+
+47
+0:03:59.000 --> 0:04:03.000
+If I have read and execute permissions, then I'm going to have a six.
+
+48
+0:04:03.000 --> 0:04:07.000
+A read and execute permission is going to be a five.
+
+49
+0:04:07.000 --> 0:04:10.000
+A write and execute permission is going to be a three.
+
+50
+0:04:10.000 --> 0:04:14.000
+And if you want to have read, write, and execute, you're going to have a seven.
+
+51
+0:04:14.000 --> 0:04:20.000
+And this is why octal is such a great representation for this permission schema,
+
+52
+0:04:20.000 --> 0:04:25.000
+is because you only have digits permissible from zero to seven.
+
+53
+0:04:25.000 --> 0:04:29.000
+And this is why it's so important to have a ten in octal.
+
+54
+0:04:29.000 --> 0:04:36.000
+So the reality of it is Linux only has at most 511 permission states
+
+55
+0:04:36.000 --> 0:04:39.000
+that represent something for what the current user has,
+
+56
+0:04:39.000 --> 0:04:43.000
+what somebody is part of this group has, and what other has,
+
+57
+0:04:43.000 --> 0:04:48.000
+with enough numbers left over to describe a few other things here and there.
+
+58
+0:04:48.000 --> 0:04:52.000
+And the permission schema, the way it's represented, the way you see it,
+
+59
+0:04:52.000 --> 0:04:56.000
+it just demeans for us to be able to see very clearly what those permissions are
+
+60
+0:04:56.000 --> 0:04:58.000
+once you understand what the mapping is.
+
+61
+0:04:58.000 --> 0:05:03.000
+So let's take a look at some examples here to see if we can help this to sink in.
+
+62
+0:05:03.000 --> 0:05:07.000
+If you have the permissions 644, then what does that give you?
+
+63
+0:05:07.000 --> 0:05:12.000
+It gives you read, write, access, but no execute for the current user.
+
+64
+0:05:12.000 --> 0:05:19.000
+If you are part of that user's group, then read before signifies that you get read access,
+
+65
+0:05:19.000 --> 0:05:21.000
+you get execute and not write permission.
+
+66
+0:05:21.000 --> 0:05:25.000
+And if you are part of the other, then you get read permission,
+
+67
+0:05:25.000 --> 0:05:28.000
+but no write and no execute permissions.
+
+68
+0:05:28.000 --> 0:05:32.000
+So whatever this was, be it a directory, a file, a socket, or whatever,
+
+69
+0:05:32.000 --> 0:05:34.000
+everything is a file in Linux.
+
+70
+0:05:34.000 --> 0:05:41.000
+So these permissions only persist to when you try to access something that has these permissions.
+
+71
+0:05:41.000 --> 0:05:47.000
+And then if you have the permissions 640, then that means the current user has read, write, access.
+
+72
+0:05:47.000 --> 0:05:50.000
+If you are part of the group, then they get read access.
+
+73
+0:05:50.000 --> 0:05:54.000
+And if you're anything else, you get no access.
+
+74
+0:05:54.000 --> 0:05:58.000
+If you have 755 permissions, then what does that mean?
+
+75
+0:05:58.000 --> 0:06:02.000
+Well, that means the current user gets read, write, and execute permissions.
+
+76
+0:06:02.000 --> 0:06:03.000
+They get it all.
+
+77
+0:06:03.000 --> 0:06:10.000
+5 and 5 means the group, and anyone else gets read and execute permissions.
+
+78
+0:06:10.000 --> 0:06:16.000
+And 750, respectively, means that the current user can access everything
+
+79
+0:06:16.000 --> 0:06:19.000
+if you are part of the group, you can read and execute it.
+
+80
+0:06:19.000 --> 0:06:23.000
+And if you're anything else, you get no access.
+
+81
+0:06:23.000 --> 0:06:25.000
+Did that click for you?
+
+82
+0:06:25.000 --> 0:06:27.000
+You know what to do.
+
+83
+0:06:27.000 --> 0:06:28.000
+Thank you.
+

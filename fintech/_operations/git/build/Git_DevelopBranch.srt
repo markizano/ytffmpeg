@@ -1,0 +1,416 @@
+1
+00:00:00.000 --> 00:00:03.580
+So let's talk about Git, the stupid
+
+2
+00:00:03.580 --> 00:00:04.480
+content tracker.
+
+3
+00:00:04.960 --> 00:00:07.700
+Oh, and this isn't me making this up.
+
+4
+00:00:08.020 --> 00:00:09.860
+It's in the documentation itself.
+
+5
+00:00:09.980 --> 00:00:10.760
+That's what it's called.
+
+6
+00:00:11.520 --> 00:00:12.660
+And also a slight little correction
+
+7
+00:00:12.660 --> 00:00:13.140
+to myself
+
+8
+00:00:13.140 --> 00:00:14.320
+before I was calling it the stupid
+
+9
+00:00:14.320 --> 00:00:14.980
+file tracker.
+
+10
+00:00:15.120 --> 00:00:16.960
+It's actually called the stupid content tracker.
+
+11
+00:00:17.240 --> 00:00:17.900
+Apologies for that.
+
+12
+00:00:19.200 --> 00:00:20.720
+Recognize this from my last video?
+
+13
+00:00:20.980 --> 00:00:22.720
+If you don't, go check them out.
+
+14
+00:00:23.180 --> 00:00:24.080
+See, here's the thing.
+
+15
+00:00:24.240 --> 00:00:26.960
+The challenge that I face with most engineers
+
+16
+00:00:26.960 --> 00:00:28.920
+is they think Git is hard.
+
+17
+00:00:28.920 --> 00:00:30.560
+It's difficult to understand.
+
+18
+00:00:31.000 --> 00:00:32.560
+Yes, I understand there's a lot of
+
+19
+00:00:32.560 --> 00:00:33.540
+curves and turns,
+
+20
+00:00:33.740 --> 00:00:35.460
+but it's not that difficult
+
+21
+00:00:35.460 --> 00:00:37.520
+once you set yourself in a process,
+
+22
+00:00:37.700 --> 00:00:39.080
+get yourself in a routine,
+
+23
+00:00:39.440 --> 00:00:41.580
+and execute on some patterns
+
+24
+00:00:41.580 --> 00:00:44.060
+so that those wires that grow together
+
+25
+00:00:44.060 --> 00:00:44.720
+in your mind
+
+26
+00:00:44.720 --> 00:00:46.980
+will continue to build stronger and
+
+27
+00:00:46.980 --> 00:00:47.660
+get better
+
+28
+00:00:47.660 --> 00:00:50.020
+as far as how you control how
+
+29
+00:00:50.020 --> 00:00:50.980
+your code is edited.
+
+30
+00:00:51.420 --> 00:00:53.600
+So we'll start off with a basic premise
+
+31
+00:00:53.600 --> 00:00:55.620
+of we've got a new feature that's
+
+32
+00:00:55.620 --> 00:00:56.080
+coming in
+
+33
+00:00:56.080 --> 00:00:57.500
+or a new ticket that's come in,
+
+34
+00:00:57.500 --> 00:00:58.940
+and we need to make some changes
+
+35
+00:00:58.940 --> 00:01:00.340
+to that particular ticket
+
+36
+00:01:00.340 --> 00:01:02.120
+before they can be pushed back into
+
+37
+00:01:02.120 --> 00:01:02.940
+the develop branch
+
+38
+00:01:02.940 --> 00:01:04.940
+to get promoted to the upper environments.
+
+39
+00:01:05.480 --> 00:01:07.980
+So the idea is you branch from
+
+40
+00:01:07.980 --> 00:01:08.860
+the develop branch
+
+41
+00:01:08.860 --> 00:01:10.300
+into your ticket branch,
+
+42
+00:01:10.420 --> 00:01:12.760
+make your changes in that ticket branch,
+
+43
+00:01:12.860 --> 00:01:15.200
+and then merge them back into the
+
+44
+00:01:15.200 --> 00:01:16.120
+develop branch.
+
+45
+00:01:16.240 --> 00:01:17.440
+Now, if you're a cowboy, you can
+
+46
+00:01:17.440 --> 00:01:18.480
+just use git merge
+
+47
+00:01:18.480 --> 00:01:19.780
+because you're the only guy that's
+
+48
+00:01:19.780 --> 00:01:20.500
+working on the project,
+
+49
+00:01:20.600 --> 00:01:21.680
+so what do you need to do
+
+50
+00:01:21.680 --> 00:01:22.640
+the whole process for?
+
+51
+00:01:22.840 --> 00:01:24.860
+Now, if you're part of a development team,
+
+52
+00:01:24.960 --> 00:01:26.260
+what's going to need to happen,
+
+53
+00:01:26.260 --> 00:01:27.940
+at least for an efficient setup
+
+54
+00:01:27.940 --> 00:01:29.400
+that's going to lead you to the
+
+55
+00:01:29.400 --> 00:01:30.700
+best product possible,
+
+56
+00:01:31.100 --> 00:01:33.480
+is you open a pull request from
+
+57
+00:01:33.480 --> 00:01:34.320
+your ticket branch
+
+58
+00:01:34.320 --> 00:01:35.960
+into the develop branch.
+
+59
+00:01:36.320 --> 00:01:37.500
+What does the pull request do?
+
+60
+00:01:37.800 --> 00:01:40.140
+Well, it basically opens a conversation up
+
+61
+00:01:40.140 --> 00:01:41.840
+between you and the other engineers
+
+62
+00:01:41.840 --> 00:01:43.540
+for all of you to come together,
+
+63
+00:01:43.600 --> 00:01:45.120
+or however many of you needs to
+
+64
+00:01:45.120 --> 00:01:45.640
+come together
+
+65
+00:01:45.640 --> 00:01:47.580
+to review those changes
+
+66
+00:01:47.580 --> 00:01:50.460
+to ensure that they honor your coding standards
+
+67
+00:01:50.460 --> 00:01:53.400
+and also to ensure that the structure
+
+68
+00:01:53.400 --> 00:01:54.040
+of the code
+
+69
+00:01:54.040 --> 00:01:55.060
+matches what you need,
+
+70
+00:01:55.060 --> 00:01:57.020
+the business requirements have been met,
+
+71
+00:01:57.520 --> 00:01:59.040
+and everything that needs to be done
+
+72
+00:01:59.040 --> 00:01:59.800
+in this ticket
+
+73
+00:01:59.800 --> 00:02:02.180
+and whatever changes need to be implemented
+
+74
+00:02:02.180 --> 00:02:04.120
+have been done to satisfaction
+
+75
+00:02:04.120 --> 00:02:06.200
+by the local engineering team.
+
+76
+00:02:06.460 --> 00:02:08.160
+You merge that into the develop branch,
+
+77
+00:02:08.260 --> 00:02:09.480
+and we proceed on to the next
+
+78
+00:02:09.480 --> 00:02:11.240
+step in the SDLC process.
+
+79
+00:02:12.060 --> 00:02:14.000
+Similarly, for feature branches
+
+80
+00:02:14.000 --> 00:02:16.780
+that may include more than just a
+
+81
+00:02:16.780 --> 00:02:17.520
+couple of changes
+
+82
+00:02:17.520 --> 00:02:20.160
+or may involve just a few more discussions
+
+83
+00:02:20.160 --> 00:02:22.420
+than just a simple little quick ticket change,
+
+84
+00:02:22.820 --> 00:02:24.040
+sometimes you might be coming out
+
+85
+00:02:24.040 --> 00:02:25.220
+with a full-blown feature,
+
+86
+00:02:25.600 --> 00:02:26.860
+and this feature might need to be
+
+87
+00:02:26.860 --> 00:02:27.360
+broken down
+
+88
+00:02:27.360 --> 00:02:28.560
+into smaller components
+
+89
+00:02:28.560 --> 00:02:31.120
+so that those smaller pieces can be
+
+90
+00:02:31.120 --> 00:02:32.020
+executed on,
+
+91
+00:02:32.180 --> 00:02:33.800
+those changes can be made to the code,
+
+92
+00:02:34.120 --> 00:02:34.900
+they can be tested
+
+93
+00:02:34.900 --> 00:02:36.740
+and run through their own little mini process,
+
+94
+00:02:37.100 --> 00:02:39.240
+and then get merged back into the
+
+95
+00:02:39.240 --> 00:02:40.000
+develop branch
+
+96
+00:02:40.000 --> 00:02:42.420
+for the next parts that are gonna
+
+97
+00:02:42.420 --> 00:02:44.200
+come in the SDLC process.
+
+98
+00:02:44.900 --> 00:02:47.160
+SDLC is Software Development Lifecycle.
+
+99
+00:02:47.660 --> 00:02:50.340
+Thanks to TikTok's short-term attention span,
+
+100
+00:02:50.400 --> 00:02:51.520
+that's all you're gonna get for now.
+
+101
+00:02:51.520 --> 00:02:52.960
+Wanna know some more about how this
+
+102
+00:02:52.960 --> 00:02:53.660
+works in QA?
+
+103
+00:02:54.060 --> 00:02:54.900
+You're gonna have to subscribe
+
+104
+00:02:54.900 --> 00:02:56.080
+and go check out my other videos.
+

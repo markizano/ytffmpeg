@@ -1,0 +1,596 @@
+1
+00:00:00.000 --> 00:00:03.540
+So let's talk about Git, the stupid
+
+2
+00:00:03.540 --> 00:00:04.500
+content tracker.
+
+3
+00:00:05.260 --> 00:00:07.000
+Recognize this from previous videos?
+
+4
+00:00:07.460 --> 00:00:08.660
+If you don't, you need to go
+
+5
+00:00:08.660 --> 00:00:09.840
+check them out, they're live.
+
+6
+00:00:10.580 --> 00:00:12.240
+So now that we've done the commit,
+
+7
+00:00:12.420 --> 00:00:13.420
+the push, the pull,
+
+8
+00:00:13.620 --> 00:00:15.780
+the merging, the develop branch, the
+
+9
+00:00:15.780 --> 00:00:16.480
+staging branch,
+
+10
+00:00:16.560 --> 00:00:18.200
+it's time to cut a release.
+
+11
+00:00:18.760 --> 00:00:20.320
+So the other thing that we need
+
+12
+00:00:20.320 --> 00:00:21.220
+to take into consideration
+
+13
+00:00:21.220 --> 00:00:24.020
+is we've taken our changes, our entire
+
+14
+00:00:24.020 --> 00:00:25.080
+SDLC process,
+
+15
+00:00:25.080 --> 00:00:27.400
+up until now, we've presented it to
+
+16
+00:00:27.400 --> 00:00:27.940
+the customer
+
+17
+00:00:27.940 --> 00:00:29.900
+and all the changes are now sitting
+
+18
+00:00:29.900 --> 00:00:30.480
+in staging.
+
+19
+00:00:30.900 --> 00:00:32.120
+We've done our pull requests,
+
+20
+00:00:32.240 --> 00:00:33.460
+we've had our conversations with the
+
+21
+00:00:33.460 --> 00:00:34.240
+engineering team,
+
+22
+00:00:34.720 --> 00:00:36.500
+they honor our coding standards,
+
+23
+00:00:36.800 --> 00:00:38.140
+they meet our business requirements,
+
+24
+00:00:38.360 --> 00:00:39.920
+the QA team has passed off on it.
+
+25
+00:00:40.320 --> 00:00:41.800
+QA, by the means, quality assurance.
+
+26
+00:00:42.680 --> 00:00:43.940
+We've done all these things.
+
+27
+00:00:44.460 --> 00:00:45.700
+Now, what we need to do is
+
+28
+00:00:45.700 --> 00:00:47.060
+we need to cut a release.
+
+29
+00:00:47.560 --> 00:00:48.700
+One of the things that I think
+
+30
+00:00:48.700 --> 00:00:49.440
+would be interesting
+
+31
+00:00:49.440 --> 00:00:51.500
+or important to understand is the
+
+32
+00:00:51.500 --> 00:00:52.300
+versioning process.
+
+33
+00:00:52.780 --> 00:00:54.380
+I see a lot of companies and
+
+34
+00:00:54.380 --> 00:00:55.080
+a lot of people
+
+35
+00:00:55.080 --> 00:00:56.500
+screwing around with this,
+
+36
+00:00:56.500 --> 00:00:58.080
+and this is one of those, please
+
+37
+00:00:58.080 --> 00:00:59.040
+don't reinvent the wheel.
+
+38
+00:00:59.620 --> 00:01:00.920
+Can we just agree on a standard
+
+39
+00:01:00.920 --> 00:01:02.400
+as far as versioning is concerned
+
+40
+00:01:02.400 --> 00:01:03.240
+and stick to that?
+
+41
+00:01:03.460 --> 00:01:05.060
+Chrome, Firefox, I'm looking at you.
+
+42
+00:01:05.260 --> 00:01:06.880
+Every time you do a major upgrade
+
+43
+00:01:06.880 --> 00:01:08.700
+of your versioning software,
+
+44
+00:01:08.980 --> 00:01:10.580
+I feel like you've completely rewritten
+
+45
+00:01:10.580 --> 00:01:11.480
+the entire code.
+
+46
+00:01:11.780 --> 00:01:12.760
+So let's break this down.
+
+47
+00:01:13.120 --> 00:01:14.460
+You have a major, you have a
+
+48
+00:01:14.460 --> 00:01:15.880
+minor, and you have a patch.
+
+49
+00:01:16.340 --> 00:01:19.120
+The major represents a significant change.
+
+50
+00:01:19.420 --> 00:01:21.340
+That means that whatever version of
+
+51
+00:01:21.340 --> 00:01:21.960
+this software
+
+52
+00:01:21.960 --> 00:01:25.160
+we are using is completely incompatible
+
+53
+00:01:25.160 --> 00:01:27.380
+with this other version of this software.
+
+54
+00:01:27.860 --> 00:01:29.900
+The major revision means that there
+
+55
+00:01:29.900 --> 00:01:31.440
+was a major rewrite,
+
+56
+00:01:31.820 --> 00:01:35.000
+an entire rewrite of the entire architecture
+
+57
+00:01:35.440 --> 00:01:37.060
+of all the code ever,
+
+58
+00:01:37.440 --> 00:01:39.660
+meaning you can take a 1.0
+
+59
+00:01:39.660 --> 00:01:40.880
+of a piece of software
+
+60
+00:01:40.880 --> 00:01:43.180
+and try to use it with a
+
+61
+00:01:43.180 --> 00:01:44.860
+version 2.0 of the data
+
+62
+00:01:44.860 --> 00:01:46.660
+or reverse, vice versa, whatever.
+
+63
+00:01:47.740 --> 00:01:49.900
+The result will be software
+
+64
+00:01:49.900 --> 00:01:52.080
+that completely cannot work with itself.
+
+65
+00:01:52.180 --> 00:01:53.580
+You'll have errors, you'll have all
+
+66
+00:01:53.580 --> 00:01:54.680
+kinds of problems.
+
+67
+00:01:54.680 --> 00:01:57.420
+Stop increasing the major
+
+68
+00:01:57.420 --> 00:01:59.740
+when the versions of the software
+
+69
+00:01:59.740 --> 00:02:02.600
+are in fact compatible with each other.
+
+70
+00:02:03.220 --> 00:02:05.460
+The minor revision is for whenever
+
+71
+00:02:05.460 --> 00:02:06.520
+you make changes
+
+72
+00:02:06.520 --> 00:02:09.100
+that are significant enough to bump
+
+73
+00:02:09.100 --> 00:02:09.820
+the version up.
+
+74
+00:02:10.080 --> 00:02:11.780
+It's more than a patch, less than
+
+75
+00:02:11.780 --> 00:02:12.680
+a complete rewrite.
+
+76
+00:02:13.100 --> 00:02:15.160
+It's a new feature, new ad, we've
+
+77
+00:02:15.160 --> 00:02:16.600
+got cool new things,
+
+78
+00:02:16.680 --> 00:02:18.320
+we've done some bug fixes or whatever,
+
+79
+00:02:18.560 --> 00:02:20.620
+but it's a significant amount of changes
+
+80
+00:02:20.620 --> 00:02:22.880
+that represents an increment of the
+
+81
+00:02:22.880 --> 00:02:23.520
+minor version
+
+82
+00:02:23.520 --> 00:02:25.140
+that is not a complete rewrite of
+
+83
+00:02:25.140 --> 00:02:26.020
+the major version.
+
+84
+00:02:26.720 --> 00:02:28.660
+And then finally, we have the patch version,
+
+85
+00:02:28.820 --> 00:02:31.020
+which is representative of some minor
+
+86
+00:02:31.020 --> 00:02:31.680
+bug fixes,
+
+87
+00:02:31.880 --> 00:02:33.300
+some little changes here and there,
+
+88
+00:02:33.760 --> 00:02:35.880
+some small little security updates maybe,
+
+89
+00:02:36.280 --> 00:02:38.220
+some, you know, for the most part,
+
+90
+00:02:38.480 --> 00:02:40.560
+software is compatible with itself
+
+91
+00:02:40.560 --> 00:02:42.480
+if the patch and the minor
+
+92
+00:02:42.480 --> 00:02:44.200
+are the only things that are incrementing.
+
+93
+00:02:44.560 --> 00:02:46.480
+If the major version of the software
+
+94
+00:02:46.480 --> 00:02:47.360
+is incrementing,
+
+95
+00:02:47.480 --> 00:02:49.000
+then to me, that just says
+
+96
+00:02:49.000 --> 00:02:50.720
+you completely rewrote the entire software.
+
+97
+00:02:50.860 --> 00:02:52.120
+And if you're incrementing this number
+
+98
+00:02:52.120 --> 00:02:52.960
+regardless of that,
+
+99
+00:02:52.960 --> 00:02:54.940
+then I have less respect for the
+
+100
+00:02:54.940 --> 00:02:55.540
+version number.
+
+101
+00:02:56.000 --> 00:02:57.400
+That's a lot of words to say
+
+102
+00:02:57.400 --> 00:02:59.000
+that whenever we cut a release,
+
+103
+00:02:59.140 --> 00:03:01.240
+we're basically taking a version and
+
+104
+00:03:01.240 --> 00:03:02.680
+tagging it in Git,
+
+105
+00:03:02.840 --> 00:03:05.260
+using git tag as the actual command
+
+106
+00:03:05.260 --> 00:03:05.580
+for that,
+
+107
+00:03:05.900 --> 00:03:07.900
+that will basically annotate the commit
+
+108
+00:03:07.900 --> 00:03:08.520
+that we've made
+
+109
+00:03:08.520 --> 00:03:10.440
+just before we publish to production
+
+110
+00:03:10.440 --> 00:03:12.600
+or as we're publishing to production,
+
+111
+00:03:12.760 --> 00:03:13.940
+however your setup goes.
+
+112
+00:03:14.380 --> 00:03:16.120
+So now that the customer has approved
+
+113
+00:03:16.120 --> 00:03:16.440
+of it,
+
+114
+00:03:16.500 --> 00:03:18.500
+you take your changes from your staging branch,
+
+115
+00:03:18.640 --> 00:03:20.560
+you merge them into the master branch,
+
+116
+00:03:20.560 --> 00:03:22.500
+and then you tag the results so
+
+117
+00:03:22.500 --> 00:03:22.900
+you know,
+
+118
+00:03:23.200 --> 00:03:24.720
+hey, this was the version of the software
+
+119
+00:03:24.720 --> 00:03:26.000
+that last went to production
+
+120
+00:03:26.520 --> 00:03:28.200
+whenever we decided that the customer
+
+121
+00:03:28.200 --> 00:03:28.820
+agreed on it,
+
+122
+00:03:28.900 --> 00:03:30.500
+we agreed on it, everybody's happy,
+
+123
+00:03:30.600 --> 00:03:31.220
+we're good to go.
+
+124
+00:03:31.340 --> 00:03:33.480
+All right, push it out, let's go.
+
+125
+00:03:34.620 --> 00:03:36.140
+And so now that I've made it
+
+126
+00:03:36.140 --> 00:03:36.880
+to the end of this,
+
+127
+00:03:36.940 --> 00:03:38.040
+and if you've made it this far,
+
+128
+00:03:38.200 --> 00:03:38.840
+thank you so much.
+
+129
+00:03:38.920 --> 00:03:40.400
+And congratulations, you're now an
+
+130
+00:03:40.400 --> 00:03:41.160
+expert in Git
+
+131
+00:03:41.160 --> 00:03:43.300
+from the client side perspective anyways.
+
+132
+00:03:43.720 --> 00:03:45.300
+And I wanna get some feedback from you.
+
+133
+00:03:45.760 --> 00:03:47.460
+Team movie or team episode?
+
+134
+00:03:48.040 --> 00:03:49.720
+Here on TikTok, I do team episode
+
+135
+00:03:49.720 --> 00:03:51.980
+where I do two or three minute blurbs,
+
+136
+00:03:52.080 --> 00:03:53.500
+we talk about one simple thing,
+
+137
+00:03:53.800 --> 00:03:54.960
+and I try to condense it down
+
+138
+00:03:54.960 --> 00:03:56.300
+into a small little segment.
+
+139
+00:03:57.600 --> 00:03:59.360
+Did that short term attention span
+
+140
+00:03:59.360 --> 00:04:00.280
+thing work for you?
+
+141
+00:04:00.560 --> 00:04:02.020
+Or would you rather another platform
+
+142
+00:04:02.020 --> 00:04:03.380
+where you can learn from me in
+
+143
+00:04:03.380 --> 00:04:05.660
+more elongated content?
+
+144
+00:04:05.900 --> 00:04:07.280
+Let's just say 10 or 15 minutes
+
+145
+00:04:07.280 --> 00:04:08.460
+might be a reasonable time
+
+146
+00:04:08.460 --> 00:04:09.900
+to explain something like this
+
+147
+00:04:09.900 --> 00:04:12.080
+so that you can understand the basic concepts.
+
+148
+00:04:12.420 --> 00:04:13.160
+What are your thoughts?
+
+149
+00:04:13.300 --> 00:04:14.820
+Let me know, comment below, curious.
+

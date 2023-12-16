@@ -1,0 +1,292 @@
+1
+00:00:00.000 --> 00:00:03.440
+Wait a minute... if you have a
+
+2
+00:00:03.440 --> 00:00:05.800
+variable set to True, if a condition,
+
+3
+00:00:06.220 --> 00:00:08.320
+else false, why not
+
+4
+00:00:08.320 --> 00:00:10.720
+just coerce the condition to a boolean???
+
+5
+00:00:11.360 --> 00:00:17.200
+ 
+
+6
+00:00:16.000 --> 00:00:17.860
+like.... isn't that easier?
+
+7
+00:00:18.780 --> 00:00:21.660
+Wait a minute, instead of assigning
+
+8
+00:00:21.660 --> 00:00:24.560
+a variable to a value like this,
+
+9
+00:00:25.200 --> 00:00:26.720
+iterating over an array
+
+10
+00:00:26.720 --> 00:00:28.600
+so that you can access the key...
+
+11
+00:00:29.540 --> 00:00:32.380
+Why not just use enumerate()?
+
+12
+00:00:32.640 --> 00:00:33.700
+It will give you
+
+13
+00:00:34.240 --> 00:00:36.720
+the array with the index as part
+
+14
+00:00:36.720 --> 00:00:37.980
+of something you can use in a
+
+15
+00:00:37.980 --> 00:00:38.933
+compound for loop.
+
+16
+00:00:39.000 --> 00:00:40.267
+(This is Python, by the way.)
+
+17
+00:00:40.300 --> 00:00:41.120
+Wait a minute...
+
+18
+00:00:42.367 --> 00:00:44.663
+instead of opening a file descriptor
+
+19
+00:00:44.700 --> 00:00:47.533
+and holding the variable in memory
+
+20
+00:00:49.000 --> 00:00:50.233
+and writing some data to disk,
+
+21
+00:00:50.267 --> 00:00:51.800
+especially if your intention is just
+
+22
+00:00:51.800 --> 00:00:53.440
+to touch the file or write just
+
+23
+00:00:53.440 --> 00:00:55.420
+a simple byte or two to it
+
+24
+00:00:55.420 --> 00:00:58.660
+as well, why not just open the file
+
+25
+00:00:58.660 --> 00:01:01.860
+and write to it directly? If Python
+
+26
+00:01:01.860 --> 00:01:03.700
+doesn't have a variable to store the
+
+27
+00:01:03.700 --> 00:01:04.520
+file descriptor,
+
+28
+00:01:05.020 --> 00:01:06.680
+it'll close the file descriptor. You
+
+29
+00:01:06.680 --> 00:01:08.520
+can test this out inside of the interpreter.
+
+30
+00:01:09.840 --> 00:01:12.020
+And you knew that there were different
+
+31
+00:01:12.020 --> 00:01:13.560
+ways in which you could format the
+
+32
+00:01:13.560 --> 00:01:14.460
+same string, right?
+
+33
+00:01:14.760 --> 00:01:16.180
+I mean, you can use the plus
+
+34
+00:01:16.180 --> 00:01:18.800
+operator to combine variables and strings,
+
+35
+00:01:18.800 --> 00:01:22.340
+provided the data types match. You
+
+36
+00:01:22.340 --> 00:01:23.440
+could do integers, which you might
+
+37
+00:01:23.440 --> 00:01:23.840
+get an error.
+
+38
+00:01:24.520 --> 00:01:26.340
+You could also use the percent notation.
+
+39
+00:01:26.580 --> 00:01:28.180
+This is, Python2 friendly.
+
+40
+00:01:28.460 --> 00:01:29.120
+Python3 does
+
+41
+00:01:29.240 --> 00:01:31.400
+introduce the f"" thing, which
+
+42
+00:01:31.400 --> 00:01:34.020
+creates a format. Strings by default
+
+43
+00:01:34.020 --> 00:01:35.140
+have this "".format()
+
+44
+00:01:35.140 --> 00:01:37.680
+embedded with them. And this
+
+45
+00:01:37.680 --> 00:01:40.020
+f"" basically makes it so that
+
+46
+00:01:40.020 --> 00:01:40.740
+that function is
+
+47
+00:01:40.740 --> 00:01:42.400
+automatically applied to the string.
+
+48
+00:01:43.060 --> 00:01:44.700
+This is what I would call "Syntax
+
+49
+00:01:44.700 --> 00:01:46.200
+Sugar" for that "".format()
+
+50
+00:01:46.200 --> 00:01:48.680
+that would replace what those do.
+
+51
+00:01:48.680 --> 00:01:50.167
+You knew that, right? :P
+
+52
+00:01:51.200 --> 00:01:52.880
+And then number five is just
+
+53
+00:01:52.880 --> 00:01:54.700
+going to be an explainer because I --
+
+54
+00:01:54.880 --> 00:01:56.100
+it'd be a lot of code to
+
+55
+00:01:56.100 --> 00:01:57.300
+write and I don't have an active
+
+56
+00:01:57.300 --> 00:01:59.160
+screenshot that I could take and overlay
+
+57
+00:01:59.160 --> 00:02:01.180
+here. But the idea is if you
+
+58
+00:02:01.180 --> 00:02:02.220
+find yourself taking a
+
+59
+00:02:02.220 --> 00:02:04.380
+block of code and copying and pasting
+
+60
+00:02:04.380 --> 00:02:06.440
+that everywhere, you should probably
+
+61
+00:02:06.440 --> 00:02:06.980
+paste it
+
+62
+00:02:06.980 --> 00:02:09.260
+into a function, call the function
+
+63
+00:02:09.260 --> 00:02:11.660
+instead. And whatever variables that
+
+64
+00:02:11.660 --> 00:02:12.460
+function needs
+
+65
+00:02:12.460 --> 00:02:15.000
+provide them as arguments to the function.
+
+66
+00:02:15.740 --> 00:02:17.020
+And you'll be surprised how much less
+
+67
+00:02:17.020 --> 00:02:17.380
+you have to
+
+68
+00:02:17.380 --> 00:02:19.600
+copy and paste code and can instead
+
+69
+00:02:19.600 --> 00:02:22.740
+just call the function. But you're
+
+70
+00:02:22.740 --> 00:02:23.580
+a professional, you're an
+
+71
+00:02:23.580 --> 00:02:24.700
+expert, you already knew that, right?
+
+72
+00:02:24.960 --> 00:02:27.120
+If not, can I have one of
+
+73
+00:02:27.120 --> 00:02:28.680
+these in return? Thank you! =D
+

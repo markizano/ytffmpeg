@@ -1,0 +1,836 @@
+1
+00:00:00.000 --> 00:00:01.700
+Yeah, so what's really cool about
+
+2
+00:00:01.700 --> 00:00:03.980
+this is it is completely local. My
+
+3
+00:00:03.980 --> 00:00:05.280
+code is not sending anything
+
+4
+00:00:05.280 --> 00:00:08.420
+out to OpenAI. There's no authentication.
+
+5
+00:00:08.720 --> 00:00:10.420
+There's no APIs talking to some remote
+
+6
+00:00:10.420 --> 00:00:11.440
+libraries. This is
+
+7
+00:00:11.440 --> 00:00:13.020
+all completely local to my system.
+
+8
+00:00:14.160 --> 00:00:15.400
+Matter of fact, let's go ahead and
+
+9
+00:00:15.400 --> 00:00:16.340
+step into the code. I can show
+
+10
+00:00:16.340 --> 00:00:17.520
+you what's happening here since I've
+
+11
+00:00:17.520 --> 00:00:18.900
+had the chance to read it. One
+
+12
+00:00:18.900 --> 00:00:19.680
+thing about open source,
+
+13
+00:00:19.740 --> 00:00:21.720
+what's really cool is that it is
+
+14
+00:00:21.720 --> 00:00:23.000
+open source, so that means you get
+
+15
+00:00:23.000 --> 00:00:24.020
+to go read the code. You get
+
+16
+00:00:24.020 --> 00:00:25.380
+to see what it's doing under the
+
+17
+00:00:25.380 --> 00:00:29.040
+hood. What's also really amazing about
+
+18
+00:00:29.040 --> 00:00:30.960
+that is I saw some
+
+19
+00:00:30.960 --> 00:00:33.000
+people saying out there:
+
+20
+00:00:33.000 --> 00:00:34.967
+"oh, we don't know what Whisper's doing under the hood."
+
+21
+00:00:34.967 --> 00:00:35.520
+It's like...
+
+22
+00:00:35.980 --> 00:00:37.300
+Does nobody go and read the source
+
+23
+00:00:37.300 --> 00:00:39.880
+code anymore? No, it's totally local.
+
+24
+00:00:40.020 --> 00:00:41.200
+It uses PyTorch, Pandas,
+
+25
+00:00:41.280 --> 00:00:42.880
+and NumPy. We'll go ahead and take
+
+26
+00:00:42.880 --> 00:00:45.640
+a look. What's really cool about this
+
+27
+00:00:45.640 --> 00:00:46.940
+is I've got three
+
+28
+00:00:46.940 --> 00:00:48.120
+files that are sitting inside of a
+
+29
+00:00:48.120 --> 00:00:49.580
+directory. There is a fourth one there,
+
+30
+00:00:49.680 --> 00:00:50.160
+but that's some
+
+31
+00:00:50.160 --> 00:00:51.920
+experiments that I'm running on with
+
+32
+00:00:51.920 --> 00:00:53.660
+CUDA to see if I can get
+
+33
+00:00:53.660 --> 00:00:55.820
+Whisper to do translations on my
+
+34
+00:00:55.820 --> 00:00:58.440
+graphics card instead of my processor.
+
+35
+00:00:58.920 --> 00:01:01.220
+That is going to be fun. In
+
+36
+00:01:01.220 --> 00:01:02.760
+the meantime, we've got
+
+37
+00:01:02.760 --> 00:01:04.260
+Dockerfile, we've got index, and we've
+
+38
+00:01:04.260 --> 00:01:07.220
+got requirements.txt. Let's give a
+
+39
+00:01:07.220 --> 00:01:07.660
+quick highlight
+
+40
+00:01:07.660 --> 00:01:09.420
+on the top levels of the files.
+
+41
+00:01:17.480 --> 00:01:20.240
+Also, just a heads up, this is
+
+42
+00:01:20.240 --> 00:01:21.680
+out on my GitHub. If you check
+
+43
+00:01:21.680 --> 00:01:26.260
+out gist.github.com/markizano, you can go
+
+44
+00:01:26.260 --> 00:01:27.580
+and find Dockerfile. It's one of the
+
+45
+00:01:27.580 --> 00:01:28.060
+most recent.
+
+46
+00:01:28.520 --> 00:01:30.140
+It says voice to text based on
+
+47
+00:01:30.140 --> 00:01:32.100
+Whisper. You can go collect the same
+
+48
+00:01:32.100 --> 00:01:33.500
+files off of GitHub if you'd
+
+49
+00:01:33.500 --> 00:01:35.660
+like. You can download these and experiment
+
+50
+00:01:35.660 --> 00:01:36.760
+with them yourself.
+
+51
+00:01:38.020 --> 00:01:41.600
+The idea here is I just imported
+
+52
+00:01:41.600 --> 00:01:43.700
+some libraries. Import
+
+53
+00:01:45.060 --> 00:01:48.140
+Faster Whisper and some of its models
+
+54
+00:01:48.140 --> 00:01:50.440
+and stuff. What this will actually
+
+55
+00:01:50.440 --> 00:01:52.040
+do is it'll go out on
+
+56
+00:01:52.040 --> 00:01:55.420
+the internet and fetch the latest
+
+57
+00:01:55.420 --> 00:01:58.300
+model off of HuggingEmoji.com.
+
+58
+00:01:58.380 --> 00:01:59.020
+This is a place where
+
+59
+00:01:59.020 --> 00:02:02.820
+you can go to get HuggingFace.
+
+60
+00:02:06.400 --> 00:02:09.340
+This actually has models that people
+
+61
+00:02:09.340 --> 00:02:11.080
+have previously designed
+
+62
+00:02:11.080 --> 00:02:14.020
+and developed and have preloaded LLMs.
+
+63
+00:02:14.420 --> 00:02:16.420
+You basically download this PyTorch
+
+64
+00:02:16.420 --> 00:02:18.260
+LLM and that
+
+65
+00:02:18.260 --> 00:02:19.960
+is what is used to do the
+
+66
+00:02:19.960 --> 00:02:22.880
+translations. Faster Whisper is a
+
+67
+00:02:22.880 --> 00:02:24.460
+faster implementation of this.
+
+68
+00:02:24.460 --> 00:02:26.580
+I know I'm jumping around. This is
+
+69
+00:02:26.580 --> 00:02:28.640
+what teaching feels like from me whenever
+
+70
+00:02:28.640 --> 00:02:29.500
+I'm still learning
+
+71
+00:02:29.500 --> 00:02:31.240
+this stuff. If you guys notice my
+
+72
+00:02:31.240 --> 00:02:32.700
+web dev stuff, I've been doing that
+
+73
+00:02:32.700 --> 00:02:34.000
+for years. It's really easy.
+
+74
+00:02:34.080 --> 00:02:35.740
+It comes off the tongue quick. This
+
+75
+00:02:35.740 --> 00:02:39.420
+stuff, I'm still picking up and still
+
+76
+00:02:39.420 --> 00:02:41.480
+digesting all this
+
+77
+00:02:41.480 --> 00:02:43.580
+wonderful deliciousness. The cool
+
+78
+00:02:43.580 --> 00:02:46.120
+thing here is that they basically
+
+79
+00:02:46.120 --> 00:02:47.740
+just, let's see, transcribe,
+
+80
+00:02:47.840 --> 00:02:48.580
+I think is where I saw the
+
+81
+00:02:48.580 --> 00:02:50.900
+meat and potatoes of it. This guy's
+
+82
+00:02:50.900 --> 00:02:52.080
+importing CTranslate2.
+
+83
+00:02:52.080 --> 00:02:56.840
+It's also importing some text translator
+
+84
+00:02:56.840 --> 00:02:58.980
+libraries that basically go and take
+
+85
+00:02:58.980 --> 00:02:59.460
+the audio
+
+86
+00:02:59.460 --> 00:03:01.560
+and translate it directly into text.
+
+87
+00:03:01.860 --> 00:03:03.520
+This is all happening local to the
+
+88
+00:03:03.520 --> 00:03:04.700
+system. When you're
+
+89
+00:03:04.700 --> 00:03:06.120
+passing that stuff off to the APIs,
+
+90
+00:03:06.580 --> 00:03:08.540
+they're basically importing libraries
+
+91
+00:03:08.540 --> 00:03:09.600
+like these
+
+92
+00:03:09.600 --> 00:03:12.280
+that will go through and transcribe
+
+93
+00:03:12.280 --> 00:03:14.940
+the audio for you and place it
+
+94
+00:03:14.940 --> 00:03:16.080
+in a text file and send
+
+95
+00:03:16.080 --> 00:03:17.140
+that back to you in the API
+
+96
+00:03:17.140 --> 00:03:20.780
+response. This is transformational
+
+97
+00:03:20.780 --> 00:03:23.400
+for me. This is Google Assistant
+
+98
+00:03:23.400 --> 00:03:25.960
+right here. I don't have to pay
+
+99
+00:03:25.960 --> 00:03:27.780
+for some service or pay for somebody
+
+100
+00:03:27.780 --> 00:03:28.520
+else to handle it.
+
+101
+00:03:29.160 --> 00:03:31.480
+I've got everything I need right here.
+
+102
+00:03:31.820 --> 00:03:33.580
+What I've done is I've gone and
+
+103
+00:03:33.580 --> 00:03:36.180
+created my own CLI tool
+
+104
+00:03:36.180 --> 00:03:38.840
+that imports those same libraries
+
+105
+00:03:38.840 --> 00:03:40.860
+and gives me access to those same
+
+106
+00:03:40.860 --> 00:03:43.560
+godlike powers and
+
+107
+00:03:44.580 --> 00:03:47.180
+allows me to basically use FFmpeg
+
+108
+00:03:47.180 --> 00:03:49.380
+to strip the audio out of the
+
+109
+00:03:49.380 --> 00:03:51.760
+video file and then import it
+
+110
+00:03:51.760 --> 00:03:53.660
+into the Whisper library. Whisper
+
+111
+00:03:53.660 --> 00:03:55.720
+will then go and byte per byte
+
+112
+00:03:55.720 --> 00:03:58.540
+inspect the audio that comes out of
+
+113
+00:03:58.540 --> 00:04:01.620
+my video and translate it into text.
+
+114
+00:04:02.280 --> 00:04:04.840
+I get back a segment list. Actually,
+
+115
+00:04:05.320 --> 00:04:06.160
+yeah, this is a good way.
+
+116
+00:04:06.260 --> 00:04:07.360
+This is a good illustration right
+
+117
+00:04:07.360 --> 00:04:09.400
+here. I get a segment that gives
+
+118
+00:04:09.400 --> 00:04:10.800
+me an ID and tells me about
+
+119
+00:04:10.800 --> 00:04:13.420
+where the start and stop is for
+
+120
+00:04:13.420 --> 00:04:15.260
+the text that it identified and it
+
+121
+00:04:15.260 --> 00:04:17.500
+took a guess on. As such,
+
+122
+00:04:17.720 --> 00:04:19.460
+it also tells me there's temperature,
+
+123
+00:04:19.660 --> 00:04:20.740
+there's compression ratios, and there's
+
+124
+00:04:20.740 --> 00:04:21.440
+other fun details.
+
+125
+00:04:21.800 --> 00:04:23.700
+What is important is like the words.
+
+126
+00:04:24.340 --> 00:04:26.980
+I rewrote the SRT writer because at
+
+127
+00:04:26.980 --> 00:04:27.640
+first it was like
+
+128
+00:04:27.640 --> 00:04:30.460
+taking full 30 second segments, translating
+
+129
+00:04:30.460 --> 00:04:32.520
+that into text, and putting that as
+
+130
+00:04:32.520 --> 00:04:33.860
+part of a part of
+
+131
+00:04:33.860 --> 00:04:36.240
+the subtitle in the SRT files. I
+
+132
+00:04:36.240 --> 00:04:37.520
+didn't like that because then you'd
+
+133
+00:04:37.520 --> 00:04:38.720
+see this giant paragraph of
+
+134
+00:04:38.720 --> 00:04:40.760
+text on the video and it's like,
+
+135
+00:04:40.820 --> 00:04:41.940
+no, subtitles don't work that way.
+
+136
+00:04:42.260 --> 00:04:45.100
+I rewrote this part here to basically
+
+137
+00:04:45.100 --> 00:04:47.660
+go through and check to see, do
+
+138
+00:04:47.660 --> 00:04:48.660
+you have about five or six
+
+139
+00:04:48.660 --> 00:04:50.920
+words? Do you have about 32 characters?
+
+140
+00:04:51.520 --> 00:04:52.880
+Do you have about one or two
+
+141
+00:04:52.880 --> 00:04:53.820
+words or four characters
+
+142
+00:04:53.820 --> 00:04:55.740
+left in the buffer as I'm going
+
+143
+00:04:55.740 --> 00:04:57.260
+through and I'm stacking all the subtitles
+
+144
+00:04:57.260 --> 00:04:59.600
+up? If so, then stack
+
+145
+00:04:59.600 --> 00:05:00.720
+it so that I get about five
+
+146
+00:05:00.720 --> 00:05:02.000
+or six words because that's about
+
+147
+00:05:02.000 --> 00:05:04.060
+what fits in a video or about 32
+
+148
+00:05:04.060 --> 00:05:06.800
+characters. Or if you've got one or
+
+149
+00:05:06.800 --> 00:05:08.420
+two words left in the buffer, don't
+
+150
+00:05:08.420 --> 00:05:09.160
+make that its own
+
+151
+00:05:09.160 --> 00:05:10.520
+subtitle. Add that to the list. It's
+
+152
+00:05:10.520 --> 00:05:11.560
+fine if you've got six words in
+
+153
+00:05:11.560 --> 00:05:13.960
+there. Basically, organize the
+
+154
+00:05:13.960 --> 00:05:15.580
+subtitles so that they match just
+
+155
+00:05:15.580 --> 00:05:19.200
+right. Now, I have minimal effort.
+
+156
+00:05:19.560 --> 00:05:20.740
+I simply feed you a video
+
+157
+00:05:20.740 --> 00:05:22.900
+and this thing goes through and translates
+
+158
+00:05:22.900 --> 00:05:24.560
+it out and writes out subtitles perfect
+
+159
+00:05:24.560 --> 00:05:24.940
+for me.
+
+160
+00:05:25.720 --> 00:05:27.820
+I do have some minimal edits. There
+
+161
+00:05:27.820 --> 00:05:28.940
+are some things that are specific
+
+162
+00:05:28.940 --> 00:05:31.100
+like PV Create, LVM,
+
+163
+00:05:31.660 --> 00:05:33.040
+things that are industry specific.
+
+164
+00:05:33.280 --> 00:05:34.640
+If I have to go through, tinker
+
+165
+00:05:34.640 --> 00:05:35.280
+a few of those,
+
+166
+00:05:35.420 --> 00:05:36.920
+make sure I got those right. But
+
+167
+00:05:36.920 --> 00:05:40.580
+when I compare Whisper's ability to
+
+168
+00:05:40.580 --> 00:05:41.380
+do translations
+
+169
+00:05:42.320 --> 00:05:45.560
+versus CapCut, hands down, I'm going
+
+170
+00:05:45.560 --> 00:05:47.600
+with Whisper. They are so much more accurate.
+
+171
+00:05:48.100 --> 00:05:50.360
+The editing process is so much easier
+
+172
+00:05:50.360 --> 00:05:51.960
+because I don't have this kludgy,
+
+173
+00:05:52.540 --> 00:05:53.980
+weird, funky text box
+
+174
+00:05:53.980 --> 00:05:56.040
+with features. I just want a plain
+
+175
+00:05:56.040 --> 00:05:58.420
+text box. Let me edit my subtitles
+
+176
+00:05:58.420 --> 00:06:00.000
+and have a nice day.
+
+177
+00:06:00.000 --> 00:06:02.100
+I can inscribe them on the video.
+
+178
+00:06:02.260 --> 00:06:04.740
+I've got another command here called
+
+179
+00:06:04.740 --> 00:06:08.160
+Inscribe Subtitles.
+
+180
+00:06:08.880 --> 00:06:11.000
+What this is, it's just an FFmpeg
+
+181
+00:06:11.000 --> 00:06:13.680
+alias that lets me go through and
+
+182
+00:06:13.680 --> 00:06:14.840
+write the video,
+
+183
+00:06:15.020 --> 00:06:17.140
+write the subtitles to the video itself
+
+184
+00:06:17.140 --> 00:06:18.760
+in the font that I want, which
+
+185
+00:06:18.760 --> 00:06:19.580
+I happen to choose Impact.
+
+186
+00:06:20.920 --> 00:06:22.700
+With the styling and all that stuff
+
+187
+00:06:22.700 --> 00:06:25.400
+too. This is completely automated.
+
+188
+00:06:25.840 --> 00:06:26.580
+My process,
+
+189
+00:06:26.580 --> 00:06:28.340
+as far as creating videos is concerned,
+
+190
+00:06:28.760 --> 00:06:29.840
+and allows me to just hit the
+
+191
+00:06:29.840 --> 00:06:30.480
+record button,
+
+192
+00:06:30.800 --> 00:06:33.020
+pass it through the processor. Boom.
+
+193
+00:06:33.120 --> 00:06:34.980
+Have a nice day. That's wonderful, man.
+
+194
+00:06:35.660 --> 00:06:37.000
+(incoming b-line over text)
+
+195
+00:06:37.000 --> 00:06:38.400
+just kind of sort of speaking outside of
+
+196
+00:06:38.400 --> 00:06:38.720
+@WreckItMech,
+
+197
+00:06:39.140 --> 00:06:41.260
+if you're not getting into AI, if
+
+198
+00:06:41.260 --> 00:06:43.040
+you're not exploring this stuff, if
+
+199
+00:06:43.040 --> 00:06:44.800
+you're terrified of it
+
+200
+00:06:44.800 --> 00:06:46.040
+and you don't know what's coming,
+
+201
+00:06:46.820 --> 00:06:49.820
+research it. Get to know it. Understand
+
+202
+00:06:49.820 --> 00:06:51.380
+it. It's not the ferocious
+
+203
+00:06:51.380 --> 00:06:53.460
+beast that everybody fears it is,
+
+204
+00:06:53.500 --> 00:06:55.140
+at least not yet. We still have
+
+205
+00:06:55.140 --> 00:06:57.300
+a say in how we design and
+
+206
+00:06:57.300 --> 00:06:59.940
+develop our baby. As humanity, as
+
+207
+00:06:59.940 --> 00:07:01.640
+the parents of the next generation
+
+208
+00:07:01.640 --> 00:07:03.330
+that will be, it's our
+
+209
+00:07:05.480 --> 00:07:07.640
+responsibility to create something awesome.
+

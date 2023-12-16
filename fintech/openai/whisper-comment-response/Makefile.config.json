@@ -1,0 +1,47 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/VID_20230828_074535277.mp4" },
+        { "i": "resources/screen.mkv" },
+        { "loop": "true", "i": "resources/Screenshot_20230828-082706.png" },
+        { "loop": "true", "i": "resources/capcut-bs.png" },
+        { "i": "resources/CapCutWTF.m4a" },
+        { "loop": "true", "i": "resources/overlay.png" },
+        { "loop": "true", "i": "/home/YouTube/resources/openai.png" }
+      ],
+      "output": "build/whisper-comment-response.mp4",
+      "filter_complex": [
+        "[6:v]fps=30,format=yuv420p,trim=start=0:end=5,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
+        "[0:v]scale=720:1280,setsar=1:1,fps=29.97,trim=start=3:end=46.5,setpts=PTS-STARTPTS[v0]",
+        "[0:a]atrim=start=3:end=46.5,asetpts=PTS-STARTPTS[a0]",
+
+        "[1:v:0]fps=29.97,trim=start=4.5:end=382,setpts=PTS-STARTPTS[v1s]",
+        "[1:v:1]fps=29.97,trim=start=5:end=382.5,setpts=PTS-STARTPTS[v1c]",
+        "[v1s][v1c]overlay=(W-w)/2:H-h[v1]",
+        "[1:a]atrim=start=4.5:end=382,asetpts=PTS-STARTPTS[a1]",
+
+        "[2:v]fps=29.97,trim=start=0:end=2.5,setpts=PTS-STARTPTS,scale=340:737,crop=340:600,setsar=1:1,pad=340:635:0:35,drawtext=fontfile=/home/YouTube/resources/DejaVuSans.ttf:text='Compare this subtitle to CapCut!':fontcolor=black:fontsize=30:box=1:boxcolor=white@0.8:boxborderw=10:x=10:y=2,fade=in:st=40:st=0.5:alpha=1,fade=out:st=42:d=0.5:alpha=1[capcut]",
+
+        "[3:v]fps=29.97,trim=start=0:end=7.49,setpts=PTS-STARTPTS,fade=in:st=0:st=0.5:alpha=1,fade=out:st=7:d=0.5:alpha=1[vcomplain2]",
+        "[5:v]fps=29.97,trim=start=0:end=7.49,setpts=PTS-STARTPTS[bg]",
+        "[bg][vcomplain2]overlay=(W-w)/2:175[vcapcut2]",
+        "[4:a]atrim=start=0:end=7.49,asetpts=PTS-STARTPTS[acapcut2]",
+
+        "[v0][v1]concat,split[vp0][vp1]",
+        "[vp0]trim=start=0:end=69.96,setpts=PTS-STARTPTS[v0p0]",
+        "[vp1]trim=start=69.96:end=421.02,setpts=PTS-STARTPTS[v0p1]",
+        "[v0p0][vcapcut2][v0p1]concat=n=3[_v]",
+        "[_v][disclaim]overlay=W-w-100:0[v]",
+        "[v][capcut]overlay=10:175:enable='between(t,40,42)',subtitles=build/whisper-comment-response.srt:force_style='FontName=Impact,OutlineColour=&H40000000,BorderStyle=3'[video]",
+
+        "[a0][a1]concat=v=0:a=1,asplit[ap0][ap1]",
+        "[ap0]atrim=start=0:end=69.96,asetpts=PTS-STARTPTS[a0p0]",
+        "[ap1]atrim=start=69.96:end=421.02,asetpts=PTS-STARTPTS[a0p1]",
+        "[a0p0][acapcut2][a0p1]concat=n=3:v=0:a=1[audio]"
+        
+      ]
+    }
+  ]
+}
+

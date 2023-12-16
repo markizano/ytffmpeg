@@ -1,0 +1,21 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/virtualization.mp4" },
+        { "loop": "true", "i": "/home/YouTube/resources/openai.png" }
+      ],
+      "output": "build/virtualization.mp4",
+      "filter_complex": [
+        "[0:v]trim=start=0:end=301,setpts=PTS-STARTPTS,scale=720:1280,setsar=1:1[__v]",
+        "[0:a]atrim=start=0:end=301,asetpts=PTS-STARTPTS[_a]",
+
+        "[1:v]fps=30,format=yuv420p,trim=start=0:end=5,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
+        "[__v]pad=864:1536:72:80,scale=720:1280,setsar=1:1,subtitles=resources/virtualization.srt:force_style='FontName=Impact,OutlineColour=&H40000000,BorderStyle=3'[_v]",
+        "[_v][disclaim]overlay=W-w-100:20:enable='between(t,0,5)'[video]",
+        "[_a]afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1[audio]"
+
+      ]
+    }
+  ]
+}

@@ -1,0 +1,208 @@
+1
+00:00:00.960 --> 00:00:03.040
+So, let's talk about how the inside
+
+2
+00:00:03.040 --> 00:00:04.040
+of your computer works.
+
+3
+00:00:04.460 --> 00:00:06.140
+See, a lot of people kind of
+
+4
+00:00:06.140 --> 00:00:07.060
+sort of have this misconception.
+
+5
+00:00:07.480 --> 00:00:09.860
+They seem to think that storage and
+
+6
+00:00:09.860 --> 00:00:12.120
+memory is all the same thing, when
+
+7
+00:00:12.120 --> 00:00:13.460
+in reality, it
+
+8
+00:00:13.460 --> 00:00:13.800
+isn't.
+
+9
+00:00:14.040 --> 00:00:15.000
+Let's get into that.
+
+10
+00:00:15.740 --> 00:00:17.480
+Storage is what is stored on disk,
+
+11
+00:00:17.760 --> 00:00:19.240
+and if I were to equate this
+
+12
+00:00:19.240 --> 00:00:20.860
+to how a human was to
+
+13
+00:00:20.860 --> 00:00:23.140
+behave, I would say it's your long
+
+14
+00:00:23.140 --> 00:00:23.840
+-term storage.
+
+15
+00:00:24.180 --> 00:00:25.960
+This is what you remember from your
+
+16
+00:00:25.960 --> 00:00:30.960
+past, from last winter, COVID, those
+
+17
+00:00:30.960 --> 00:00:31.620
+kinds of things.
+
+18
+00:00:32.180 --> 00:00:35.120
+Anytime you're needing to recall that
+
+19
+00:00:35.120 --> 00:00:37.220
+information in order to recite some
+
+20
+00:00:37.220 --> 00:00:38.380
+kind of speech you
+
+21
+00:00:38.380 --> 00:00:40.500
+may have recorded, or these words
+
+22
+00:00:40.500 --> 00:00:42.860
+that I'm speaking right now, as I
+
+23
+00:00:42.860 --> 00:00:43.740
+try to present this
+
+24
+00:00:43.740 --> 00:00:45.400
+information to you, that's information
+
+25
+00:00:45.400 --> 00:00:47.540
+that's stored in those frontal lobes,
+
+26
+00:00:47.680 --> 00:00:48.280
+where you
+
+27
+00:00:48.280 --> 00:00:50.220
+keep that information local, quick
+
+28
+00:00:50.220 --> 00:00:52.300
+and easy to access, and it doesn't
+
+29
+00:00:52.300 --> 00:00:53.180
+require much thought
+
+30
+00:00:53.180 --> 00:00:54.380
+for you to be able to come
+
+31
+00:00:54.380 --> 00:00:55.260
+off the top of the head for
+
+32
+00:00:55.260 --> 00:00:55.980
+these kinds of things.
+
+33
+00:00:56.260 --> 00:00:57.900
+That's what's called your memory,
+
+34
+00:00:58.240 --> 00:01:00.540
+or your RAM, random access memory.
+
+35
+00:01:02.360 --> 00:01:04.280
+Information that's stored long time
+
+36
+00:01:04.280 --> 00:01:06.100
+when the computer is turned off is
+
+37
+00:01:06.100 --> 00:01:07.120
+stored on the disk.
+
+38
+00:01:07.560 --> 00:01:09.020
+Information that is stored within
+
+39
+00:01:09.020 --> 00:01:11.860
+the memory disappears when the computer
+
+40
+00:01:11.860 --> 00:01:12.900
+gets turned off.
+
+41
+00:01:13.100 --> 00:01:14.800
+That information is not preserved.
+
+42
+00:01:15.320 --> 00:01:15.740
+Why?
+
+43
+00:01:15.940 --> 00:01:17.660
+It's because it's stored based on
+
+44
+00:01:17.660 --> 00:01:19.020
+electricity circuits that are being
+
+45
+00:01:19.020 --> 00:01:20.220
+kind of sort of cached
+
+46
+00:01:20.220 --> 00:01:24.640
+or held within a low latency diode
+
+47
+00:01:24.640 --> 00:01:26.500
+inside of the chip itself.
+
+48
+00:01:26.920 --> 00:01:29.780
+These actually store bits that can
+
+49
+00:01:29.780 --> 00:01:31.420
+be, you know, magnetically retrieved
+
+50
+00:01:31.420 --> 00:01:32.840
+later, and the
+
+51
+00:01:32.840 --> 00:01:33.380
+way this...
+
+52
+00:01:33.380 --> 00:01:34.500
+Alright, I'm getting too technical.
+

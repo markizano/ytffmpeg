@@ -1,0 +1,32 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/VID_20230824_004821161.mkv" },
+        { "i": "resources/VID_20230824_005449595.mkv" },
+        { "i": "resources/VID_20230824_011323728.mkv" },
+        { "loop": "true", "i": "/home/YouTube/resources/openai.png" }
+      ],
+      "output": "build/whisper-libs.mp4",
+      "filter_complex": [
+        "[0:v]scale=576x1024,setsar=1:1,pad=720:1280:72:100,trim=start=0:end=43,setpts=PTS-STARTPTS[v0]",
+        "[0:a]atrim=start=0:end=43,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,volume=2[a0]",
+
+        "[1:v]scale=576x1024,setsar=1:1,pad=720:1280:72:100,trim=start=0:end=84,setpts=PTS-STARTPTS[v1]",
+        "[1:a]atrim=start=0:end=84,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,volume=2[a1]",
+
+        "[2:v]scale=576x1024,setsar=1:1,pad=720:1280:72:100,trim=start=0:end=4.788,setpts=PTS-STARTPTS[v2]",
+        "[2:a]atrim=start=0:end=4.788,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,volume=2[a2]",
+
+        "[1:v]scale=576x1024,setsar=1:1,pad=720:1280:72:100,trim=start=84.5:end=89.797,setpts=PTS-STARTPTS[v3]",
+        "[1:a]atrim=start=84.5:end=89.797,asetpts=PTS-STARTPTS,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,volume=2[a3]",
+
+        "[v0][v1][v2][v3]concat=n=4,subtitles=build/whisper-libs.srt:force_style='OutlineColour=&H40000000,BorderStyle=3'[_v]",
+        "[3:v]fps=59.94,trim=start=0:end=5,setpts=PTS-STARTPTS,fade=in:st=0:d=1,fade=out:st=4:d=1[disclaim]",
+        "[_v][disclaim]overlay=W-w-100:0[video]",
+        "[a0][a1][a2][a3]concat=v=0:a=1:n=4[audio]"
+
+      ]
+    }
+  ]
+}

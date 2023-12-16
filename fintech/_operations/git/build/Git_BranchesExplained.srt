@@ -1,0 +1,400 @@
+1
+00:00:00.420 --> 00:00:03.880
+So let's talk about Git, the stupid
+
+2
+00:00:03.880 --> 00:00:04.820
+content tracker.
+
+3
+00:00:05.400 --> 00:00:06.600
+Now, if you don't know anything about
+
+4
+00:00:06.600 --> 00:00:07.340
+what I'm talking about,
+
+5
+00:00:07.460 --> 00:00:08.600
+I have other videos to get you
+
+6
+00:00:08.600 --> 00:00:08.900
+caught up
+
+7
+00:00:08.900 --> 00:00:09.660
+on what's going on.
+
+8
+00:00:09.800 --> 00:00:11.220
+In the meantime, I'm going to assume
+
+9
+00:00:11.220 --> 00:00:12.500
+that you've watched those other videos
+
+10
+00:00:12.500 --> 00:00:14.580
+and you know just about what Git is.
+
+11
+00:00:15.100 --> 00:00:16.560
+So here's the thing, you've been editing
+
+12
+00:00:16.560 --> 00:00:17.120
+this code,
+
+13
+00:00:17.240 --> 00:00:18.100
+you know how to commit,
+
+14
+00:00:18.400 --> 00:00:19.880
+you know how to push your changes
+
+15
+00:00:19.880 --> 00:00:20.440
+to the remote,
+
+16
+00:00:20.820 --> 00:00:22.060
+you know how to pull someone else's
+
+17
+00:00:22.060 --> 00:00:22.720
+changes down,
+
+18
+00:00:23.060 --> 00:00:24.580
+you understand the fundamental concept
+
+19
+00:00:24.580 --> 00:00:25.360
+of a branch
+
+20
+00:00:25.360 --> 00:00:27.300
+and how it is a line of
+
+21
+00:00:27.300 --> 00:00:28.780
+thinking or a line of commits
+
+22
+00:00:28.780 --> 00:00:30.460
+that you're making to a particular
+
+23
+00:00:30.460 --> 00:00:31.740
+set of changes.
+
+24
+00:00:32.480 --> 00:00:35.380
+So here's the flow, here's the juicy stuff,
+
+25
+00:00:35.740 --> 00:00:36.840
+here's the boss battle.
+
+26
+00:00:37.400 --> 00:00:38.620
+We're gonna understand this whole
+
+27
+00:00:38.620 --> 00:00:39.600
+control flow
+
+28
+00:00:39.600 --> 00:00:42.700
+as far as how a software development lifecycle
+
+29
+00:00:42.700 --> 00:00:45.760
+will complete itself in a project team.
+
+30
+00:00:46.360 --> 00:00:47.860
+This is the stuff they don't teach
+
+31
+00:00:47.860 --> 00:00:48.500
+you in college
+
+32
+00:00:48.500 --> 00:00:50.240
+and companies want you to know this
+
+33
+00:00:50.240 --> 00:00:51.480
+so that you can be efficient in
+
+34
+00:00:51.480 --> 00:00:52.320
+getting your work done.
+
+35
+00:00:52.800 --> 00:00:53.840
+And again, of course, I didn't really
+
+36
+00:00:53.840 --> 00:00:55.000
+learn much from college
+
+37
+00:00:55.000 --> 00:00:56.220
+anyways, because it was just high
+
+38
+00:00:56.220 --> 00:00:56.960
+school all over again,
+
+39
+00:00:56.960 --> 00:00:58.200
+but anyways, that's a side of the point.
+
+40
+00:00:58.780 --> 00:00:59.820
+Here's the thing, you're going to
+
+41
+00:00:59.820 --> 00:01:01.320
+have a set of branches,
+
+42
+00:01:01.540 --> 00:01:03.340
+a series of branches that are going
+
+43
+00:01:03.340 --> 00:01:03.960
+to represent
+
+44
+00:01:03.960 --> 00:01:05.160
+a set of changes.
+
+45
+00:01:05.700 --> 00:01:08.360
+The master branch, typically for production releases.
+
+46
+00:01:08.740 --> 00:01:10.240
+This is supposed to mimic what is
+
+47
+00:01:10.240 --> 00:01:10.980
+in production,
+
+48
+00:01:11.220 --> 00:01:12.540
+what is in that environment that is
+
+49
+00:01:12.540 --> 00:01:13.340
+making you money.
+
+50
+00:01:13.720 --> 00:01:15.780
+What is the source of truth for
+
+51
+00:01:15.780 --> 00:01:16.980
+whatever will be
+
+52
+00:01:16.980 --> 00:01:19.100
+the final result of the code that
+
+53
+00:01:19.100 --> 00:01:20.020
+is currently operating
+
+54
+00:01:20.020 --> 00:01:21.460
+and doing stuff in the environment.
+
+55
+00:01:22.160 --> 00:01:24.900
+Staging, sometimes called UAT or user
+
+56
+00:01:24.900 --> 00:01:26.000
+acceptance testing.
+
+57
+00:01:26.000 --> 00:01:27.980
+This is where we present changes,
+
+58
+00:01:28.140 --> 00:01:30.160
+we stage them to make them in production,
+
+59
+00:01:30.360 --> 00:01:31.940
+we pass them off to the customer
+
+60
+00:01:31.940 --> 00:01:32.380
+to say,
+
+61
+00:01:32.520 --> 00:01:34.500
+hey, are the changes that you asked
+
+62
+00:01:34.500 --> 00:01:35.060
+us to make
+
+63
+00:01:35.060 --> 00:01:37.440
+in this particular project complete
+
+64
+00:01:37.440 --> 00:01:38.380
+to your satisfaction
+
+65
+00:01:38.380 --> 00:01:40.260
+and do you approve of these changes
+
+66
+00:01:40.260 --> 00:01:41.960
+before we publish them into production
+
+67
+00:01:41.960 --> 00:01:43.760
+to make the money off of the software
+
+68
+00:01:43.760 --> 00:01:45.300
+that we are developing for you.
+
+69
+00:01:45.680 --> 00:01:48.600
+The develop branch is where most of
+
+70
+00:01:48.600 --> 00:01:49.560
+the engineering
+
+71
+00:01:49.560 --> 00:01:50.600
+is taking place.
+
+72
+00:01:50.880 --> 00:01:52.680
+This is where we've taken requirements
+
+73
+00:01:52.680 --> 00:01:53.660
+from the customer,
+
+74
+00:01:53.800 --> 00:01:55.460
+brought them into the engineering team,
+
+75
+00:01:55.900 --> 00:01:57.560
+identified what code changes need
+
+76
+00:01:57.560 --> 00:01:58.100
+to be made
+
+77
+00:01:58.100 --> 00:02:00.620
+and then publishing them on the develop branch
+
+78
+00:02:00.620 --> 00:02:02.480
+so that other engineers will be able
+
+79
+00:02:02.480 --> 00:02:03.040
+to test
+
+80
+00:02:03.040 --> 00:02:05.020
+and operate on them within this full
+
+81
+00:02:05.020 --> 00:02:06.020
+SDLC process
+
+82
+00:02:06.020 --> 00:02:07.280
+that we're gonna go over in a
+
+83
+00:02:07.280 --> 00:02:07.780
+future video.
+
+84
+00:02:08.400 --> 00:02:09.880
+I also like to set up the
+
+85
+00:02:09.880 --> 00:02:11.100
+premise of ticket branches
+
+86
+00:02:11.100 --> 00:02:13.000
+or feature branches because these
+
+87
+00:02:13.000 --> 00:02:14.240
+are short-lived branches
+
+88
+00:02:14.240 --> 00:02:16.540
+that will serve only a couple of commits
+
+89
+00:02:16.540 --> 00:02:18.620
+before making your changes and merging them
+
+90
+00:02:18.620 --> 00:02:21.040
+into the higher branches.
+
+91
+00:02:21.460 --> 00:02:23.080
+Because TikTok is so focused
+
+92
+00:02:23.080 --> 00:02:24.640
+on your short little attention span,
+
+93
+00:02:24.640 --> 00:02:25.780
+that's all you're gonna get for now.
+
+94
+00:02:26.160 --> 00:02:26.860
+You wanna learn more?
+
+95
+00:02:27.060 --> 00:02:28.160
+I've got another platform you can
+
+96
+00:02:28.160 --> 00:02:28.940
+go to check me out.
+
+97
+00:02:29.760 --> 00:02:30.800
+In the meantime, you're just gonna
+
+98
+00:02:30.800 --> 00:02:31.160
+have to watch
+
+99
+00:02:31.160 --> 00:02:32.960
+another video if you're gonna wanna see
+
+100
+00:02:32.960 --> 00:02:34.540
+how this process plays out.
+

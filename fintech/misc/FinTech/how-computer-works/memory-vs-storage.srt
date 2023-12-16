@@ -1,0 +1,288 @@
+1
+00:00:01.180 --> 00:00:03.580
+Did you know, storage and memory,
+
+2
+00:00:04.140 --> 00:00:05.600
+they're not the same thing.
+
+3
+00:00:06.300 --> 00:00:07.720
+As far as the insides of your
+
+4
+00:00:07.720 --> 00:00:09.900
+computer is concerned, storage is
+
+5
+00:00:09.900 --> 00:00:11.640
+where long-term information
+
+6
+00:00:11.640 --> 00:00:12.220
+is stored.
+
+7
+00:00:12.740 --> 00:00:14.280
+This is where you get to download
+
+8
+00:00:14.280 --> 00:00:16.740
+your files and your memories reside
+
+9
+00:00:16.740 --> 00:00:17.800
+in your mind from
+
+10
+00:00:17.800 --> 00:00:21.400
+last winter and COVID and all these things.
+
+11
+00:00:22.240 --> 00:00:24.080
+Did you know that memory is where
+
+12
+00:00:24.080 --> 00:00:26.280
+information must be loaded from disk
+
+13
+00:00:26.280 --> 00:00:27.080
+before it can do
+
+14
+00:00:27.080 --> 00:00:28.540
+anything inside of a computer?
+
+15
+00:00:29.120 --> 00:00:31.020
+Yeah, and they used to call it
+
+16
+00:00:31.020 --> 00:00:33.700
+RAM, which stands for Random Access Memory.
+
+17
+00:00:34.440 --> 00:00:35.760
+If you're looking for hardware chips,
+
+18
+00:00:36.440 --> 00:00:37.600
+that's what you'll be looking for
+
+19
+00:00:37.600 --> 00:00:38.380
+at least anyways.
+
+20
+00:00:39.100 --> 00:00:41.580
+Yes, information is loaded from disk
+
+21
+00:00:41.580 --> 00:00:44.560
+to memory, and this can be a
+
+22
+00:00:44.560 --> 00:00:46.100
+really expensive operation.
+
+23
+00:00:46.540 --> 00:00:48.320
+I mean, this can cost a lot
+
+24
+00:00:48.320 --> 00:00:50.340
+of time in a computer program.
+
+25
+00:00:50.900 --> 00:00:52.580
+And then we wonder why we get
+
+26
+00:00:52.580 --> 00:00:54.520
+that loading screen all the time.
+
+27
+00:00:55.240 --> 00:00:57.240
+Once things finally do make it into
+
+28
+00:00:57.240 --> 00:00:58.720
+memory, they get processed by the
+
+29
+00:00:58.720 --> 00:00:59.980
+processor, the CPU,
+
+30
+00:01:00.300 --> 00:01:01.360
+the central processing unit.
+
+31
+00:01:01.700 --> 00:01:03.000
+Some say this is the brain of
+
+32
+00:01:03.000 --> 00:01:04.620
+the computer, but I like to think
+
+33
+00:01:04.620 --> 00:01:06.940
+of it as the active tubules
+
+34
+00:01:06.940 --> 00:01:07.580
+that go off.
+
+35
+00:01:07.880 --> 00:01:09.940
+The brain of the computer, in my
+
+36
+00:01:09.940 --> 00:01:11.720
+head, is at least in the kernel
+
+37
+00:01:11.720 --> 00:01:12.760
+where the decisioning
+
+38
+00:01:12.760 --> 00:01:14.560
+is being made in the software.
+
+39
+00:01:15.480 --> 00:01:17.000
+The CPU is kind of sort of
+
+40
+00:01:17.000 --> 00:01:19.500
+like the hardware rails that represents
+
+41
+00:01:19.500 --> 00:01:21.080
+what the capacity of
+
+42
+00:01:21.080 --> 00:01:23.680
+the computer could do, similarly to
+
+43
+00:01:23.680 --> 00:01:24.240
+a person.
+
+44
+00:01:24.960 --> 00:01:26.240
+If I put a program in there
+
+45
+00:01:26.240 --> 00:01:27.680
+that only uses a couple of seconds
+
+46
+00:01:27.680 --> 00:01:30.880
+of CPU cycles, well, it
+
+47
+00:01:30.880 --> 00:01:32.200
+doesn't matter how powerful that CPU
+
+48
+00:01:32.200 --> 00:01:34.360
+is, that program is only going to
+
+49
+00:01:34.360 --> 00:01:35.140
+consume that much.
+
+50
+00:01:35.500 --> 00:01:37.820
+So I must create a program that
+
+51
+00:01:37.820 --> 00:01:40.100
+must consume the full capacity of
+
+52
+00:01:40.100 --> 00:01:41.440
+that processor if I'm
+
+53
+00:01:41.440 --> 00:01:44.040
+going to take advantage of the hardware
+
+54
+00:01:44.040 --> 00:01:46.040
+that has been given to me.
+
+55
+00:01:46.580 --> 00:01:48.280
+And then of course there's the GPU,
+
+56
+00:01:48.500 --> 00:01:49.280
+the graphics card.
+
+57
+00:01:49.540 --> 00:01:51.820
+This is typically responsible for
+
+58
+00:01:51.820 --> 00:01:54.300
+rendering what happens inside of your
+
+59
+00:01:54.300 --> 00:01:55.400
+screen as far
+
+60
+00:01:55.400 --> 00:01:57.020
+as your graphics is concerned, however,
+
+61
+00:01:57.940 --> 00:01:59.680
+we're starting to find a lot more
+
+62
+00:01:59.680 --> 00:02:00.360
+uses for these
+
+63
+00:02:00.360 --> 00:02:02.940
+things since they have an incredibly
+
+64
+00:02:02.940 --> 00:02:05.020
+dense computing capacity.
+
+65
+00:02:05.840 --> 00:02:08.780
+I think mining AI and gaming are
+
+66
+00:02:08.780 --> 00:02:11.160
+just the tip of the iceberg as
+
+67
+00:02:11.160 --> 00:02:12.960
+far as what this kind
+
+68
+00:02:12.960 --> 00:02:14.960
+of computing power could bring to us.
+
+69
+00:02:15.430 --> 00:02:17.860
+Yeah, memory and storage are not the
+
+70
+00:02:17.860 --> 00:02:19.520
+same thing, so if you're wondering
+
+71
+00:02:19.520 --> 00:02:20.060
+why you're being
+
+72
+00:02:20.060 --> 00:02:21.800
+corrected, now you know.
+

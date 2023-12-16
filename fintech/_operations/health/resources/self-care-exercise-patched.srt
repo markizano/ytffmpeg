@@ -1,0 +1,736 @@
+1
+00:00:01.620 --> 00:00:03.180
+Now, when it comes to working from
+
+2
+00:00:03.180 --> 00:00:05.420
+home or working in the office, I
+
+3
+00:00:05.420 --> 00:00:06.020
+try to make sure
+
+4
+00:00:06.020 --> 00:00:07.140
+that I take care of my body.
+
+5
+00:00:07.140 --> 00:00:08.480
+Because if I don't take care of
+
+6
+00:00:08.480 --> 00:00:10.517
+me, how can I take care of the company?
+
+7
+00:00:10.900 --> 00:00:12.100
+(or anything else for that matter)?
+
+8
+00:00:12.550 --> 00:00:13.580
+So one of the few things that
+
+9
+00:00:13.580 --> 00:00:14.780
+I do in order to make sure
+
+10
+00:00:14.780 --> 00:00:16.360
+that I can continue chugging
+
+11
+00:00:16.360 --> 00:00:18.780
+away here at the keyboard is, for
+
+12
+00:00:18.780 --> 00:00:20.900
+1: make sure that your posture is right.
+
+13
+00:00:21.100 --> 00:00:21.920
+You want to make sure that your
+
+14
+00:00:21.920 --> 00:00:23.540
+back is straight and that you're comfortable
+
+15
+00:00:23.540 --> 00:00:24.160
+in your chair.
+
+16
+00:00:24.500 --> 00:00:25.680
+You don't want to be leaning back
+
+17
+00:00:25.680 --> 00:00:27.300
+in it too much because that'll lead
+
+18
+00:00:27.300 --> 00:00:28.440
+you to bad posture.
+
+19
+00:00:28.820 --> 00:00:30.340
+I have learned through my trials with
+
+20
+00:00:30.340 --> 00:00:32.460
+massage therapy that (also through
+
+21
+00:00:32.460 --> 00:00:33.120
+physically holding
+
+22
+00:00:33.120 --> 00:00:35.520
+my stance correctly), sitting in your
+
+23
+00:00:35.520 --> 00:00:37.460
+chair upright definitely does you
+
+24
+00:00:37.460 --> 00:00:38.420
+a justice as far
+
+25
+00:00:38.420 --> 00:00:40.020
+as making sure that you are upright,
+
+26
+00:00:40.220 --> 00:00:41.760
+your breath is just right.
+
+27
+00:00:42.000 --> 00:00:43.360
+I make sure to be conscious of
+
+28
+00:00:43.360 --> 00:00:45.460
+my breathing while I'm working and
+
+29
+00:00:45.460 --> 00:00:46.480
+try not to get too lost
+
+30
+00:00:46.480 --> 00:00:47.740
+into what it is I'm doing because
+
+31
+00:00:47.740 --> 00:00:50.400
+oftentimes I fall too far into this.
+
+32
+00:00:50.760 --> 00:00:52.640
+So if that happens, there are some
+
+33
+00:00:52.640 --> 00:00:53.940
+things you can do not only to
+
+34
+00:00:53.940 --> 00:00:55.220
+maintain better posture,
+
+35
+00:00:55.220 --> 00:00:57.240
+but also you can go get yourself
+
+36
+00:00:57.240 --> 00:00:58.780
+some elastic bands.
+
+37
+00:00:59.160 --> 00:01:00.340
+Typically what I'll do with these
+
+38
+00:01:00.340 --> 00:01:01.980
+things is if I'm running a command,
+
+39
+00:01:02.120 --> 00:01:02.860
+I make a build,
+
+40
+00:01:02.980 --> 00:01:04.620
+I'm waiting on code to compile, I'm
+
+41
+00:01:04.620 --> 00:01:06.120
+waiting on a server to finish kicking off.
+
+42
+00:01:06.480 --> 00:01:08.340
+I'll take one of these bands and
+
+43
+00:01:08.340 --> 00:01:09.060
+just stretch.
+
+44
+00:01:09.920 --> 00:01:11.500
+And when I go to work out,
+
+45
+00:01:11.580 --> 00:01:14.240
+when I do a proper workout, it's
+
+46
+00:01:14.240 --> 00:01:15.740
+not this pump, pump.
+
+47
+00:01:15.840 --> 00:01:17.000
+I got to get all alpha male.
+
+48
+00:01:17.100 --> 00:01:18.140
+"Give me my big muscles" business...
+
+49
+00:01:18.480 --> 00:01:19.680
+No, no, no, no, no honey,
+
+50
+00:01:19.680 --> 00:01:21.520
+no, no, no, darling... *tsk tsk*
+
+51
+00:01:22.740 --> 00:01:24.540
+It's more of a meditation thing for me.
+
+52
+00:01:24.540 --> 00:01:27.060
+It's more of a connect your mind
+
+53
+00:01:27.060 --> 00:01:28.080
+to your body.
+
+54
+00:01:28.240 --> 00:01:29.800
+And I just want to say triceps:
+
+55
+00:01:30.320 --> 00:01:30.840
+Good morning.
+
+56
+00:01:30.900 --> 00:01:31.640
+"How are you doing today?"
+
+57
+00:01:34.220 --> 00:01:36.020
+"Trapezius, how are you doing?"
+
+58
+00:01:37.420 --> 00:01:40.220
+Rhomboids, teres minor...
+
+59
+00:01:40.920 --> 00:01:42.680
+I want to connect to the muscles
+
+60
+00:01:42.680 --> 00:01:45.220
+in the back, identify them, and
+
+61
+00:01:45.220 --> 00:01:47.180
+feel my brain clinch on them for
+
+62
+00:01:47.180 --> 00:01:47.660
+just a minute.
+
+63
+00:01:48.220 --> 00:01:49.400
+Feel the tension.
+
+64
+00:01:50.040 --> 00:01:52.280
+If you do this and it feels
+
+65
+00:01:52.280 --> 00:01:53.680
+tight or it doesn't feel right,
+
+66
+00:01:54.220 --> 00:01:55.640
+don't go grabbing the pills.
+
+67
+00:01:56.080 --> 00:01:57.980
+I'm sorry, Ibuprofen, Tylenol, Advil.
+
+68
+00:01:58.460 --> 00:01:59.880
+No, honey, we don't need you up
+
+69
+00:01:59.880 --> 00:02:00.180
+in here.
+
+70
+00:02:00.520 --> 00:02:01.200
+We got exercise.
+
+71
+00:02:01.660 --> 00:02:03.520
+The pain in your body that you're
+
+72
+00:02:03.520 --> 00:02:06.300
+experiencing is a signal that you
+
+73
+00:02:06.300 --> 00:02:06.580
+need to
+
+74
+00:02:06.580 --> 00:02:09.920
+get off your donkey and do something
+
+75
+00:02:09.920 --> 00:02:10.920
+different for a minute.
+
+76
+00:02:11.600 --> 00:02:13.320
+The hurt that you're feeling is because
+
+77
+00:02:13.320 --> 00:02:14.600
+you're sitting here stale for
+
+78
+00:02:14.600 --> 00:02:15.280
+hours in a day.
+
+79
+00:02:15.640 --> 00:02:16.480
+That's not good.
+
+80
+00:02:16.860 --> 00:02:17.560
+That's not healthy.
+
+81
+00:02:18.140 --> 00:02:20.540
+I also have myself an exercise ball.
+
+82
+00:02:20.840 --> 00:02:23.520
+I use that at times for core workouts.
+
+83
+00:02:23.920 --> 00:02:26.220
+I prop myself against the wall, lean
+
+84
+00:02:26.220 --> 00:02:27.320
+on the ball, and
+
+85
+00:02:27.320 --> 00:02:30.020
+reach up to the sky to feel
+
+86
+00:02:30.020 --> 00:02:31.760
+the muscles in the back.
+
+87
+00:02:32.080 --> 00:02:33.680
+And then I may also lay on
+
+88
+00:02:33.680 --> 00:02:35.840
+my back so that I can do
+
+89
+00:02:35.840 --> 00:02:37.840
+more than just crunches.
+
+90
+00:02:38.160 --> 00:02:40.260
+I want to feel the entire torso, and
+
+91
+00:02:40.260 --> 00:02:41.700
+I want to connect to everything that
+
+92
+00:02:41.700 --> 00:02:42.260
+I have here.
+
+93
+00:02:42.780 --> 00:02:43.060
+Why?
+
+94
+00:02:43.340 --> 00:02:46.600
+Because a healthy body is a healthy environment.
+
+95
+00:02:47.180 --> 00:02:49.880
+And if you are better connected to
+
+96
+00:02:49.880 --> 00:02:52.200
+your body, and if you feel good
+
+97
+00:02:52.200 --> 00:02:52.780
+in your own
+
+98
+00:02:52.780 --> 00:02:55.080
+skin, I promise you, your work day
+
+99
+00:02:55.080 --> 00:02:56.180
+is gonna be so much better.
+
+100
+00:02:56.760 --> 00:02:58.740
+And then for cardio, I go jogging.
+
+101
+00:03:00.180 --> 00:03:03.100
+Now, it also took me five years
+
+102
+00:03:03.100 --> 00:03:03.880
+to get to where I am.
+
+103
+00:03:04.220 --> 00:03:05.680
+It took me five years to get
+
+104
+00:03:05.680 --> 00:03:08.140
+to a point where three miles is comfortable.
+
+105
+00:03:08.580 --> 00:03:10.200
+That first mile is a warm up.
+
+106
+00:03:10.460 --> 00:03:12.540
+The second mile feels like I'm really working.
+
+107
+00:03:12.860 --> 00:03:14.160
+The third mile is about where I
+
+108
+00:03:14.160 --> 00:03:15.360
+start to taper down and
+
+109
+00:03:15.360 --> 00:03:17.020
+wind it up so I can bring
+
+110
+00:03:17.020 --> 00:03:17.520
+it back home.
+
+111
+00:03:18.060 --> 00:03:20.220
+When I first started at 28, I
+
+112
+00:03:20.220 --> 00:03:22.220
+said, whatever habits I carry with
+
+113
+00:03:22.220 --> 00:03:23.240
+me into my 30s,
+
+114
+00:03:23.340 --> 00:03:25.440
+I will carry them past my 30s.
+
+115
+00:03:25.560 --> 00:03:26.960
+So we need to make a change
+
+116
+00:03:26.960 --> 00:03:27.440
+right now.
+
+117
+00:03:27.680 --> 00:03:29.260
+And I was probably just like you,
+
+118
+00:03:29.520 --> 00:03:31.300
+sitting doing this all day.
+
+119
+00:03:31.880 --> 00:03:34.880
+All day, 16 hours a day! (as
+
+120
+00:03:34.880 --> 00:03:35.440
+much as I could :smirk:)
+
+121
+00:03:36.900 --> 00:03:38.220
+And then at some point I said,
+
+122
+00:03:38.300 --> 00:03:39.860
+no, I need to take care of myself.
+
+123
+00:03:40.280 --> 00:03:43.560
+And what's easiest for me is first
+
+124
+00:03:43.560 --> 00:03:44.040
+thing in the morning,
+
+125
+00:03:44.040 --> 00:03:45.760
+before my brain has a chance to
+
+126
+00:03:45.760 --> 00:03:47.460
+convince me I should not do this.
+
+127
+00:03:48.180 --> 00:03:49.200
+I get my shoes on, I get
+
+128
+00:03:49.200 --> 00:03:50.620
+my gear together, and I go for
+
+129
+00:03:50.620 --> 00:03:51.220
+a jog.
+
+130
+00:03:51.880 --> 00:03:53.240
+And when I go for the jog,
+
+131
+00:03:53.380 --> 00:03:55.600
+I used to just run until I
+
+132
+00:03:55.600 --> 00:03:56.800
+felt tired, and
+
+133
+00:03:56.800 --> 00:03:57.720
+then just stop for a second.
+
+134
+00:03:58.400 --> 00:04:00.420
+Also, when I first started, I started
+
+135
+00:04:00.420 --> 00:04:01.780
+with 300ft maybe,
+
+136
+00:04:02.540 --> 00:04:04.080
+barely making it out the parking lot,
+
+137
+00:04:04.640 --> 00:04:06.220
+barely making it five to seven minutes,
+
+138
+00:04:06.380 --> 00:04:09.620
+if that, but I didn't wanna kill myself.
+
+139
+00:04:09.900 --> 00:04:11.940
+Far too many people I saw trying
+
+140
+00:04:11.940 --> 00:04:13.420
+to start off like an Olympian, and
+
+141
+00:04:14.000 --> 00:04:17.500
+I'm sorry, what you do is you
+
+142
+00:04:17.500 --> 00:04:19.980
+start off with very baseline basic minimums.
+
+143
+00:04:20.120 --> 00:04:21.360
+And you start with just what you
+
+144
+00:04:21.360 --> 00:04:22.700
+can handle, and
+
+145
+00:04:22.700 --> 00:04:24.300
+push yourself just enough to say,
+
+146
+00:04:24.400 --> 00:04:26.320
+well, I just wanna focus on consistency.
+
+147
+00:04:26.600 --> 00:04:28.100
+I don't care how far I go,
+
+148
+00:04:28.460 --> 00:04:29.820
+I don't care how strong I get,
+
+149
+00:04:30.200 --> 00:04:32.520
+I just want to consistently pay my
+
+150
+00:04:32.520 --> 00:04:35.420
+body its minimum wage it needs
+
+151
+00:04:35.420 --> 00:04:36.640
+in order to survive.
+
+152
+00:04:37.180 --> 00:04:38.720
+I don't care about being an Olympian,
+
+153
+00:04:39.060 --> 00:04:40.200
+I don't care about being the next
+
+154
+00:04:40.200 --> 00:04:40.760
+Arnold Schwarzenegger.
+
+155
+00:04:41.360 --> 00:04:44.000
+I care about taking care of the self.
+
+156
+00:04:44.420 --> 00:04:46.420
+And the biggest driving motivating
+
+157
+00:04:46.420 --> 00:04:49.100
+factor that gets me off my behind
+
+158
+00:04:49.640 --> 00:04:52.380
+is that hospital bed, them stack of pills.
+
+159
+00:04:52.820 --> 00:04:54.320
+I do not wanna be 50 years
+
+160
+00:04:54.320 --> 00:04:56.960
+old, taking 9,000 pills, sitting in
+
+161
+00:04:56.960 --> 00:04:57.720
+a hospital bed,
+
+162
+00:04:57.940 --> 00:04:59.560
+unable to do anything or to contribute
+
+163
+00:04:59.560 --> 00:05:00.100
+to society.
+
+164
+00:05:01.160 --> 00:05:02.980
+I need to be able to take
+
+165
+00:05:02.980 --> 00:05:04.440
+care of self so
+
+166
+00:05:04.440 --> 00:05:06.460
+that I can take care of and
+
+167
+00:05:06.460 --> 00:05:07.600
+provide for others.
+
+168
+00:05:08.920 --> 00:05:10.940
+That's the motivation behind what
+
+169
+00:05:10.940 --> 00:05:12.540
+gets me going, what gets me moving.
+
+170
+00:05:13.760 --> 00:05:16.320
+And if this helps you to change
+
+171
+00:05:16.320 --> 00:05:18.460
+your perspective about what
+
+172
+00:05:19.400 --> 00:05:21.280
+healthy exercise and what it looks
+
+173
+00:05:21.280 --> 00:05:22.760
+like to take care of the self,
+
+174
+00:05:23.420 --> 00:05:27.060
+it's a whole lot different than, I
+
+175
+00:05:27.060 --> 00:05:29.780
+gotta get all beefy and blah, blah,
+
+176
+00:05:29.980 --> 00:05:30.220
+blah, blah.
+
+177
+00:05:31.100 --> 00:05:33.960
+No, honey, that's some alpha spit,
+
+178
+00:05:34.120 --> 00:05:34.900
+you need to put that spit off
+
+179
+00:05:34.900 --> 00:05:35.380
+to the side.
+
+180
+00:05:35.580 --> 00:05:36.440
+We ain't gonna be dealing with that.
+
+181
+00:05:36.440 --> 00:05:37.900
+This is some meditation stuff.
+
+182
+00:05:38.120 --> 00:05:39.120
+This is gonna make you feel good.
+
+183
+00:05:39.780 --> 00:05:40.480
+I hope this helps.
+
+184
+00:05:41.120 --> 00:05:42.140
+Drop a like if you think it did! (please) =)
+

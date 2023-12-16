@@ -1,0 +1,1228 @@
+1
+00:00:00.000 --> 00:00:01.700
+Greetings, and welcome to Kizano's
+
+2
+00:00:01.700 --> 00:00:03.240
+FinTech channel, where I take you
+
+3
+00:00:03.240 --> 00:00:04.320
+from zero to master
+
+4
+00:00:04.320 --> 00:00:06.840
+in IT and DevOps. In today's video,
+
+5
+00:00:06.920 --> 00:00:08.180
+we're going to be talking about the
+
+6
+00:00:08.180 --> 00:00:09.040
+Git process.
+
+7
+00:00:09.860 --> 00:00:11.960
+In previous videos on other platforms,
+
+8
+00:00:12.160 --> 00:00:13.940
+we've talked about Git in a little
+
+9
+00:00:13.940 --> 00:00:14.640
+bit of detail,
+
+10
+00:00:14.960 --> 00:00:16.200
+such that I can give you the
+
+11
+00:00:16.200 --> 00:00:18.100
+terms and terminology, how it works,
+
+12
+00:00:18.280 --> 00:00:19.400
+kind of sort of going over
+
+13
+00:00:19.400 --> 00:00:21.780
+the fundamentals of Git, but not really
+
+14
+00:00:21.780 --> 00:00:23.680
+talking about the process by which
+
+15
+00:00:23.680 --> 00:00:25.200
+this can get completed.
+
+16
+00:00:25.840 --> 00:00:27.560
+This video is going to be a
+
+17
+00:00:27.560 --> 00:00:29.680
+deep dive where we actually step into
+
+18
+00:00:29.680 --> 00:00:31.940
+some scenarios so that this
+
+19
+00:00:31.940 --> 00:00:34.100
+makes better sense and you get a
+
+20
+00:00:34.100 --> 00:00:36.900
+better understanding of how software engineering
+
+21
+00:00:36.900 --> 00:00:39.800
+works from a process perspective.
+
+22
+00:00:40.960 --> 00:00:42.980
+This is a video you're not going
+
+23
+00:00:42.980 --> 00:00:43.520
+to want to miss.
+
+24
+00:00:50.960 --> 00:00:52.860
+Hi, my name is Markizano Draconus,
+
+25
+00:00:53.160 --> 00:00:55.480
+and welcome to Kizano's FinTech channel,
+
+26
+00:00:55.740 --> 00:00:57.060
+where I take you from zero to
+
+27
+00:00:57.060 --> 00:00:58.560
+master in IT and DevOps.
+
+28
+00:00:59.820 --> 00:01:01.640
+So we'll first kick things off with
+
+29
+00:01:01.640 --> 00:01:03.820
+the master branch or the main branch,
+
+30
+00:01:04.000 --> 00:01:04.500
+whatever you want to
+
+31
+00:01:04.500 --> 00:01:06.580
+call it, which is the main copy
+
+32
+00:01:06.580 --> 00:01:08.720
+of the development line that represents
+
+33
+00:01:08.720 --> 00:01:10.080
+the code that recently went
+
+34
+00:01:10.080 --> 00:01:13.880
+to production. We're going to fork
+
+35
+00:01:13.880 --> 00:01:15.480
+off the master branch and we're going
+
+36
+00:01:15.480 --> 00:01:16.720
+to create the staging
+
+37
+00:01:16.720 --> 00:01:19.180
+branch. The master branch, as I'm
+
+38
+00:01:19.180 --> 00:01:20.160
+going to call it for this video,
+
+39
+00:01:20.320 --> 00:01:21.580
+is going to be the main line
+
+40
+00:01:21.580 --> 00:01:23.540
+of development. Production is going
+
+41
+00:01:23.540 --> 00:01:25.060
+to be the live copy, the live
+
+42
+00:01:25.060 --> 00:01:26.200
+version of your website.
+
+43
+00:01:26.720 --> 00:01:29.000
+The staging branch is going to be
+
+44
+00:01:29.000 --> 00:01:31.420
+the place where you present a copy
+
+45
+00:01:31.420 --> 00:01:32.620
+of production that's
+
+46
+00:01:32.620 --> 00:01:34.560
+not quite production that allows us
+
+47
+00:01:34.560 --> 00:01:37.260
+to do some testing and assert that
+
+48
+00:01:37.260 --> 00:01:38.620
+any changes that we make
+
+49
+00:01:38.620 --> 00:01:40.860
+to the website are the changes that
+
+50
+00:01:40.860 --> 00:01:42.820
+we expect, and this is the branch
+
+51
+00:01:42.820 --> 00:01:43.900
+where the majority of those
+
+52
+00:01:43.900 --> 00:01:47.120
+changes go as we stage things for
+
+53
+00:01:47.120 --> 00:01:51.340
+a release. Now, we're going to branch
+
+54
+00:01:51.340 --> 00:01:52.720
+from the staging branch
+
+55
+00:01:52.720 --> 00:01:55.440
+down to the development branch. If
+
+56
+00:01:55.440 --> 00:01:57.720
+you notice, this pattern of creating
+
+57
+00:01:57.720 --> 00:01:59.120
+a branch off of the
+
+58
+00:01:59.120 --> 00:02:00.680
+changes is going to be a recurring
+
+59
+00:02:00.680 --> 00:02:03.660
+pattern, a recurring shape that is
+
+60
+00:02:03.660 --> 00:02:05.120
+designed in this giant
+
+61
+00:02:05.120 --> 00:02:08.780
+mosaic that represents the Git process.
+
+62
+00:02:09.740 --> 00:02:11.040
+Stay with me now as we continue
+
+63
+00:02:11.040 --> 00:02:12.160
+to look another
+
+64
+00:02:12.160 --> 00:02:14.620
+pane of glass deeper into the Kaleidoscope.
+
+65
+00:02:15.680 --> 00:02:18.400
+Now, before embarking on a project,
+
+66
+00:02:18.600 --> 00:02:19.360
+let's say you've
+
+67
+00:02:19.360 --> 00:02:20.880
+gone through the initial steps, you
+
+68
+00:02:20.880 --> 00:02:22.640
+now have all the business logic in
+
+69
+00:02:22.640 --> 00:02:24.180
+front of you, you just need
+
+70
+00:02:24.180 --> 00:02:25.960
+to convert that into computer code,
+
+71
+00:02:26.340 --> 00:02:28.160
+and we're about to begin on the
+
+72
+00:02:28.160 --> 00:02:30.140
+execution phase of our project.
+
+73
+00:02:30.920 --> 00:02:33.160
+While in the execution phase, you're
+
+74
+00:02:33.160 --> 00:02:35.700
+going to take out a branch on
+
+75
+00:02:35.700 --> 00:02:36.880
+the development branch.
+
+76
+00:02:37.200 --> 00:02:39.760
+Why? Because at this point, we're
+
+77
+00:02:39.760 --> 00:02:41.940
+about to make some changes to the
+
+78
+00:02:41.940 --> 00:02:44.520
+code in our own environment,
+
+79
+00:02:44.680 --> 00:02:46.380
+so to speak, so that other people
+
+80
+00:02:46.380 --> 00:02:48.560
+can do the same thing. If everyone
+
+81
+00:02:48.560 --> 00:02:49.840
+pulls from the development
+
+82
+00:02:49.840 --> 00:02:52.680
+branch and makes their changes from
+
+83
+00:02:52.680 --> 00:02:55.020
+the development branch on their local branch,
+
+84
+00:02:55.020 --> 00:02:57.480
+they can make changes in an isolated
+
+85
+00:02:57.480 --> 00:03:01.020
+environment, more or less. Now, each
+
+86
+00:03:01.020 --> 00:03:01.880
+time you want to make a
+
+87
+00:03:01.880 --> 00:03:04.480
+change, you make a commit. For me,
+
+88
+00:03:04.620 --> 00:03:06.160
+it's kind of like the undo button.
+
+89
+00:03:06.680 --> 00:03:09.280
+I commit every change and
+
+90
+00:03:09.280 --> 00:03:10.840
+I annotate just about everything I
+
+91
+00:03:10.840 --> 00:03:13.080
+do. It's typically one or two changes
+
+92
+00:03:13.080 --> 00:03:14.440
+per file, maybe
+
+93
+00:03:14.440 --> 00:03:16.160
+a collection of changes across a couple
+
+94
+00:03:16.160 --> 00:03:18.240
+of files, and I attach a message
+
+95
+00:03:18.240 --> 00:03:19.520
+associated with those
+
+96
+00:03:19.520 --> 00:03:22.060
+describing the why and the rationale
+
+97
+00:03:22.060 --> 00:03:24.440
+behind the change that I was making.
+
+98
+00:03:24.980 --> 00:03:26.140
+So, in the git commit,
+
+99
+00:03:26.480 --> 00:03:27.900
+and it asks you the message, and
+
+100
+00:03:27.900 --> 00:03:29.520
+it says, what's the message you want
+
+101
+00:03:29.520 --> 00:03:31.140
+to make? I'll summarize
+
+102
+00:03:31.140 --> 00:03:35.100
+in a sentence or two describing what
+
+103
+00:03:35.100 --> 00:03:36.960
+the changes were and why I was
+
+104
+00:03:36.960 --> 00:03:37.880
+making those changes.
+
+105
+00:03:38.400 --> 00:03:40.100
+In this way, when somebody goes back
+
+106
+00:03:40.100 --> 00:03:41.660
+and they look at the history, they
+
+107
+00:03:41.660 --> 00:03:43.320
+can see and understand
+
+108
+00:03:43.320 --> 00:03:44.880
+the thought process that was going
+
+109
+00:03:44.880 --> 00:03:46.500
+on in my mind as I was
+
+110
+00:03:46.500 --> 00:03:48.480
+making the changes to the code and the
+
+111
+00:03:48.480 --> 00:03:50.720
+why. I may also include the ticket
+
+112
+00:03:50.720 --> 00:03:52.780
+ID. I may also include any other
+
+113
+00:03:52.780 --> 00:03:54.080
+kind of reference information.
+
+114
+00:03:54.280 --> 00:03:56.160
+Now, say the changes are complete
+
+115
+00:03:56.160 --> 00:03:58.540
+and you're ready to merge your changes
+
+116
+00:03:58.540 --> 00:03:59.960
+back up. What's going to
+
+117
+00:03:59.960 --> 00:04:01.600
+happen is we're going to open a
+
+118
+00:04:01.600 --> 00:04:03.820
+pull request at this point, and we're
+
+119
+00:04:03.820 --> 00:04:06.020
+going to say, hey, I have
+
+120
+00:04:06.020 --> 00:04:07.520
+changes that I've made in my feature
+
+121
+00:04:07.520 --> 00:04:09.240
+branch. I am now ready to take
+
+122
+00:04:09.240 --> 00:04:10.460
+those changes and merge them
+
+123
+00:04:10.460 --> 00:04:12.600
+back into the code base. And by
+
+124
+00:04:12.600 --> 00:04:14.440
+opening a pull request, you're asking
+
+125
+00:04:14.440 --> 00:04:15.800
+another, you're inviting
+
+126
+00:04:15.800 --> 00:04:17.740
+another developer to come and observe
+
+127
+00:04:17.740 --> 00:04:20.020
+the changes that you've made. Once
+
+128
+00:04:20.020 --> 00:04:21.000
+the changes have been
+
+129
+00:04:21.000 --> 00:04:22.920
+merged into the development branch,
+
+130
+00:04:23.100 --> 00:04:24.780
+that's time for the next parts of
+
+131
+00:04:24.780 --> 00:04:26.120
+the phases to kick off.
+
+132
+00:04:26.580 --> 00:04:28.300
+So, now that you've made your changes
+
+133
+00:04:28.300 --> 00:04:30.460
+in your feature branch, you've successfully
+
+134
+00:04:30.460 --> 00:04:31.100
+gone through
+
+135
+00:04:31.100 --> 00:04:34.080
+your pull request, your changes have
+
+136
+00:04:34.080 --> 00:04:35.560
+been successfully accepted by the
+
+137
+00:04:35.560 --> 00:04:36.580
+team, and now
+
+138
+00:04:36.580 --> 00:04:37.920
+you're ready to take your changes
+
+139
+00:04:37.920 --> 00:04:39.940
+and merge them into the staging branch.
+
+140
+00:04:40.340 --> 00:04:41.160
+The team has already
+
+141
+00:04:41.160 --> 00:04:43.120
+signed off on, let's also assume,
+
+142
+00:04:43.760 --> 00:04:44.900
+just kind of sort of going along
+
+143
+00:04:44.900 --> 00:04:45.780
+the happy path here.
+
+144
+00:04:46.160 --> 00:04:47.860
+Let's assume that your changes were
+
+145
+00:04:47.860 --> 00:04:49.640
+successful. You went through testing,
+
+146
+00:04:49.760 --> 00:04:50.500
+your testing was
+
+147
+00:04:50.500 --> 00:04:52.900
+successful, and the team was also
+
+148
+00:04:52.900 --> 00:04:54.380
+happy and excited for your changes,
+
+149
+00:04:54.460 --> 00:04:55.200
+and we can't wait to
+
+150
+00:04:55.200 --> 00:04:56.980
+get them into production. The next
+
+151
+00:04:56.980 --> 00:04:58.520
+phase is to pass this over to
+
+152
+00:04:58.520 --> 00:05:00.620
+the customer and say, hey, we
+
+153
+00:05:00.620 --> 00:05:02.380
+are done with the changes. We've offered
+
+154
+00:05:02.380 --> 00:05:04.140
+the feature. We've inserted your widget.
+
+155
+00:05:05.020 --> 00:05:05.940
+Are you happy
+
+156
+00:05:05.940 --> 00:05:07.260
+with those changes? Would you like
+
+157
+00:05:07.260 --> 00:05:09.220
+anything else? Would you want anything
+
+158
+00:05:09.220 --> 00:05:10.100
+more from this?
+
+159
+00:05:12.960 --> 00:05:15.180
+And so, the development branch now
+
+160
+00:05:15.180 --> 00:05:17.680
+opens a pull request up to the
+
+161
+00:05:17.680 --> 00:05:19.560
+staging branch as we pass the
+
+162
+00:05:19.560 --> 00:05:21.500
+code along to the customer, or not
+
+163
+00:05:21.500 --> 00:05:22.580
+the code, but the results of the
+
+164
+00:05:22.580 --> 00:05:24.520
+code, and we say, did we get
+
+165
+00:05:24.520 --> 00:05:26.500
+this right? Let's also assume the
+
+166
+00:05:26.500 --> 00:05:28.200
+customer is perfectly happy, doesn't
+
+167
+00:05:28.200 --> 00:05:29.100
+require any other
+
+168
+00:05:29.100 --> 00:05:31.280
+changes, doesn't ask for you to go
+
+169
+00:05:31.280 --> 00:05:32.500
+ahead and move it back two other
+
+170
+00:05:32.500 --> 00:05:33.900
+pixels because he changed his
+
+171
+00:05:33.900 --> 00:05:36.260
+mind last minute, and let's just assume
+
+172
+00:05:36.260 --> 00:05:38.240
+that none of those things ever happened
+
+173
+00:05:38.240 --> 00:05:39.540
+in a perfect world,
+
+174
+00:05:39.540 --> 00:05:41.400
+and you're able to take your changes
+
+175
+00:05:41.400 --> 00:05:43.400
+from the staging branch and merge
+
+176
+00:05:43.400 --> 00:05:44.400
+them up to the master
+
+177
+00:05:44.400 --> 00:05:46.380
+branch because we're ready to publish
+
+178
+00:05:46.380 --> 00:05:48.620
+to production, and so the next stage
+
+179
+00:05:48.620 --> 00:05:50.020
+is to take staging
+
+180
+00:05:50.520 --> 00:05:53.040
+and merge it into master, and by
+
+181
+00:05:53.040 --> 00:05:55.080
+doing so, we open another pull request.
+
+182
+00:05:55.760 --> 00:05:56.520
+Once we've taken our
+
+183
+00:05:56.520 --> 00:05:58.260
+changes and merged them into the master
+
+184
+00:05:58.260 --> 00:06:00.980
+branch, that is, in effect, from a
+
+185
+00:06:00.980 --> 00:06:02.140
+developer's perspective,
+
+186
+00:06:02.860 --> 00:06:04.720
+publishing the code to production.
+
+187
+00:06:05.260 --> 00:06:07.680
+Now, what this accomplishes is all
+
+188
+00:06:07.680 --> 00:06:08.840
+of the changes and all of the
+
+189
+00:06:08.840 --> 00:06:10.780
+work has now been moved into a
+
+190
+00:06:10.780 --> 00:06:12.340
+place where we now know this is
+
+191
+00:06:12.340 --> 00:06:14.720
+a copy of what was last published
+
+192
+00:06:14.720 --> 00:06:17.460
+to production. As a result, what we
+
+193
+00:06:17.460 --> 00:06:21.300
+do next, we tag. We now have
+
+194
+00:06:21.300 --> 00:06:23.580
+release 1.0. Congratulations.
+
+195
+00:06:24.580 --> 00:06:26.580
+Say you're working on a feature. Feature
+
+196
+00:06:26.580 --> 00:06:28.040
+2 has come in. You're part of
+
+197
+00:06:28.040 --> 00:06:29.020
+this team's project.
+
+198
+00:06:29.700 --> 00:06:31.940
+Feature 1 ended up not taking that
+
+199
+00:06:31.940 --> 00:06:35.180
+much time. It got completed. You're
+
+200
+00:06:35.180 --> 00:06:36.160
+inside of Feature 2.
+
+201
+00:06:36.160 --> 00:06:38.820
+You branched at about the same time
+
+202
+00:06:38.820 --> 00:06:40.460
+they did. You have the same code,
+
+203
+00:06:40.640 --> 00:06:42.360
+but what ends up happening is
+
+204
+00:06:42.360 --> 00:06:44.220
+you make a couple of changes. Their
+
+205
+00:06:44.220 --> 00:06:46.200
+feature got done. Now, it's time to
+
+206
+00:06:46.200 --> 00:06:47.220
+take on their changes
+
+207
+00:06:47.220 --> 00:06:49.900
+and their code. You first enact this
+
+208
+00:06:49.900 --> 00:06:52.080
+operation by doing a git pull, and
+
+209
+00:06:52.080 --> 00:06:53.280
+you see the develop branch
+
+210
+00:06:53.280 --> 00:06:55.060
+got updated, so then you do a
+
+211
+00:06:55.060 --> 00:06:58.540
+git merge from origin develop to pull
+
+212
+00:06:58.540 --> 00:07:00.000
+those changes into your branch
+
+213
+00:07:00.000 --> 00:07:01.880
+to make sure that you stay up
+
+214
+00:07:01.880 --> 00:07:04.600
+to date with the latest changes so
+
+215
+00:07:04.600 --> 00:07:06.540
+that by the time it comes for
+
+216
+00:07:06.540 --> 00:07:08.240
+you to push your changes into the
+
+217
+00:07:08.240 --> 00:07:10.320
+other branches, you won't have a bunch
+
+218
+00:07:10.320 --> 00:07:12.640
+of conflicts. The idea as
+
+219
+00:07:12.640 --> 00:07:15.080
+a developer is to resolve those conflicts
+
+220
+00:07:15.080 --> 00:07:18.420
+over time. Oh, and speaking of bugs,
+
+221
+00:07:19.020 --> 00:07:19.540
+I got a little
+
+222
+00:07:19.540 --> 00:07:21.760
+tidbit for you. If a bug is
+
+223
+00:07:21.760 --> 00:07:24.240
+detected in the develop branch before
+
+224
+00:07:24.240 --> 00:07:25.420
+it gets promoted up,
+
+225
+00:07:26.140 --> 00:07:28.040
+it can be easily corrected here in
+
+226
+00:07:28.040 --> 00:07:29.940
+the develop branch, and the only thing
+
+227
+00:07:29.940 --> 00:07:31.240
+it affects is the other
+
+228
+00:07:31.240 --> 00:07:35.220
+feature branches. So, this is the
+
+229
+00:07:35.220 --> 00:07:37.920
+git process. For the most part, anytime
+
+230
+00:07:37.920 --> 00:07:38.840
+you want to make a change
+
+231
+00:07:38.840 --> 00:07:41.720
+to the repository, branch off of your
+
+232
+00:07:41.720 --> 00:07:44.120
+main source of truth, make your changes
+
+233
+00:07:44.120 --> 00:07:44.960
+to that branch,
+
+234
+00:07:45.420 --> 00:07:47.000
+and send a pull request to merge
+
+235
+00:07:47.000 --> 00:07:48.740
+those changes back into that branch
+
+236
+00:07:48.740 --> 00:07:50.300
+or into your target
+
+237
+00:07:50.300 --> 00:07:51.900
+development branch, wherever it needs
+
+238
+00:07:51.900 --> 00:07:53.960
+to be reviewed before being merged
+
+239
+00:07:53.960 --> 00:07:55.260
+back into master.
+
+240
+00:07:55.960 --> 00:07:57.900
+The idea behind this is to make
+
+241
+00:07:57.900 --> 00:07:59.320
+sure that you have an opportunity
+
+242
+00:07:59.320 --> 00:08:00.440
+to make your changes
+
+243
+00:08:00.440 --> 00:08:02.820
+without the incoming changes outside
+
+244
+00:08:02.820 --> 00:08:05.020
+of your control. You have the control
+
+245
+00:08:05.020 --> 00:08:05.700
+to be able to say,
+
+246
+00:08:05.820 --> 00:08:07.160
+I want to pull those changes in
+
+247
+00:08:07.160 --> 00:08:09.320
+at my time, at my pace, when
+
+248
+00:08:09.320 --> 00:08:11.860
+I'm ready to accept those changes,
+
+249
+00:08:12.040 --> 00:08:13.840
+and I've made enough changes to my
+
+250
+00:08:13.840 --> 00:08:15.600
+code that it's complete enough that
+
+251
+00:08:15.600 --> 00:08:16.700
+I could accept those changes
+
+252
+00:08:16.700 --> 00:08:18.820
+and deal with those resolutions. And
+
+253
+00:08:18.820 --> 00:08:20.100
+I have the freedom and space in
+
+254
+00:08:20.100 --> 00:08:21.000
+my brain to do that,
+
+255
+00:08:21.120 --> 00:08:22.500
+because when you're operating and
+
+256
+00:08:22.500 --> 00:08:24.260
+working on your feature, oftentimes
+
+257
+00:08:24.260 --> 00:08:25.900
+you have a tree of code in
+
+258
+00:08:25.900 --> 00:08:27.820
+your head that can't fit the rest
+
+259
+00:08:27.820 --> 00:08:29.900
+of this process in along with it
+
+260
+00:08:29.900 --> 00:08:31.060
+while you're trying to work the
+
+261
+00:08:31.060 --> 00:08:33.840
+code. And so, it's better to distinguish
+
+262
+00:08:33.840 --> 00:08:35.560
+when you're going to be putting your
+
+263
+00:08:35.560 --> 00:08:36.340
+development hat
+
+264
+00:08:36.340 --> 00:08:38.380
+on to write your code, focus on
+
+265
+00:08:38.380 --> 00:08:39.940
+that tree of knowledge that you have
+
+266
+00:08:39.940 --> 00:08:41.640
+in your mind to write
+
+267
+00:08:41.640 --> 00:08:43.920
+your code, versus when you're done
+
+268
+00:08:43.920 --> 00:08:45.140
+with your feature, you can put that
+
+269
+00:08:45.140 --> 00:08:45.760
+off to the side,
+
+270
+00:08:45.760 --> 00:08:48.040
+your functions aren't, you know, full,
+
+271
+00:08:48.180 --> 00:08:49.840
+expanded, all the lines of code in
+
+272
+00:08:49.840 --> 00:08:50.240
+your head,
+
+273
+00:08:50.380 --> 00:08:51.860
+you can now just refer to the
+
+274
+00:08:51.860 --> 00:08:53.120
+header and know what it was supposed
+
+275
+00:08:53.120 --> 00:08:55.500
+to do. And you can come back
+
+276
+00:08:55.500 --> 00:08:58.040
+to the process aspect of this that
+
+277
+00:08:58.040 --> 00:09:00.200
+will allow you to focus on how
+
+278
+00:09:00.200 --> 00:09:01.320
+you get these changes in,
+
+279
+00:09:01.480 --> 00:09:03.420
+or how you accept other changes into
+
+280
+00:09:03.420 --> 00:09:06.320
+your code. This is the process by
+
+281
+00:09:06.320 --> 00:09:07.060
+which software gets
+
+282
+00:09:07.060 --> 00:09:09.980
+complete. And I'm not saying is the
+
+283
+00:09:09.980 --> 00:09:11.960
+one end all be all, neither am
+
+284
+00:09:11.960 --> 00:09:13.380
+I saying is this process going
+
+285
+00:09:13.380 --> 00:09:15.040
+to be the same for all of
+
+286
+00:09:15.040 --> 00:09:17.500
+eternity. What I am saying is that
+
+287
+00:09:17.500 --> 00:09:18.940
+this is an industry standard,
+
+288
+00:09:19.280 --> 00:09:23.080
+well identified, step by step, how
+
+289
+00:09:23.080 --> 00:09:25.000
+stuff gets complete that's applicable
+
+290
+00:09:25.000 --> 00:09:26.100
+to both the corporate
+
+291
+00:09:26.100 --> 00:09:30.600
+world and the open source world. My
+
+292
+00:09:30.600 --> 00:09:32.380
+goal and objective with this is to
+
+293
+00:09:32.380 --> 00:09:33.400
+make you as efficient
+
+294
+00:09:33.400 --> 00:09:35.500
+as possible in whatever arena you
+
+295
+00:09:35.500 --> 00:09:37.200
+decide to play, whether it be in
+
+296
+00:09:37.200 --> 00:09:37.980
+the corporate environment
+
+297
+00:09:37.980 --> 00:09:39.020
+or it could be in the open
+
+298
+00:09:39.020 --> 00:09:41.580
+source environment. So that is the
+
+299
+00:09:41.580 --> 00:09:43.300
+Git process from start to finish,
+
+300
+00:09:43.300 --> 00:09:44.720
+where I step you through some more
+
+301
+00:09:44.720 --> 00:09:46.160
+details and you get a better understanding
+
+302
+00:09:46.160 --> 00:09:46.780
+of how things are
+
+303
+00:09:46.780 --> 00:09:48.700
+done. I really hope this was helpful.
+
+304
+00:09:48.980 --> 00:09:50.260
+I hope it was informative and educational
+
+305
+00:09:50.260 --> 00:09:50.760
+for you.
+
+306
+00:09:51.040 --> 00:09:52.460
+And I look forward to seeing you
+
+307
+00:09:52.460 --> 00:09:53.240
+on the next video.
+

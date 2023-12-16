@@ -1,0 +1,31 @@
+{
+  "videos": [
+    {
+      "input": [
+        { "i": "resources/VID_20230814_130847.mp4" },
+        { "loop": "true", "i": "resources/end-frame.png" },
+        { "i": "resources/want-to-play-a-game.mkv" },
+        { "i": "resources/VID_20230814_141933.mp4" },
+        { "i": "resources/VID_20230814_143557.mp4" },
+        { "i": "resources/welcome-to-kizanos-fintech.png" },
+        { "i": "resources/keys.png" }
+      ],
+      "output": "build/want-to-play-a-game_CTF.mp4",
+      "filter_complex": [
+        "[0:v]fps=29.97,trim=start=0:end=1.429,setpts=PTS-STARTPTS[v0]",
+        "[0:a]atrim=start=0:end=1.429,asetpts=PTS-STARTPTS[a0]",
+
+        "[1:v]fps=29.97,trim=start=0:end=1.16,setpts=PTS-STARTPTS[vbg]",
+        "[1:a]atrim=start=0:end=1.16,asetpts=PTS-STARTPTS[abg]",
+
+        "[1:v]fps=29.97,trim=start=0:end=1.16,setpts=(PTS-STARTPTS)+(1.4/TB)[vgame]",
+        "[1:a]atrim=start=0:end=1.16,asetpts=(PTS-STARTPTS)+(1.4/TB)[agame]",
+
+        "[2:v]fps=29.97,trim=start=0:end=3,setpts=PTS-STARTPTS[v1]",
+        "[2:a]atrim=start=0:end=3,asetpts=PTS-STARTPTS[a1]"
+
+      ]
+    }
+  ]
+}
+

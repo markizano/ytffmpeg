@@ -1,0 +1,512 @@
+1
+0:00:01.000 --> 0:00:03.100
+So let's talk about networking:
+
+2
+0:00:03.500 --> 0:00:04.400
+IP address edition.
+
+3
+0:00:04.780 --> 0:00:06.360
+Okay, so first things first in
+
+4
+0:00:06.360 --> 0:00:08.060
+case you didn't already know: IP
+
+5
+0:00:08.060 --> 0:00:08.940
+stands for the
+
+6
+0:00:08.940 --> 0:00:11.300
+internet protocol in your IP address.
+
+7
+0:00:11.600 --> 0:00:12.640
+This is how we find out
+
+8
+0:00:12.640 --> 0:00:14.120
+where you are on the internet.
+
+9
+0:00:14.520 --> 0:00:15.740
+Kind of sort of like your
+
+10
+0:00:15.740 --> 0:00:17.320
+address, your direction. It basically
+
+11
+0:00:17.320 --> 0:00:17.780
+says,
+
+12
+0:00:18.020 --> 0:00:19.180
+you know, this is the street,
+
+13
+0:00:19.500 --> 0:00:20.780
+this is the number of the
+
+14
+0:00:20.780 --> 0:00:22.600
+house that's on the street,
+
+15
+0:00:22.800 --> 0:00:24.780
+that's the direction it is, and
+
+16
+0:00:24.780 --> 0:00:26.160
+that's the kind of street it
+
+17
+0:00:26.160 --> 0:00:27.860
+is. That's the unit number,
+
+18
+0:00:27.860 --> 0:00:29.860
+and you know, that's the city,
+
+19
+0:00:30.240 --> 0:00:32.000
+the state, and these five digit
+
+20
+0:00:32.000 --> 0:00:33.880
+numbers that represents the zip
+
+21
+0:00:33.880 --> 0:00:35.060
+code. I mean, there's all these
+
+22
+0:00:35.060 --> 0:00:35.920
+things that kind of sort of
+
+23
+0:00:35.920 --> 0:00:37.740
+point out what an address is,
+
+24
+0:00:37.780 --> 0:00:37.960
+right?
+
+25
+0:00:38.500 --> 0:00:39.640
+Let's look at an internet style.
+
+26
+0:00:41.517 --> 0:00:43.980
+Your internet protocol address is
+
+27
+0:00:43.980 --> 0:00:45.900
+basically a set of four
+
+28
+0:00:45.900 --> 0:00:48.380
+digits separated by a dot, which
+
+29
+0:00:48.380 --> 0:00:49.780
+is a number that ranges between
+
+30
+0:00:49.780 --> 0:00:52.520
+0 and 255. If you wonder
+
+31
+0:00:52.520 --> 0:00:53.655
+why that's significant,
+
+32
+0:00:53.655 --> 0:00:54.920
+go find the
+
+33
+0:00:54.920 --> 0:00:57.080
+"How-To Binary" video. Short of the
+
+34
+0:00:57.080 --> 0:00:58.780
+long of it is this number
+
+35
+0:00:58.780 --> 0:01:01.540
+between 0 and 255 in decimal
+
+36
+0:01:01.540 --> 0:01:04.460
+format can easily be represented between
+
+37
+0:01:04.460 --> 0:01:08.000
+zero and 0xFF in hexadecimal format.
+
+38
+0:01:08.345 --> 0:01:09.690
+Hexo what?
+
+39
+0:01:11.200 --> 0:01:13.680
+Well, imagine a numbering
+
+40
+0:01:13.680 --> 0:01:14.241
+system that isn't our base-10.
+
+41
+0:01:14.414 --> 0:01:15.690
+We have 10 fingers, 10 toes,
+
+42
+0:01:15.780 --> 0:01:17.860
+so we count as if there's
+
+43
+0:01:17.860 --> 0:01:19.960
+a base of 10 items. But
+
+44
+0:01:19.960 --> 0:01:20.840
+what if you have a numbering
+
+45
+0:01:20.840 --> 0:01:21.800
+system that is base
+
+46
+0:01:22.280 --> 0:01:24.740
+16? You see, binary is base
+
+47
+0:01:24.740 --> 0:01:25.960
+two. You only have zero and
+
+48
+0:01:25.960 --> 0:01:27.180
+one. I have a how-to
+
+49
+0:01:27.180 --> 0:01:27.860
+binary if you want to
+
+50
+0:01:27.860 --> 0:01:29.420
+not account there, but you count
+
+51
+0:01:29.420 --> 0:01:31.700
+in hexadecimal a little bit different
+
+52
+0:01:31.700 --> 0:01:32.840
+because once you get to nine,
+
+53
+0:01:33.220 --> 0:01:34.440
+you have more things to count.
+
+54
+0:01:34.920 --> 0:01:37.260
+We don't have numbers that represent
+
+55
+0:01:37.260 --> 0:01:38.700
+these, so we use letters,
+
+56
+0:01:39.360 --> 0:01:41.460
+A through F, and that represents
+
+57
+0:01:41.460 --> 0:01:44.180
+a placeholder for those values, greater
+
+58
+0:01:44.180 --> 0:01:45.640
+than 9, that still
+
+59
+0:01:45.640 --> 0:01:47.440
+represent something that you can count
+
+60
+0:01:47.440 --> 0:01:50.960
+to in a single digit. To
+
+61
+0:01:50.960 --> 0:01:52.680
+get to the next one, 10
+
+62
+0:01:52.680 --> 0:01:53.840
+is actually
+
+63
+0:01:53.840 --> 0:01:56.820
+16. So once you get to
+
+64
+0:01:56.820 --> 0:01:58.960
+nine, 10 in hexadecimal is A,
+
+65
+0:01:59.360 --> 0:02:01.940
+11 in hexadecimal is B, 12
+
+66
+0:02:01.940 --> 0:02:03.420
+in hexadecimal is C,
+
+67
+0:02:03.780 --> 0:02:04.540
+and then when you get up
+
+68
+0:02:04.540 --> 0:02:07.360
+to 16, that's actually 10. 17
+
+69
+0:02:07.360 --> 0:02:10.540
+is 11, and you go 12,
+
+70
+0:02:10.620 --> 0:02:10.740
+34,
+
+71
+0:02:10.740 --> 0:02:12.280
+all the way up to 19,
+
+72
+0:02:12.880 --> 0:02:14.480
+and then instead of counting 19
+
+73
+0:02:14.480 --> 0:02:18.020
+to 20, we go 1A, 1B,
+
+74
+0:02:18.400 --> 0:02:20.640
+1C, 1E, all the way down
+
+75
+0:02:20.640 --> 0:02:21.300
+to 1F.
+
+76
+0:02:22.360 --> 0:02:24.580
+Once you get to 1F, then
+
+77
+0:02:24.580 --> 0:02:27.980
+32 is actually in hexadecimal, is
+
+78
+0:02:27.980 --> 0:02:29.862
+20 in decimal.
+
+79
+0:02:30.103 --> 0:02:31.828
+Scratch that, reverse it.
+
+80
+0:02:32.586 --> 0:02:34.172
+Wait a minute, strike that, reverse it.
+
+81
+0:02:34.931 --> 0:02:36.931
+Thank you.
+
+82
+0:02:37.931 --> 0:02:41.483
+20 in hexadecimal is 32 in decimal.
+
+83
+0:02:42.143 --> 0:02:43.380
+So let's give an example to that.
+
+84
+0:02:43.380 --> 0:02:44.820
+If you've got an IP address of
+
+85
+0:02:44.820 --> 0:02:47.800
+4.4.4.4, now let's
+
+86
+0:02:47.800 --> 0:02:48.520
+say I take the
+
+87
+0:02:48.520 --> 0:02:51.240
+hexadecimal representation of this
+
+88
+0:02:51.240 --> 0:02:53.380
+IP address and convert it into
+
+89
+0:02:53.380 --> 0:02:58.040
+a hexadecimal number. That's 0x04040404.
+
+90
+0:02:58.060 --> 0:03:00.552
+Which, if you convert that to decimal...
+
+91
+0:03:00.897 --> 0:03:01.759
+What is that...?
+
+92
+0:03:03.138 --> 0:03:04.655
+That's just a really big number.
+
+93
+0:03:05.000 --> 0:03:05.483
+You take that
+
+94
+0:03:05.420 --> 0:03:06.960
+really big number and you can
+
+95
+0:03:06.960 --> 0:03:08.828
+store that in two bytes.
+
+96
+0:03:10.276 --> 0:03:11.680
+There's a lot of database guys that
+
+97
+0:03:11.680 --> 0:03:11.980
+I see
+
+98
+0:03:11.980 --> 0:03:13.460
+that are taking this as a
+
+99
+0:03:13.460 --> 0:03:15.100
+string and storing it as a
+
+100
+0:03:15.100 --> 0:03:17.300
+string and you make my head
+
+101
+0:03:17.300 --> 0:03:18.820
+hurt. You could just
+
+102
+0:03:18.820 --> 0:03:21.200
+use the htons() function that exists
+
+103
+0:03:21.200 --> 0:03:23.220
+out there to convert this string
+
+104
+0:03:23.220 --> 0:03:24.860
+representation of this IP address
+
+105
+0:03:24.900 --> 0:03:27.120
+into this numeric representation that
+
+106
+0:03:27.120 --> 0:03:28.440
+there is here and you can
+
+107
+0:03:28.440 --> 0:03:31.940
+store so much less data compared
+
+108
+0:03:31.940 --> 0:03:33.180
+to the what 12 to 14
+
+109
+0:03:33.180 --> 0:03:34.860
+characters it takes to store string.
+
+110
+0:03:35.460 --> 0:03:37.140
+Those characters, what is that? 24
+
+111
+0:03:37.140 --> 0:03:37.560
+bytes
+
+112
+0:03:37.560 --> 0:03:39.460
+versus the two bytes it takes
+
+113
+0:03:39.460 --> 0:03:41.340
+to store a really big number.
+
+114
+0:03:41.880 --> 0:03:43.220
+So whenever you want to take
+
+115
+0:03:43.220 --> 0:03:44.060
+your IP
+
+116
+0:03:44.060 --> 0:03:46.720
+address from its binary stored format,
+
+117
+0:03:46.860 --> 0:03:47.820
+which is just a really huge
+
+118
+0:03:47.820 --> 0:03:49.480
+number, you convert it back
+
+119
+0:03:49.480 --> 0:03:51.480
+into hexadecimal, break it up by
+
+120
+0:03:51.480 --> 0:03:53.340
+its multiple places, convert those
+
+121
+0:03:53.340 --> 0:03:54.560
+hexadecimal back to their
+
+122
+0:03:56.160 --> 0:03:57.300
+decimal representation and you got
+
+123
+0:03:57.300 --> 0:03:58.560
+your IP address back at you.
+
+124
+0:03:59.000 --> 0:04:00.660
+An IP address is just a
+
+125
+0:04:00.660 --> 0:04:01.500
+number that
+
+126
+0:04:01.500 --> 0:04:03.720
+shows the internet where you are
+
+127
+0:04:03.720 --> 0:04:05.940
+so we know how to find
+
+128
+0:04:05.940 --> 0:04:06.120
+you.
+

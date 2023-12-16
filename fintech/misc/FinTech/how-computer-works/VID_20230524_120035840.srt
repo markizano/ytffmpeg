@@ -1,0 +1,432 @@
+1
+00:00:00.540 --> 00:00:03.640
+So, let's talk about how your computer works.
+
+2
+00:00:05.180 --> 00:00:06.940
+This is really fascinating because
+
+3
+00:00:06.940 --> 00:00:08.960
+computers act and behave, or actually,
+
+4
+00:00:09.320 --> 00:00:09.880
+computers were
+
+5
+00:00:09.880 --> 00:00:12.160
+made in man's image a lot more
+
+6
+00:00:12.160 --> 00:00:13.580
+similarly than you'd think.
+
+7
+00:00:14.180 --> 00:00:15.680
+Let's imagine you have your computer here.
+
+8
+00:00:16.140 --> 00:00:17.620
+And a lot of people get this wrong.
+
+9
+00:00:17.740 --> 00:00:19.120
+They, you know, think storage and
+
+10
+00:00:19.120 --> 00:00:20.900
+memory, it's all the same stuff, right?
+
+11
+00:00:21.400 --> 00:00:22.740
+No, it's not.
+
+12
+00:00:23.340 --> 00:00:26.020
+Storage, what's on disk, is completely
+
+13
+00:00:26.020 --> 00:00:28.040
+different than what is in memory.
+
+14
+00:00:28.040 --> 00:00:30.320
+You may have noticed from older sessions
+
+15
+00:00:30.320 --> 00:00:32.460
+that it is called RAM, which stands
+
+16
+00:00:32.460 --> 00:00:33.300
+for Random
+
+17
+00:00:33.300 --> 00:00:34.300
+Access Memory.
+
+18
+00:00:34.760 --> 00:00:36.740
+And that's because it's a mess up
+
+19
+00:00:36.740 --> 00:00:37.800
+here trying to figure out what's going
+
+20
+00:00:37.800 --> 00:00:38.520
+on inside of this
+
+21
+00:00:38.520 --> 00:00:38.720
+thing.
+
+22
+00:00:39.260 --> 00:00:40.460
+You can think of it this way,
+
+23
+00:00:40.940 --> 00:00:42.980
+storage, this is what is stored for
+
+24
+00:00:42.980 --> 00:00:43.600
+long term.
+
+25
+00:00:43.880 --> 00:00:45.440
+This is those memories that you have
+
+26
+00:00:45.440 --> 00:00:47.380
+from, you know, winter of last year,
+
+27
+00:00:47.560 --> 00:00:48.620
+or COVID, or
+
+28
+00:00:48.620 --> 00:00:50.560
+the last presidential election, or,
+
+29
+00:00:50.740 --> 00:00:51.720
+you know, some things that it seems
+
+30
+00:00:51.720 --> 00:00:52.320
+like a lot of people
+
+31
+00:00:52.320 --> 00:00:54.180
+seem to be missing is, you know,
+
+32
+00:00:54.220 --> 00:00:56.340
+the ability to store information and
+
+33
+00:00:56.340 --> 00:00:57.340
+save it for later.
+
+34
+00:00:57.340 --> 00:00:59.900
+And be able to recall that information
+
+35
+00:00:59.900 --> 00:01:02.220
+into your memory banks.
+
+36
+00:01:02.760 --> 00:01:05.020
+And this is where you're maybe working
+
+37
+00:01:05.020 --> 00:01:06.440
+in some finance, you may be working
+
+38
+00:01:06.440 --> 00:01:06.800
+with some
+
+39
+00:01:06.800 --> 00:01:08.720
+numbers, you may be in some Excel
+
+40
+00:01:08.720 --> 00:01:11.660
+workbook, and you've got a view of
+
+41
+00:01:11.660 --> 00:01:12.320
+all these tables
+
+42
+00:01:12.320 --> 00:01:14.680
+and columns and stuff, a visual representation
+
+43
+00:01:14.680 --> 00:01:17.420
+of that in your head, in your
+
+44
+00:01:17.420 --> 00:01:18.640
+memory, in your
+
+45
+00:01:18.640 --> 00:01:20.380
+RAM, your random access location,
+
+46
+00:01:20.540 --> 00:01:22.180
+where all that information is stored
+
+47
+00:01:22.180 --> 00:01:24.000
+in immediate recall,
+
+48
+00:01:24.120 --> 00:01:25.420
+that frontal part of your brain that
+
+49
+00:01:25.420 --> 00:01:27.220
+says, okay, I got it, right?
+
+50
+00:01:27.220 --> 00:01:27.480
+Right there.
+
+51
+00:01:27.800 --> 00:01:28.020
+Right?
+
+52
+00:01:28.460 --> 00:01:30.180
+Let's say you switch context.
+
+53
+00:01:30.500 --> 00:01:32.540
+Let's say you changed apps on your
+
+54
+00:01:32.540 --> 00:01:35.360
+phone, that app, the state of its
+
+55
+00:01:35.360 --> 00:01:36.120
+being the fact
+
+56
+00:01:36.120 --> 00:01:38.400
+that it's been, you know, read off
+
+57
+00:01:38.400 --> 00:01:40.020
+the disk, all the configuration has
+
+58
+00:01:40.020 --> 00:01:40.960
+been read off the
+
+59
+00:01:40.960 --> 00:01:42.800
+disk, the binary information is now
+
+60
+00:01:42.800 --> 00:01:43.720
+inside of the memory.
+
+61
+00:01:44.280 --> 00:01:45.860
+To write all that information back
+
+62
+00:01:45.860 --> 00:01:47.840
+to the disk would be extremely expensive.
+
+63
+00:01:48.300 --> 00:01:50.020
+You see, there's a cost factor here.
+
+64
+00:01:50.560 --> 00:01:52.620
+RAM is really, really, really, really,
+
+65
+00:01:52.720 --> 00:01:53.560
+really fast.
+
+66
+00:01:53.980 --> 00:01:56.620
+Like nanosecond, one, two, three nanoseconds
+
+67
+00:01:56.620 --> 00:01:58.900
+it takes to read and write information off
+
+68
+00:01:58.900 --> 00:01:59.740
+of RAM.
+
+69
+00:02:00.300 --> 00:02:02.140
+The disk, however, can take anywhere
+
+70
+00:02:02.140 --> 00:02:03.760
+between two, three hundred milliseconds
+
+71
+00:02:03.760 --> 00:02:05.160
+and more.
+
+72
+00:02:05.880 --> 00:02:07.860
+So it's really expensive to take information
+
+73
+00:02:07.860 --> 00:02:10.020
+from RAM and transfer it back and
+
+74
+00:02:10.020 --> 00:02:10.380
+forth from
+
+75
+00:02:10.380 --> 00:02:10.800
+the disk.
+
+76
+00:02:11.160 --> 00:02:11.840
+So what do we do?
+
+77
+00:02:12.580 --> 00:02:14.640
+We open up files on the file
+
+78
+00:02:14.640 --> 00:02:16.540
+system, or have different places,
+
+79
+00:02:16.680 --> 00:02:17.460
+different chips, different
+
+80
+00:02:17.460 --> 00:02:19.960
+spaces where you can cache that information.
+
+81
+00:02:20.580 --> 00:02:22.400
+So after the information has been
+
+82
+00:02:22.400 --> 00:02:24.400
+read from the disk, processed by the
+
+83
+00:02:24.400 --> 00:02:25.480
+processor, stored
+
+84
+00:02:25.480 --> 00:02:27.300
+within the memory, information can
+
+85
+00:02:27.300 --> 00:02:29.200
+also be stored in cache, and that's
+
+86
+00:02:29.200 --> 00:02:30.020
+what that is.
+
+87
+00:02:30.460 --> 00:02:32.520
+Post-compiled information that's been
+
+88
+00:02:32.520 --> 00:02:34.500
+read from other places that can be
+
+89
+00:02:34.500 --> 00:02:35.340
+stored on disk
+
+90
+00:02:35.340 --> 00:02:38.240
+because it's not considered the authoritative
+
+91
+00:02:38.240 --> 00:02:39.040
+source of truth.
+
+92
+00:02:39.220 --> 00:02:40.680
+I just need a copy of this
+
+93
+00:02:40.680 --> 00:02:42.180
+data stored in some place where I
+
+94
+00:02:42.180 --> 00:02:43.860
+can get access to it later without
+
+95
+00:02:43.860 --> 00:02:45.880
+consuming a whole bunch of other resources
+
+96
+00:02:45.880 --> 00:02:47.720
+and processes trying to write that
+
+97
+00:02:47.720 --> 00:02:48.420
+data back
+
+98
+00:02:48.420 --> 00:02:48.900
+to disk.
+
+99
+00:02:49.340 --> 00:02:50.500
+This is why you can have a
+
+100
+00:02:50.500 --> 00:02:52.760
+device that's got 16 gigabytes of
+
+101
+00:02:52.760 --> 00:02:55.720
+memory and a terabyte's worth
+
+102
+00:02:55.720 --> 00:02:56.780
+of storage.
+
+103
+00:02:57.060 --> 00:02:58.420
+This is also why IT people might
+
+104
+00:02:58.420 --> 00:02:59.700
+be getting upset with you over the
+
+105
+00:02:59.700 --> 00:03:00.340
+fact that you don't
+
+106
+00:03:00.340 --> 00:03:02.060
+clarify the difference between storage
+
+107
+00:03:02.060 --> 00:03:03.160
+and memory.
+
+108
+00:03:03.560 --> 00:03:04.520
+It's not the same.
+

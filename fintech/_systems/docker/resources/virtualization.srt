@@ -1,0 +1,600 @@
+1
+00:00:01.660 --> 00:00:03.500
+So let's talk about virtualization.
+
+2
+00:00:04.800 --> 00:00:07.280
+Now let's say you're in an environment,
+
+3
+00:00:07.860 --> 00:00:09.640
+be it Windows, be it Linux, be
+
+4
+00:00:09.640 --> 00:00:10.020
+it Mac.
+
+5
+00:00:10.400 --> 00:00:11.840
+You probably have heard of a virtual
+
+6
+00:00:11.840 --> 00:00:14.640
+machine at some point, but what is that?
+
+7
+00:00:15.280 --> 00:00:17.060
+Well whenever you first start up the
+
+8
+00:00:17.060 --> 00:00:19.900
+computer, it needs to boot into the system.
+
+9
+00:00:20.200 --> 00:00:21.540
+That's where you access the BIOS.
+
+10
+00:00:21.720 --> 00:00:23.140
+The BIOS talks to your hard drive,
+
+11
+00:00:23.260 --> 00:00:24.820
+and then your hard drive has the
+
+12
+00:00:24.820 --> 00:00:25.900
+operating system on it.
+
+13
+00:00:25.740 --> 00:00:25.900
+ 
+
+14
+00:00:25.900 --> 00:00:28.800
+The operating system being that software
+
+15
+00:00:28.800 --> 00:00:31.520
+that talks to the disks inside of
+
+16
+00:00:31.520 --> 00:00:32.140
+a hard drive,
+
+17
+00:00:32.660 --> 00:00:34.560
+the sensors that detect the temperature
+
+18
+00:00:34.560 --> 00:00:36.120
+of the motherboard, that actually
+
+19
+00:00:36.120 --> 00:00:36.920
+speak to the
+
+20
+00:00:36.920 --> 00:00:38.640
+processor, that actually read and
+
+21
+00:00:38.640 --> 00:00:40.480
+write to the memory, that talk to
+
+22
+00:00:40.480 --> 00:00:42.100
+your monitor, access
+
+23
+00:00:42.100 --> 00:00:44.500
+your microphone, and other parts of
+
+24
+00:00:44.500 --> 00:00:45.020
+your computer.
+
+25
+00:00:45.480 --> 00:00:47.460
+Your operating system is what is responsible
+
+26
+00:00:47.460 --> 00:00:49.060
+for talking to the hardware.
+
+27
+00:00:49.060 --> 00:00:52.720
+Sometimes we want an environment where
+
+28
+00:00:52.720 --> 00:00:57.220
+all of that is predetermined, predestined, already
+
+29
+00:00:57.220 --> 00:00:59.760
+mocked up, and represents something
+
+30
+00:00:59.760 --> 00:01:02.180
+that is consistent, and something
+
+31
+00:01:02.180 --> 00:01:02.780
+we can actually
+
+32
+00:01:02.780 --> 00:01:03.160
+use.
+
+33
+00:01:03.460 --> 00:01:05.120
+That's where virtual machines come
+
+34
+00:01:05.120 --> 00:01:05.620
+into play.
+
+35
+00:01:06.280 --> 00:01:08.800
+Virtual machines are a virtualization
+
+36
+00:01:08.800 --> 00:01:10.360
+of your operating system.
+
+37
+00:01:10.660 --> 00:01:13.160
+They simulate the hardware that your
+
+38
+00:01:13.160 --> 00:01:15.520
+operating system talks to in order
+
+39
+00:01:15.520 --> 00:01:16.600
+to create something
+
+40
+00:01:16.600 --> 00:01:18.000
+like a virtual machine.
+
+41
+00:01:18.240 --> 00:01:20.780
+VMWare and VirtualBox are examples
+
+42
+00:01:20.780 --> 00:01:23.480
+of virtualization software that give
+
+43
+00:01:23.480 --> 00:01:25.280
+you an operating system-like
+
+44
+00:01:25.280 --> 00:01:28.060
+environment without needing to actually
+
+45
+00:01:28.060 --> 00:01:30.200
+boot into another operating system.
+
+46
+00:01:31.160 --> 00:01:32.820
+Now if you want to pay for
+
+47
+00:01:32.820 --> 00:01:34.700
+the licensing from Oracle, you can
+
+48
+00:01:34.700 --> 00:01:35.680
+use VMWare.
+
+49
+00:01:36.080 --> 00:01:38.960
+VMWare also allows you to deploy fleets
+
+50
+00:01:38.960 --> 00:01:41.420
+upon fleets of virtual machines.
+
+51
+00:01:41.700 --> 00:01:44.460
+So say you have one really huge
+
+52
+00:01:44.460 --> 00:01:46.500
+server that's got a lot of resources
+
+53
+00:01:46.500 --> 00:01:48.100
+like a terabyte of
+
+54
+00:01:48.100 --> 00:01:50.540
+hard drive space, 64 gigabytes of
+
+55
+00:01:50.540 --> 00:01:54.360
+RAM, and 16 cores of CPU power.
+
+56
+00:01:54.880 --> 00:01:56.920
+You can then create four different
+
+57
+00:01:56.920 --> 00:01:59.280
+machines inside of that physical hardware
+
+58
+00:01:59.280 --> 00:02:00.120
+to create
+
+59
+00:02:00.120 --> 00:02:02.180
+4 additional virtual machines.
+
+60
+00:02:02.860 --> 00:02:04.060
+Pretty cool stuff, isn't it?
+
+61
+00:02:04.660 --> 00:02:07.180
+KVM stands for Kernel Virtual Machine.
+
+62
+00:02:07.480 --> 00:02:09.960
+This is a lower level version of
+
+63
+00:02:09.960 --> 00:02:11.840
+a virtual machine that allows you
+
+64
+00:02:11.840 --> 00:02:12.900
+to access an environment
+
+65
+00:02:12.900 --> 00:02:14.660
+that is strictly based off of the kernel.
+
+66
+00:02:16.000 --> 00:02:18.880
+KVMs and virtual machines only work
+
+67
+00:02:18.880 --> 00:02:20.940
+whenever you're talking to physical hardware.
+
+68
+00:02:21.660 --> 00:02:24.700
+Now Docker is a new instantiation
+
+69
+00:02:24.700 --> 00:02:26.620
+of this virtualization software.
+
+70
+00:02:27.400 --> 00:02:29.940
+Docker surrounds just the process,
+
+71
+00:02:30.340 --> 00:02:32.040
+whereas virtual machines surround
+
+72
+00:02:32.040 --> 00:02:33.820
+the entire operating system.
+
+73
+00:02:33.400 --> 00:02:33.820
+ 
+
+74
+00:02:34.300 --> 00:02:35.960
+One of the confounding things that
+
+75
+00:02:35.960 --> 00:02:37.540
+drove me nuts whenever I was first
+
+76
+00:02:37.540 --> 00:02:38.400
+learning about Docker
+
+77
+00:02:38.400 --> 00:02:40.020
+when it first came out, back whenever
+
+78
+00:02:40.020 --> 00:02:44.380
+it was still open community, we thought
+
+79
+00:02:44.380 --> 00:02:44.860
+that it was
+
+80
+00:02:44.860 --> 00:02:45.500
+a virtual machine.
+
+81
+00:02:45.600 --> 00:02:47.040
+Or we kind of sort of placated
+
+82
+00:02:47.040 --> 00:02:48.060
+it and used it as if it
+
+83
+00:02:48.060 --> 00:02:49.140
+was a virtual machine because we
+
+84
+00:02:49.140 --> 00:02:50.480
+were trying to SSH into it.
+
+85
+00:02:51.120 --> 00:02:53.060
+Well, you don't do that with Docker.
+
+86
+00:02:53.780 --> 00:02:55.820
+We have now learned a lot, and
+
+87
+00:02:55.820 --> 00:02:58.820
+Docker actually surrounds just the process.
+
+88
+00:02:58.820 --> 00:03:01.980
+Just that one process can believe
+
+89
+00:03:01.980 --> 00:03:03.360
+that it's inside of a RedHat
+
+90
+00:03:03.360 --> 00:03:04.640
+environment, a Debian
+
+91
+00:03:04.640 --> 00:03:06.500
+environment, a Windows environment.
+
+92
+00:03:06.680 --> 00:03:10.140
+And yes, Docker also supports Macintosh
+
+93
+00:03:10.140 --> 00:03:11.440
+virtual containers.
+
+94
+00:03:12.440 --> 00:03:14.780
+Now if you want to deploy fleets
+
+95
+00:03:14.780 --> 00:03:17.440
+of virtual machines, you can use Control
+
+96
+00:03:17.440 --> 00:03:18.140
+Panel, which
+
+97
+00:03:18.140 --> 00:03:19.120
+is open source software.
+
+98
+00:03:19.220 --> 00:03:20.520
+You can go download it and it
+
+99
+00:03:20.520 --> 00:03:21.980
+will manage the virtual machines for
+
+100
+00:03:21.980 --> 00:03:23.260
+you in a virtual
+
+101
+00:03:23.260 --> 00:03:23.900
+like environment.
+
+102
+00:03:24.380 --> 00:03:26.080
+If you want to deploy fleets of
+
+103
+00:03:26.080 --> 00:03:28.000
+Docker containers, you can use Docker
+
+104
+00:03:28.000 --> 00:03:29.400
+Compose, or you can also
+
+105
+00:03:29.400 --> 00:03:33.300
+use Kubernetes, which is automation
+
+106
+00:03:33.300 --> 00:03:34.640
+software for your containers.
+
+107
+00:03:35.540 --> 00:03:38.080
+Now to give you a visual representation
+
+108
+00:03:38.080 --> 00:03:40.800
+of what these levels of virtualization
+
+109
+00:03:40.800 --> 00:03:41.400
+looks like,
+
+110
+00:03:41.700 --> 00:03:42.840
+let's take a look right quick.
+
+111
+00:03:43.160 --> 00:03:45.140
+We've got hardware, which includes
+
+112
+00:03:45.140 --> 00:03:46.860
+your mouse, your keyboard, your CPU,
+
+113
+00:03:47.200 --> 00:03:49.380
+your GPU, your central
+
+114
+00:03:49.380 --> 00:03:50.980
+processing unit, your graphics card,
+
+115
+00:03:51.080 --> 00:03:51.900
+your memory, your disk.
+
+116
+00:03:52.320 --> 00:03:54.520
+All the hardware that you can physically
+
+117
+00:03:54.520 --> 00:03:56.720
+put your hands on, that is what
+
+118
+00:03:56.720 --> 00:03:57.840
+actually is supported
+
+119
+00:03:57.840 --> 00:03:59.500
+by your operating system.
+
+120
+00:03:59.900 --> 00:04:02.560
+A virtual machine takes a virtualization
+
+121
+00:04:02.560 --> 00:04:04.860
+of that hardware, and that's why I
+
+122
+00:04:04.860 --> 00:04:06.240
+call it soft
+
+123
+00:04:06.240 --> 00:04:08.760
+hardware, because it's software that
+
+124
+00:04:08.760 --> 00:04:10.480
+simulates what hardware is like.
+
+125
+00:04:10.780 --> 00:04:12.420
+And this is where you can contain
+
+126
+00:04:12.420 --> 00:04:14.160
+your operating system inside of a
+
+127
+00:04:14.160 --> 00:04:15.120
+virtualized environment
+
+128
+00:04:15.120 --> 00:04:16.900
+without actually having to create
+
+129
+00:04:16.900 --> 00:04:18.800
+a physical environment that represents
+
+130
+00:04:18.800 --> 00:04:19.800
+how you're going
+
+131
+00:04:19.800 --> 00:04:20.740
+to access your computer.
+
+132
+00:04:21.260 --> 00:04:23.080
+This is how you can have Windows
+
+133
+00:04:23.080 --> 00:04:25.140
+running on Linux, Linux running on
+
+134
+00:04:25.140 --> 00:04:26.340
+Windows, and Windows
+
+135
+00:04:26.340 --> 00:04:27.740
+on Linux running on a Mac, and
+
+136
+00:04:27.740 --> 00:04:30.680
+vice versa, and all the other different permutations.
+
+137
+00:04:31.220 --> 00:04:33.860
+And then finally, Docker is containerization
+
+138
+00:04:33.860 --> 00:04:36.100
+that goes down to a single process,
+
+139
+00:04:36.440 --> 00:04:36.960
+or maybe
+
+140
+00:04:36.960 --> 00:04:38.960
+process group, if that process is
+
+141
+00:04:38.960 --> 00:04:40.940
+like a, you know, like Syslog, for
+
+142
+00:04:40.940 --> 00:04:41.940
+example, is actually
+
+143
+00:04:41.940 --> 00:04:43.840
+a container, a supervisor, and then
+
+144
+00:04:43.840 --> 00:04:45.040
+the Syslog agent itself.
+
+145
+00:04:45.580 --> 00:04:47.520
+Some things are multi-process, and
+
+146
+00:04:47.520 --> 00:04:49.000
+that's getting a little low-level.
+
+147
+00:04:49.260 --> 00:04:51.940
+The idea is Docker creates a containerized
+
+148
+00:04:51.940 --> 00:04:55.020
+environment that allows your application to
+
+149
+00:04:55.020 --> 00:04:57.360
+think it's on Red Hat, or Debian,
+
+150
+00:04:57.680 --> 00:04:59.640
+or Windows, or Mac, or whichever.
+

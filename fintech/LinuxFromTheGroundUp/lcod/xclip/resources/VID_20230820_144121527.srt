@@ -1,0 +1,184 @@
+1
+0:00:00.820 --> 0:00:02.820
+Here is your Linux command of
+
+2
+0:00:02.820 --> 0:00:06.500
+the day: xclip. This gives you
+
+3
+0:00:06.500 --> 0:00:07.260
+command-line access
+
+4
+0:00:07.260 --> 0:00:09.060
+to your clipboard. It's really cool.
+
+5
+0:00:10.280 --> 0:00:12.460
+Oh yeah, did you know Linux
+
+6
+0:00:12.460 --> 0:00:13.080
+has multiple
+
+7
+0:00:13.080 --> 0:00:16.080
+clipboards? I remember when Android
+
+8
+0:00:16.080 --> 0:00:17.460
+had like 10 of them, or
+
+9
+0:00:17.460 --> 0:00:19.380
+at least LG did. But
+
+10
+0:00:19.380 --> 0:00:21.620
+yeah, there's primary, there's secondary,
+
+11
+0:00:21.880 --> 0:00:24.500
+and there's clipboard. Oh yeah, did
+
+12
+0:00:24.500 --> 0:00:24.620
+you
+
+13
+0:00:24.620 --> 0:00:25.960
+know it supported multiple formats
+
+14
+0:00:25.960 --> 0:00:27.300
+with the `-t` option too?
+
+15
+0:00:28.160 --> 0:00:29.140
+So you mean to tell
+
+16
+0:00:29.140 --> 0:00:30.260
+me I can take text on
+
+17
+0:00:30.260 --> 0:00:32.440
+the screen and select it in
+
+18
+0:00:32.440 --> 0:00:33.800
+the terminal to put it on
+
+19
+0:00:33.800 --> 0:00:36.880
+the clipboard, and I can run
+
+20
+0:00:36.880 --> 0:00:37.980
+a command that gives me the
+
+21
+0:00:37.980 --> 0:00:40.680
+output, and I can just
+
+22
+0:00:40.680 --> 0:00:41.820
+grep out the stuff that I
+
+23
+0:00:41.820 --> 0:00:43.800
+want and slice and dice? Well
+
+24
+0:00:43.800 --> 0:00:44.740
+gee, if you wonder why I
+
+25
+0:00:44.740 --> 0:00:46.100
+find things faster than you, this
+
+26
+0:00:46.100 --> 0:00:48.920
+might be it. Oh yeah, remember
+
+27
+0:00:48.920 --> 0:00:50.200
+that QR encode
+
+28
+0:00:50.200 --> 0:00:52.480
+video that we did before? Well,
+
+29
+0:00:52.800 --> 0:00:53.940
+let me just take a screenshot
+
+30
+0:00:53.940 --> 0:00:54.420
+of this.
+
+31
+0:01:00.080 --> 0:01:01.140
+So if we try to take
+
+32
+0:01:01.140 --> 0:01:02.200
+a look at the contents of
+
+33
+0:01:02.200 --> 0:01:05.020
+the clipboard, we get gobbledygook.
+
+34
+0:01:05.560 --> 0:01:06.940
+Well, I guess you're gonna have
+
+35
+0:01:06.940 --> 0:01:07.880
+to take a screenshot of that
+
+36
+0:01:07.880 --> 0:01:08.760
+QR code and tell me
+
+37
+0:01:08.760 --> 0:01:11.060
+what you found. Because if I
+
+38
+0:01:11.060 --> 0:01:12.500
+take the contents of the clipboard
+
+39
+0:01:12.500 --> 0:01:12.980
+and put it
+
+40
+0:01:12.980 --> 0:01:14.720
+inside of a file, and then
+
+41
+0:01:14.720 --> 0:01:15.520
+we take a look at that
+
+42
+0:01:15.520 --> 0:01:23.020
+file, we get that QR code
+
+43
+0:01:23.020 --> 0:01:23.300
+back.
+
+44
+0:01:24.740 --> 0:01:26.680
+Hmm, I wonder what it says.
+
+45
+0:01:27.560 --> 0:01:29.460
+So yeah, it's fun accessing our
+
+46
+0:01:29.460 --> 0:01:30.800
+clipboard from the command line!
+

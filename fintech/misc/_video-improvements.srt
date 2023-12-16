@@ -1,0 +1,413 @@
+1
+0:00:00.420 --> 0:00:01.840
+In the last couple of days,
+
+2
+0:00:02.000 --> 0:00:03.100
+I've been able to become more
+
+3
+0:00:03.100 --> 0:00:04.760
+efficient with Whisper and
+
+4
+0:00:04.760 --> 0:00:06.840
+the AI tools that are available
+
+5
+0:00:06.840 --> 0:00:09.100
+at my disposal, far more efficiently
+
+6
+0:00:09.100 --> 0:00:10.120
+than I could ever possibly
+
+7
+0:00:10.120 --> 0:00:11.840
+hope to achieve with CapCut.
+
+8
+0:00:12.440 --> 0:00:14.160
+If you notice, my video output
+
+9
+0:00:14.160 --> 0:00:16.680
+production has dramatically increased.
+
+10
+0:00:17.040 --> 0:00:18.400
+The quality of the videos has
+
+11
+0:00:18.400 --> 0:00:19.600
+also improved as well.
+
+12
+0:00:20.160 --> 0:00:21.500
+This is because I'm getting more
+
+13
+0:00:21.500 --> 0:00:23.560
+efficient with my tools using FFmpeg
+
+14
+0:00:23.560 --> 0:00:24.780
+and creating an
+
+15
+0:00:24.780 --> 0:00:26.280
+app that will automatically translate
+
+16
+0:00:26.280 --> 0:00:27.880
+a JSON description of what I
+
+17
+0:00:27.880 --> 0:00:28.420
+want to do with the
+
+18
+0:00:29.100 --> 0:00:30.800
+video into instructions that FFmpeg
+
+19
+0:00:30.800 --> 0:00:31.840
+will go and execute on.
+
+20
+0:00:32.200 --> 0:00:33.840
+And then I have a voice-to-text
+
+21
+0:00:33.897 --> 0:00:34.960
+command that will go
+
+22
+0:00:34.960 --> 0:00:37.020
+and take my video, automatically caption
+
+23
+0:00:37.020 --> 0:00:38.880
+it into an SRT file, and
+
+24
+0:00:38.880 --> 0:00:41.160
+then inscribe that SRT file directly
+
+25
+0:00:41.160 --> 0:00:41.760
+into the video.
+
+26
+0:00:42.040 --> 0:00:43.880
+This allows me to create videos
+
+27
+0:00:43.880 --> 0:00:46.340
+with automatic captions, and I'm starting
+
+28
+0:00:46.340 --> 0:00:47.220
+to put disclaimers
+
+29
+0:00:47.220 --> 0:00:48.040
+at the top of the video
+
+30
+0:00:48.040 --> 0:00:49.860
+saying, hey, this video has been
+
+31
+0:00:49.860 --> 0:00:50.980
+automatically captioned by
+
+32
+0:00:50.980 --> 0:00:51.360
+Whisper.
+
+33
+0:00:52.380 --> 0:00:53.920
+CapCut, this is a challenge to
+
+34
+0:00:53.920 --> 0:00:54.120
+you.
+
+35
+0:00:54.120 --> 0:00:55.100
+If you can make your interface
+
+36
+0:00:55.100 --> 0:00:56.940
+so delicious that I can't avoid
+
+37
+0:00:56.940 --> 0:00:58.360
+using it, that it's so
+
+38
+0:00:58.360 --> 0:00:59.920
+good that I can't help but
+
+39
+0:00:59.920 --> 0:01:01.320
+use it, if you can improve
+
+40
+0:01:01.320 --> 0:01:02.860
+your caption editor, because I'm
+
+41
+0:01:02.860 --> 0:01:03.680
+one of the few people that
+
+42
+0:01:03.680 --> 0:01:04.960
+actually do go through and edit
+
+43
+0:01:04.960 --> 0:01:07.220
+my captions, if you can make
+
+44
+0:01:07.220 --> 0:01:09.160
+that process simple, then I might
+
+45
+0:01:09.160 --> 0:01:10.260
+be more apt to using your
+
+46
+0:01:10.260 --> 0:01:11.240
+application more often.
+
+47
+0:01:11.620 --> 0:01:13.400
+If you can provide additional support
+
+48
+0:01:13.400 --> 0:01:15.000
+for Linux and make it such
+
+49
+0:01:15.000 --> 0:01:16.080
+that the web browser
+
+50
+0:01:16.080 --> 0:01:17.900
+doesn't freeze and seize up such
+
+51
+0:01:17.900 --> 0:01:18.940
+that I can't even edit a
+
+52
+0:01:18.940 --> 0:01:21.300
+simple 30-second video, then I
+
+53
+0:01:21.300 --> 0:01:22.400
+might be more apt to use
+
+54
+0:01:22.400 --> 0:01:23.000
+your application.
+
+55
+0:01:23.220 --> 0:01:24.820
+One of the reasons why I
+
+56
+0:01:24.820 --> 0:01:26.420
+love FFmpeg so much is because
+
+57
+0:01:26.420 --> 0:01:28.080
+the application does not crash.
+
+58
+0:01:28.760 --> 0:01:30.520
+There's no chance of the application
+
+59
+0:01:30.520 --> 0:01:32.160
+just seizing up because it failed
+
+60
+0:01:32.160 --> 0:01:32.840
+to render some
+
+61
+0:01:32.840 --> 0:01:34.420
+sprites in order to put them
+
+62
+0:01:34.420 --> 0:01:35.540
+on the screen and display them
+
+63
+0:01:35.540 --> 0:01:36.000
+accordingly.
+
+64
+0:01:36.560 --> 0:01:38.040
+I've been able to become more
+
+65
+0:01:38.040 --> 0:01:39.860
+efficient with plain text documents
+
+66
+0:01:39.860 --> 0:01:41.820
+and plain text descriptions
+
+67
+0:01:41.820 --> 0:01:43.340
+on what I want the video
+
+68
+0:01:43.340 --> 0:01:43.680
+to do.
+
+69
+0:01:43.800 --> 0:01:45.640
+The only benefit CapCut gives me
+
+70
+0:01:45.640 --> 0:01:48.220
+is the visual timeline editor, but
+
+71
+0:01:48.220 --> 0:01:48.740
+that's okay.
+
+72
+0:01:48.900 --> 0:01:50.680
+Being a text guy, I keep
+
+73
+0:01:50.680 --> 0:01:51.520
+that kind of stuff in my
+
+74
+0:01:51.520 --> 0:01:51.880
+head.
+
+75
+0:01:52.860 --> 0:01:54.240
+So the next challenge for you,
+
+76
+0:01:54.480 --> 0:01:55.920
+CapCut, is to see what you
+
+77
+0:01:55.920 --> 0:01:57.380
+can do to make your application
+
+78
+0:01:57.380 --> 0:01:58.940
+that much more juicy, that much
+
+79
+0:01:58.940 --> 0:02:01.860
+more delicious, that I can't help
+
+80
+0:02:01.860 --> 0:02:02.680
+but use your product.
+
+81
+0:02:03.180 --> 0:02:06.360
+In the meantime, my process is
+
+82
+0:02:06.360 --> 0:02:06.900
+amazing.
+
+83
+0:02:07.360 --> 0:02:09.220
+I record my video, I upload
+
+84
+0:02:09.220 --> 0:02:12.400
+them to my laptop, I inscribe
+
+85
+0:02:12.400 --> 0:02:14.060
+a couple of instructions to clip
+
+86
+0:02:14.060 --> 0:02:15.200
+out the pieces I need, put
+
+87
+0:02:15.200 --> 0:02:16.660
+the animations in place, I can
+
+88
+0:02:16.660 --> 0:02:17.860
+animate things almost as good
+
+89
+0:02:17.860 --> 0:02:20.300
+as CapCut now, and the captions
+
+90
+0:02:20.300 --> 0:02:22.180
+get automatically encoded in the video
+
+91
+0:02:22.180 --> 0:02:22.520
+as well.
+
+92
+0:02:22.780 --> 0:02:24.180
+Hardly any work on my part.
+
+93
+0:02:24.560 --> 0:02:26.140
+This is absolutely amazing.
+
+94
+0:02:26.700 --> 0:02:27.380
+And for those of you that
+
+95
+0:02:27.380 --> 0:02:28.620
+are catching on and picking up
+
+96
+0:02:28.620 --> 0:02:29.340
+on some of the stuff that
+
+97
+0:02:29.340 --> 0:02:30.133
+I'm putting down,
+
+98
+0:02:30.248 --> 0:02:32.300
+just know, as time
+
+99
+0:02:32.300 --> 0:02:36.200
+goes on, it's going to get
+
+100
+0:02:36.200 --> 0:02:36.420
+better.
+
+101
+0:02:37.020 --> 0:02:38.100
+Thank you so much for following,
+
+102
+0:02:38.220 --> 0:02:38.940
+and I look forward to teaching
+
+103
+0:02:38.940 --> 0:02:40.19
+you a helluva of a lot more!
+
+
