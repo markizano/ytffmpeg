@@ -1,7 +1,16 @@
+'''
+Command line interface entrypoint for `ytffmpeg` command.
 
+This module will be responsible for parsing command line arguments and
+calling the appropriate sub-modules to perform the actions requested.
+'''
 from argparse import ArgumentParser, RawTextHelpFormatter
 from kizano import getLogger
 log = getLogger(__name__)
+
+from .new import new
+from .refresh import refresh
+from .publish import publish
 
 class YTFFMPEG_Action(object):
     NEW = 'new'
@@ -43,28 +52,11 @@ class YTFFMPEG_Cli(object):
         )
 
         options.add_argument(
-            'new',
-            action='store_const',
+            '--action',
+            action='store',
             dest='action',
-            help='Create a new project directory.',
-            const=YTFFMPEG_Action.NEW
-        )
-
-        options.add_argument(
-            'refresh',
-            action='store_const',
-            dest='action',
-            help=('Refresh the resources directory with any new media. Convert resources/*.mp4 to mkv and update ytffmpeg.yml '
-                'as necessary with new available media.'),
-            const=YTFFMPEG_Action.REFRESH
-        )
-
-        options.add_argument(
-            'publish',
-            action='store_const',
-            dest='action',
-            help='For each of the supported configured social media sites, publish the build results to the channel.',
-            const=YTFFMPEG_Action.PUBLISH
+            help='Choose an action to take.',
+            choices=[YTFFMPEG_Action.NEW, YTFFMPEG_Action.REFRESH, YTFFMPEG_Action.PUBLISH],
         )
 
         opts = options.parse_args()
@@ -75,15 +67,11 @@ class YTFFMPEG_Cli(object):
         Interprets command line options and calls the subsequent actions to take.
         These will be built out as sub-modules to this module.
         '''
-        # These don't exist yet, but will be created.
-        from .new import main as new
-        from .refresh import main as refresh
-        from .publish import main as publish
         action = {
             YTFFMPEG_Action.NEW: new,
             YTFFMPEG_Action.REFRESH: refresh,
             YTFFMPEG_Action.PUBLISH: publish
-        }.get(self.config['action'])
+        }.get(self.config['ytffmpeg']['action'])
         if not action:
             log.error('Invalid action: %s', self.config['action'])
             return 1

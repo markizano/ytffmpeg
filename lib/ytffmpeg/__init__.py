@@ -12,6 +12,8 @@ def main():
     Let's you run commands for ytffmpeg.
     '''
     config = kizano.getConfig()
+    if 'ytffmpeg' not in config:
+        config['ytffmpeg'] = {}
     ytffmpeg = cli.YTFFMPEG_Cli(config)
     ytffmpeg.execute()
 

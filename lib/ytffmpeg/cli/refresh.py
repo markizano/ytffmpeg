@@ -8,10 +8,10 @@ import warnings
 import ffmpeg
 from multiprocessing import Process
 from typing import Iterable
-from sympy import Segment
 from glob import glob
 
 from faster_whisper import WhisperModel
+from faster_whisper.transcribe import Segment
 from faster_whisper.utils import format_timestamp
 
 from kizano.utils import read_yaml, write_yaml
@@ -58,7 +58,7 @@ class RefreshCommand(object):
         '''
         filepath = self.filename(path)
         output_path = os.path.join('build', f"{filepath}.wav")
-        log.info(f"Extracting audio from {filepath}...")
+        log.info(f"Extracting audio from {filepath} to {output_path}...")
         # Check to see if the file is already in the build directory.
         if os.path.exists(output_path):
             if self.config['ytffmpeg'].get('overwrite', False):
@@ -77,12 +77,13 @@ class RefreshCommand(object):
         log.info('Done extracting audio!')
         return output_path
 
-    def get_subtitles(self, audio_path: str) -> str:
+    def get_subtitles(self, video_path: str) -> str:
         '''
         Input an audio path and output a SRT file containing the subtitles.
         '''
-        srt_path = os.path.join('build', f"{self.filename(audio_path)}.srt")
-        log.info(f"Generating subtitles for {srt_path} from {audio_path}... This might take a while...")
+        audio_path = self.get_audio(video_path)
+        srt_path = os.path.join('build', f"{self.filename(video_path)}.srt")
+        log.info(f"Generating subtitles for {srt_path} from {video_path}... This might take a while...")
         if os.path.exists(srt_path):
             if self.config['ytffmpeg'].get('overwrite', False):
                 log.info(f"Overwriting existing subtitles for {srt_path}!")
@@ -90,7 +91,6 @@ class RefreshCommand(object):
                 log.info(f"Subtitles already generated for {srt_path}!")
                 return srt_path
         args = {
-            'verbose': True,
             'word_timestamps': True,
             'language': os.getenv('LANGUAGE', 'en'),
         }
@@ -152,7 +152,7 @@ class RefreshCommand(object):
             'metadata:s:v': 'language=eng',
             'metadata:s:a': 'language=eng'
         }
-        ffmpeg.input(resource).output(mkvfile, **out_opts).run()
+        ffmpeg.input(resource).output(mkvfile, **out_opts).global_args('-hide_banner').run()
         if self.config['ytffmpeg'].get('delete_mp4', False):
             log.debug(f'Deleting {resource} to save on disk space.')
             os.unlink(resource)
@@ -187,15 +187,17 @@ def refresh(config: dict) -> int:
                 'output': 'build/%s.mp4' % cmd.filename(resource),
             })
             new_vid_tpl['metadata']['title'] = new_vid_tpl['metadata']['description'] = ''
+            cmd.mp4tompv(resource)
+            cmd.get_subtitles(os.path.realpath(resource))
             # Start the mpv conversion in a subprocess.
-            conversion = Process(target=cmd.mp4tompv, args=(os.path.realpath(resource),))
-            conversion.start()
-            if config['ytffmpeg'].get('subtitles', True):
-                # Start the subtitle generation in a subprocess.
-                subtitles = Process(target=cmd.get_subtitles, args=(os.path.realpath(resource),))
-                subtitles.start()
-                subtitles.join()
-            conversion.join()
+            # conversion = Process(target=cmd.mp4tompv, args=(os.path.realpath(resource),))
+            # conversion.start()
+            # if config['ytffmpeg'].get('subtitles', True):
+            #     # Start the subtitle generation in a subprocess.
+            #     subtitles = Process(target=cmd.get_subtitles, args=(os.path.realpath(resource),))
+            #     subtitles.start()
+            #     subtitles.join()
+            # conversion.join()
             log.info('Resources have been processed!')
             log.info('Updating ytffmpeg.yml configuration...')
             # Load ytffmpeg.yml config and append the new video. Re-write the updates to disk.

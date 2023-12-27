@@ -42,6 +42,10 @@ desktop.ini
 
 # Python cache
 __pycache__/
+build/
+*.egg-info
+.eggs
+dist/
 
 # Makefile's are generated, so no need to keep them under VCS.
 Makefile

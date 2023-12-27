@@ -25,10 +25,17 @@ setup_opts = {
     'tests_require'       : ['pytest', 'mock'],
     'install_requires'    : [
       'PyYAML>=6.0.1',
+      'kizano',
+      'ffmpeg-python==0.2.0',
+      'openai',
+      'openai-whisper',
+      'faster-whisper',
+      'numba',
+      'requests'
     ],
-    'package_dir'         : { 'ytffmpeg': 'lib' },
+    'package_dir'         : { 'ytffmpeg': 'lib/ytffmpeg' },
     'packages'            : [
-      'ytffmpeg',
+      'ytffmpeg', 'ytffmpeg.cli'
     ],
     'scripts'             : glob('bin/*'),
     'entry_points': {
