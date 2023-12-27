@@ -11,6 +11,7 @@ graphs. Simply describe what you want the video to do and this app will help you
 changes.
 
 
+# Usage
 When recording from phone or cam, it's difficult to manage all the media and content that comes in 
 without paying for crazy software to get it done. With this open-source product, you can simply 
 `pip3 install ffmpeg-youtube` and go!
@@ -41,7 +42,7 @@ has been updated with the new video. If you have a preferred name for it, you sh
 the file prior to running `ytffmpeg refresh`.
 
 Observe that subtitles will also be generated as a result of this update. To avoid this, you can
-use `--no-subtitles` when executing `ytffmpeg refresh --no-subtitles` and it will go a bit faster. 
+use `--no-auto-subtitles` when executing `ytffmpeg refresh --no-auto-subtitles` and it will go a bit faster. 
 
 You can update the YAML configuration to have it execute a number of filters and stream the videos
 together into a final cut that can be used for social media sites and such.
