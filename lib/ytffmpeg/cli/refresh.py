@@ -6,6 +6,7 @@ and auto-generate subtitles for it using the `faster_whisper` library.
 import os, io
 import warnings
 import ffmpeg
+import time
 from multiprocessing import Process
 from typing import Iterable
 from glob import glob
@@ -44,7 +45,11 @@ class RefreshCommand(object):
 
     def __init__(self, config: dict):
         self.config = config
+        log.info('Loading whisper model...')
+        now = time.time()
         self.whisper = WhisperModel(RefreshCommand.WHISPER_MODEL, device=Devices.GPU, compute_type='auto')
+        then = time.time()
+        log.info(f'Whisper model loaded in {round(then-now,4)} seconds!')
 
     def filename(self, path: str) -> str:
         '''
@@ -108,6 +113,7 @@ class RefreshCommand(object):
         Write out the SRT file.
         '''
         log.info('Writing out SRT file...')
+        now = time.time()
         i = 1
         srt_tpl = '%d\n%s --> %s\n%s\n\n'
         with io.open(srt_path, "w", encoding="utf-8") as srt:
@@ -130,7 +136,8 @@ class RefreshCommand(object):
                     srt.write( srt_tpl % ( i, stime, etime, text ) )
                     i += 1
             srt.flush()
-        log.info('Done writing SRT file!')
+        then = time.time()
+        log.info(f'Done writing SRT file in {round(then-now, 4)} seconds!')
 
     def mp4tompv(self, resource: str) -> str:
         '''
@@ -187,17 +194,17 @@ def refresh(config: dict) -> int:
                 'output': 'build/%s.mp4' % cmd.filename(resource),
             })
             new_vid_tpl['metadata']['title'] = new_vid_tpl['metadata']['description'] = ''
-            cmd.mp4tompv(resource)
-            cmd.get_subtitles(os.path.realpath(resource))
+            # cmd.mp4tompv(resource)
+            # cmd.get_subtitles(os.path.realpath(resource))
             # Start the mpv conversion in a subprocess.
-            # conversion = Process(target=cmd.mp4tompv, args=(os.path.realpath(resource),))
-            # conversion.start()
-            # if config['ytffmpeg'].get('subtitles', True):
-            #     # Start the subtitle generation in a subprocess.
-            #     subtitles = Process(target=cmd.get_subtitles, args=(os.path.realpath(resource),))
-            #     subtitles.start()
-            #     subtitles.join()
-            # conversion.join()
+            conversion = Process(target=cmd.mp4tompv, args=(os.path.realpath(resource),))
+            conversion.start()
+            if config['ytffmpeg'].get('subtitles', True):
+                # Start the subtitle generation in a subprocess.
+                subtitles = Process(target=cmd.get_subtitles, args=(os.path.realpath(resource),))
+                subtitles.start()
+                subtitles.join()
+            conversion.join()
             log.info('Resources have been processed!')
             log.info('Updating ytffmpeg.yml configuration...')
             # Load ytffmpeg.yml config and append the new video. Re-write the updates to disk.
