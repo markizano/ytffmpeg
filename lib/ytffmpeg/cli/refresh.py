@@ -47,7 +47,7 @@ class RefreshCommand(object):
         self.config = config
         log.info('Loading whisper model...')
         now = time.time()
-        self.whisper = WhisperModel(RefreshCommand.WHISPER_MODEL, device=Devices.GPU, compute_type='auto')
+        self.whisper = WhisperModel(RefreshCommand.WHISPER_MODEL, device=Devices.CPU, compute_type='auto')
         then = time.time()
         log.info(f'Whisper model loaded in {round(then-now,4)} seconds!')
 
@@ -195,15 +195,15 @@ def refresh(config: dict) -> int:
             })
             new_vid_tpl['metadata']['title'] = new_vid_tpl['metadata']['description'] = ''
             # cmd.mp4tompv(resource)
-            # cmd.get_subtitles(os.path.realpath(resource))
             # Start the mpv conversion in a subprocess.
             conversion = Process(target=cmd.mp4tompv, args=(os.path.realpath(resource),))
             conversion.start()
             if config['ytffmpeg'].get('subtitles', True):
+                cmd.get_subtitles(os.path.realpath(resource))
                 # Start the subtitle generation in a subprocess.
-                subtitles = Process(target=cmd.get_subtitles, args=(os.path.realpath(resource),))
-                subtitles.start()
-                subtitles.join()
+                # subtitles = Process(target=cmd.get_subtitles, args=(os.path.realpath(resource),))
+                # subtitles.start()
+                # subtitles.join()
             conversion.join()
             log.info('Resources have been processed!')
             log.info('Updating ytffmpeg.yml configuration...')

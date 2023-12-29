@@ -9,11 +9,13 @@ from kizano import getLogger
 log = getLogger(__name__)
 
 from .new import new
+from .build import build
 from .refresh import refresh
 from .publish import publish
 
 class YTFFMPEG_Action(object):
     NEW = 'new'
+    BUILD = 'build'
     REFRESH = 'refresh'
     PUBLISH = 'publish'
 
@@ -51,15 +53,23 @@ class YTFFMPEG_Cli(object):
             default=False
         )
 
-        options.add_argument(
-            '--action',
-            action='store',
-            dest='action',
-            help='Choose an action to take.',
-            choices=[YTFFMPEG_Action.NEW, YTFFMPEG_Action.REFRESH, YTFFMPEG_Action.PUBLISH],
-        )
-
-        opts = options.parse_args()
+        opts, other = options.parse_known_args()
+        action = None
+        # If any() of the above constant actions is among the unknown arguments, pop it off the list
+        # and set the action accordingly.
+        # If there is a subsequent resource after the action, assign the resource to the options.
+        for arg in other:
+            if arg in [YTFFMPEG_Action.NEW, YTFFMPEG_Action.BUILD, YTFFMPEG_Action.REFRESH, YTFFMPEG_Action.PUBLISH]:
+                action = arg
+                other.remove(arg)
+            else:
+                opts.resource = arg
+        if action:
+            opts.action = action
+        else:
+            log.error('No action specified!')
+            options.print_help()
+            return 1
         self.config['ytffmpeg'].update(vars(opts))
 
     def execute(self):
