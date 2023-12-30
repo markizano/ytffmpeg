@@ -5,6 +5,7 @@ This module will be responsible for parsing command line arguments and
 calling the appropriate sub-modules to perform the actions requested.
 '''
 
+import os
 from argparse import ArgumentParser, RawTextHelpFormatter
 from kizano import getLogger
 log = getLogger(__name__)
@@ -58,7 +59,19 @@ class YTFFMPEG_Cli(object):
             default=Devices.GPU
         )
 
+        options.add_argument(
+            '--log-level', '-l',
+            action='store',
+            dest='log_level',
+            help='How verbose should this application be?',
+            choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
+            default='INFO'
+        )
+
         opts, other = options.parse_known_args()
+        if 'LOG_LEVEL' not in os.environ:
+            os.environ['LOG_LEVEL'] = opts.log_level
+            log.setLevel(opts.log_level)
         action = None
         # If any() of the above constant actions is among the unknown arguments, pop it off the list
         # and set the action accordingly.

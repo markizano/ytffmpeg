@@ -7,6 +7,7 @@ If a video is specified, only that video will be built.
 '''
 
 import os
+import time
 import subprocess
 from .base import YTFFMPEG_BaseCommand
 from kizano.utils import read_yaml, dictmerge
@@ -32,7 +33,7 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
             require_videos = requirements
         for require_video in require_videos:
             if not os.path.exists(require_video):
-                log.warning(f'Required video {require_video} is a dependency of this video, building that first.')
+                log.warning(f'\x1b[34mRequired\x1b[0m video \x1b[1m{require_video}\x1b[0m is a dependency of this video, building that first.')
                 subprocess.run(['ytffmpeg', 'build', require_video])
 
     def processInput(self, input_video: str|dict) -> list:
@@ -44,7 +45,7 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
         In this way, all options for that video are processed on the command line in the correct order.
         '''
         input_cmd = []
-        log.debug(f'INPUT stream: {input_video["i"]}')
+        log.debug(f'INPUT stream: \x1b[1m{input_video["i"]}\x1b[0m')
         if isinstance(input_video, str):
             input_cmd.append('-i')
             input_cmd.append(input_video)
@@ -138,6 +139,7 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
         This might also result in less interpolation against the command line that may need to happen.
         '''
         result = []
+        log.info('Writing out \x1b[1mfilter_complex.ffmpeg\x1b[0m script...')
         with open('build/filter_complex.ffmpeg', 'w') as fc:
             for i, filter_complex in enumerate(filter_complex_script):
                 if isinstance(filter_complex, str):
@@ -150,6 +152,8 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
                     filter_complex_str = f'[{filter_complex["i"]}] {funcs} [{filter_complex["o"]}]'
                     result.append(filter_complex_str)
             fc.write(";\n".join(result))
+            fc.flush()
+        log.info('Done writing out \x1b[1mfilter_complex.ffmpeg\x1b[0m script!')
 
     def execute(self):
         '''
@@ -157,6 +161,7 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
         If a resource video was provided to build, only build that one.
 
         '''
+        now = time.time()
         local_cfg = read_yaml('ytffmpeg.yml')
         cfg = dictmerge(self.config, local_cfg)
         final_cmd = [os.getenv('FFMPEG_BIN', 'ffmpeg'), '-hide_banner']
@@ -169,7 +174,7 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
             assert 'output' in video_opts, 'No output specified for video!'
             output = video_opts["output"]
             attributes = video_opts.get('attributes', [])
-            log.info(f'Processing video: {output}')
+            log.info(f'Processing video: \x1b[1m{output}\x1b[0m')
             # If we have pre-existing requirements or videos this is dependent on, process them first.
             if 'require' in video_opts:
                 self.processRequirements(video_opts['require'])
@@ -220,7 +225,7 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
                 final_cmd.append('-an')
             else:
                 final_cmd.append('-c:a')
-                final_cmd.append(video_opts.get('codecs', {}).get('audio', 'ac3'))
+                final_cmd.append(video_opts.get('codecs', {}).get('audio', 'aac'))
                 final_cmd.append('-metadata:s:a')
                 final_cmd.append(f'language={language}')
             if 'subs' in attributes:
@@ -237,15 +242,16 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
             log.info(f'Execute: \x1b[34m{" ".join(final_cmd)}\x1b[0m')
             if os.path.exists(video_opts['output']):
                 if self.config['ytffmpeg'].get('overwrite', False):
-                    log.info(f'Overwriting existing {output}!')
+                    log.info(f'Overwriting existing \x1b[1m{output}\x1b[0m!')
                 else:
-                    log.info(f'{output} already exists!')
+                    log.info(f'File \x1b[1m{output}\x1b[0m already exists!')
                     continue
-            subprocess.run(final_cmd,
-                shell=False,
-                encoding='utf-8')
-            log.info(f'Done processing {output}!')
-        log.info('Complete!')
+            subprocess.run(final_cmd, shell=False)
+            log.info(f'Done processing \x1b[1m{output}\x1b[0m! Now playing...')
+            media_player = self.config['ytffmpeg'].get('media_player', 'mpv')
+            subprocess.run([media_player, output], shell=False)
+        then = time.time()
+        log.info(f'Completed in \x1b[4m{round(then-now, 2)}\x1b[0m seconds!')
         return 0
 
 def build(config: dict) -> int:
