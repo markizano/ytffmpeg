@@ -4,20 +4,16 @@ Command line interface entrypoint for `ytffmpeg` command.
 This module will be responsible for parsing command line arguments and
 calling the appropriate sub-modules to perform the actions requested.
 '''
+
 from argparse import ArgumentParser, RawTextHelpFormatter
 from kizano import getLogger
 log = getLogger(__name__)
 
+from .base import YTFFMPEG_Action
 from .new import new
 from .build import build
 from .refresh import refresh
 from .publish import publish
-
-class YTFFMPEG_Action(object):
-    NEW = 'new'
-    BUILD = 'build'
-    REFRESH = 'refresh'
-    PUBLISH = 'publish'
 
 class YTFFMPEG_Cli(object):
     '''
@@ -46,7 +42,7 @@ class YTFFMPEG_Cli(object):
         )
 
         options.add_argument(
-            '--force',
+            '--force', '-f',
             action='store_true',
             dest='overwrite',
             help='Valid for the `refresh` action. Runs a cleanup of files before writing new files.',
@@ -79,6 +75,7 @@ class YTFFMPEG_Cli(object):
         '''
         action = {
             YTFFMPEG_Action.NEW: new,
+            YTFFMPEG_Action.BUILD: build,
             YTFFMPEG_Action.REFRESH: refresh,
             YTFFMPEG_Action.PUBLISH: publish
         }.get(self.config['ytffmpeg']['action'])
