@@ -64,27 +64,32 @@ All components of this data structure are fed into their respective arguments.
 
 The following YAML data structure:
 
-    videos:
-      -
-        input:
-        - 
-          loop: true
-          framerate: 30
-          t: 5
-          i: resources/intro.png
+```yaml
+videos:
+  -
+    input:
+    - 
+      loop: true
+      framerate: 30
+      t: 5
+      i: resources/intro.png
+```
 
 
 Would result in these arguments being passed to ffmpeg:
 
-    ffmpeg -framerate 30 -t 5 -loop true -i resources/intro.png
+```bash
+ffmpeg -framerate 30 -t 5 -loop true -i resources/intro.png
+```
 
 Known limitation: Due to Pythonic ways of handling dictionaries, the order may be arbitrary until
 a proper sorting solution can be put into place.
 
 ## .videos[].output
-
-Target output video.
-Only one output is allowed.
+- Type: str
+- Default: ''
+- *Required!*
+- Description: Target output video. Only one output is allowed.
 
 ## .videos[].attributes
 - Type: List of strings.
@@ -100,7 +105,18 @@ Only one output is allowed.
 ## .videos[].map
 - Type: dict
 - Default: {}
-- Description: Map these streams into the resulting video.
+- Description: Map these streams into the resulting video. Streams available are as follows:
+
+```yaml
+videos:
+  -
+    # ...
+    map:
+      video: '[video]'
+      audio: '[audio]'
+      subs: '2:s'
+    # ...
+```
 
 ## .videos[].filter_complex
 - Type: list{str|dict}
@@ -123,6 +139,7 @@ functionality to make the filter_complex part easier to access for the non-progr
 # Samples
 Here's a sample JSON that I have used for extensive video production:
 
+```json
     {
       "videos": [
         {
@@ -279,6 +296,7 @@ Here's a sample JSON that I have used for extensive video production:
         }
       ]
     }
+```
 
 In this example, I have created a master video containing a combination of several child video and images to overlay and mesh together.
 It would be great to pull this together into a smaller data structure that required less description, but achieved the same effects

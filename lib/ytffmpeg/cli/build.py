@@ -7,7 +7,6 @@ If a video is specified, only that video will be built.
 '''
 
 import os
-import pdb
 import subprocess
 from .base import YTFFMPEG_BaseCommand
 from kizano.utils import read_yaml, dictmerge
@@ -96,6 +95,17 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
         }
 
         Which will result in `fade=in:st=1:d=1:enable='between(t, 1, 3)'`
+
+        Things to keep in mind: https://www.abyssale.com/generate-video/how-to-change-the-appearances-of-subtitles-with-ffmpeg
+        Styles available for subtitles:
+        - Fontname
+        - Fontsize
+        - PrimaryColour
+        - SecondaryColour
+        - OutlineColour
+        - BackColour
+
+        Also Colour format is NOT ARGB, it's ABGR!
         '''
         assert isinstance(func, dict), '`func` must be a dictionary!'
         assert len(list(func.keys())) == 1, f'`func` must have only 1 key that is the function name! In: {func}'
@@ -149,8 +159,6 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
         '''
         local_cfg = read_yaml('ytffmpeg.yml')
         cfg = dictmerge(self.config, local_cfg)
-        input_video = None
-        output = None
         final_cmd = [os.getenv('FFMPEG_BIN', 'ffmpeg'), '-hide_banner']
         if 'resource' in cfg['ytffmpeg']:
             videos = filter(lambda x: x['output'] == cfg['ytffmpeg']['resource'], cfg['videos'])
@@ -159,6 +167,7 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
         for video_opts in videos:
             assert 'input' in video_opts, 'No input specified for video!'
             assert 'output' in video_opts, 'No output specified for video!'
+            output = video_opts["output"]
             attributes = video_opts.get('attributes', [])
             log.info(f'Processing video: {output}')
             # If we have pre-existing requirements or videos this is dependent on, process them first.
@@ -175,6 +184,8 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
             # Strip previous metadata.
             final_cmd.append('-map_metadata')
             final_cmd.append('-1')
+            language = video_opts.get('language', 'en')
+
             # Attach current required metadata.
             if 'metadata' in video_opts:
                 for name, value in video_opts['metadata'].items():
@@ -183,40 +194,39 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
             # If there's custom mapping involved, ensure that is handled as well.
             if 'no-video' not in attributes:
                 final_cmd.append('-map')
-                final_cmd.append('[video]')
+                final_cmd.append(video_opts.get('map', {}).get('video', '[video]'))
             if 'no-audio' not in attributes:
                 final_cmd.append('-map')
-                final_cmd.append('[audio]')
-            if 'map' in video_opts:
-                for map in video_opts['map']:
-                    final_cmd.append('-map')
-                    final_cmd.append(map)
+                final_cmd.append(video_opts.get('map', {}).get('audio', '[audio]'))
+            if 'subs' in attributes:
+                final_cmd.append('-map')
+                final_cmd.append(video_opts.get('map', {}).get('subs', '[subs]'))
+
             if 'vsync' in attributes:
                 final_cmd.append('-fps_mode')
                 final_cmd.append('vfs')
             if 'no-video' in attributes:
                 final_cmd.append('-vn')
             else:
-                final_cmd.append('-vcodec')
-                final_cmd.append(video_opts.get('codecs', {}).get('video', 'h265'))
+                final_cmd.append('-c:v')
+                final_cmd.append(video_opts.get('codecs', {}).get('video', 'h264'))
                 final_cmd.append('-pix_fmt')
                 final_cmd.append('yuv420p')
-                final_cmd.append('-preset')
-                final_cmd.append('slow')
                 final_cmd.append('-crf')
                 final_cmd.append('28')
                 final_cmd.append('-metadata:s:v')
-                final_cmd.append('language=eng')
+                final_cmd.append(f'language={language}')
             if 'no-audio' in attributes:
                 final_cmd.append('-an')
             else:
-                final_cmd.append('-acodec')
+                final_cmd.append('-c:a')
                 final_cmd.append(video_opts.get('codecs', {}).get('audio', 'ac3'))
                 final_cmd.append('-metadata:s:a')
-                final_cmd.append('language=eng')
+                final_cmd.append(f'language={language}')
             if 'subs' in attributes:
                 final_cmd.append('-c:s')
                 final_cmd.append('mov_text')
+
             if 'movflags' in video_opts:
                 final_cmd.append('-movflags')
                 final_cmd.append(video_opts['movflags'])
@@ -225,12 +235,15 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
             final_cmd.append('-y')
             final_cmd.append(video_opts['output'])
             log.info(f'Execute: \x1b[34m{" ".join(final_cmd)}\x1b[0m')
-            # subprocess.run(final_cmd,
-            #     stdin=subprocess.DEVNULL,
-            #     stdout=subprocess.PIPE,
-            #     stderr=subprocess.PIPE,
-            #     shell=False,
-            #     encoding='utf-8')
+            if os.path.exists(video_opts['output']):
+                if self.config['ytffmpeg'].get('overwrite', False):
+                    log.info(f'Overwriting existing {output}!')
+                else:
+                    log.info(f'{output} already exists!')
+                    continue
+            subprocess.run(final_cmd,
+                shell=False,
+                encoding='utf-8')
             log.info(f'Done processing {output}!')
         log.info('Complete!')
         return 0

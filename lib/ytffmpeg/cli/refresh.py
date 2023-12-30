@@ -40,7 +40,7 @@ class RefreshCommand(YTFFMPEG_BaseCommand):
             def load_whisper():
                 log.info('Loading whisper model...')
                 now = time.time()
-                self.whisper = WhisperModel(RefreshCommand.WHISPER_MODEL, device=Devices.CPU, compute_type='auto')
+                self.whisper = WhisperModel(RefreshCommand.WHISPER_MODEL, device=self.config['ytffmpeg']['device'], compute_type='auto')
                 then = time.time()
                 log.info(f'Whisper model loaded in {round(then-now,4)} seconds!')
             self.whisper = None
@@ -97,16 +97,23 @@ class RefreshCommand(YTFFMPEG_BaseCommand):
             log.info(f'\x1b[1m{resource}\x1b[0m is already in the ytffmpeg.yml configuration.')
             return
         log.info(f'Appending \x1b[1m{resource}\x1b[0m to ytffmpeg.yml configuration.')
+        srt = f'build/{self.filename(resource)}.srt'
         new_vid_tpl = copy.deepcopy(self.config['ytffmpeg']['defaults'])
         new_vid_tpl.update({
             'input': [
-                { 'i': resource.replace('.mp4', '.mkv') },
+                { 'i': resource },
                 { 'loop': 'true', 'framerate': '30', 't': '5', 'i': RefreshCommand.WHISPER_PNG },
-                { 'i': f'build/{self.filename(resource)}.srt' }
+                { 'i': srt }
             ],
             'output': 'build/%s.mp4' % self.filename(resource),
         })
         new_vid_tpl['metadata']['title'] = new_vid_tpl['metadata']['description'] = ''
+        new_vid_tpl['filter_complex'] = [
+            f"[0:v]scale=720x1280,pad=864:1536:72:80,scale=720x1280,setsar=1:1,subtitles={srt}:force_style='FontName=Impact,OutlineColour=&H40000000,BorderStyle=3'[_v]",
+            "[1:v]format=yuv420p,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
+            "[_v][disclaim]overlay=W-w-100:0:enable='between(t,0,5)',setpts=PTS-STARTPTS[video]",
+            "[0:a]volume=1.5,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[audio]"
+        ]
         self.ytffmpeg['videos'].append(new_vid_tpl)
         log.info('Done appending video to ytffmpeg.yml configuration!')
 

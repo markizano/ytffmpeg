@@ -9,7 +9,7 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from kizano import getLogger
 log = getLogger(__name__)
 
-from .base import YTFFMPEG_Action
+from .base import Devices, YTFFMPEG_Action
 from .new import new
 from .build import build
 from .refresh import refresh
@@ -47,6 +47,15 @@ class YTFFMPEG_Cli(object):
             dest='overwrite',
             help='Valid for the `refresh` action. Runs a cleanup of files before writing new files.',
             default=False
+        )
+
+        options.add_argument(
+            '--device', '-d',
+            action='store',
+            dest='device',
+            help='Valid for the `refresh` action. Specify the device to use for processing.',
+            choices=[Devices.CPU, Devices.CUDA, Devices.AUTO],
+            default=Devices.GPU
         )
 
         opts, other = options.parse_known_args()
