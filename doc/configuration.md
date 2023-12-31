@@ -1,11 +1,13 @@
 # Configuration
 
 The configuration directives in the `ytffmpeg.yml` file drive how the program behaves.
-Each project will have its own ytffmpeg.yml configuration available in the root of the
+Each project will have its own `ytffmpeg.yml` configuration available in the root of the
 project (acting like many other projects' `package.json` for npm and `Makefile` for make).
 
-There will also be available is `~/.config/ytffmpeg/config.yml` which will be global configuration for the
-program itself and how files are generated and processed.
+You can use `/etc/ytffmpeg/config.yml` for system-wide global configuration for how `ytffmpeg`
+will behave. You can use `~/.config/ytffmpeg/config.yml` for user-preferences on how `ytffmpeg`
+shall behave. Configuration directives referenced here under the `jq` notation for `.ytffmpeg[]`
+will control how `ytffmpeg` behaves.
 
 The following descriptions of the configuration are using the `jq` reference of where a part
 of a data structure exists and more description around that data structure and its function
@@ -14,7 +16,8 @@ within `ytffmpeg`.
 # Behaviour
 
 At the top level data structure, you can configure `ytffmpeg` with `.ytffmpeg`. This is a
-dictionary containing the configuration directives.
+dictionary containing the configuration directives. Again, this can be configured system-wide
+in `/etc/ytffmpeg/config.yml` or on a user-basis in `~/.config/ytffmpeg/config.yml`.
 
 ## .ytffmpeg.subtitles
 - Type: string
@@ -29,6 +32,11 @@ dictionary containing the configuration directives.
   to avoid reading from cache and just forcefully generate a fresh subset of build artifacts from
   the resources.
   Can be set to true per-execution with the `-f` or `--force` cli argument.
+
+## .ytffmpeg.log_level
+- Type: str
+- Default: INFO
+- Description: Choice of DEBUG, INFO, WARNING, ERROR, CRITICAL for logging level. (mostly DEBUG and INFO are used).
 
 ## .ytffmpeg.youtube
 - Type: dict
@@ -75,15 +83,14 @@ videos:
       i: resources/intro.png
 ```
 
-
 Would result in these arguments being passed to ffmpeg:
 
 ```bash
 ffmpeg -framerate 30 -t 5 -loop true -i resources/intro.png
 ```
 
-Known limitation: Due to Pythonic ways of handling dictionaries, the order may be arbitrary until
-a proper sorting solution can be put into place.
+The `-f` argument is provided first and the `-i` argument is provided last to ensure all options that describe
+"this" input are defined before providing the input to `ffmpeg`.
 
 ## .videos[].output
 - Type: str
@@ -95,6 +102,19 @@ a proper sorting solution can be put into place.
 - Type: List of strings.
 - Default: [] (empty/None)
 - Description: Custom attributes that will make ytffmpeg treat this video differently.
+- Values:
+- - `no-video`: Don't process video for this stream.
+- - `no-audio`: Don't process audio for this stream.
+- - `subs`: This video uses subtitles.
+- - `vsync`: Whether to enable breaking the synchronization of video-to-audio timestamps.
+    (See `fps_mode` in `ffmpeg` man page for more details).
+
+## .videos[].languages
+- Type: List of strings.
+- Default: `['en']``
+- Description: Provides the supported languages if international support is needed.
+  Will attempt to stream an additional subtitle stream for each language.
+  (may not be compatible with the `mp4/mjpeg4` container)
 
 ## .videos[].metadata
 - Type: dict
