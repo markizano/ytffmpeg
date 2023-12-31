@@ -13,6 +13,34 @@ The following descriptions of the configuration are using the `jq` reference of 
 of a data structure exists and more description around that data structure and its function
 within `ytffmpeg`.
 
+# Environment Variables
+
+## LANGUAGE
+- Default: "en"
+- Choices: One of the country codes as defined by `ytffmpeg.cli.base::YTFFMPEG_Base.LANGS`
+- Description: Default language to write out for the SRT file.
+- @TODO: make it possible to support a list of comma-delimited languages?
+
+## OMP_NUM_THREADS
+- Default: "`nproc`"
+- Description: When running on CPU, make sure to set the same number of threads.
+  Many frameworks will read the environment variable OMP_NUM_THREADS, which can be set when
+  running your script
+
+## LOG_LEVEL
+- Default: "INFO"
+- Description: `kizano.getLogger()` respects the environment varibale for the log level.
+  The command lines have also been tweaked to enable this feature.
+
+## WHISPER_MODEL
+- Default: guillaumekln/faster-whisper-large-v2
+- Description: Define a different LLM model to use to translate text. These are downloaded
+  from https://huggingface.co/
+
+## FFMPEG_BIN
+- Default: `ffmpeg`
+- Description: Specify an alternate path to the `ffmpeg` binary to execute.
+
 # Behaviour
 
 At the top level data structure, you can configure `ytffmpeg` with `.ytffmpeg`. This is a
@@ -32,6 +60,12 @@ in `/etc/ytffmpeg/config.yml` or on a user-basis in `~/.config/ytffmpeg/config.y
   to avoid reading from cache and just forcefully generate a fresh subset of build artifacts from
   the resources.
   Can be set to true per-execution with the `-f` or `--force` cli argument.
+
+## .ytffmpeg.delete_mp4
+- Type: boolean
+- Default: `False`
+- Description: Controls whether `ytffmpeg` will delete the MP4 files after successfully converting
+  them to a compressed MKV format.
 
 ## .ytffmpeg.log_level
 - Type: str

@@ -1,8 +1,16 @@
+'''
+Base module for all CLI commands in `ytffmpeg`.
+
+'''
 import os, io
 import time
 import warnings
 import ffmpeg
+
 from typing import Iterable
+from multiprocessing import Process, Queue
+
+from faster_whisper import WhisperModel
 from faster_whisper.transcribe import Segment
 from faster_whisper.utils import format_timestamp
 
@@ -30,14 +38,55 @@ class YTFFMPEG_BaseCommand(object):
     Other commands will derive this class so they will have access to the
     same functionality.
     '''
+
+    WHISPER_MODEL = os.getenv('WHISPER_MODEL', 'guillaumekln/faster-whisper-large-v2')
+    WHISPER_PNG = '/home/YouTube/resources/openai.png'
+    DEVICES = ['cpu', 'cuda', 'auto']
+    LANGS = ["auto","af","am","ar","as","az","ba","be","bg","bn","bo","br","bs","ca",
+    "cs","cy","da","de","el","en","es","et","eu","fa","fi","fo","fr","gl","gu","ha",
+    "haw","he","hi","hr","ht","hu","hy","id","is","it","ja","jw","ka","kk","km","kn",
+    "ko","la","lb","ln","lo","lt","lv","mg","mi","mk","ml","mn","mr","ms","mt","my",
+    "ne","nl","nn","no","oc","pa","pl","ps","pt","ro","ru","sa","sd","si","sk","sl",
+    "sn","so","sq","sr","su","sv","sw","ta","te","tg","th","tk","tl","tr","tt","uk",
+    "ur","uz","vi","yi","yo","zh"]
+
     def __init__(self, config: dict):
         self.config = config
+        if self.config['ytffmpeg'].get('subtitles', True):
+
+            def load_whisper(q: Queue):
+                log.info('Loading whisper model...')
+                now = time.time()
+                model = WhisperModel(YTFFMPEG_BaseCommand.WHISPER_MODEL, device=self.config['ytffmpeg']['device'], compute_type='auto')
+                q.put(model)
+                self.whisper = model
+                then = time.time()
+                log.info(f'Whisper model loaded in {round(then-now,4)} seconds!')
+                return 0
+
+            self.whisper = None
+            self.subq = Queue()
+            lw = Process(target=load_whisper, args=(self.subq,))
+            lw.start()
+            self.whisper = self.subq.get()
 
     def filename(self, path: str) -> str:
         '''
         Gets the filename without the extension or leading path.
         '''
         return os.path.splitext(os.path.basename(path))[0]
+
+    def isOverwrite(self) -> bool:
+        '''
+        Checks to see if the overwrite flag is set.
+        '''
+        return self.config['ytffmpeg'].get('overwrite', False)
+
+    def isSubtitles(self) -> bool:
+        '''
+        Checks to see if the subtitles flag is set.
+        '''
+        return self.config['ytffmpeg'].get('subtitles', True)
 
     def get_audio(self, path: str) -> str:
         '''
@@ -48,7 +97,7 @@ class YTFFMPEG_BaseCommand(object):
         log.info(f"Extracting audio from \x1b[1m{filepath}\x1b[0m to \x1b[1m{output_path}\x1b[0m...")
         # Check to see if the file is already in the build directory.
         if os.path.exists(output_path):
-            if self.config['ytffmpeg'].get('overwrite', False):
+            if self.isOverwrite():
                 log.info(f"Overwriting existing audio for \x1b[1m{filepath}\x1b[0m!")
             else:
                 log.info(f"Audio already extracted for \x1b[1m{filepath}\x1b[0m!")
@@ -68,11 +117,15 @@ class YTFFMPEG_BaseCommand(object):
         '''
         Input an audio path and output a SRT file containing the subtitles.
         '''
+        if not self.isSubtitles() or not hasattr(self, 'whisper'):
+            log.warning(f'Failed to get subtitles for {video_path}! Subtitles not enabled.')
+            return ''
+
         audio_path = self.get_audio(video_path)
         srt_path = os.path.join('build', f"{self.filename(video_path)}.srt")
         log.info(f"Generating subtitles for {srt_path} from {video_path}... This might take a while...")
         if os.path.exists(srt_path):
-            if self.config['ytffmpeg'].get('overwrite', False):
+            if self.isOverwrite():
                 log.info(f"Overwriting existing subtitles for \x1b[1m{srt_path}\x1b[0m!")
             else:
                 log.info(f"Subtitles already generated for \x1b[1m{srt_path}\x1b[0m!")
@@ -82,6 +135,9 @@ class YTFFMPEG_BaseCommand(object):
             'language': os.getenv('LANGUAGE', 'en'),
         }
         warnings.filterwarnings("ignore")
+        while self.whisper is None:
+            log.debug('Waiting for whisper model to finish loading...')
+            time.sleep(1)
         transcript, transcriptInfo = self.whisper.transcribe(audio_path, **args)
         warnings.filterwarnings("default")
         log.debug(transcriptInfo)

@@ -10,7 +10,6 @@ import os
 import time
 import subprocess
 from .base import YTFFMPEG_BaseCommand
-from kizano.utils import read_yaml, dictmerge
 
 from kizano import getLogger
 log = getLogger(__name__)
@@ -239,7 +238,7 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
             final_cmd.append(video_opts['output'])
             log.info(f'Execute: \x1b[34m{" ".join(final_cmd)}\x1b[0m')
             if os.path.exists(video_opts['output']):
-                if self.config['ytffmpeg'].get('overwrite', False):
+                if self.isOverwrite():
                     log.info(f'Overwriting existing \x1b[1m{output}\x1b[0m!')
                 else:
                     log.info(f'File \x1b[1m{output}\x1b[0m already exists!')

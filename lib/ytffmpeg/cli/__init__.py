@@ -6,6 +6,7 @@ calling the appropriate sub-modules to perform the actions requested.
 '''
 
 import os
+from multiprocessing import cpu_count
 from argparse import ArgumentParser, RawTextHelpFormatter
 from kizano import getLogger
 log = getLogger(__name__)
@@ -89,7 +90,7 @@ class YTFFMPEG_Cli(object):
         else:
             log.error('No action specified!')
             options.print_help()
-            return 1
+            return
         self.config['ytffmpeg'].update(vars(opts))
 
     def execute(self):
@@ -97,6 +98,8 @@ class YTFFMPEG_Cli(object):
         Interprets command line options and calls the subsequent actions to take.
         These will be built out as sub-modules to this module.
         '''
+        if 'OMP_NUM_THREADS' not in os.environ:
+            os.environ['OMP_NUM_THREADS'] = str(cpu_count())
         action = {
             YTFFMPEG_Action.NEW: new,
             YTFFMPEG_Action.BUILD: build,
