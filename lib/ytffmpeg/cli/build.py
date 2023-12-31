@@ -162,13 +162,11 @@ class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
 
         '''
         now = time.time()
-        local_cfg = read_yaml('ytffmpeg.yml')
-        cfg = dictmerge(self.config, local_cfg)
         final_cmd = [os.getenv('FFMPEG_BIN', 'ffmpeg'), '-hide_banner']
-        if 'resource' in cfg['ytffmpeg']:
-            videos = filter(lambda x: x['output'] == cfg['ytffmpeg']['resource'], cfg['videos'])
+        if 'resource' in self.config['ytffmpeg']:
+            videos = filter(lambda x: x['output'] == self.config['ytffmpeg']['resource'], self.config['videos'])
         else:
-            videos = cfg['videos']
+            videos = self.config['videos']
         for video_opts in videos:
             assert 'input' in video_opts, 'No input specified for video!'
             assert 'output' in video_opts, 'No output specified for video!'

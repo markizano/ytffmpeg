@@ -24,6 +24,7 @@ class YTFFMPEG_Cli(object):
     def __init__(self, config: dict):
         self.config = config
         self.getOptions()
+        log.debug(f'Final config: {self.config}')
 
     def getOptions(self) -> None:
         '''
@@ -39,7 +40,7 @@ class YTFFMPEG_Cli(object):
             action='store_false',
             dest='subtitles',
             help='Do not automatically generate subtitles.',
-            default=True
+            default=None
         )
 
         options.add_argument(
@@ -47,7 +48,7 @@ class YTFFMPEG_Cli(object):
             action='store_true',
             dest='overwrite',
             help='Valid for the `refresh` action. Runs a cleanup of files before writing new files.',
-            default=False
+            default=None
         )
 
         options.add_argument(
@@ -65,7 +66,8 @@ class YTFFMPEG_Cli(object):
             dest='log_level',
             help='How verbose should this application be?',
             choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
-            default='INFO'
+            default='INFO',
+            type=str.upper
         )
 
         opts, other = options.parse_known_args()

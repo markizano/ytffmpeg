@@ -11,7 +11,12 @@ def main():
     Main entry point for this application.
     Let's you run commands for ytffmpeg.
     '''
-    config = kizano.getConfig()
+    try:
+        local_cfg = kizano.utils.read_yaml('ytffmpeg.yml')
+    except Exception as e:
+        log.warning(f'Local ytffmpeg.yml not found: {e}')
+        local_cfg = {}
+    config = kizano.utils.dictmerge( kizano.getConfig(), local_cfg )
     if 'ytffmpeg' not in config:
         config['ytffmpeg'] = {}
     ytffmpeg = cli.YTFFMPEG_Cli(config)
