@@ -13,8 +13,8 @@ from kizano.utils import write_yaml
 from kizano import getLogger
 log = getLogger(__name__)
 
-from .base import YTFFMPEG_BaseCommand
-class RefreshCommand(YTFFMPEG_BaseCommand):
+from .base import BaseCommand
+class RefreshCommand(BaseCommand):
     '''
     Refresh command operations in object form so we have places to store program configuration.
     '''

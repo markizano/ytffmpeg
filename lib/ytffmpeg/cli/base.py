@@ -8,7 +8,6 @@ import warnings
 import ffmpeg
 
 from typing import Iterable
-from multiprocessing import Process, Queue
 
 from faster_whisper import WhisperModel
 from faster_whisper.transcribe import Segment
@@ -26,13 +25,13 @@ class Devices(object):
     CUDA = 'cuda'
     AUTO = 'auto'
 
-class YTFFMPEG_Action(object):
+class Action(object):
     NEW = 'new'
     BUILD = 'build'
     REFRESH = 'refresh'
     PUBLISH = 'publish'
 
-class YTFFMPEG_BaseCommand(object):
+class BaseCommand(object):
     '''
     Base class for all ytffmpeg commands.
     Other commands will derive this class so they will have access to the
@@ -53,22 +52,11 @@ class YTFFMPEG_BaseCommand(object):
     def __init__(self, config: dict):
         self.config = config
         if self.config['ytffmpeg'].get('subtitles', True):
-
-            def load_whisper(q: Queue):
-                log.info('Loading whisper model...')
-                now = time.time()
-                model = WhisperModel(YTFFMPEG_BaseCommand.WHISPER_MODEL, device=self.config['ytffmpeg']['device'], compute_type='auto')
-                q.put(model)
-                self.whisper = model
-                then = time.time()
-                log.info(f'Whisper model loaded in {round(then-now,4)} seconds!')
-                return 0
-
-            self.whisper = None
-            self.subq = Queue()
-            lw = Process(target=load_whisper, args=(self.subq,))
-            lw.start()
-            self.whisper = self.subq.get()
+            log.info('Loading whisper model...')
+            now = time.time()
+            self.whisper = WhisperModel(BaseCommand.WHISPER_MODEL, device=self.config['ytffmpeg']['device'], compute_type='auto')
+            then = time.time()
+            log.info(f'Whisper model loaded in {round(then-now, 4)} seconds!')
 
     def filename(self, path: str) -> str:
         '''

@@ -9,12 +9,13 @@ If a video is specified, only that video will be built.
 import os
 import time
 import subprocess
-from .base import YTFFMPEG_BaseCommand
+from .base import BaseCommand
+from ..filter_complex import FilterComplexFunctionUnit
 
 from kizano import getLogger
 log = getLogger(__name__)
 
-class YTFFMPEG_BuildCommand(YTFFMPEG_BaseCommand):
+class BuildCommand(BaseCommand):
     '''
     Build command for ytffmpeg.
     '''
@@ -255,5 +256,5 @@ def build(config: dict) -> int:
     '''
     Entrtypoint for this model.
     '''
-    cmd = YTFFMPEG_BuildCommand(config)
+    cmd = BuildCommand(config)
     return cmd.execute()

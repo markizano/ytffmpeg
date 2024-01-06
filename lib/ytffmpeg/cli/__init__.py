@@ -11,13 +11,13 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from kizano import getLogger
 log = getLogger(__name__)
 
-from .base import Devices, YTFFMPEG_Action
+from .base import Devices, Action
 from .new import new
 from .build import build
 from .refresh import refresh
 from .publish import publish
 
-class YTFFMPEG_Cli(object):
+class Cli(object):
     '''
     Usage: %(prog)s [options] [command]
     '''
@@ -80,7 +80,7 @@ class YTFFMPEG_Cli(object):
         # and set the action accordingly.
         # If there is a subsequent resource after the action, assign the resource to the options.
         for arg in other:
-            if arg in [YTFFMPEG_Action.NEW, YTFFMPEG_Action.BUILD, YTFFMPEG_Action.REFRESH, YTFFMPEG_Action.PUBLISH]:
+            if arg in [Action.NEW, Action.BUILD, Action.REFRESH, Action.PUBLISH]:
                 action = arg
                 other.remove(arg)
             else:
@@ -91,6 +91,10 @@ class YTFFMPEG_Cli(object):
             log.error('No action specified!')
             options.print_help()
             return
+        if opts.overwrite == None:
+            del opts.overwrite
+        if opts.subtitles == None:
+            del opts.subtitles
         self.config['ytffmpeg'].update(vars(opts))
 
     def execute(self):
@@ -101,10 +105,10 @@ class YTFFMPEG_Cli(object):
         if 'OMP_NUM_THREADS' not in os.environ:
             os.environ['OMP_NUM_THREADS'] = str(cpu_count())
         action = {
-            YTFFMPEG_Action.NEW: new,
-            YTFFMPEG_Action.BUILD: build,
-            YTFFMPEG_Action.REFRESH: refresh,
-            YTFFMPEG_Action.PUBLISH: publish
+            Action.NEW: new,
+            Action.BUILD: build,
+            Action.REFRESH: refresh,
+            Action.PUBLISH: publish
         }.get(self.config['ytffmpeg']['action'])
         if not action:
             log.error('Invalid action: %s', self.config['action'])
