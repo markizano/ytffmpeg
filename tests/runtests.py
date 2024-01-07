@@ -9,4 +9,4 @@ UNIT_TESTING = 1
 sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..', 'lib')))
 
 # Importing into the namespace is sufficient as pytest will find the test cases.
-from ytffmpegunit.build import TestFilterComplexUnit
+from ytffmpegunit.build import *
