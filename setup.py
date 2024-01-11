@@ -9,7 +9,7 @@ from setuptools import setup
 sys.path.insert(0, os.path.abspath('lib'))
 
 setup_opts = {
-    'name'                : 'ffmpeg2youtube',
+    'name'                : 'ytffmpeg',
     # We change this default each time we tag a release.
     'version'             : '1.0.0',
     'description'         : 'Scripts and tools to ease the processing of videos for Social Media platforms.',

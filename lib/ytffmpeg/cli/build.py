@@ -170,6 +170,7 @@ class BuildCommand(BaseCommand):
         for video_opts in videos:
             assert 'input' in video_opts, 'No input specified for video!'
             assert 'output' in video_opts, 'No output specified for video!'
+            vidnow = time.time()
             output = video_opts["output"]
             attributes = video_opts.get('attributes', [])
             log.info(f'Processing video: \x1b[1m{output}\x1b[0m')
@@ -202,8 +203,20 @@ class BuildCommand(BaseCommand):
                 final_cmd.append('-map')
                 final_cmd.append(video_opts.get('map', {}).get('audio', '[audio]'))
             if 'subs' in attributes:
-                final_cmd.append('-map')
-                final_cmd.append(video_opts.get('map', {}).get('subs', '[subs]'))
+                if 'languages' in video_opts:
+                    # If you set languages and subs, then we assume you know you need to set
+                    # map to each of the language inputs you want to include as well.
+                    for ilang in video_opts['languages']:
+                        lang, i = ilang.split(':')
+                        final_cmd.append('-map')
+                        final_cmd.append(video_opts['map'][lang])
+                        final_cmd.append(f'-metadata:s:s:{i}')
+                        final_cmd.append(f'language={lang}')
+                else:
+                    final_cmd.append('-map')
+                    final_cmd.append(video_opts.get('map', {}).get('subs', '[subs]'))
+                    final_cmd.append('-metadata:s:s')
+                    final_cmd.append(f'language=eng')
 
             if 'vsync' in attributes:
                 final_cmd.append('-fps_mode')
@@ -245,11 +258,12 @@ class BuildCommand(BaseCommand):
                     log.info(f'File \x1b[1m{output}\x1b[0m already exists!')
                     continue
             subprocess.run(final_cmd, shell=False)
-            log.info(f'Done processing \x1b[1m{output}\x1b[0m! Now playing...')
+            vidthen = time.time()
+            log.info(f'Done processing \x1b[1m{output}\x1b[0m in {round(vidthen-vidnow,4)} seconds! Now playing...')
             media_player = self.config['ytffmpeg'].get('media_player', 'mpv')
             subprocess.run([media_player, output], shell=False)
         then = time.time()
-        log.info(f'Completed in \x1b[4m{round(then-now, 2)}\x1b[0m seconds!')
+        log.info(f'Completed all media in \x1b[4m{round(then-now, 2)}\x1b[0m seconds!')
         return 0
 
 def build(config: dict) -> int:
