@@ -123,6 +123,8 @@ class RefreshCommand(BaseCommand):
                 
         self.save()
         log.info('Refresh complete!')
+        # Somehow the terminal is getting messed up after this command is run.
+        os.system('stty echo -icanon -brkint -icrnl -imaxbel')
         return 0
 
 def refresh(config: dict) -> int:

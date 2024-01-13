@@ -17,7 +17,7 @@ within `ytffmpeg`.
 
 ## LANGUAGE
 - Default: "en"
-- Choices: One of the country codes as defined by `ytffmpeg.cli.base::YTFFMPEG_Base.LANGS`
+- Choices: One of the country codes as defined by `ytffmpeg.cli.base::BaseCommand.LANGS`
 - Description: Default language to write out for the SRT file.
 - @TODO: make it possible to support a list of comma-delimited languages?
 
@@ -76,11 +76,13 @@ in `/etc/ytffmpeg/config.yml` or on a user-basis in `~/.config/ytffmpeg/config.y
 - Type: dict
 - Default: `{}`
 - Description: Contains the `client_id` and `client_secret` used to communicate with YouTube.
+  @FutureFeature as of 1.0.0
 
 ## .ytffmpeg.tiktok
 - Type: dict
 - Default: `{}`
 - Description: Contains the `client_id` and `client_secret` used to communicate with TikTok.
+  @FutureFeature as of 1.0.0
 
 *@TODO*: Support for Reels?
 
@@ -134,7 +136,7 @@ The `-f` argument is provided first and the `-i` argument is provided last to en
 
 ## .videos[].attributes
 - Type: List of strings.
-- Default: [] (empty/None)
+- Default: []
 - Description: Custom attributes that will make ytffmpeg treat this video differently.
 - Values:
 - - `no-video`: Don't process video for this stream.
@@ -145,7 +147,7 @@ The `-f` argument is provided first and the `-i` argument is provided last to en
 
 ## .videos[].languages
 - Type: List of strings.
-- Default: `['en']``
+- Default: `['en']`
 - Description: Provides the supported languages if international support is needed.
   Will attempt to stream an additional subtitle stream for each language.
   (may not be compatible with the `mp4/mjpeg4` container)
