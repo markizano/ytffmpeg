@@ -72,7 +72,7 @@ class RefreshCommand(BaseCommand):
         new_vid_tpl.update({
             'input': [
                 { 'i': resource },
-                { 'loop': 'true', 'framerate': '30', 't': '5', 'i': RefreshCommand.WHISPER_PNG },
+                { 'loop': 'true', 'framerate': '30', 't': '5', 'i': BaseCommand.WHISPER_PNG },
                 { 'i': srt }
             ],
             'output': 'build/%s.mp4' % self.filename(resource),
@@ -86,6 +86,23 @@ class RefreshCommand(BaseCommand):
         ]
         self.config['videos'].append(new_vid_tpl)
         log.info('Done appending video to ytffmpeg.yml configuration!')
+
+    def processSubtitles(self, resource: str) -> None:
+        '''
+        Do the needful with the subtitles.
+        '''
+        vid_config = self.get_video_config(resource)
+        if 'subs' in vid_config['attributes']:
+            if 'languages' in vid_config:
+                log.info(f'Multilang video found at \x1b[1m{resource}\x1b[0m')
+                for ilang in vid_config['languages']:
+                    lang, i = ilang.split(':')
+                    log.info(f'Processing subtitles for \x1b[1m{resource}\x1b[0m in \x1b[1m{lang}\x1b[0m')
+                    self.get_subtitles(resource, lang)
+            else:
+                self.get_subtitles(resource, self.language)
+        else:
+            log.info(f'Subs not enabled for \x1b[1m{resource}\x1b[0m')
 
     def save(self) -> None:
         '''
@@ -101,6 +118,7 @@ class RefreshCommand(BaseCommand):
         '''
         resources = glob('resources/*')
         log.debug(f'Found resources: {resources}')
+        self.language = self.config['ytffmpeg'].get('language', os.environ.get('LANGUAGE', 'en'))
         for resource in resources:
             if resource.endswith('.mp4'):
                 log.info(f'Processing {resource}...')
@@ -109,7 +127,7 @@ class RefreshCommand(BaseCommand):
                 conversion = Process(target=self.mp4tompv, args=(resource, q))
                 conversion.start()
                 if self.isSubtitles():
-                    self.get_subtitles(resource)
+                    self.processSubtitles(resource)
                 conversion.join()
                 while q.empty() is False:
                     self.append_video(q.get())
@@ -117,14 +135,19 @@ class RefreshCommand(BaseCommand):
             elif resource.endswith('.mkv'):
                 log.info(f'Processing {resource}...')
                 if self.isSubtitles():
-                    self.get_subtitles(resource)
+                    self.processSubtitles(resource)
                 self.append_video(resource)
-                log.info('Resources have been processed!')
+                log.info(f'Done processing \x1b[1m{resource}\x1b[0m!')
+            # I don't believe the last suggested else should be here because sometimes
+            # PNG files and other non-video items may be included, so we only want to
+            # track specified video files.
+
+        log.info('Resources have been processed!')
                 
         self.save()
         log.info('Refresh complete!')
         # Somehow the terminal is getting messed up after this command is run.
-        os.system('stty echo -icanon -brkint -icrnl -imaxbel')
+        os.system('stty echo -brkint -imaxbel')
         return 0
 
 def refresh(config: dict) -> int:

@@ -38,6 +38,7 @@ class BaseCommand(object):
     same functionality.
     '''
 
+    # class constants
     WHISPER_MODEL = os.getenv('WHISPER_MODEL', 'guillaumekln/faster-whisper-large-v2')
     WHISPER_PNG = '/home/YouTube/resources/openai.png'
     DEVICES = ['cpu', 'cuda', 'auto']
@@ -76,6 +77,26 @@ class BaseCommand(object):
         '''
         return self.config['ytffmpeg'].get('subtitles', True)
 
+    def has_video(self, vid: str) -> bool:
+        '''
+        Check the list of videos. If any of the input videos match the resource using filename() then return True.
+        '''
+        for video in self.config['videos']:
+            for invid in video['input']:
+                if self.filename(invid['i']).lower() in vid.lower():
+                    return True
+        return False
+
+    def get_video_config(self, vid: str) -> dict:
+        '''
+        Get specific video configuration of a video by input name.
+        '''
+        for video in self.config['videos']:
+            for invid in video['input']:
+                if self.filename(invid['i']).lower() in vid.lower():
+                    return video
+        return {}
+
     def get_audio(self, path: str) -> str:
         '''
         Gets the audio stream for the specified file.
@@ -101,7 +122,7 @@ class BaseCommand(object):
         log.info('Done extracting audio!')
         return output_path
 
-    def get_subtitles(self, video_path: str) -> str:
+    def get_subtitles(self, video_path: str, lang: str) -> str:
         '''
         Input an audio path and output a SRT file containing the subtitles.
         '''
@@ -110,7 +131,7 @@ class BaseCommand(object):
             return ''
 
         audio_path = self.get_audio(video_path)
-        srt_path = os.path.join('build', f"{self.filename(video_path)}.srt")
+        srt_path = os.path.join('build', f"{self.filename(video_path)}.{lang}.srt")
         log.info(f"Generating subtitles for {srt_path} from {video_path}... This might take a while...")
         if os.path.exists(srt_path):
             if self.isOverwrite():
@@ -120,7 +141,7 @@ class BaseCommand(object):
                 return srt_path
         args = {
             'word_timestamps': True,
-            'language': os.getenv('LANGUAGE', 'en'),
+            'language': lang,
         }
         warnings.filterwarnings("ignore")
         while self.whisper is None:
