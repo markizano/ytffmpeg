@@ -67,19 +67,28 @@ class RefreshCommand(BaseCommand):
             log.info(f'\x1b[1m{resource}\x1b[0m is already in the ytffmpeg.yml configuration.')
             return
         log.info(f'Appending \x1b[1m{resource}\x1b[0m to ytffmpeg.yml configuration.')
-        srt = f'build/{self.filename(resource)}.srt'
+        srt_en = f'build/{self.filename(resource)}.en.srt'
+        srt_es = f'build/{self.filename(resource)}.es.srt'
         new_vid_tpl = copy.deepcopy(self.config['ytffmpeg']['defaults'])
         new_vid_tpl.update({
             'input': [
                 { 'i': resource },
                 { 'loop': 'true', 'framerate': '30', 't': '5', 'i': BaseCommand.WHISPER_PNG },
-                { 'i': srt }
+                { 'i': srt_en },
+                { 'i': srt_es },
             ],
             'output': 'build/%s.mp4' % self.filename(resource),
+            'languages': ['en:0', 'es:1'],
+            'attributes': [ 'subs' ],
+            'map': {
+                'en': '2:s',
+                'es': '3:s'
+            }
         })
         new_vid_tpl['metadata']['title'] = new_vid_tpl['metadata']['description'] = ''
         new_vid_tpl['filter_complex'] = [
-            f"[0:v]scale=720x1280,pad=864:1536:72:80,scale=720x1280,setsar=1:1,subtitles={srt}:force_style='FontName=Impact,OutlineColour=&H40000000,BorderStyle=3'[_v]",
+            f"[0:v]scale=720x1280,pad=864:1536:72:20,scale=720x1280,setsar=1:1,subtitles={srt_en}:force_style='Alignment=0,PrimaryColour=&H00FFFFFF,FontName=Impact,OutlineColour=&H40000000,BorderStyle=3,Fontsize=18,MarginV=25'[_s]",
+            f"[_s]subtitles={srt_es}:force_style='Alignment=0,FontName=Impact,PrimaryColour=&H08BF8FF,OutlineColour=&H40000000,BorderStyle=3,Fontsize=10,MarginV=5'[_v]",
             "[1:v]format=yuv420p,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
             "[_v][disclaim]overlay=W-w-100:0:enable='between(t,0,5)',setpts=PTS-STARTPTS[video]",
             "[0:a]volume=1.5,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[audio]"
