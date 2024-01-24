@@ -37,6 +37,7 @@ class RefreshCommand(BaseCommand):
             'vcodec': 'libx264',
             'acodec': 'ac3',
             'crf': 28,
+            'map_metadata': '-1',
             'metadata:s:v': 'language=eng',
             'metadata:s:a': 'language=eng'
         }
@@ -100,8 +101,13 @@ class RefreshCommand(BaseCommand):
         '''
         Do the needful with the subtitles.
         '''
-        vid_config = self.get_video_config(resource)
-        if 'subs' in vid_config['attributes']:
+        if self.has_video(resource):
+            vid_config = self.get_video_config(resource)
+        else:
+            vid_config = self.config['ytffmpeg']['defaults']
+            vid_config['attributes'] = [ 'subs' ]
+            vid_config['languages'] = ['en:0', 'es:1']
+        if 'attributes' in vid_config and 'subs' in vid_config['attributes']:
             if 'languages' in vid_config:
                 log.info(f'Multilang video found at \x1b[1m{resource}\x1b[0m')
                 for ilang in vid_config['languages']:
@@ -112,6 +118,7 @@ class RefreshCommand(BaseCommand):
                 self.get_subtitles(resource, self.language)
         else:
             log.info(f'Subs not enabled for \x1b[1m{resource}\x1b[0m')
+
 
     def save(self) -> None:
         '''
