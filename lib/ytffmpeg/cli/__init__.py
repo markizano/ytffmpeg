@@ -79,10 +79,10 @@ class Cli(object):
         # If any() of the above constant actions is among the unknown arguments, pop it off the list
         # and set the action accordingly.
         # If there is a subsequent resource after the action, assign the resource to the options.
-        for arg in other:
+        while other:
+            arg = other.pop(0)
             if arg in [Action.NEW, Action.BUILD, Action.REFRESH, Action.PUBLISH]:
                 action = arg
-                other.remove(arg)
             else:
                 opts.resource = arg
         if action:

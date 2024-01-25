@@ -21,7 +21,17 @@ def new(config: dict) -> int:
     '''
     Produce a new project directory.
     '''
-    log.info('Creating new project directory.')
+    log.debug(config)
+    if 'resource' in config['ytffmpeg']:
+        if not os.path.exists(config['ytffmpeg']['resource']):
+            log.info(f"Creating new resource directory in {config['ytffmpeg']['resource']}.")
+            os.mkdir(config['ytffmpeg']['resource'])
+        else:
+            if not os.path.isdir(config['ytffmpeg']['resource']):
+                log.error(f"{config['ytffmpeg']['resource']} is not a directory!")
+                return 1
+        os.chdir(config['ytffmpeg']['resource'])
+    log.info(f'Creating new project directory in {os.getcwd()}.')
     initconfig = {
         'videos': [],
     }
