@@ -29,6 +29,7 @@ class Action(object):
     NEW = 'new'
     BUILD = 'build'
     REFRESH = 'refresh'
+    SUBS = 'gensubs'
     PUBLISH = 'publish'
 
 class BaseCommand(object):

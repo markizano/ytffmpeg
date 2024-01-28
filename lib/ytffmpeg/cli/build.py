@@ -29,12 +29,12 @@ class BuildCommand(BaseCommand):
         '''
         if isinstance(requirements, str):
             require_videos = requirements.split(' ')
-        else :
+        else:
             require_videos = requirements
         for require_video in require_videos:
             if not os.path.exists(require_video):
                 log.warning(f'\x1b[34mRequired\x1b[0m video \x1b[1m{require_video}\x1b[0m is a dependency of this video, building that first.')
-                subprocess.run(['ytffmpeg', 'build', require_video])
+                subprocess.run(['ytffmpeg', 'build', '--no-autoplay', require_video])
 
     def processInput(self, input_video: str|dict) -> list:
         '''
@@ -123,7 +123,7 @@ class BuildCommand(BaseCommand):
             raise ValueError('Unknown type "%s" from func[%s]!' % ( type(func[function]), function ) )
         return function + '=' + ':'.join(args)
 
-    def processFilterComplex(self, filter_complex_script: list) -> None:
+    def processFilterComplex(self, filter_complex_filename: str, filter_complex_script: list) -> None:
         '''
         Here's where things get interesting with filter_complex.
         In its simplest form, it's a list of strings that are joined together with a semicolon.
@@ -139,8 +139,8 @@ class BuildCommand(BaseCommand):
         This might also result in less interpolation against the command line that may need to happen.
         '''
         result = []
-        log.info('Writing out \x1b[1mfilter_complex.ffmpeg\x1b[0m script...')
-        with open('build/filter_complex.ffmpeg', 'w') as fc:
+        log.info(f'Writing out \x1b[1m{filter_complex_filename}\x1b[0m script...')
+        with open(filter_complex_filename, 'w') as fc:
             for i, filter_complex in enumerate(filter_complex_script):
                 if isinstance(filter_complex, str):
                     result.append(filter_complex)
@@ -153,7 +153,7 @@ class BuildCommand(BaseCommand):
                     result.append(filter_complex_str)
             fc.write(";\n".join(result))
             fc.flush()
-        log.info('Done writing out \x1b[1mfilter_complex.ffmpeg\x1b[0m script!')
+        log.info(f'Done writing out \x1b[1m{filter_complex_filename}\x1b[0m script!')
 
     def execute(self):
         '''
@@ -182,9 +182,10 @@ class BuildCommand(BaseCommand):
                 final_cmd.extend(self.processInput(input_video))
             # Process a filter_complex if we have one.
             if 'filter_complex' in video_opts:
-                self.processFilterComplex(video_opts['filter_complex'])
+                filter_complex = f'build/{self.filename(output)}.filter_complex'
+                self.processFilterComplex(filter_complex, video_opts['filter_complex'])
                 final_cmd.append('-filter_complex_script')
-                final_cmd.append('build/filter_complex.ffmpeg')
+                final_cmd.append(filter_complex)
             # Strip previous metadata.
             final_cmd.append('-map_metadata')
             final_cmd.append('-1')

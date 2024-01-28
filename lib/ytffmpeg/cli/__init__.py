@@ -11,10 +11,11 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from kizano import getLogger
 log = getLogger(__name__)
 
-from .base import Devices, Action
+from .base import Devices, Action, BaseCommand
 from .new import new
 from .build import build
 from .refresh import refresh
+from .subs import gensubs
 from .publish import publish
 
 class Cli(object):
@@ -37,10 +38,18 @@ class Cli(object):
         )
 
         options.add_argument(
-            '--no-auto-subtitles',
+            '--no-subtitles',
             action='store_false',
             dest='subtitles',
-            help='Do not automatically generate subtitles.',
+            help='Do not manage subtitle streams.',
+            default=None
+        )
+
+        options.add_argument(
+            '--no-autoplay',
+            action='store_false',
+            dest='autoplay',
+            help="Don't attempt to automatically play the video after building.",
             default=None
         )
 
@@ -62,6 +71,15 @@ class Cli(object):
         )
 
         options.add_argument(
+            '--language',
+            action='store',
+            dest='language',
+            help='Which language to use when generating subtitles?',
+            choices=BaseCommand.LANGS,
+            default=None
+        )
+
+        options.add_argument(
             '--log-level', '-l',
             action='store',
             dest='log_level',
@@ -72,7 +90,7 @@ class Cli(object):
         )
 
         opts, other = options.parse_known_args()
-        if 'LOG_LEVEL' not in os.environ:
+        if not 'LOG_LEVEL' in os.environ:
             os.environ['LOG_LEVEL'] = opts.log_level
             log.setLevel(opts.log_level)
         action = None
@@ -81,7 +99,7 @@ class Cli(object):
         # If there is a subsequent resource after the action, assign the resource to the options.
         while other:
             arg = other.pop(0)
-            if arg in [Action.NEW, Action.BUILD, Action.REFRESH, Action.PUBLISH]:
+            if arg in [Action.NEW, Action.BUILD, Action.REFRESH, Action.SUBS, Action.PUBLISH]:
                 action = arg
             else:
                 opts.resource = arg
@@ -108,6 +126,7 @@ class Cli(object):
             Action.NEW: new,
             Action.BUILD: build,
             Action.REFRESH: refresh,
+            Action.SUBS: gensubs,
             Action.PUBLISH: publish
         }.get(self.config['ytffmpeg']['action'])
         if not action:

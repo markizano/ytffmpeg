@@ -1,6 +1,7 @@
 '''
 This module will check the resources directory for any mis-matched media, convert it
 and auto-generate subtitles for it using the `faster_whisper` library.
+@TODO: Enable overwrite=true when the build artifacts are older than the original resources.
 '''
 
 import os
@@ -125,7 +126,7 @@ class RefreshCommand(BaseCommand):
         Write ytffmpeg.yml updates to disk.
         '''
         log.info('Writing out ytffmpeg.yml configuration...')
-        write_yaml('ytffmpeg.yml', self.config)
+        write_yaml('ytffmpeg.yml', { 'videos': self.config['videos'] })
         log.info('Done writing out ytffmpeg.yml configuration!')
 
     def execute(self) -> int:
