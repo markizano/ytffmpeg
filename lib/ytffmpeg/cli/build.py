@@ -35,6 +35,10 @@ class BuildCommand(BaseCommand):
             if not os.path.exists(require_video):
                 log.warning(f'\x1b[34mRequired\x1b[0m video \x1b[1m{require_video}\x1b[0m is a dependency of this video, building that first.')
                 subprocess.run(['ytffmpeg', 'build', '--no-autoplay', require_video])
+            for video in self.config['videos']:
+                if video['output'] == require_video:
+                    # We are consuming the ytffmpeg configuration on build, so pop it off the list.
+                    self.config['videos'].remove(video)
 
     def processInput(self, input_video: str|dict) -> list:
         '''
@@ -162,12 +166,13 @@ class BuildCommand(BaseCommand):
 
         '''
         now = time.time()
-        final_cmd = [os.getenv('FFMPEG_BIN', 'ffmpeg'), '-hide_banner']
         if 'resource' in self.config['ytffmpeg']:
             videos = filter(lambda x: x['output'] == self.config['ytffmpeg']['resource'], self.config['videos'])
         else:
             videos = self.config['videos']
-        for video_opts in videos:
+        while videos:
+            video_opts = videos.pop(0)
+            final_cmd = [os.getenv('FFMPEG_BIN', 'ffmpeg'), '-hide_banner']
             assert 'input' in video_opts, 'No input specified for video!'
             assert 'output' in video_opts, 'No output specified for video!'
             vidnow = time.time()
@@ -260,6 +265,9 @@ class BuildCommand(BaseCommand):
                     continue
             subprocess.run(final_cmd, shell=False)
             vidthen = time.time()
+            if not self.config['ytffmpeg'].get('autoplay', True):
+                log.info(f'Done processing \x1b[1m{output}\x1b[0m in {round(vidthen-vidnow,4)} seconds!')
+                continue
             log.info(f'Done processing \x1b[1m{output}\x1b[0m in {round(vidthen-vidnow,4)} seconds! Now playing...')
             media_player = self.config['ytffmpeg'].get('media_player', 'mpv')
             subprocess.run([media_player, output], shell=False)
