@@ -31,6 +31,9 @@ class GenSubsCommand(BaseCommand):
         if not os.path.isfile(resource):
             log.error(f"{resource} is not a file!")
             return 8
+        if not os.path.exists('build'):
+            log.info('Creating `./build` directory.')
+            os.mkdir('build')
         log.info(f"Generating subtitles for {resource}")
         self.get_subtitles(resource, self.language)
         return 0

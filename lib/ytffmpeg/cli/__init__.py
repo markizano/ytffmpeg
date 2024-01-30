@@ -132,5 +132,6 @@ class Cli(object):
         if not action:
             log.error('Invalid action: %s', self.config['action'])
             return 1
-        log.debug(f'Executing action: {action} with config: {self.config}')
+        log.info(f'Executing action: {action} with config: {self.config}')
+        assert isinstance(self.config['videos'], (list, set, tuple)), 'Videos not an array!'
         return action(self.config)

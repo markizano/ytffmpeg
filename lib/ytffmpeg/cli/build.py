@@ -167,7 +167,7 @@ class BuildCommand(BaseCommand):
         '''
         now = time.time()
         if 'resource' in self.config['ytffmpeg']:
-            videos = filter(lambda x: x['output'] == self.config['ytffmpeg']['resource'], self.config['videos'])
+            videos = list( filter(lambda x: x['output'] == self.config['ytffmpeg']['resource'], self.config['videos']) ) or []
         else:
             videos = self.config['videos']
         while videos:
