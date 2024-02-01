@@ -27,6 +27,8 @@ setup_opts = {
       'PyYAML>=6.0.1',
       'kizano',
       'ffmpeg-python==0.2.0',
+      'nvidia-pyindex',
+      'nvidia-cudnn',
       'openai',
       'openai-whisper',
       'faster-whisper',
