@@ -49,23 +49,11 @@ class RefreshCommand(BaseCommand):
         q.put(mkvfile)
         return mkvfile
 
-    def isVidPresent(self, vid: str) -> bool:
-        '''
-        Check to see if the target video is already considered in the ytffmpeg.yml configuration.
-        Iterate over all the `input` videos in `self.config` config and check to see if the `vid` is
-        already in the list.
-        '''
-        for video in self.config['videos']:
-            for invid in video['input']:
-                if invid['i'] == vid:
-                    return True
-        return False
-
     def append_video(self, resource: str) -> None:
         '''
         Append a video to the ytffmpeg.yml configuration.
         '''
-        if self.isVidPresent(resource):
+        if self.has_video(resource):
             log.info(f'\x1b[1m{resource}\x1b[0m is already in the ytffmpeg.yml configuration.')
             return
         log.info(f'Appending \x1b[1m{resource}\x1b[0m to ytffmpeg.yml configuration.')
