@@ -26,7 +26,7 @@ setup_opts = {
     'install_requires'    : [
       'PyYAML>=6.0.1',
       'kizano',
-      'ffmpeg-python==0.2.0',
+      'ffmpeg-python',
       'nvidia-pyindex',
       'nvidia-cudnn',
       'nvidia-cublas-cu11',
@@ -49,6 +49,7 @@ setup_opts = {
       'openai-whisper',
       'faster-whisper',
       'numba',
+      'torch',
       'requests'
     ],
     'package_dir'         : { 'ytffmpeg': 'lib/ytffmpeg' },

@@ -17,7 +17,7 @@ import yaml
 from kizano import getLogger
 log = getLogger(__name__)
 
-def new(config: dict) -> int:
+def gennew(config: dict) -> int:
     '''
     Produce a new project directory.
     '''

@@ -10,6 +10,6 @@ will be available via the API's.
 from kizano import getLogger
 log = getLogger(__name__)
 
-def publish(config: dict) -> int:
+def publisher(config: dict) -> int:
     log.warning('Sorry, this function is not yet implemented.')
     return 0

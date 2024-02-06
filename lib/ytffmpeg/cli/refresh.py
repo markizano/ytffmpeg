@@ -82,7 +82,7 @@ class RefreshCommand(BaseCommand):
             "[1:v]format=yuv420p,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
             "[_v][disclaim]overlay=W-w-100:0:enable='between(t,0,5)',setpts=PTS-STARTPTS[video]",
             # Until I get my 2nd mic hooked up, copy the audio to both channels.
-            "[0:a]volume=1.5,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB,pan=stereo|FL=FL|FR=FL[audio]"
+            "[0:a]volume=1.5,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[audio]"
         ]
         self.config['videos'].append(new_vid_tpl)
         log.info('Done appending video to ytffmpeg.yml configuration!')
@@ -156,7 +156,7 @@ class RefreshCommand(BaseCommand):
         os.system('stty echo -brkint -imaxbel icanon iexten icrnl')
         return 0
 
-def refresh(config: dict) -> int:
+def refresher(config: dict) -> int:
     '''
     Update `ytffmpeg.yml` with any new media in `./resources`.
     Check to see if any media in `./resources` needs to be converted to Matroska format.

@@ -30,6 +30,7 @@ class Action(object):
     BUILD = 'build'
     REFRESH = 'refresh'
     SUBS = 'gensubs'
+    LOADMOD = 'load-module'
     PUBLISH = 'publish'
 
 class BaseCommand(object):
@@ -144,7 +145,7 @@ class BaseCommand(object):
             'word_timestamps': True,
             'language': lang,
         }
-        warnings.filterwarnings("ignore")
+        #warnings.filterwarnings("ignore")
         while self.whisper is None:
             log.debug('Waiting for whisper model to finish loading...')
             time.sleep(1)

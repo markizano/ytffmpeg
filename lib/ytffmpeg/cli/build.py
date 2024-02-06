@@ -275,7 +275,7 @@ class BuildCommand(BaseCommand):
         log.info(f'Completed all media in \x1b[4m{round(then-now, 2)}\x1b[0m seconds!')
         return 0
 
-def build(config: dict) -> int:
+def builder(config: dict) -> int:
     '''
     Entrtypoint for this model.
     '''

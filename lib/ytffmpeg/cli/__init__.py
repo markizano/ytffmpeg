@@ -12,16 +12,26 @@ from kizano import getLogger
 log = getLogger(__name__)
 
 from .base import Devices, Action, BaseCommand
-from .new import new
-from .build import build
-from .refresh import refresh
+from .new import gennew
+from .build import builder
+from .refresh import refresher
 from .subs import gensubs
-from .publish import publish
+from .loadmod import loadmodule
+from .publish import publisher
 
 class Cli(object):
     '''
     Usage: %(prog)s [options] [command]
     '''
+
+    ACTIONS = {
+        Action.NEW: gennew,
+        Action.BUILD: builder,
+        Action.REFRESH: refresher,
+        Action.SUBS: gensubs,
+        Action.LOADMOD: loadmodule,
+        Action.PUBLISH: publisher
+    }
 
     def __init__(self, config: dict):
         self.config = config
@@ -99,7 +109,7 @@ class Cli(object):
         # If there is a subsequent resource after the action, assign the resource to the options.
         while other:
             arg = other.pop(0)
-            if arg in [Action.NEW, Action.BUILD, Action.REFRESH, Action.SUBS, Action.PUBLISH]:
+            if arg in list(Cli.ACTIONS.keys()):
                 action = arg
             else:
                 opts.resource = arg
@@ -113,6 +123,8 @@ class Cli(object):
             del opts.overwrite
         if opts.subtitles == None:
             del opts.subtitles
+        if opts.autoplay == None:
+            del opts.autoplay
         self.config['ytffmpeg'].update(vars(opts))
 
     def execute(self):
@@ -122,13 +134,7 @@ class Cli(object):
         '''
         if 'OMP_NUM_THREADS' not in os.environ:
             os.environ['OMP_NUM_THREADS'] = str(cpu_count())
-        action = {
-            Action.NEW: new,
-            Action.BUILD: build,
-            Action.REFRESH: refresh,
-            Action.SUBS: gensubs,
-            Action.PUBLISH: publish
-        }.get(self.config['ytffmpeg']['action'])
+        action = Cli.ACTIONS.get(self.config['ytffmpeg']['action'])
         if not action:
             log.error('Invalid action: %s', self.config['action'])
             return 1
