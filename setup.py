@@ -48,6 +48,7 @@ setup_opts = {
       'openai',
       'openai-whisper',
       'faster-whisper',
+      'fabric',
       'numba',
       'torch',
       'requests'
