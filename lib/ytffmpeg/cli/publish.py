@@ -43,8 +43,10 @@ class PublishCommand(BaseCommand):
 
                 if 'sftp' in publish_cfg:
                     log.info('Publishing to SFTP Endpoint...')
+                    sftp_host = publish_cfg["sftp"]["host"]
                     remote_filename = os.path.join(publish_cfg['sftp']['out_dir'], video.get('publish', os.path.basename(output)))
-                    c = Connection(publish_cfg['sftp']['host'])
+                    log.info(f'Publishing to {sftp_host} as {remote_filename}')
+                    c = Connection(sftp_host)
                     c.put(output, remote_filename)
                     if 'post_publish_cmd' in publish_cfg['sftp']:
                         post_publish_cmd = publish_cfg['sftp']['post_publish_cmd']
