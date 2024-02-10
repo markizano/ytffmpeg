@@ -33,6 +33,9 @@ class PublishCommand(BaseCommand):
             video = videos.pop(0)
             output = video['output']
             if os.path.exists(output):
+                if 'attributes' in video and 'not-a-build' in video['attributes']:
+                    log.info(f'Skipping \x1b[1m{output}\x1b[0m as it is not a build artifact.')
+                    continue
                 log.info(f'Publishing \x1b[1m{output}\x1b[0m...')
 
                 if 'youtube' in publish_cfg:
