@@ -15,6 +15,7 @@ class LoadModuleCommand(BaseCommand):
         '''
         Load the whisper models into local cache so we are not searching the internet for them later.
         '''
+        self.load_whisper()
         return 0
 
 

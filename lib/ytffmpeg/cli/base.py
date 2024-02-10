@@ -54,12 +54,20 @@ class BaseCommand(object):
 
     def __init__(self, config: dict):
         self.config = config
+        self.whisper = None
+
+    def load_whisper(self) -> None:
+        '''
+        Load the whisper model.
+        '''
         if self.config['ytffmpeg'].get('subtitles', True):
             log.info('Loading whisper model...')
             now = time.time()
             self.whisper = WhisperModel(BaseCommand.WHISPER_MODEL, device=self.config['ytffmpeg']['device'], compute_type='auto')
             then = time.time()
             log.info(f'Whisper model loaded in {round(then-now, 4)} seconds!')
+        else:
+            log.info('Subtitles not enabled. Skipping whisper model load.')
 
     def filename(self, path: str) -> str:
         '''
@@ -146,9 +154,8 @@ class BaseCommand(object):
             'language': lang,
         }
         #warnings.filterwarnings("ignore")
-        while self.whisper is None:
-            log.debug('Waiting for whisper model to finish loading...')
-            time.sleep(1)
+        if self.whisper is None:
+            self.load_whisper()
         transcript, transcriptInfo = self.whisper.transcribe(audio_path, **args)
         warnings.filterwarnings("default")
         log.debug(transcriptInfo)
