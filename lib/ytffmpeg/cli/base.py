@@ -140,6 +140,7 @@ class BaseCommand(object):
             log.warning(f'Failed to get subtitles for {video_path}! Subtitles not enabled.')
             return ''
 
+        # Subtitles depend on just the audio stream, so extract that from the video.
         audio_path = self.get_audio(video_path)
         srt_path = os.path.join('build', f"{self.filename(video_path)}.{lang}.srt")
         log.info(f"Generating subtitles for {srt_path} from {video_path}... This might take a while...")

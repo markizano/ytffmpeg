@@ -147,6 +147,9 @@ class BuildCommand(BaseCommand):
         with open(filter_complex_filename, 'w') as fc:
             for i, filter_complex in enumerate(filter_complex_script):
                 if isinstance(filter_complex, str):
+                    # Ignore commented lines.
+                    if filter_complex.startswith('#'): continue
+                    # Otherwise add the string.
                     result.append(filter_complex)
                 elif isinstance(filter_complex, dict):
                     assert 'i' in filter_complex, f'I need an input stream specified in filter_complex[{i}]!'
