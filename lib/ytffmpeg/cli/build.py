@@ -274,6 +274,7 @@ class BuildCommand(BaseCommand):
             log.info(f'Done processing \x1b[1m{output}\x1b[0m in {round(vidthen-vidnow,4)} seconds! Now playing...')
             media_player = self.config['ytffmpeg'].get('media_player', 'mpv')
             subprocess.run([media_player, output], shell=False)
+        os.system('stty echo -brkint -imaxbel icanon iexten icrnl')
         then = time.time()
         log.info(f'Completed all media in \x1b[4m{round(then-now, 2)}\x1b[0m seconds!')
         return 0
