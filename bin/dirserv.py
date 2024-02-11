@@ -7,6 +7,7 @@ return the data structures in a JSON response.
 import io, os, sys
 import cherrypy
 import kizano
+log = kizano.getLogger(__name__)
 
 INDEX_HTML = '''
 <!DOCTYPE html>
@@ -28,11 +29,15 @@ ul li { margin: 2px; }
  * @param yml 
  */
 function showYML(yml) {
-    $.getJSON(`/yml?path=${yml}`, function(response) {
+    $.getJSON(`yml?path=${yml}`, function(response) {
         $('#videos').empty();
+        if (!response.videos.length) {
+            $('#videos').append(`<div id="${yml}">No videos found in ${yml}.</div>`);
+            return;
+        }
         response.videos.forEach(function(video) {
             let videoDiv = `<div class="video">
-                <h3>${video.output}</h3>
+                <h3 id=${yml}>${video.output}</h3>
                 <ul>`;
             video.input.forEach(function(input) {
                 videoDiv += `<li>${input.i}</li>`;
@@ -60,9 +65,9 @@ function showYML(yml) {
 }
 
 $(document).ready(function() {
-    $.getJSON('/ls', function(data) {
+    $.getJSON('ls', function(data) {
         $.each(data, function(i, yml) {
-            $('#ymls').append(`<li><a href="#" onclick="showYML('${yml}')">${yml}</a></li>`);
+            $('#ymls').append(`<li><a href="#${yml}" onclick="showYML('${yml}')">${yml}</a></li>`);
         });
     });
 });
@@ -111,15 +116,17 @@ class DirServ:
         for root, dirs, files in os.walk(self.root):
             for file in files:
                 if file == 'ytffmpeg.yml':
-                    ymls.append(os.path.join(root, file))
+                    ymls.append(os.path.join(root, file).replace(self.root + os.path.sep, ''))
         return ymls
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def yml(self, path: str):
+    def yml(self, path: str) -> dict:
         '''
         Return the contents of a ytffmpeg.yml file.
         '''
+        # log.debug({'args': args, 'kwargs': kwargs})
+        path = os.path.join(self.root, path)
         if not os.path.exists(path):
             return {
                 'statusCode': 404,
@@ -132,9 +139,10 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         print('Usage: dirserv.py <directory>')
         sys.exit(1)
-    cherrypy.quickstart(DirServ(sys.argv[1]), '/', {
+    root = os.path.realpath(sys.argv[1])
+    cherrypy.quickstart(DirServ(root), '/', {
         'global': {
-            'server.socket_host': '0.0.0.0',
-            'server.socket_port': 16555
+            'server.socket_host': os.environ.get('SERVER_HOST', '127.0.0.1'),
+            'server.socket_port': int( os.environ.get('SERVER_PORT', '16555') )
         }
     })
