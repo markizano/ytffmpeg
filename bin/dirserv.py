@@ -117,6 +117,7 @@ class DirServ:
             for file in files:
                 if file == 'ytffmpeg.yml':
                     ymls.append(os.path.join(root, file).replace(self.root + os.path.sep, ''))
+        ymls.sort()
         return ymls
 
     @cherrypy.expose
