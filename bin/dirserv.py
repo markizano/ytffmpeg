@@ -5,9 +5,10 @@ return the data structures in a JSON response.
 '''
 
 import io, os, sys
-import cherrypy
 import kizano
-log = kizano.getLogger(__name__)
+import cherrypy
+from datetime import datetime
+log = kizano.getLogger('DirectoryServer', log_format='json')
 
 INDEX_HTML = '''
 <!DOCTYPE html>
@@ -135,12 +136,20 @@ class DirServ:
             }
         return kizano.utils.read_yaml(path)
 
+    @cherrypy.expose
+    def shutdown(self) -> None:
+        log.info("Shutting down web server...")
+        cherrypy.engine.exit()
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print('Usage: dirserv.py <directory>')
         sys.exit(1)
     root = os.path.realpath(sys.argv[1])
+    log.info('Starting web server...')
+    cherrypy.log.access_log.handlers = log.handlers
+    cherrypy.log.error_log.handlers = log.handlers
+    cherrypy._cplogging.LogManager.time = lambda self: datetime.now().strftime('%F %T')
     cherrypy.quickstart(DirServ(root), '/', {
         'global': {
             'server.socket_host': os.environ.get('SERVER_HOST', '127.0.0.1'),
