@@ -180,6 +180,9 @@ class BuildCommand(BaseCommand):
             assert 'output' in video_opts, 'No output specified for video!'
             vidnow = time.time()
             output = video_opts["output"]
+            if output is None:
+                log.warning(f'Skipping vid because output is set to None.')
+                continue
             attributes = video_opts.get('attributes', [])
             log.info(f'Processing video: \x1b[1m{output}\x1b[0m')
             # If we have pre-existing requirements or videos this is dependent on, process them first.

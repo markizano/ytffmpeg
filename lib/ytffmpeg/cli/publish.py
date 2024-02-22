@@ -32,7 +32,7 @@ class PublishCommand(BaseCommand):
         while videos:
             video = videos.pop(0)
             output = video['output']
-            if os.path.exists(output):
+            if output and os.path.exists(output):
                 if 'attributes' in video and 'no-publish' in video['attributes']:
                     log.info(f'Skipping \x1b[1m{output}\x1b[0m as it is not meant for publishing.')
                     continue
