@@ -191,6 +191,9 @@ class BuildCommand(BaseCommand):
             # Append the `-i` arguments accordingly.
             for input_video in video_opts['input']:
                 final_cmd.extend(self.processInput(input_video))
+            if os.path.exists('thumbnail.png'):
+                final_cmd.append('-i')
+                final_cmd.append('thumbnail.png')
             # Process a filter_complex if we have one.
             if 'filter_complex' in video_opts:
                 filter_complex = f'build/{self.filename(output)}.filter_complex'
@@ -258,6 +261,10 @@ class BuildCommand(BaseCommand):
             if 'movflags' in video_opts:
                 final_cmd.append('-movflags')
                 final_cmd.append(video_opts['movflags'])
+            if os.path.exists('thumbnail.png'):
+                i = len(video_opts['input'])
+                final_cmd.append(f'-disposition:v:{i}')
+                final_cmd.append('attached_pic')
 
             # Attach the output file.
             final_cmd.append('-y')
