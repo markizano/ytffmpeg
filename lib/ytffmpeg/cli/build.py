@@ -62,9 +62,10 @@ class BuildCommand(BaseCommand):
                     input_cmd.append('-f')
                     input_cmd.append(input_video.pop('f'))
                 # Add other arguments in the middle
-                name, value = input_video.popitem()
-                input_cmd.append(f'-{name}')
-                input_cmd.append(value)
+                if len(input_video) >= 1:
+                    name, value = input_video.popitem()
+                    input_cmd.append(f'-{name}')
+                    input_cmd.append(value)
             input_cmd.append('-i')
             input_cmd.append(i)
         return input_cmd

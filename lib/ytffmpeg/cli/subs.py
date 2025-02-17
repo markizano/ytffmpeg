@@ -21,6 +21,8 @@ class GenSubsCommand(BaseCommand):
         '''
         self.config['ytffmpeg']['subtitles'] = True
         self.language = self.config['ytffmpeg'].get('language', os.environ.get('LANGUAGE', 'en'))
+        if self.language == 'None':
+            self.language = 'en'
         if 'resource' not in self.config['ytffmpeg']:
             log.error('No resource specified!')
             return 8

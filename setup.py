@@ -50,7 +50,7 @@ setup_opts = {
       'faster-whisper',
       'fabric',
       'numba',
-      'torch==1.13.1',
+    #   'torch==1.13.1',
       'requests'
     ],
     'package_dir'         : { 'ytffmpeg': 'lib/ytffmpeg' },

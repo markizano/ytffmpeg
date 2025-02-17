@@ -7,7 +7,7 @@ import time
 import warnings
 import ffmpeg
 
-from typing import Iterable
+from typing import Iterable, NamedTuple
 
 from faster_whisper import WhisperModel
 from faster_whisper.transcribe import Segment
@@ -16,7 +16,7 @@ from faster_whisper.utils import format_timestamp
 from kizano import getLogger
 log = getLogger(__name__)
 
-class Devices(object):
+class Devices(NamedTuple):
     '''
     Poor man's enumeration() object for device types.
     '''
@@ -25,13 +25,17 @@ class Devices(object):
     CUDA = 'cuda'
     AUTO = 'auto'
 
-class Action(object):
+class Action(NamedTuple):
     NEW = 'new'
     BUILD = 'build'
     REFRESH = 'refresh'
     SUBS = 'gensubs'
     LOADMOD = 'load-module'
     PUBLISH = 'publish'
+
+class WhisperTask(NamedTuple):
+    TRANSCRIBE = 'transcribe'
+    TRANSLATE = 'translate'
 
 class BaseCommand(object):
     '''
@@ -63,7 +67,10 @@ class BaseCommand(object):
         if self.config['ytffmpeg'].get('subtitles', True):
             log.info('Loading whisper model...')
             now = time.time()
-            self.whisper = WhisperModel(BaseCommand.WHISPER_MODEL, device=self.config['ytffmpeg']['device'], compute_type='auto')
+            self.whisper = WhisperModel(
+                BaseCommand.WHISPER_MODEL,
+                device=self.config['ytffmpeg']['device'],
+                compute_type='auto')
             then = time.time()
             log.info(f'Whisper model loaded in {round(then-now, 4)} seconds!')
         else:
@@ -153,12 +160,13 @@ class BaseCommand(object):
         args = {
             'word_timestamps': True,
             'language': lang,
+            'task': os.environ.get('WHISPER_TASK', WhisperTask.TRANSCRIBE),
         }
         #warnings.filterwarnings("ignore")
         if self.whisper is None:
             self.load_whisper()
         transcript, transcriptInfo = self.whisper.transcribe(audio_path, **args)
-        warnings.filterwarnings("default")
+        #warnings.filterwarnings("default")
         log.debug(transcriptInfo)
         log.info(f"Subtitles generated!")
 

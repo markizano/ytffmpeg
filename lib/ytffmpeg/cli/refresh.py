@@ -101,7 +101,7 @@ class RefreshCommand(BaseCommand):
             if 'languages' in vid_config:
                 log.info(f'Multilang video found at \x1b[1m{resource}\x1b[0m')
                 for ilang in vid_config['languages']:
-                    lang, i = ilang.split(':')
+                    lang = ilang.split(':').pop(0)
                     log.info(f'Processing subtitles for \x1b[1m{resource}\x1b[0m in \x1b[1m{lang}\x1b[0m')
                     self.get_subtitles(resource, lang)
             else:
