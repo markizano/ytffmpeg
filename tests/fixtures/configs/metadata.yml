@@ -1,0 +1,13 @@
+# Asserts that metadata can be used for the basic identifiers of an output video.
+videos:
+- input:
+  - i: resources/screenrecord.mkv
+  metadata:
+    author: Markizano Draconus
+    credits: Captions by Whisper from OpenAI
+    description: |-
+      Helpful unit testing multiline description
+      #test #unittest #example #sample
+    title: 'Helpful Testing Title'
+    website: https://markizano.net/
+  output: build/result.mp4

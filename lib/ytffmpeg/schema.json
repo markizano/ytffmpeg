@@ -1,0 +1,119 @@
+{
+    "type": "object",
+    "videos": {
+        "$id": "#/videos",
+        "title": "The videos schema",
+        "description": "A video is an input-output video operation sequence. Operations are handled by order of definition.",
+        "type": "array",
+        "items": {
+            "type": "object",
+            "properties": {
+                "attributes": {
+                    "$id": "#/videos/attributes",
+                    "description": "Various attributes that customize how this video is processed",
+                    "type": "array",
+                    "example": ["subs", "not-a-build", "no-autio", "no-video"],
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "input": {
+                    "$id": "#/videos/input",
+                    "description": "An input video file. Child elements of this serve as arguments to the `ffmpeg` command. `-i` is always served last no matter what order its defined in the `ytffmpeg.yml` file.",
+                    "type": "object",
+                    "additionalProperties": true,
+                    "properties": {
+                        "i": {
+                            "$id": "#/videos/input/i",
+                            "description": "The input video file name itself",
+                            "type": "string"
+                        },
+                        "t": {
+                            "$id": "#/videos/input/t",
+                            "description": "The amount of seconds to extract from input video.",
+                            "type": "string"
+                        },
+                        "ss": {
+                            "$id": "#/videos/input/ss",
+                            "description": "Seek to this timestamp or number of seconds into the video.",
+                            "type": "string"
+                        },
+                        "to": {
+                            "$id": "#/videos/input/to",
+                            "description": "Stop writing the output at this timestamp or number of seconds into the video.",
+                            "type": "string"
+                        },
+                        "loop": {
+                            "$id": "#/videos/input/loop",
+                            "description": "Whether to loop input. Useful for input images. Must be string input since it is piped directly into the command.",
+                            "type": "string",
+                            "enum": ["true", "false"]
+                        }
+                    },
+                    "required": ["i"]
+                },
+                "output": {
+                    "$id": "#/videos/output",
+                    "description": "The resulting output video file.",
+                    "type": "string"
+                },
+                "filter_complex": {
+                    "$id": "#/videos/filter_complex",
+                    "description": "The filter_complex argument for the `ffmpeg` command. This is where the magic happens.",
+                    "type": "array",
+                    "items": {
+                        "type": ["string", "object"],
+                        "example": ["[0:v]scale=1920:1080[video]", {
+                            "istream": "[0:v]",
+                            "filters": [{"scale": {"width": 1920, "height": 1080} }],
+                            "ostream": "[video]"
+                        } ],
+                        "additionalProperties": true,
+                        "properties": {
+                            "istream": {
+                                "$id": "#/videos/filter_complex/istream",
+                                "description": "The input stream source.",
+                                "type": ["string", "array"],
+                                "items": {
+                                    "type": "string"
+                                },
+                                "minItems": 1
+                            },
+                            "filters": {
+                                "$id": "#/videos/filter_complex/filters",
+                                "description": "The filters to apply to the input stream.",
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            },
+                            "ostream": {
+                                "$id": "#/videos/filter_complex/ostream",
+                                "description": "The output stream destination(s).",
+                                "type": ["string", "array"],
+                                "items": {
+                                    "type": "string"
+                                },
+                                "minItems": 1
+                            }
+                        }
+                    }
+                },
+                "metadata": {
+                    "$id": "#/videos/metadata",
+                    "description": "Metadata to apply to the output video file.",
+                    "type": "object",
+                    "patternProperties": {
+                        "^[a-zA-Z0-9:_-]+$": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "required": ["input", "output"]
+            }
+        },
+        "uniqueItems": true
+    },
+    "required": ["videos"]
+}

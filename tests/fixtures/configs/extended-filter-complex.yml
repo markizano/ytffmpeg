@@ -1,0 +1,17 @@
+# Extended filter complex configuration to assert that dynamic objects describing a stream operation can compile into a resulting ffmpeg-filter_complex command.
+videos:
+- filter_complex:
+  - istream: '[0:v]'
+    filters:
+    - scale: ['720', '1280']
+    - pad: ['864', '1536', '72', '20']
+    - scale: ['720', '1280']
+    ostream: '[video]'
+  - istream: '[0:a]'
+    filters:
+    - volume: '1.5'
+    - asetpts: 'NB_CONSUMED_SAMPLES/SR/TB'
+    ostream: '[audio]'
+  input:
+  - i: resources/example.mkv
+  output: build/result.mp4

@@ -1,0 +1,5 @@
+# This asserts basic input/output configuration such that a schema can work for simple configuration.
+videos:
+- input:
+  - i: resources/screenrecord.mkv
+  output: build/result.mp4

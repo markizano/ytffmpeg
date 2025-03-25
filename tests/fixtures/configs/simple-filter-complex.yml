@@ -1,0 +1,8 @@
+# Simple Filter Complex configuration to assert a string can be used in filter_complex configuration.
+videos:
+- filter_complex:
+  - '[0:v]scale=720x1280,pad=864:1536:72:20,scale=720x1280[video]'
+  - '[0:a]volume=1.5,asetpts=NB_CONSUMED_SAMPLES/SR/TB[audio]'
+  input:
+  - i: resources/example.mkv
+  output: build/result.mp4

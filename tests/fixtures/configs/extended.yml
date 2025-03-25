@@ -1,0 +1,20 @@
+# This asserts a little more extensive configuration such that some additional features can be tested.
+# The `filter_complex` key is used to assert that the schema can handle more complex configurations.
+videos:
+- filter_complex:
+  - '[0:v]scale=720x1280[video]'
+  - '[0:a]volume=1.5[audio]'
+  input:
+  - i: resources/screenrecord.mkv
+  - framerate: '30'
+    i: /home/YouTube/resources/openai.png
+    loop: 'true'
+    t: '5'
+  metadata:
+    author: Markizano Draconus
+    description: |-
+      Helpful description that will get along with the testing if all goes well :)
+      #hashtag #test #example #sample
+    title: 'Helpful Test Title'
+    website: https://markizano.net/
+  output: build/result.mp4
