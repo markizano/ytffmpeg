@@ -37,14 +37,14 @@ class TestYtffmpegConfig(unittest.TestCase):
         '''
         config = yaml.safe_load(open('tests/fixtures/configs/metadata.yml'))
         self.assertIsNone(validate(config, self.schema), 'Metadata configuration failed validation!')
-    
+
     def test_simpleFilterComplex(self):
         '''
         Test the simple filter complex configuration.
         '''
         config = yaml.safe_load(open('tests/fixtures/configs/simple-filter-complex.yml'))
         self.assertIsNone(validate(config, self.schema), 'Simple filter complex configuration failed validation!')
-    
+
     def test_extendedFilterComplex(self):
         '''
         Test the extended filter complex configuration.
