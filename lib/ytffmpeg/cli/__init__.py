@@ -11,7 +11,8 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from kizano import getLogger
 log = getLogger(__name__)
 
-from .base import Devices, Action, BaseCommand
+from ..types import Devices, Action
+from .base import BaseCommand
 from .new import gennew
 from .build import builder
 from .refresh import refresher
