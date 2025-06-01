@@ -121,11 +121,11 @@ class Cli(object):
             options.print_help()
             return
         if opts.overwrite == None:
-            del opts.overwrite
+            del opts.overwrite # type: ignore
         if opts.subtitles == None:
-            del opts.subtitles
+            del opts.subtitles # type: ignore
         if opts.autoplay == None:
-            del opts.autoplay
+            del opts.autoplay # type: ignore
         self.config['ytffmpeg'].update(vars(opts))
 
     def execute(self):
