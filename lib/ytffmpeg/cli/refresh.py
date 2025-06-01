@@ -23,6 +23,9 @@ class RefreshCommand(BaseCommand):
         '''
         Convert an MP4 file to MKV.
         '''
+        if self.config['ytffmpeg'].get('no_convert', False) == True:
+            log.info('NOT converting due to user direction.')
+            return resource
         log.debug(f'Converting {resource} to mkv.')
         mkvfile = resource.replace('.mp4', '.mkv')
         if os.path.exists(mkvfile):
@@ -46,7 +49,7 @@ class RefreshCommand(BaseCommand):
               .option('hide_banner')
               .input(resource)
               .output(mkvfile, **out_opts)
-        )
+        ).execute()
         if self.config['ytffmpeg'].get('delete_mp4', False):
             log.debug(f'Deleting {resource} to save on disk space.')
             os.unlink(resource)

@@ -123,7 +123,7 @@ class BaseCommand(object):
                 ac=1,
                 ar="16k"
             )
-        )
+        ).execute()
 
         log.info('Done extracting audio!')
         return output_path
