@@ -49,13 +49,14 @@ class BuildCommand(BaseCommand):
         In this way, all options for that video are processed on the command line in the correct order.
         '''
         input_cmd = []
-        log.debug(f'INPUT stream: \x1b[1m{input_video["i"]}\x1b[0m')
         if isinstance(input_video, str):
+            log.debug(f'INPUT stream: \x1b[1m{input_video}\x1b[0m')
             input_cmd.append('-i')
             input_cmd.append(input_video)
         elif isinstance(input_video, dict):
             assert 'i' in input_video, 'No input specified for video!'
             i = input_video.pop('i')
+            log.debug(f'INPUT stream: \x1b[1m{i}\x1b[0m')
             while len(input_video):
                 # Make sure the format is the first argument to be added.
                 if 'f' in input_video:
@@ -153,11 +154,11 @@ class BuildCommand(BaseCommand):
                     # Otherwise add the string.
                     result.append(filter_complex)
                 elif isinstance(filter_complex, dict):
-                    assert 'i' in filter_complex, f'I need an input stream specified in filter_complex[{i}]!'
-                    assert 'o' in filter_complex, f'I need an output stream specified in filter_complex[{i}]!'
-                    assert 'funcs' in filter_complex, f'I need a list of functions specified in filter_complex[{i}]!'
+                    assert 'istream' in filter_complex, f'I need an input stream specified in filter_complex[{i}]!'
+                    assert 'ostream' in filter_complex, f'I need an output stream specified in filter_complex[{i}]!'
+                    assert 'filters' in filter_complex, f'I need a list of functions specified in filter_complex[{i}]!'
                     funcs = ','.join( map(lambda x: self.parseFunction(x['func']), filter_complex['funcs']) )
-                    filter_complex_str = f'[{filter_complex["i"]}] {funcs} [{filter_complex["o"]}]'
+                    filter_complex_str = f'[{filter_complex["istream"]}] {funcs} [{filter_complex["ostream"]}]'
                     result.append(filter_complex_str)
             fc.write(";\n".join(result))
             fc.flush()

@@ -7,7 +7,7 @@ import time
 import warnings
 import ffmpeg
 
-from typing import Iterable, NamedTuple
+from typing import Iterable
 
 from faster_whisper import WhisperModel
 from faster_whisper.transcribe import Segment
@@ -16,26 +16,7 @@ from faster_whisper.utils import format_timestamp
 from kizano import getLogger
 log = getLogger(__name__)
 
-class Devices(NamedTuple):
-    '''
-    Poor man's enumeration() object for device types.
-    '''
-    CPU = 'cpu'
-    GPU = 'cuda'
-    CUDA = 'cuda'
-    AUTO = 'auto'
-
-class Action(NamedTuple):
-    NEW = 'new'
-    BUILD = 'build'
-    REFRESH = 'refresh'
-    SUBS = 'gensubs'
-    LOADMOD = 'load-module'
-    PUBLISH = 'publish'
-
-class WhisperTask(NamedTuple):
-    TRANSCRIBE = 'transcribe'
-    TRANSLATE = 'translate'
+from ytffmpeg.types import WhisperTask
 
 class BaseCommand(object):
     '''
@@ -59,6 +40,8 @@ class BaseCommand(object):
     def __init__(self, config: dict):
         self.config = config
         self.whisper = None
+        # Cached subtitle segments.
+        self._subs = []
 
     def load_whisper(self) -> None:
         '''
@@ -99,8 +82,8 @@ class BaseCommand(object):
         Check the list of videos. If any of the input videos match the resource using filename() then return True.
         '''
         for video in self.config['videos']:
-            for invid in video['input']:
-                if self.filename(invid['i']).lower() in vid.lower():
+            for inputVid in video['input']:
+                if inputVid['i'] == vid:
                     return True
         return False
 
@@ -129,12 +112,18 @@ class BaseCommand(object):
                 log.info(f"Audio already extracted for \x1b[1m{filepath}\x1b[0m!")
                 return output_path
 
-        ffmpeg.input(path).output(
-            output_path,
-            acodec="pcm_s16le",
-            ac=1,
-            ar="16k"
-        ).run(quiet=True, overwrite_output=True)
+        (
+            ffmpeg.FFmpeg()
+              .option('log_level', 'error')
+              .option('y')
+              .input(path)
+              .output(
+                output_path,
+                acodec="pcm_s16le",
+                ac=1,
+                ar="16k"
+            )
+        )
 
         log.info('Done extracting audio!')
         return output_path
@@ -165,7 +154,7 @@ class BaseCommand(object):
         #warnings.filterwarnings("ignore")
         if self.whisper is None:
             self.load_whisper()
-        transcript, transcriptInfo = self.whisper.transcribe(audio_path, **args)
+        transcript, transcriptInfo = self.whisper.transcribe(audio_path, **args) # type: ignore
         #warnings.filterwarnings("default")
         log.debug(transcriptInfo)
         log.info(f"Subtitles generated!")
@@ -178,6 +167,7 @@ class BaseCommand(object):
         Write out the SRT file.
         '''
         log.info('Writing out SRT file...')
+        self._subs = [segment for segment in transcript]
         now = time.time()
         i = 1
         srt_tpl = '%d\n%s --> %s\n%s\n\n'

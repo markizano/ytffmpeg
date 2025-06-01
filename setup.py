@@ -26,7 +26,7 @@ setup_opts = {
     'install_requires'    : [
       'PyYAML>=6.0.1',
       'kizano',
-      'ffmpeg-python',
+      'python-ffmpeg==2.0.12',
       'nvidia-pyindex',
       'nvidia-cudnn',
       'nvidia-cublas-cu11',

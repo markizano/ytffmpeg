@@ -1,7 +1,6 @@
 '''
 This module will check the resources directory for any mis-matched media, convert it
 and auto-generate subtitles for it using the `faster_whisper` library.
-@TODO: Enable overwrite=true when the build artifacts are older than the original resources.
 '''
 
 import os
@@ -42,7 +41,12 @@ class RefreshCommand(BaseCommand):
             'metadata:s:v': 'language=eng',
             'metadata:s:a': 'language=eng'
         }
-        ffmpeg.input(resource).output(mkvfile, **out_opts).global_args('-hide_banner').run()
+        (
+            ffmpeg.FFmpeg()
+              .option('hide_banner')
+              .input(resource)
+              .output(mkvfile, **out_opts)
+        )
         if self.config['ytffmpeg'].get('delete_mp4', False):
             log.debug(f'Deleting {resource} to save on disk space.')
             os.unlink(resource)
@@ -81,7 +85,6 @@ class RefreshCommand(BaseCommand):
             f"[_s]subtitles={srt_es}:force_style='Alignment=0,FontName=Impact,PrimaryColour=&H08BF8FF,OutlineColour=&H40000000,BorderStyle=3,Fontsize=10,MarginV=5'[_v]",
             "[1:v]format=yuv420p,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
             "[_v][disclaim]overlay=W-w-100:0:enable='between(t,0,5)',setpts=PTS-STARTPTS[video]",
-            # Until I get my 2nd mic hooked up, copy the audio to both channels.
             "[0:a]volume=1.5,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[audio]"
         ]
         self.config['videos'].append(new_vid_tpl)
