@@ -1,8 +1,7 @@
 import sys
-
 import kizano
 log = kizano.getLogger(__name__)
-kizano.Config.APP_NAME = 'ytffmpeg'
+kizano.Config.APP_NAME = 'ytffmpeg'  # type: ignore
 
 import ytffmpeg.cli as cli
 import ytffmpeg.filter_complex as filter_complex

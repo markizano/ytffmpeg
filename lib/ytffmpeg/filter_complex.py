@@ -1,5 +1,6 @@
 
-from typing import Any, Iterable
+from types import NoneType
+from typing import Any, Iterable, Self
 from kizano import getLogger
 log = getLogger(__name__)
 
@@ -9,7 +10,7 @@ class FilterComplexFunctionList(list):
     and string representations look like ffmpeg filter_complex functions.
     '''
 
-    def __init__(self, iterable: Iterable = None) -> None:
+    def __init__(self, iterable: Iterable|NoneType = None) -> None:
         if iterable:
             super().__init__((FilterComplexFunctionUnit(i) for i in iterable))
         else:
@@ -97,7 +98,7 @@ class FilterComplexFunctionUnit(object):
     are being passed through.
     '''
 
-    def __init__(self, name: str, *args, **kwargs) -> None:
+    def __init__(self, name: str|type[Self], *args, **kwargs) -> None:
         '''
         The constructor should be able to handle any of the following argument styles:
         unit = FilterComplexFunctionUnit('trim=start=1.15:end=4.5')
@@ -107,7 +108,7 @@ class FilterComplexFunctionUnit(object):
         '''
         assert isinstance(name, (str, type(self))), 'Argument name must be string!'
         if isinstance(name, type(self)):
-            args = list(args) + name.args
+            args = list(args) + name.args # type: ignore
             kwargs = dict(kwargs, **name.kwargs)
             name = name.name
         if '=' in name:

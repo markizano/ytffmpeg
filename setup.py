@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.abspath('lib'))
 setup_opts = {
     'name'                : 'ytffmpeg',
     # We change this default each time we tag a release.
-    'version'             : '1.2.0',
+    'version'             : '1.2.1',
     'description'         : 'Scripts and tools to ease the processing of videos for Social Media platforms.',
     'long_description'    : ('This is a library that ingests configuration formats and converts them into '
                             'actions that will end up processing videos in a streamlined fashion in hopes '
@@ -25,32 +25,13 @@ setup_opts = {
     'tests_require'       : ['pytest', 'mock'],
     'install_requires'    : [
       'PyYAML>=6.0.1',
-      'kizano',
+      'kizano==1.0.6',
       'python-ffmpeg==2.0.12',
-      'nvidia-pyindex',
-      'nvidia-cudnn',
-      'nvidia-cublas-cu11',
-      'nvidia-cublas-cu12',
-      'nvidia-cuda-cupti-cu12',
-      'nvidia-cuda-nvrtc-cu11',
-      'nvidia-cuda-nvrtc-cu12',
-      'nvidia-cuda-runtime-cu11',
-      'nvidia-cuda-runtime-cu12',
-      'nvidia-cudnn-cu11',
-      'nvidia-cudnn-cu12',
-      'nvidia-cufft-cu12',
-      'nvidia-curand-cu12',
-      'nvidia-cusolver-cu12',
-      'nvidia-cusparse-cu12',
-      'nvidia-nccl-cu12',
-      'nvidia-nvjitlink-cu12',
-      'nvidia-nvtx-cu12',
-      'openai',
-      'openai-whisper',
-      'fabric',
-      'numba',
-    #   'torch==1.13.1',
-      'requests'
+      'openai==1.97.0',
+      'openai-whisper==20250625',
+      'fabric==3.2.2',
+      'numba==0.61.2',
+      'requests==2.32.4',
     ],
     'package_dir'         : { 'ytffmpeg': 'lib/ytffmpeg' },
     'packages'            : [
