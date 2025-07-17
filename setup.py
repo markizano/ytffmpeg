@@ -47,7 +47,6 @@ setup_opts = {
       'nvidia-nvtx-cu12',
       'openai',
       'openai-whisper',
-      'faster-whisper',
       'fabric',
       'numba',
     #   'torch==1.13.1',

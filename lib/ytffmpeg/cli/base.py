@@ -2,21 +2,16 @@
 Base module for all CLI commands in `ytffmpeg`.
 
 '''
-import os, io
+import os
+import subprocess
 import time
-import warnings
+
 import ffmpeg
 
-from typing import Iterable
-
-from faster_whisper import WhisperModel
-from faster_whisper.transcribe import Segment
-from faster_whisper.utils import format_timestamp
+from ..types import WhisperTask
 
 from kizano import getLogger
 log = getLogger(__name__)
-
-from ytffmpeg.types import WhisperTask
 
 class BaseCommand(object):
     '''
@@ -26,7 +21,7 @@ class BaseCommand(object):
     '''
 
     # class constants
-    WHISPER_MODEL = os.getenv('WHISPER_MODEL', 'guillaumekln/faster-whisper-large-v2')
+    WHISPER_MODEL = os.getenv('WHISPER_MODEL', 'large-v2')
     WHISPER_PNG = '/home/YouTube/resources/openai.png'
     DEVICES = ['cpu', 'cuda', 'auto']
     LANGS = ["auto","af","am","ar","as","az","ba","be","bg","bn","bo","br","bs","ca",
@@ -39,25 +34,6 @@ class BaseCommand(object):
 
     def __init__(self, config: dict):
         self.config = config
-        self.whisper = None
-        # Cached subtitle segments.
-        self._subs = []
-
-    def load_whisper(self) -> None:
-        '''
-        Load the whisper model.
-        '''
-        if self.config['ytffmpeg'].get('subtitles', True):
-            log.info('Loading whisper model...')
-            now = time.time()
-            self.whisper = WhisperModel(
-                BaseCommand.WHISPER_MODEL,
-                device=self.config['ytffmpeg']['device'],
-                compute_type='auto')
-            then = time.time()
-            log.info(f'Whisper model loaded in {round(then-now, 4)} seconds!')
-        else:
-            log.info('Subtitles not enabled. Skipping whisper model load.')
 
     def filename(self, path: str) -> str:
         '''
@@ -97,99 +73,73 @@ class BaseCommand(object):
                     return video
         return {}
 
-    def get_audio(self, path: str) -> str:
-        '''
-        Gets the audio stream for the specified file.
-        '''
-        filepath = self.filename(path)
-        output_path = os.path.join('build', f"{filepath}.wav")
-        log.info(f"Extracting audio from \x1b[1m{filepath}\x1b[0m to \x1b[1m{output_path}\x1b[0m...")
-        # Check to see if the file is already in the build directory.
-        if os.path.exists(output_path):
-            if self.isOverwrite():
-                log.info(f"Overwriting existing audio for \x1b[1m{filepath}\x1b[0m!")
-            else:
-                log.info(f"Audio already extracted for \x1b[1m{filepath}\x1b[0m!")
-                return output_path
-
-        (
-            ffmpeg.FFmpeg()
-              .option('log_level', 'error')
-              .option('y')
-              .input(path)
-              .output(
-                output_path,
-                acodec="pcm_s16le",
-                ac=1,
-                ar="16k"
-            )
-        ).execute()
-
-        log.info('Done extracting audio!')
-        return output_path
-
     def get_subtitles(self, video_path: str, lang: str) -> str:
         '''
-        Input an audio path and output a SRT file containing the subtitles.
+        Generate subtitles for a video file using the whisper script directly.
+        Returns the path to the generated SRT file.
         '''
-        if not self.isSubtitles() or not hasattr(self, 'whisper'):
+        if not self.isSubtitles():
             log.warning(f'Failed to get subtitles for {video_path}! Subtitles not enabled.')
             return ''
 
-        # Subtitles depend on just the audio stream, so extract that from the video.
-        audio_path = self.get_audio(video_path)
         srt_path = os.path.join('build', f"{self.filename(video_path)}.{lang}.srt")
         log.info(f"Generating subtitles for {srt_path} from {video_path}... This might take a while...")
+
         if os.path.exists(srt_path):
             if self.isOverwrite():
                 log.info(f"Overwriting existing subtitles for \x1b[1m{srt_path}\x1b[0m!")
             else:
                 log.info(f"Subtitles already generated for \x1b[1m{srt_path}\x1b[0m!")
                 return srt_path
-        args = {
-            'word_timestamps': True,
-            'language': lang,
-            'task': os.environ.get('WHISPER_TASK', WhisperTask.TRANSCRIBE),
-        }
-        #warnings.filterwarnings("ignore")
-        if self.whisper is None:
-            self.load_whisper()
-        transcript, transcriptInfo = self.whisper.transcribe(audio_path, **args) # type: ignore
-        #warnings.filterwarnings("default")
-        log.debug(transcriptInfo)
-        log.info(f"Subtitles generated!")
 
-        self.write_srt(transcript, srt_path)
-        return srt_path
+        # Ensure build directory exists
+        os.makedirs('build', exist_ok=True)
 
-    def write_srt(self, transcript: Iterable[Segment], srt_path: str) -> None:
-        '''
-        Write out the SRT file.
-        '''
-        log.info('Writing out SRT file...')
-        self._subs = [segment for segment in transcript]
-        now = time.time()
-        i = 1
-        srt_tpl = '%d\n%s --> %s\n%s\n\n'
-        with io.open(srt_path, "w", encoding="utf-8") as srt:
-            for segment in transcript:
-                #log.debug(segment)
-                buffer = []
-                log.info(f"{i}[{segment.start} --> {segment.end}]: {segment.text}")
-                while segment.words:
-                    word = segment.words.pop(0)
-                    buffer.append(word)
-                    text = ''.join([ x.word for x in buffer ]).strip().replace('-->', '->')
-                    charlen = len(text)
-                    stime = format_timestamp(buffer[0].start, always_include_hours=True)
-                    etime = format_timestamp(buffer[-1].end, always_include_hours=True)
-                    if ( len(buffer) > 6 or charlen > 32 ) and not len(segment.words) == 1:
-                        srt.write( srt_tpl % ( i, stime, etime, text ) )
-                        i += 1
-                        buffer = []
-                if len(buffer) > 0:
-                    srt.write( srt_tpl % ( i, stime, etime, text ) )
-                    i += 1
-            srt.flush()
-        then = time.time()
-        log.info(f'Done writing SRT file in \x1b[4m{round(then-now, 4)}\x1b[0m seconds!')
+        # Build whisper command
+        whisper_cmd = [
+            'whisper',
+            '--model', self.config['ytffmpeg'].get('whisper_model', BaseCommand.WHISPER_MODEL),
+            '--device', self.config['ytffmpeg'].get('device', 'cuda'),
+            '--output_dir', 'build',
+            '--output_format', 'srt',
+            '--language', lang,
+            '--task', os.environ.get('WHISPER_TASK', WhisperTask.TRANSCRIBE),
+            '--word_timestamps', 'True',
+            '--verbose', 'False'
+        ]
+
+        # Add temperature if specified
+        if 'whisper_temperature' in self.config['ytffmpeg']:
+            whisper_cmd.extend(['--temperature', str(self.config['ytffmpeg']['whisper_temperature'])])
+
+        # Add the video file
+        whisper_cmd.append(video_path)
+
+        log.info(f"Running whisper command: {' '.join(whisper_cmd)}")
+
+        try:
+            now = time.time()
+            result = subprocess.run(whisper_cmd, capture_output=True, text=True, check=True)
+            then = time.time()
+
+            log.info(f"Whisper completed in {round(then-now, 4)} seconds!")
+            log.debug(f"Whisper stdout: {result.stdout}")
+            if result.stderr:
+                log.debug(f"Whisper stderr: {result.stderr}")
+
+            # Whisper will create the SRT file with the same name as the video but with .srt extension
+            # We need to rename it to match our expected naming convention
+            expected_whisper_srt = os.path.join('build', f"{self.filename(video_path)}.srt")
+            if os.path.exists(expected_whisper_srt) and expected_whisper_srt != srt_path:
+                os.rename(expected_whisper_srt, srt_path)
+                log.info(f"Renamed {expected_whisper_srt} to {srt_path}")
+
+            return srt_path
+
+        except subprocess.CalledProcessError as e:
+            log.error(f"Whisper failed with exit code {e.returncode}")
+            log.error(f"Whisper stderr: {e.stderr}")
+            return ''
+        except FileNotFoundError:
+            log.error("Whisper command not found. Please ensure whisper is installed and available in PATH.")
+            return ''

@@ -33,9 +33,10 @@ within `ytffmpeg`.
   The command lines have also been tweaked to enable this feature.
 
 ## WHISPER_MODEL
-- Default: guillaumekln/faster-whisper-large-v2
-- Description: Define a different LLM model to use to translate text. These are downloaded
-  from https://huggingface.co/
+- Default: large-v2
+- Description: Define a different Whisper model to use for transcription. Available models are:
+  tiny, base, small, medium, large, large-v2, large-v3. These are downloaded automatically
+  by the whisper script when needed.
 
 ## FFMPEG_BIN
 - Default: `ffmpeg`
@@ -112,8 +113,7 @@ The following YAML data structure:
 videos:
   -
     input:
-    - 
-      loop: true
+    - loop: true
       framerate: 30
       t: 5
       i: resources/intro.png

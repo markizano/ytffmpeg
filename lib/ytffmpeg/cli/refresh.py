@@ -1,6 +1,6 @@
 '''
 This module will check the resources directory for any mis-matched media, convert it
-and auto-generate subtitles for it using the `faster_whisper` library.
+and auto-generate subtitles for it using the `whisper` script directly.
 '''
 
 import os
@@ -155,7 +155,6 @@ class RefreshCommand(BaseCommand):
             # track specified video files.
 
         log.info('Resources have been processed!')
-                
         self.save()
         log.info('Refresh complete!')
         # Somehow the terminal is getting messed up after this command is run.
