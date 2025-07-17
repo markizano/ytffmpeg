@@ -31,6 +31,7 @@ setup_opts = {
       'openai-whisper==20250625',
       'fabric==3.2.2',
       'numba==0.61.2',
+      'jsonschema==4.24.0',
       'requests==2.32.4',
     ],
     'package_dir'         : { 'ytffmpeg': 'lib/ytffmpeg' },

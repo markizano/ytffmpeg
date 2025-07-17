@@ -1,11 +1,13 @@
 '''
-This module will check the resources directory for any mis-matched media, convert it
-and auto-generate subtitles for it using the `whisper` script directly.
+This module will check the resources directory for any mis-matched media, convert it,
+auto-generate subtitles for it using the `whisper` script directly, and optionally
+detect and remove silent segments if configured to do so.
 '''
 
 import os
 import copy
 import ffmpeg
+import re
 from multiprocessing import Process, Queue
 from glob import glob
 
@@ -56,6 +58,111 @@ class RefreshCommand(BaseCommand):
         q.put(mkvfile)
         return mkvfile
 
+    def detect_silence(self, resource: str) -> list:
+        '''
+        Detect silence in a video file and return filter_complex strings to remove silent segments.
+        '''
+        if not self.config['ytffmpeg'].get('cut_silence', False):
+            log.debug('Silence detection disabled in configuration.')
+            return []
+
+        log.info(f'Detecting silence in \x1b[1m{resource}\x1b[0m...')
+
+        # Use FFmpeg silencedetect filter to find silent segments
+        silence_output = []
+
+        try:
+            stream = (
+                ffmpeg.FFmpeg()
+                .option('hide_banner')
+                .input(resource)
+                .output('-', vn=None, f='null', af='silencedetect=noise=-30dB:d=1')
+            )
+
+            @stream.on('stderr')
+            def on_stderr(line):
+                silence_output.append(line)
+
+            stream.execute()
+            output = '\n'.join(silence_output)
+        except Exception as e:
+            log.error(f'Error running silence detection: {e}')
+            return []
+
+        # Parse silence detection output
+        silence_start_pattern = r'silence_start: ([\d.]+)'
+        silence_end_pattern = r'silence_end: ([\d.]+)'
+
+        silence_starts = [float(match) for match in re.findall(silence_start_pattern, output)]
+        silence_ends = [float(match) for match in re.findall(silence_end_pattern, output)]
+
+        if not silence_starts or not silence_ends:
+            log.info('No significant silence detected.')
+            return []
+
+        # Create segments to keep (non-silent parts)
+        segments = []
+        current_time = 0.0
+
+        for i, start in enumerate(silence_starts):
+            # Add segment before silence
+            if start > current_time:
+                segments.append((current_time, start))
+
+            # Update current time to end of silence (if available)
+            if i < len(silence_ends):
+                current_time = silence_ends[i]
+
+        # Add final segment if there's content after the last silence
+        if silence_ends and current_time < silence_ends[-1]:
+            # Get video duration to determine final segment
+            try:
+                duration_output = []
+
+                probe_stream = (
+                    ffmpeg.FFmpeg(executable="ffprobe")
+                    .option('v', 'quiet')
+                    .option('show_entries', 'format=duration')
+                    .option('of', 'csv=p=0')
+                    .input(resource)
+                )
+
+                @probe_stream.on('stdout')
+                def on_stdout(line):
+                    duration_output.append(line.strip())
+
+                probe_stream.execute()
+                total_duration = float(duration_output[0]) if duration_output else 0
+                if current_time < total_duration:
+                    segments.append((current_time, total_duration))
+            except:
+                log.warning('Could not determine video duration for final segment.')
+
+        if not segments:
+            log.info('No segments to keep after silence removal.')
+            return []
+
+        log.info(f'Found {len(segments)} segments to keep after removing silence.')
+
+        # Generate filter_complex strings for trimming and concatenating segments
+        trim_filters = []
+        for i, (start, end) in enumerate(segments):
+            trim_filters.append(f"[0:v]trim=start={start}:end={end},setpts=PTS-STARTPTS[v{i}]")
+            trim_filters.append(f"[0:a]atrim=start={start}:end={end},asetpts=PTS-STARTPTS[a{i}]")
+
+        # Create concat filter for video and audio
+        if len(segments) > 1:
+            video_inputs = ''.join([f'[v{i}]' for i in range(len(segments))])
+            audio_inputs = ''.join([f'[a{i}]' for i in range(len(segments))])
+            concat_filter = f"{video_inputs}concat=n={len(segments)}:v=1:a=0[trimmed_video];{audio_inputs}concat=n={len(segments)}:v=0:a=1[trimmed_audio]"
+            trim_filters.append(concat_filter)
+        else:
+            # Single segment, just rename outputs
+            trim_filters.append("[v0]copy[trimmed_video]")
+            trim_filters.append("[a0]copy[trimmed_audio]")
+
+        return trim_filters
+
     def append_video(self, resource: str) -> None:
         '''
         Append a video to the ytffmpeg.yml configuration.
@@ -65,31 +172,49 @@ class RefreshCommand(BaseCommand):
             return
         log.info(f'Appending \x1b[1m{resource}\x1b[0m to ytffmpeg.yml configuration.')
         srt_en = f'build/{self.filename(resource)}.en.srt'
-        srt_es = f'build/{self.filename(resource)}.es.srt'
         new_vid_tpl = copy.deepcopy(self.config['ytffmpeg']['defaults'])
         new_vid_tpl.update({
             'input': [
                 { 'i': resource },
-                { 'loop': 'true', 'framerate': '30', 't': '5', 'i': BaseCommand.WHISPER_PNG },
-                { 'i': srt_en },
-                { 'i': srt_es },
             ],
-            'output': 'build/%s.mp4' % self.filename(resource),
-            'languages': ['en:0', 'es:1'],
-            'attributes': [ 'subs' ],
-            'map': {
-                'en': '2:s',
-                'es': '3:s'
-            }
+            'output': f'build/{self.filename(resource)}.mp4' if not self.isSilenceDetector() else f'resources/{self.filename(resource)}_trimmed.mp4',
         })
         new_vid_tpl['metadata']['title'] = new_vid_tpl['metadata']['description'] = ''
-        new_vid_tpl['filter_complex'] = [
-            f"[0:v]scale=720x1280,pad=864:1536:72:20,scale=720x1280,setsar=1:1,subtitles={srt_en}:force_style='Alignment=0,PrimaryColour=&H00FFFFFF,FontName=Impact,OutlineColour=&H40000000,BorderStyle=3,Fontsize=18,MarginV=25'[_s]",
-            f"[_s]subtitles={srt_es}:force_style='Alignment=0,FontName=Impact,PrimaryColour=&H08BF8FF,OutlineColour=&H40000000,BorderStyle=3,Fontsize=10,MarginV=5'[_v]",
-            "[1:v]format=yuv420p,setpts=PTS-STARTPTS,fade=in:st=0:d=1:alpha=1,fade=out:st=4:d=1:alpha=1[disclaim]",
-            "[_v][disclaim]overlay=W-w-100:0:enable='between(t,0,5)',setpts=PTS-STARTPTS[video]",
-            "[0:a]volume=1.5,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[audio]"
-        ]
+
+        if self.isSubtitles():
+            new_vid_tpl['languages'] = ['en:0']
+            new_vid_tpl['attributes'] = [ 'subs' ]
+            new_vid_tpl['map'] = { 'en': '1:s' }
+            new_vid_tpl['input'].append({ 'i': srt_en })
+
+        # Build filter_complex - check if silence detection is enabled
+        filter_complex = []
+
+        # Check if silence detection is enabled and get filters
+        if self.isSilenceDetector():
+            silence_filters = self.detect_silence(resource)
+            if silence_filters:
+                # Add silence detection filters first
+                filter_complex.extend(silence_filters)
+                # Use trimmed outputs as input for subsequent filters
+                video_input = "[trimmed_video]"
+                audio_input = "[trimmed_audio]"
+            else:
+                # Use original inputs if no silence detected
+                video_input = "[0:v]"
+                audio_input = "[0:a]"
+        else:
+            # Use original inputs when silence detection is disabled
+            video_input = "[0:v]"
+            audio_input = "[0:a]"
+
+        # Add the existing video and audio processing filters
+        filter_complex.extend([
+            f"{video_input}scale=720x1280,setsar=1:1,subtitles={srt_en}:force_style='Alignment=0,PrimaryColour=&H00FFFFFF,FontName=Impact,OutlineColour=&H40000000,BorderStyle=3,Fontsize=18,MarginV=25'[video]",
+            f"{audio_input}volume=1.5,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[audio]"
+        ])
+
+        new_vid_tpl['filter_complex'] = filter_complex
         self.config['videos'].append(new_vid_tpl)
         log.info('Done appending video to ytffmpeg.yml configuration!')
 
@@ -97,12 +222,15 @@ class RefreshCommand(BaseCommand):
         '''
         Do the needful with the subtitles.
         '''
+        srt_en = f'build/{self.filename(resource)}.en.srt'
         if self.has_video(resource):
             vid_config = self.get_video_config(resource)
         else:
-            vid_config = self.config['ytffmpeg']['defaults']
+            vid_config = copy.deepcopy(self.config['ytffmpeg']['defaults'])
             vid_config['attributes'] = [ 'subs' ]
-            vid_config['languages'] = ['en:0', 'es:1']
+            vid_config['languages'] = ['en:0']
+            vid_config['map'] = { 'en': '1:s' }
+            vid_config['input'].append({ 'i': srt_en })
         if 'attributes' in vid_config and 'subs' in vid_config['attributes']:
             if 'languages' in vid_config:
                 log.info(f'Multilang video found at \x1b[1m{resource}\x1b[0m')
@@ -166,12 +294,18 @@ def refresher(config: dict) -> int:
     Update `ytffmpeg.yml` with any new media in `./resources`.
     Check to see if any media in `./resources` needs to be converted to Matroska format.
     Check to see if any media in `./resources` needs subtitles generated.
+    Detect and remove silent segments if `.ytffmpeg.cut_silence` is enabled.
+
     If it's in MP4 format, it will need both subtitles and MKV conversion.
-    WHen converting from MP4 to MKV format, the previous metadata is removed, then the following
+    When converting from MP4 to MKV format, the previous metadata is removed, then the following
     metadata is attached to both the audio and the video streams separately: language=eng.
     The video codec is converted to libx264 and the audio codec is converted to ac3.
     The CRF is turned up to 28.
     The resulting MP4 file is then deleted if `.ytffmpeg.delete_mp4` is set to `True`.
+
+    If `.ytffmpeg.cut_silence` is set to `True`, the tool will detect silent segments
+    (using -30dB threshold with 1 second minimum duration) and automatically generate
+    filter_complex strings to remove those segments during the build process.
     '''
     log.info('Refreshing resources directory.')
     cmd = RefreshCommand(config)

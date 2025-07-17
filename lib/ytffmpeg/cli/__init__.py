@@ -16,7 +16,6 @@ from .base import BaseCommand
 from .new import gennew
 from .build import builder
 from .refresh import refresher
-from .subs import gensubs
 from .publish import publisher
 
 class Cli(object):
@@ -28,7 +27,6 @@ class Cli(object):
         Action.NEW: gennew,
         Action.BUILD: builder,
         Action.REFRESH: refresher,
-        Action.SUBS: gensubs,
         Action.PUBLISH: publisher
     }
 

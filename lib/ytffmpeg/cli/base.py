@@ -53,6 +53,12 @@ class BaseCommand(object):
         '''
         return self.config['ytffmpeg'].get('subtitles', True)
 
+    def isSilenceDetector(self) -> bool:
+        '''
+        Checks to see if we are detecting silence.
+        '''
+        return self.config['ytffmpeg'].get('cut_silence', False)
+
     def has_video(self, vid: str) -> bool:
         '''
         Check the list of videos. If any of the input videos match the resource using filename() then return True.
