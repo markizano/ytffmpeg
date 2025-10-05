@@ -2,9 +2,11 @@
 '''
 A instant cherrypy server that will scan a directory and find all `ytffmpeg.yml` files and
 return the data structures in a JSON response.
+I use this when copying the description from laptop to mobile.
+Served with Nginx.
 '''
 
-import io, os, sys
+import os, sys
 import kizano
 import cherrypy
 from datetime import datetime
@@ -27,7 +29,7 @@ ul li { margin: 2px; }
  * This includes: .videos[].output, .videos[].input, .videos[].attributes, and .videos[].metadata.
  * Make the .output as the title for the file, list the inputs under that,
  * attributes if present after inputs and metadata last.
- * @param yml 
+ * @param yml
  */
 function showYML(yml) {
     $.getJSON(`yml?path=${yml}`, function(response) {
@@ -141,7 +143,7 @@ class DirServ:
         log.info("Shutting down web server...")
         cherrypy.engine.exit()
 
-if __name__ == '__main__':
+def main():
     if len(sys.argv) < 2:
         print('Usage: dirserv.py <directory>')
         sys.exit(1)
@@ -156,3 +158,7 @@ if __name__ == '__main__':
             'server.socket_port': int( os.environ.get('SERVER_PORT', '16555') )
         }
     })
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main())
