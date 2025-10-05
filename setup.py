@@ -6,8 +6,6 @@ from glob import glob
 from pprint import pprint
 from setuptools import setup
 
-sys.path.insert(0, os.path.abspath('lib'))
-
 setup_opts = {
     'name'                : 'ytffmpeg',
     # We change this default each time we tag a release.
@@ -19,7 +17,7 @@ setup_opts = {
     'long_description_content_type': 'text/markdown',
     'author'              : 'Markizano Draconus',
     'author_email'        : 'support@markizano.net',
-    'url'                 : 'https://markizano.net/',
+    'url'                 : 'https://ytffmpeg.markizano.net/',
     'license'             : 'GNU',
 
     'tests_require'       : ['pytest', 'mock'],
@@ -27,7 +25,7 @@ setup_opts = {
       'PyYAML>=6.0.1',
       'kizano==1.0.6',
       'python-ffmpeg==2.0.12',
-      'openai==1.97.0',
+      'openai==1.99.9',
       'openai-whisper==20250625',
       'fabric==3.2.2',
       'numba==0.61.2',
