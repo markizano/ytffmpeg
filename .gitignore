@@ -55,3 +55,4 @@ Makefile
 *.ntp.~*~
 
 .venv
+uv.lock

@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=80", "wheel", "setuptools-scm>=9"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ytffmpeg"
+version = "1.2.2"
+description = "Scripts and tools to ease the processing of videos for Social Media platforms."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Markizano Draconus", email = "markizano@markizano.net" }]
+
+dependencies = [
+    "fabric==3.2.2",
+    "jsonschema==4.24.0",
+    "kizano==1.0.6",
+    "numba==0.61.2",
+    "openai==1.99.9",
+    "openai-whisper==20250625",
+    "python-ffmpeg==2.0.12",
+    "pyyaml>=6.0.1",
+    "requests==2.32.4",
+]
+
+[project.scripts]
+ytffmpeg = "ytffmpeg.cli:main"
+
+[project.urls]
+Homepage = "https://ytffmpeg.markizano.net"
+Repository = "https://github.com/markizano/ytffmpeg"
+Issues = "https://github.com/markizano/ytffmpeg/issues"
+
+[tool.setuptools.package-dir]
+ytffmpeg = "lib/ytffmpeg"
+
+[tool.setuptools.packages.find]
+where = ["lib"]
