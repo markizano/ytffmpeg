@@ -111,7 +111,11 @@ class BaseCommand(object):
             '--language', lang,
             '--task', os.environ.get('WHISPER_TASK', WhisperTask.TRANSCRIBE),
             '--word_timestamps', 'True',
-            '--verbose', 'False'
+            '--append_punctuations', 'True',
+            '--prepend_punctuations', 'True',
+            '--max_words_per_line', '5',
+            '--highlight_words', 'True',
+            '--verbose', 'False',
         ]
 
         # Add temperature if specified

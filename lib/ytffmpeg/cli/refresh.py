@@ -58,7 +58,7 @@ class RefreshCommand(BaseCommand):
         q.put(mkvfile)
         return mkvfile
 
-    def detect_silence(self, resource: str) -> list:
+    def detect_silence(self, resource: str) -> list[str]:
         '''
         Detect silence in a video file and return filter_complex strings to remove silent segments.
         '''
@@ -119,6 +119,7 @@ class RefreshCommand(BaseCommand):
             try:
                 duration_output = []
 
+                # This ffprobe will output the number of seconds in the video.
                 probe_stream = (
                     ffmpeg.FFmpeg(executable="ffprobe")
                     .option('v', 'quiet')
@@ -158,8 +159,8 @@ class RefreshCommand(BaseCommand):
             trim_filters.append(concat_filter)
         else:
             # Single segment, just rename outputs
-            trim_filters.append("[v0]copy[trimmed_video]")
-            trim_filters.append("[a0]copy[trimmed_audio]")
+            trim_filters.append("[v0]null[trimmed_video]")
+            trim_filters.append("[a0]anull[trimmed_audio]")
 
         return trim_filters
 
@@ -171,7 +172,8 @@ class RefreshCommand(BaseCommand):
             log.info(f'\x1b[1m{resource}\x1b[0m is already in the ytffmpeg.yml configuration.')
             return
         log.info(f'Appending \x1b[1m{resource}\x1b[0m to ytffmpeg.yml configuration.')
-        srt_en = f'build/{self.filename(resource)}.en.srt'
+        lang = self.config.language or 'en'
+        srt = f'build/{self.filename(resource)}.{lang}.srt'
         new_vid_tpl = copy.deepcopy(self.config['ytffmpeg']['defaults'])
         new_vid_tpl.update({
             'input': [
@@ -185,7 +187,7 @@ class RefreshCommand(BaseCommand):
             new_vid_tpl['languages'] = ['en:0']
             new_vid_tpl['attributes'] = [ 'subs' ]
             new_vid_tpl['map'] = { 'en': '1:s' }
-            new_vid_tpl['input'].append({ 'i': srt_en })
+            new_vid_tpl['input'].append({ 'i': srt })
 
         # Build filter_complex - check if silence detection is enabled
         filter_complex = []
@@ -210,7 +212,7 @@ class RefreshCommand(BaseCommand):
 
         # Add the existing video and audio processing filters
         filter_complex.extend([
-            f"{video_input}scale=720x1280,setsar=1:1,subtitles={srt_en}:force_style='Alignment=0,PrimaryColour=&H00FFFFFF,FontName=Impact,OutlineColour=&H40000000,BorderStyle=3,Fontsize=18,MarginV=25'[video]",
+            f"{video_input}scale=720x1280,setsar=1:1,subtitles={srt}:force_style='Alignment=0,PrimaryColour=&H00FFFFFF,FontName=Impact,OutlineColour=&H40000000,BorderStyle=3,Fontsize=10,MarginV=20'[video]",
             f"{audio_input}volume=1.5,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[audio]"
         ])
 
