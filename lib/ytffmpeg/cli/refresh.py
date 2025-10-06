@@ -177,7 +177,7 @@ class RefreshCommand(BaseCommand):
         # Generate filter_complex strings for trimming and concatenating segments
         trim_filters = []
         for i, (start, end) in enumerate(segments):
-            trim_filters.append(f"[0:v]trim=start={start}:end={end},setpts=PTS-STARTPTS[v{i}]")
+            trim_filters.append(f"[0:v]trim=start={start}:end={end},setpts=PTS-STARTPTS,setsar=1:1[v{i}]")
             trim_filters.append(f"[0:a]atrim=start={start}:end={end},asetpts=PTS-STARTPTS[a{i}]")
 
         # Create concat filter for video and audio
@@ -353,45 +353,45 @@ class RefreshCommand(BaseCommand):
     def generateTitle(self, resource: str) -> str:
         '''
         Generate a title for a video based on the subtitles.
-        Reads the subtitle file for the resource and sends its content to the LLM.
+        Reads the text transcript file for the resource and sends its content to the LLM.
         '''
-        srt_path = f'build/{self.filename(resource)}.{self.language()}.srt'
+        txt_path = f'build/{self.filename(resource)}.txt'
 
-        if not os.path.exists(srt_path):
-            log.warning(f'Subtitle file {srt_path} not found. Cannot generate title.')
+        if not os.path.exists(txt_path):
+            log.warning(f'Transcript file {txt_path} not found. Cannot generate title.')
             return ''
 
-        log.info(f'Generating title for \x1b[1m{resource}\x1b[0m from subtitles at {srt_path}')
+        log.info(f'Generating title for \x1b[1m{resource}\x1b[0m from transcript at {txt_path}')
 
-        # Read the subtitle file content
-        subtitle_content = open(srt_path, 'r', encoding='utf-8').read()
+        # Read the transcript file content
+        subtitle_content = open(txt_path, 'r', encoding='utf-8').read()
 
         messages = []
         messages.append(SystemMessage(content=GENERATE_TITLE_PROMPT))
         messages.append(HumanMessage(content=subtitle_content))
-        response = self.llm.invoke(messages, token_limit=30, num_ctx=128000)
+        response = self.llm.invoke(messages)
         return response.content.strip()
 
     def generateDescription(self, resource: str) -> str:
         '''
         Generate a description for a video based on the subtitles.
-        Reads the subtitle file for the resource and sends its content to the LLM.
+        Reads the text transcript file for the resource and sends its content to the LLM.
         '''
-        srt_path = f'build/{self.filename(resource)}.{self.language()}.srt'
+        txt_path = f'build/{self.filename(resource)}.txt'
 
-        if not os.path.exists(srt_path):
-            log.warning(f'Subtitle file {srt_path} not found. Cannot generate description.')
+        if not os.path.exists(txt_path):
+            log.warning(f'Transcript file {txt_path} not found. Cannot generate description.')
             return ''
 
-        log.info(f'Generating description for \x1b[1m{resource}\x1b[0m from subtitles at {srt_path}')
+        log.info(f'Generating description for \x1b[1m{resource}\x1b[0m from transcript at {txt_path}')
 
-        # Read the subtitle file content
-        subtitle_content = open(srt_path, 'r', encoding='utf-8').read()
+        # Read the transcript file content
+        subtitle_content = open(txt_path, 'r', encoding='utf-8').read()
 
         messages = []
         messages.append(SystemMessage(content=GENERATE_DESCRIPTION_PROMPT))
         messages.append(HumanMessage(content=subtitle_content))
-        response = self.llm.invoke(messages, token_limit=120, num_ctx=128000)
+        response = self.llm.invoke(messages)
         return response.content.strip()
 
     def save(self) -> None:

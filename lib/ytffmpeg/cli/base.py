@@ -34,7 +34,14 @@ class BaseCommand(object):
 
     def __init__(self, config: dict):
         self.config = config
-        self.llm = init_chat_model(model=self.LLM_MODEL, model_provider='ollama')
+        model_kwargs = {
+            'num_ctx': 128000
+        }
+        self.llm = init_chat_model(
+            model=self.LLM_MODEL,
+            model_provider='ollama',
+            model_kwargs=model_kwargs
+        )
 
     def filename(self, path: str) -> str:
         '''
@@ -117,7 +124,7 @@ class BaseCommand(object):
             '--model', self.config['ytffmpeg'].get('whisper_model', BaseCommand.WHISPER_MODEL),
             '--device', self.config['ytffmpeg'].get('device', 'cuda'),
             '--output_dir', 'build',
-            '--output_format', 'srt',
+            '--output_format', 'all',
             '--language', lang,
             '--task', os.environ.get('WHISPER_TASK', WhisperTask.TRANSCRIBE),
             '--word_timestamps', 'True',
