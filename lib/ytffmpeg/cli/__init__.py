@@ -84,7 +84,7 @@ class Cli(object):
             dest='silence_duration',
             help='Valid for the `refresh` action. Minimum silence duration in seconds (default: 1).',
             type=float,
-            default=1.0
+            default=1.2
         )
 
         options.add_argument(
