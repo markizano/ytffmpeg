@@ -6,6 +6,11 @@ auto-generate subtitles from the final processed video using the `whisper` scrip
 Critical: When silence detection is enabled, MP4→MKV conversion and silence removal happen
 in one step, and subtitles are generated from the trimmed video to ensure timing accuracy.
 
+Video Rotation Detection:
+  - Automatically detects display matrix metadata to determine video rotation
+  - Applies appropriate transpose filter (transpose=1 for 90°, transpose=2 for 270°)
+  - Ensures proper orientation before scaling and subtitle application
+
 Silence detection is configurable via:
   --silence-threshold (default: 30dB)
   --silence-duration (default: 1 second)
@@ -184,7 +189,7 @@ class RefreshCommand(BaseCommand):
         if len(segments) > 1:
             video_inputs = ''.join([f'[v{i}]' for i in range(len(segments))])
             audio_inputs = ''.join([f'[a{i}]' for i in range(len(segments))])
-            concat_filter = f"{video_inputs}concat=n={len(segments)}:v=1:a=0[trimmed_video];{audio_inputs}concat=n={len(segments)}:v=0:a=1[trimmed_audio]"
+            concat_filter = f"{video_inputs}concat=n={len(segments)}:v=1:a=0,setsar=1:1[trimmed_video];{audio_inputs}concat=n={len(segments)}:v=0:a=1[trimmed_audio]"
             trim_filters.append(concat_filter)
         else:
             # Single segment, just rename outputs
@@ -210,7 +215,7 @@ class RefreshCommand(BaseCommand):
             return resource
 
         # Create output path in build/
-        output_path = f'build/{self.filename(resource)}_trimmed.mkv'
+        output_path = f'build/{self.filename(resource)}.mkv'
 
         if os.path.exists(output_path):
             if self.isOverwrite():
@@ -264,6 +269,38 @@ class RefreshCommand(BaseCommand):
             log.warning('Using original video instead.')
             return resource
 
+    def getVideoRotation(self, resource: str) -> int:
+        '''
+        Detect video rotation from display matrix metadata using ffprobe.
+        Returns the rotation angle in degrees (0, 90, 180, 270).
+        '''
+        log.info(f'Detecting rotation for {resource}...')
+        try:
+            rotation_output = []
+
+            # Use ffprobe to get rotation metadata
+            probe_stream = (
+                ffmpeg.FFmpeg(executable="ffprobe")
+                .option('v', 'quiet')
+                .option('show_entries', 'stream_tags=rotate:stream_side_data=rotation')
+                .option('of', 'csv=p=0')
+                .input(resource)
+            )
+
+            rotation_output = probe_stream.execute().decode('utf-8')
+
+            # Parse rotation value
+            if rotation_output:
+                rotation = int(rotation_output.strip().strip(','))
+                log.info(f'Detected rotation: {rotation} degrees for {resource}')
+                return rotation
+            log.debug(f'No rotation metadata found for {resource}')
+            return 0
+
+        except Exception as e:
+            log.warning(f'Could not detect rotation for {resource}: {e}')
+            return 0
+
     def appendVideo(self, resource: str) -> None:
         '''
         Append a video to the ytffmpeg.yml configuration.
@@ -312,9 +349,35 @@ class RefreshCommand(BaseCommand):
             new_vid_tpl['map'] = { 'en': '1:s' }
             new_vid_tpl['input'].append({ 'i': srt })
 
+        # Detect video rotation from display matrix metadata
+        rotation = self.getVideoRotation(resource)
+
+        # Build video filter chain with rotation handling
+        video_filters = []
+
+        # Add transpose filter based on rotation
+        if rotation == 90:
+            log.info('Adding transpose=1 for 90° rotation')
+            video_filters.append('transpose=1')  # 90 degrees clockwise
+        elif rotation == 180:
+            log.info('Adding transpose=2,transpose=2 for 180° rotation')
+            video_filters.append('transpose=2,transpose=2')  # 180 degrees
+        elif rotation == 270:
+            log.info('Adding transpose=2 for 270° rotation')
+            video_filters.append('transpose=2')  # 90 degrees counter-clockwise
+
+        # Add scale and setsar
+        video_filters.append('scale=720x1280')
+        video_filters.append('setsar=1:1')
+
+        # Add subtitles if enabled
+        if self.isSubtitles():
+            video_filters.append(f"subtitles={srt}:force_style='Alignment=0,PrimaryColour=&H00FFFFFF,FontName=Impact,OutlineColour=&H40000000,BorderStyle=3,Fontsize=10,MarginV=20'")
+
         # Build filter_complex with standard processing
+        video_filter_str = ','.join(video_filters)
         filter_complex = [
-            f"[0:v]scale=720x1280,setsar=1:1,subtitles={srt}:force_style='Alignment=0,PrimaryColour=&H00FFFFFF,FontName=Impact,OutlineColour=&H40000000,BorderStyle=3,Fontsize=10,MarginV=20'[video]",
+            f"[0:v]{video_filter_str}[video]",
             # f"[0:a]volume=1.5,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[audio]"
             f"[0:a]volume=1.5,asetpts=PTS-STARTPTS[audio]"
         ]
@@ -471,7 +534,7 @@ def refresher(config: dict) -> int:
     If silence detection is enabled (`.ytffmpeg.cut_silence`):
       - MP4 files: Conversion to MKV and silence removal happen in ONE step
       - MKV files: Silence removal is applied directly
-      - Output: Trimmed videos saved to build/<filename>_trimmed.mkv
+      - Output: Trimmed videos saved to build/<filename>.mkv
       - Subtitles are generated from the trimmed video to ensure timing accuracy
 
     If silence detection is disabled:
