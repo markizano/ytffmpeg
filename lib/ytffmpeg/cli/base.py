@@ -6,9 +6,9 @@ import os
 import subprocess
 import time
 
-import ffmpeg
+from langchain.chat_models import init_chat_model
 
-from ..types import WhisperTask
+from ytffmpeg.types import WhisperTask
 
 from kizano import getLogger
 log = getLogger(__name__)
@@ -22,7 +22,7 @@ class BaseCommand(object):
 
     # class constants
     WHISPER_MODEL = os.getenv('WHISPER_MODEL', 'large-v2')
-    WHISPER_PNG = '/home/YouTube/resources/openai.png'
+    LLM_MODEL = os.getenv('LLM_MODEL', 'gpt-oss:20b')
     DEVICES = ['cpu', 'cuda', 'auto']
     LANGS = ["auto","af","am","ar","as","az","ba","be","bg","bn","bo","br","bs","ca",
     "cs","cy","da","de","el","en","es","et","eu","fa","fi","fo","fr","gl","gu","ha",
@@ -34,12 +34,22 @@ class BaseCommand(object):
 
     def __init__(self, config: dict):
         self.config = config
+        self.llm = init_chat_model(model=self.LLM_MODEL, model_provider='ollama')
 
     def filename(self, path: str) -> str:
         '''
         Gets the filename without the extension or leading path.
         '''
         return os.path.splitext(os.path.basename(path))[0]
+
+    def language(self) -> str:
+        '''
+        Gets the language from the configuration.
+        '''
+        language = self.config['ytffmpeg'].get('language', os.environ.get('LANGUAGE', 'en'))
+        if language and language.lower() == 'none':
+            language = 'en'
+        return language
 
     def isOverwrite(self) -> bool:
         '''
@@ -53,7 +63,7 @@ class BaseCommand(object):
         '''
         return self.config['ytffmpeg'].get('subtitles', True)
 
-    def isSilenceDetector(self) -> bool:
+    def shouldCutSilence(self) -> bool:
         '''
         Checks to see if we are detecting silence.
         '''
@@ -115,7 +125,7 @@ class BaseCommand(object):
             '--prepend_punctuations', 'True',
             '--max_words_per_line', '5',
             '--highlight_words', 'True',
-            '--verbose', 'False',
+            '--verbose', 'True',
         ]
 
         # Add temperature if specified
@@ -129,13 +139,16 @@ class BaseCommand(object):
 
         try:
             now = time.time()
-            result = subprocess.run(whisper_cmd, capture_output=True, text=True, check=True)
+            # Use Popen to stream output to console in real-time
+            process = subprocess.Popen(whisper_cmd, text=True)
+            returncode = process.wait()
             then = time.time()
 
+            if returncode != 0:
+                log.error(f"Whisper failed with exit code {returncode}")
+                return ''
+
             log.info(f"Whisper completed in {round(then-now, 4)} seconds!")
-            log.debug(f"Whisper stdout: {result.stdout}")
-            if result.stderr:
-                log.debug(f"Whisper stderr: {result.stderr}")
 
             # Whisper will create the SRT file with the same name as the video but with .srt extension
             # We need to rename it to match our expected naming convention
@@ -146,10 +159,9 @@ class BaseCommand(object):
 
             return srt_path
 
-        except subprocess.CalledProcessError as e:
-            log.error(f"Whisper failed with exit code {e.returncode}")
-            log.error(f"Whisper stderr: {e.stderr}")
-            return ''
         except FileNotFoundError:
             log.error("Whisper command not found. Please ensure whisper is installed and available in PATH.")
+            return ''
+        except Exception as e:
+            log.error(f"Whisper failed with error: {e}")
             return ''

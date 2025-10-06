@@ -61,6 +61,33 @@ class Cli(object):
         )
 
         options.add_argument(
+            '--silence-detect',
+            action='store',
+            dest='cut_silence',
+            type=bool,
+            help='Valid for the `refresh` action. Enables silence detection and removal (Default: True).',
+            default=True,
+        )
+
+        options.add_argument(
+            '--silence-threshold',
+            action='store',
+            dest='silence_threshold',
+            help='Valid for the `refresh` action. Silence threshold in decibels (default: 30).',
+            type=int,
+            default=30
+        )
+
+        options.add_argument(
+            '--silence-duration',
+            action='store',
+            dest='silence_duration',
+            help='Valid for the `refresh` action. Minimum silence duration in seconds (default: 1).',
+            type=float,
+            default=1.0
+        )
+
+        options.add_argument(
             '--force', '-f',
             action='store_true',
             dest='overwrite',
@@ -116,12 +143,16 @@ class Cli(object):
             log.error('No action specified!')
             options.print_help()
             return
+        if opts.language == None:
+            del opts.language # type: ignore
         if opts.overwrite == None:
             del opts.overwrite # type: ignore
         if opts.subtitles == None:
             del opts.subtitles # type: ignore
         if opts.autoplay == None:
             del opts.autoplay # type: ignore
+        if opts.cut_silence == None:
+            del opts.cut_silence # type: ignore
         self.config['ytffmpeg'].update(vars(opts))
 
     def execute(self):
