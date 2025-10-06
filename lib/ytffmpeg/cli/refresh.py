@@ -369,7 +369,7 @@ class RefreshCommand(BaseCommand):
         messages = []
         messages.append(SystemMessage(content=GENERATE_TITLE_PROMPT))
         messages.append(HumanMessage(content=subtitle_content))
-        response = self.llm.invoke(messages)
+        response = self.llm.invoke(messages, token_limit=30, num_ctx=128000)
         return response.content.strip()
 
     def generateDescription(self, resource: str) -> str:
@@ -391,7 +391,7 @@ class RefreshCommand(BaseCommand):
         messages = []
         messages.append(SystemMessage(content=GENERATE_DESCRIPTION_PROMPT))
         messages.append(HumanMessage(content=subtitle_content))
-        response = self.llm.invoke(messages)
+        response = self.llm.invoke(messages, token_limit=120, num_ctx=128000)
         return response.content.strip()
 
     def save(self) -> None:
