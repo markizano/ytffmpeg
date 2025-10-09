@@ -84,6 +84,21 @@ class RefreshCommand(BaseCommand):
         q.put(mkvfile)
         return mkvfile
 
+    def getVideoDuration(self, resource: str) -> float:
+        '''
+        Get the duration of a video file in seconds.
+        '''
+        # This ffprobe will output the number of seconds in the video.
+        probe_stream = (
+            ffmpeg.FFmpeg(executable="ffprobe")
+            .option('v', 'quiet')
+            .option('show_entries', 'format=duration')
+            .option('of', 'csv=p=0')
+            .input(resource)
+        )
+
+        return float(probe_stream.execute().decode('utf-8').strip())
+
     def detectSilence(self, resource: str) -> list[str]:
         '''
         Detect silence in a video file and return filter_complex strings to remove silent segments.
@@ -137,6 +152,8 @@ class RefreshCommand(BaseCommand):
         # Create segments to keep (non-silent parts)
         segments = []
         current_time = 0.0
+        total_duration = self.getVideoDuration(resource)
+        log.debug(f'Total video duration: {total_duration}')
 
         for i, start in enumerate(silence_starts):
             # Add segment before silence
@@ -148,36 +165,15 @@ class RefreshCommand(BaseCommand):
                 current_time = silence_ends[i]
 
         # Add final segment if there's content after the last silence
-        if silence_ends and current_time < silence_ends[-1]:
-            # Get video duration to determine final segment
-            try:
-                duration_output = []
-
-                # This ffprobe will output the number of seconds in the video.
-                probe_stream = (
-                    ffmpeg.FFmpeg(executable="ffprobe")
-                    .option('v', 'quiet')
-                    .option('show_entries', 'format=duration')
-                    .option('of', 'csv=p=0')
-                    .input(resource)
-                )
-
-                @probe_stream.on('stdout')
-                def on_stdout(line):
-                    duration_output.append(line.strip())
-
-                probe_stream.execute()
-                total_duration = float(duration_output[0]) if duration_output else 0
-                if current_time < total_duration:
-                    segments.append((current_time, total_duration))
-            except:
-                log.warning('Could not determine video duration for final segment.')
+        if current_time < total_duration:
+            segments.append((current_time, total_duration))
 
         if not segments:
             log.info('No segments to keep after silence removal.')
             return []
 
         log.info(f'Found {len(segments)} segments to keep after removing silence.')
+        log.debug(f'Segments: {segments}')
 
         # Generate filter_complex strings for trimming and concatenating segments
         trim_filters = []
