@@ -14,6 +14,7 @@ Video Rotation Detection:
 Silence detection is configurable via:
   --silence-threshold (default: 30dB)
   --silence-duration (default: 1 second)
+  --silence-pad (default: 350ms) - padding before/after silence removal
 '''
 
 import os
@@ -149,6 +150,11 @@ class RefreshCommand(BaseCommand):
             log.info('No significant silence detected.')
             return []
 
+        # Get padding value in seconds (from milliseconds)
+        silence_pad_ms = self.config['ytffmpeg'].get('silence_pad', 350)
+        silence_pad = silence_pad_ms / 1000.0  # Convert ms to seconds
+        log.debug(f'Using silence padding: {silence_pad}s ({silence_pad_ms}ms)')
+
         # Create segments to keep (non-silent parts)
         segments = []
         current_time = 0.0
@@ -156,13 +162,15 @@ class RefreshCommand(BaseCommand):
         log.debug(f'Total video duration: {total_duration}')
 
         for i, start in enumerate(silence_starts):
-            # Add segment before silence
+            # Add segment before silence, extending into the silence by the padding amount
             if start > current_time:
-                segments.append((current_time, start))
+                segment_start = current_time
+                segment_end = min(start + silence_pad, total_duration)
+                segments.append((segment_start, segment_end))
 
-            # Update current time to end of silence (if available)
+            # Update current time to end of silence (if available), backing up by padding amount
             if i < len(silence_ends):
-                current_time = silence_ends[i]
+                current_time = max(0.0, silence_ends[i] - silence_pad)
 
         # Add final segment if there's content after the last silence
         if current_time < total_duration:
@@ -361,6 +369,8 @@ class RefreshCommand(BaseCommand):
         elif rotation == 270:
             log.info('Adding transpose=2 for 270° rotation')
             video_filters.append('transpose=2')  # 90 degrees counter-clockwise
+        if rotation and rotation != 0:
+            video_filters.append('sidedata=mode=delete')
 
         # Add scale and setsar
         video_filters.append('scale=720x1280')
@@ -549,6 +559,7 @@ def refresher(config: dict) -> int:
     Silence detection settings:
       - Threshold: Configurable via `--silence-threshold` (default: 30dB)
       - Minimum duration: Configurable via `--silence-duration` (default: 1 second)
+      - Padding: Configurable via `--silence-pad` (default: 350ms) - adds padding before/after silence
     '''
     log.info('Refreshing resources directory.')
     cmd = RefreshCommand(config)

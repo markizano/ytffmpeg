@@ -88,6 +88,15 @@ class Cli(object):
         )
 
         options.add_argument(
+            '--silence-pad',
+            action='store',
+            dest='silence_pad',
+            help='Valid for the `refresh` action. Padding in milliseconds before/after silence removal (default: 350).',
+            type=int,
+            default=350
+        )
+
+        options.add_argument(
             '--force', '-f',
             action='store_true',
             dest='overwrite',
