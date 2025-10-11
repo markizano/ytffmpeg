@@ -143,8 +143,8 @@ class RefreshCommand(BaseCommand):
         silence_start_pattern = r'silence_start: ([\d.]+)'
         silence_end_pattern = r'silence_end: ([\d.]+)'
 
-        silence_starts = [float(match) for match in re.findall(silence_start_pattern, output)]
-        silence_ends = [float(match) for match in re.findall(silence_end_pattern, output)]
+        silence_starts = [float(round(match, 3)) for match in re.findall(silence_start_pattern, output)]
+        silence_ends = [float(round(match, 3)) for match in re.findall(silence_end_pattern, output)]
 
         if not silence_starts or not silence_ends:
             log.info('No significant silence detected.')
