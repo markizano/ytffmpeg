@@ -3,6 +3,7 @@ Base module for all CLI commands in `ytffmpeg`.
 
 '''
 import os
+import re
 import subprocess
 import time
 
@@ -156,6 +157,11 @@ class BaseCommand(object):
                 return ''
 
             log.info(f"Whisper completed in {round(then-now, 4)} seconds!")
+            log.info(f'Now removing excess VTT, JSON, and TSV files...')
+            for suffix in ['json', 'vtt', 'tsv']:
+                extra = os.path.join('build', f'{self.filename(video_path)}.{suffix}')
+                if os.path.exists(extra):
+                    os.unlink(extra)
 
             # Whisper will create the SRT file with the same name as the video but with .srt extension
             # We need to rename it to match our expected naming convention
@@ -163,6 +169,10 @@ class BaseCommand(object):
             if os.path.exists(expected_whisper_srt) and expected_whisper_srt != srt_path:
                 os.rename(expected_whisper_srt, srt_path)
                 log.info(f"Renamed {expected_whisper_srt} to {srt_path}")
+
+            self.correct_subtitles(srt_path)
+            txt_path = os.path.join('build', f"{self.filename(video_path)}.txt")
+            self.correct_subtitles(txt_path)
 
             return srt_path
 
@@ -172,3 +182,19 @@ class BaseCommand(object):
         except Exception as e:
             log.error(f"Whisper failed with error: {e}")
             return ''
+
+    def correct_subtitles(self, srt_path: str) -> str:
+        '''
+        Whisper is constantly mis-spelling my name and various other story-lore.
+        I attempt to correct that here.
+        '''
+        log.info(f'Implementing corrections to {srt_path}')
+        subtitles = open(srt_path).read()
+        markizano = re.compile(r'mar\w*[ao]no', re.I)
+        kizano = re.compile(r'ki[sz][ao]n[oa]', re.I)
+        draconus = re.compile('dr[au]c[ao]nis', re.I)
+        subtitles = markizano.sub(subtitles, 'Markizano')
+        subtitles = kizano.sub(subtitles, 'Kizano')
+        subtitles = draconus.sub(subtitles, 'Draconus')
+        open(srt_path, 'w').write(subtitles)
+

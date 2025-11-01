@@ -177,7 +177,7 @@ class BuildCommand(BaseCommand):
             videos = self.config['videos']
         while videos:
             video_opts = videos.pop(0)
-            final_cmd = [os.getenv('FFMPEG_BIN', 'ffmpeg'), '-hide_banner']
+            final_cmd = [os.getenv('FFMPEG_BIN', 'ffmpeg'), '-hide_banner', '-noautorotate']
             assert 'input' in video_opts, 'No input specified for video!'
             assert 'output' in video_opts, 'No output specified for video!'
             vidnow = time.time()
