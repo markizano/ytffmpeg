@@ -193,8 +193,8 @@ class BaseCommand(object):
         markizano = re.compile(r'mar\w*[ao]no', re.I)
         kizano = re.compile(r'ki[sz][ao]n[oa]', re.I)
         draconus = re.compile('dr[au]c[ao]nis', re.I)
-        subtitles = markizano.sub(subtitles, 'Markizano')
-        subtitles = kizano.sub(subtitles, 'Kizano')
-        subtitles = draconus.sub(subtitles, 'Draconus')
+        subtitles = markizano.sub('Markizano', subtitles)
+        subtitles = kizano.sub('Kizano', subtitles)
+        subtitles = draconus.sub('Draconus', subtitles)
         open(srt_path, 'w').write(subtitles)
 
