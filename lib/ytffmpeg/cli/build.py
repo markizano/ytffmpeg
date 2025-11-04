@@ -9,8 +9,9 @@ If a video is specified, only that video will be built.
 import os
 import time
 import subprocess
-from .base import BaseCommand
-from ..filter_complex import FilterComplexFunctionUnit
+from ytffmpeg.cli.base import BaseCommand
+from ytffmpeg.filter_complex import FilterComplexFunctionUnit
+import ytffmpeg.genimg
 
 from kizano import getLogger
 log = getLogger(__name__)
@@ -22,11 +23,14 @@ class BuildCommand(BaseCommand):
 
     def __init__(self, config: dict):
         super().__init__(config)
+        if not ytffmpeg.genimg.GOOGLE_API_KEY:
+            ytffmpeg.genimg.GOOGLE_API_KEY = config.get('google', {}).get('api_key')
 
     def processRequirements(self, requirements: list) -> None:
         '''
         If we have dependencies, process them first before building this video.
         '''
+        log.info('Processing video dependencies...')
         if isinstance(requirements, str):
             require_videos = requirements.split(' ')
         else:
@@ -39,6 +43,7 @@ class BuildCommand(BaseCommand):
                 if video['output'] == require_video:
                     # We are consuming the ytffmpeg configuration on build, so pop it off the list.
                     self.config['videos'].remove(video)
+        log.info('Done processing dependencies.')
 
     def processInput(self, input_video: str|dict) -> list:
         '''
@@ -164,6 +169,18 @@ class BuildCommand(BaseCommand):
             fc.flush()
         log.info(f'Done writing out \x1b[1m{filter_complex_filename}\x1b[0m script!')
 
+    def _preBuildHooks(self, video_opts: dict):
+        log.info('**\x1b[1mPre-Build Hooks!\x1b[0m**')
+        # If we have pre-existing requirements or videos this is dependent on, process them first.
+        if 'require' in video_opts:
+            self.processRequirements(video_opts['require'])
+        if not os.path.exists('thumbnail.png'):
+            log.info('Generating thumbnail...')
+            txt_path = f'build/{self.filename(video_opts["output"])}.txt'
+            title = video_opts['metadata']['title']
+            content = open(txt_path).read()
+            ytffmpeg.genimg.generate_thumbnail(title, content)
+
     def execute(self):
         '''
         Build the videos described by `ytffmpeg.yml`, so load that configuration up first.
@@ -187,12 +204,13 @@ class BuildCommand(BaseCommand):
                 continue
             attributes = video_opts.get('attributes', [])
             log.info(f'Processing video: \x1b[1m{output}\x1b[0m')
-            # If we have pre-existing requirements or videos this is dependent on, process them first.
-            if 'require' in video_opts:
-                self.processRequirements(video_opts['require'])
-            # Append the `-i` arguments accordingly.
+            self._preBuildHooks(video_opts)
+
+            # Process ffmpeg input/output options.
+            ## Append the `-i` arguments accordingly.
             for input_video in video_opts['input']:
                 final_cmd.extend(self.processInput(input_video))
+            # With the pre-hook, this should just execute now.
             if os.path.exists('thumbnail.png'):
                 final_cmd.append('-i')
                 final_cmd.append('thumbnail.png')
@@ -263,6 +281,8 @@ class BuildCommand(BaseCommand):
             if 'movflags' in video_opts:
                 final_cmd.append('-movflags')
                 final_cmd.append(video_opts['movflags'])
+
+            # With the pre-hook, this should just execute now.
             if os.path.exists('thumbnail.png'):
                 i = len(video_opts['input'])
                 final_cmd.append(f'-disposition:v:{i}')

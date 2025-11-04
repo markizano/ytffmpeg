@@ -14,6 +14,10 @@ from ytffmpeg.types import WhisperTask
 from kizano import getLogger
 log = getLogger(__name__)
 
+markizano = re.compile(r'mar\w*[ao]no', re.I)
+kizano = re.compile(r'ki[sz][ao]n[oa]', re.I)
+draconus = re.compile(r'dr[au]c[ao]nis', re.I)
+
 class BaseCommand(object):
     '''
     Base class for all ytffmpeg commands.
@@ -190,9 +194,6 @@ class BaseCommand(object):
         '''
         log.info(f'Implementing corrections to {srt_path}')
         subtitles = open(srt_path).read()
-        markizano = re.compile(r'mar\w*[ao]no', re.I)
-        kizano = re.compile(r'ki[sz][ao]n[oa]', re.I)
-        draconus = re.compile('dr[au]c[ao]nis', re.I)
         subtitles = markizano.sub('Markizano', subtitles)
         subtitles = kizano.sub('Kizano', subtitles)
         subtitles = draconus.sub('Draconus', subtitles)

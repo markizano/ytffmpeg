@@ -11,12 +11,12 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from kizano import getLogger
 log = getLogger(__name__)
 
-from ..types import Devices, Action
-from .base import BaseCommand
-from .new import gennew
-from .build import builder
-from .refresh import refresher
-from .publish import publisher
+from ytffmpeg.types import Devices, Action
+from ytffmpeg.cli.base import BaseCommand
+from ytffmpeg.cli.new import gennew
+from ytffmpeg.cli.build import builder
+from ytffmpeg.cli.refresh import refresher
+from ytffmpeg.cli.publish import publisher
 
 class Cli(object):
     '''

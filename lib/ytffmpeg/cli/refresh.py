@@ -29,7 +29,7 @@ from kizano import getLogger
 from langchain_core.messages import HumanMessage, SystemMessage
 log = getLogger(__name__)
 
-from .base import BaseCommand
+from ytffmpeg.cli.base import BaseCommand
 
 GENERATE_TITLE_PROMPT = '''
 Based on the subtitles provided, summarize the post in a 1-3 word summary that would be engaging for a TikTok user.
@@ -74,10 +74,10 @@ class RefreshCommand(BaseCommand):
         }
         (
             ffmpeg.FFmpeg()
-              .option('hide_banner')
-              .option('y')
-              .input(resource)
-              .output(mkvfile, **out_opts)
+            .option('hide_banner')
+            .option('y')
+            .input(resource)
+            .output(mkvfile, **out_opts)
         ).execute()
         if self.config['ytffmpeg'].get('delete_mp4', False):
             log.debug(f'Deleting {resource} to save on disk space.')
