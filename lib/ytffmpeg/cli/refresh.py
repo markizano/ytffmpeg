@@ -251,6 +251,7 @@ class RefreshCommand(BaseCommand):
                 ffmpeg.FFmpeg()
                 .option('hide_banner')
                 .option('y')
+                .option('noautorotate')
                 .input(resource)
                 .output(
                     output_path,
