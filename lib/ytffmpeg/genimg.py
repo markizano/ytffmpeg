@@ -28,13 +28,14 @@ TEMPLATE_SVG = '''<svg width="585" height="1024" viewBox="0 0 585 1024" backgrou
             dominant-baseline: middle;
             font-family: DejaVu Sans;
             font-weight: 900;
+            font-size: %(fontSize)s
         }
     </style>
 %(lines)s
 </svg>
 '''
 
-TEMPLATE_TEXTLINE = '        <text class="outlined" font-size="%(fontSize)s" x="292" y="%(yCoord)s">%(line)s</text>'
+TEMPLATE_TEXTLINE = '        <text class="outlined" x="292" y="%(yCoord)s">%(line)s</text>'
 
 IMAGE_PROMPT = """Create an interesting thumbnail for my TikTok video.
 Here's the content of the video:
@@ -136,7 +137,7 @@ def compute_thumbnail_typography(title: str) -> Dict[str, object]:
     leading_px = int(round(font_size * LEADING_RATIO))
     block_h = line_count * font_size + (line_count - 1) * leading_px
     top_y = SAFE_TOP + BORDER + (AVAILABLE_H - block_h) // 2
-    y_coords = tuple(int(top_y + i * (font_size + leading_px)) for i in range(line_count))
+    y_coords = tuple(int(top_y + i * (font_size + leading_px) + font_size) for i in range(line_count))
 
     return {
         "fontSize": font_size,
@@ -156,6 +157,9 @@ def generate_template(title: str) -> str:
     coverInfo = compute_thumbnail_typography(title)
     log.info(f'Generating SVG->PNG from "{EOL.join(coverInfo["lines"])}"')
     lines = []
+    svgVars = {
+        'fontSize': coverInfo["fontSize"],
+    }
     for i, line in enumerate(coverInfo['lines']):
         cover = {
             'fontSize': coverInfo["fontSize"],
@@ -164,7 +168,8 @@ def generate_template(title: str) -> str:
             'line': line, # Singular because it's just the 1 line.
         }
         lines.append(TEMPLATE_TEXTLINE % cover)
-    svg = TEMPLATE_SVG % {'lines': EOL.join(lines)}
+    svgVars['lines'] = EOL.join(lines)
+    svg = TEMPLATE_SVG % svgVars
     log.debug(f'SVG: \n{svg}')
     template = 'build/thumbnail.png'
     # Create the thumbnail from SVG using ImageMagick
