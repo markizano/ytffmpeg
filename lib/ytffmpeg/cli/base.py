@@ -15,7 +15,7 @@ from kizano import getLogger
 log = getLogger(__name__)
 
 markizano = re.compile(r'mar\w*[ao]no', re.I)
-kizano = re.compile(r'ki[sz][ao]n[oa]', re.I)
+kizano = re.compile(r'\bki[sz][ao]n[oa]', re.I)
 draconus = re.compile(r'dr[au]c[ao]nis', re.I)
 
 class BaseCommand(object):
@@ -194,8 +194,8 @@ class BaseCommand(object):
         '''
         log.info(f'Implementing corrections to {srt_path}')
         subtitles = open(srt_path).read()
-        subtitles = markizano.sub('Markizano', subtitles)
         subtitles = kizano.sub('Kizano', subtitles)
+        subtitles = markizano.sub('Markizano', subtitles)
         subtitles = draconus.sub('Draconus', subtitles)
         open(srt_path, 'w').write(subtitles)
 
