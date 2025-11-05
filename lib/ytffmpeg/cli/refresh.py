@@ -379,7 +379,7 @@ class RefreshCommand(BaseCommand):
 
         # Add subtitles if enabled
         if self.isSubtitles():
-            video_filters.append(f"subtitles={srt}:force_style='Alignment=0,PrimaryColour=&H00FFFFFF,FontName=Impact,OutlineColour=&H40000000,BorderStyle=3,Fontsize=10,MarginV=20'")
+            video_filters.append(f"subtitles={srt}:force_style='Alignment=0,PrimaryColour=&H00FFFFFF,FontName=Impact,OutlineColour=&H40000000,BorderStyle=3,Fontsize=14,MarginV=60,MarginL=30'")
 
         # Build filter_complex with standard processing
         video_filter_str = ','.join(video_filters)
