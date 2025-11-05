@@ -8,20 +8,19 @@ import os, io
 from google import genai
 from PIL import Image
 
-import math
 import textwrap
-from typing import Dict, Tuple, List
+from typing import Dict, List
 
 from subprocess import Popen, PIPE
 from kizano import getLogger
 log = getLogger(__name__)
 
-TEMPLATE_SVG = '''<svg width="585" height="1024" viewBox="0 0 585 1024" xmlns="http://www.w3.org/2000/svg">
+TEMPLATE_SVG = '''<svg width="585" height="1024" viewBox="0 0 585 1024" background="none" xmlns="http://www.w3.org/2000/svg">
     <style>
         .outlined {
             fill: #04547a;
             stroke: #e9e43c;
-            stroke-width: 18;
+            stroke-width: 4;
             stroke-linejoin: round;
             stroke-linecap: round;
             paint-order: stroke fill;
@@ -31,15 +30,11 @@ TEMPLATE_SVG = '''<svg width="585" height="1024" viewBox="0 0 585 1024" xmlns="h
             font-weight: 900;
         }
     </style>
-
-    <!-- Center the group, then position lines above and below center -->
-    <g transform="translate(292, 512)">
 %(lines)s
-    </g>
 </svg>
 '''
 
-TEMPLATE_TEXTLINE = '        <text class="outlined" font-size="%(fontSize)s" y="%(yCoord)s">%(line)s</text>'
+TEMPLATE_TEXTLINE = '        <text class="outlined" font-size="%(fontSize)s" x="292" y="%(yCoord)s">%(line)s</text>'
 
 IMAGE_PROMPT = """Create an interesting thumbnail for my TikTok video.
 Here's the content of the video:
@@ -165,7 +160,7 @@ def generate_template(title: str) -> str:
         cover = {
             'fontSize': coverInfo["fontSize"],
             'lineCount': coverInfo["lineCount"],
-            'yCoord': 292 - coverInfo["yCoords"][i] + coverInfo["fontSize"], # Singular because it's only one coordinate.
+            'yCoord': coverInfo["yCoords"][i], # Singular because it's only one coordinate.
             'line': line, # Singular because it's just the 1 line.
         }
         lines.append(TEMPLATE_TEXTLINE % cover)
@@ -173,7 +168,7 @@ def generate_template(title: str) -> str:
     log.debug(f'SVG: \n{svg}')
     template = 'build/thumbnail.png'
     # Create the thumbnail from SVG using ImageMagick
-    p = Popen(['convert', '-transparent', '#FFFFFF', '-', template], stdin=PIPE)
+    p = Popen(['convert', '-background', 'none', '-', template], stdin=PIPE)
     p.communicate(input=svg.encode('utf-8'))
 
     if p.returncode != 0:
