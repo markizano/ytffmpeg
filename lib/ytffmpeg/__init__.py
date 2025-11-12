@@ -1,4 +1,3 @@
-import sys
 import kizano
 log = kizano.getLogger(__name__)
 kizano.Config.APP_NAME = 'ytffmpeg'  # type: ignore
