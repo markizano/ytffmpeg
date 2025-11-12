@@ -47,7 +47,8 @@ Here's the content of the video:
 ---
 
 Take the content and craft an interesting, engaging and simple thumbnail based on the context provided, please.
-The aspect ratio needs to be 9:16. The size can be no greater than 585x1024.
+The aspect ratio MUST be 9:16. The size can be no greater than 585x1024.
+Do NOT include the TikTok logo in the resulting image.
 Thanks!
 """
 

@@ -12,11 +12,12 @@ from kizano import getLogger
 log = getLogger(__name__)
 
 from ytffmpeg.types import Devices, Action
-from ytffmpeg.cli.base import BaseCommand
-from ytffmpeg.cli.new import gennew
-from ytffmpeg.cli.build import builder
-from ytffmpeg.cli.refresh import refresher
-from ytffmpeg.cli.publish import publisher
+import ytffmpeg.cli.base as base
+import ytffmpeg.cli.new as new
+import ytffmpeg.cli.build as build
+import ytffmpeg.cli.refresh as refresh
+import ytffmpeg.cli.publish as publish
+
 
 class Cli(object):
     '''
@@ -24,10 +25,10 @@ class Cli(object):
     '''
 
     ACTIONS = {
-        Action.NEW: gennew,
-        Action.BUILD: builder,
-        Action.REFRESH: refresher,
-        Action.PUBLISH: publisher
+        Action.NEW: new.gennew,
+        Action.BUILD: build.builder,
+        Action.REFRESH: refresh.refresher,
+        Action.PUBLISH: publish.publisher
     }
 
     def __init__(self, config: dict):
@@ -118,7 +119,7 @@ class Cli(object):
             action='store',
             dest='language',
             help='Which language to use when generating subtitles?',
-            choices=BaseCommand.LANGS,
+            choices=base.BaseCommand.LANGS,
             default=None
         )
 
@@ -177,3 +178,5 @@ class Cli(object):
             return 1
         log.info(f'Executing action: {action} with config: {self.config}')
         return action(self.config)
+
+__all__ = ['base', 'new', 'build', 'refresh', 'publish', 'Cli']
