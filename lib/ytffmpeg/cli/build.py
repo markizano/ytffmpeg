@@ -218,7 +218,7 @@ class BuildCommand(BaseCommand):
             if 'filter_complex' in video_opts:
                 filter_complex = f'build/{self.filename(output)}.filter_complex'
                 self.processFilterComplex(filter_complex, video_opts['filter_complex'])
-                final_cmd.append('-filter_complex_script')
+                final_cmd.append('-/filter_complex')
                 final_cmd.append(filter_complex)
             # Strip previous metadata.
             final_cmd.append('-map_metadata')
