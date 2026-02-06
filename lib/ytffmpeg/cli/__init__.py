@@ -97,20 +97,16 @@ class Cli(object):
 
         options.add_argument(
             '--no-title',
-            action='store',
+            action='store_false',
             dest='title',
             help="Don't generate a title on refresh.",
-            const=False,
-            type=bool,
         )
 
         options.add_argument(
             '--no-description',
-            action='store',
+            action='store_false',
             dest='description',
             help="Don't generate a description on refresh.",
-            const=False,
-            type=bool,
         )
 
         options.add_argument(
@@ -179,6 +175,10 @@ class Cli(object):
             del opts.autoplay # type: ignore
         if opts.cut_silence == None:
             del opts.cut_silence # type: ignore
+        if opts.silence_duration == None:
+            del opts.silence_duration # type: ignore
+        if opts.silence_threshold == None:
+            del opts.silence_threshold # type: ignore
         self.config['ytffmpeg'].update(vars(opts))
         # The following "defaults" are set **after** everything above because if a default is
         # defined in the ArgumentParser(), it does not allow ~/.config/ytffmpeg/config.yml
@@ -199,6 +199,6 @@ class Cli(object):
             log.error('Invalid action: %s', self.config['action'])
             return 1
         log.info(f'Executing action: {action} with config: {self.config}')
-        # return action(self.config)
+        return action(self.config)
 
 __all__ = ['base', 'new', 'build', 'refresh', 'publish', 'Cli']

@@ -16,6 +16,7 @@ dependencies = [
     "google-genai>=1.48.0",
     "jsonschema>=4.25.1",
     "kizano==1.0.6",
+    "langchain>=1.0.5",
     "langchain-ollama>=1.0.0",
     "numba>=0.62.1",
     "openai>=2.7.2",
