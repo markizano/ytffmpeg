@@ -174,12 +174,13 @@ class BuildCommand(BaseCommand):
         # If we have pre-existing requirements or videos this is dependent on, process them first.
         if 'require' in video_opts:
             self.processRequirements(video_opts['require'])
-        if not os.path.exists('thumbnail.png'):
-            log.info('Generating thumbnail...')
-            txt_path = f'build/{self.filename(video_opts["output"])}.txt'
-            title = video_opts['metadata']['title']
-            content = open(txt_path).read()
-            ytffmpeg.genimg.generate_thumbnail(title, content)
+        if video_opts.get('thumbnail', True):
+            if not os.path.exists('thumbnail.png'):
+                log.info('Generating thumbnail...')
+                txt_path = f'build/{self.filename(video_opts["output"])}.txt'
+                title = video_opts['metadata']['title']
+                content = open(txt_path).read()
+                ytffmpeg.genimg.generate_thumbnail(title, content)
 
     def execute(self):
         '''
