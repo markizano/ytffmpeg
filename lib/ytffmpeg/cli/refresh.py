@@ -31,7 +31,7 @@ log = getLogger(__name__)
 
 from ytffmpeg.cli.base import BaseCommand
 
-GENERATE_TITLE_PROMPT = '''
+GENERATE_TITLE_PROMPT = '''Generate a title.
 Based on the subtitles provided, summarize the post in a 1-3 word summary that would be engaging for a TikTok user.
 No markdown or extra formatting accepted.
 Just the 1 to 3 word summary.
@@ -425,44 +425,52 @@ class RefreshCommand(BaseCommand):
         Generate a title for a video based on the subtitles.
         Reads the text transcript file for the resource and sends its content to the LLM.
         '''
-        txt_path = f'build/{self.filename(resource)}.txt'
+        try:
+            txt_path = f'build/{self.filename(resource)}.txt'
 
-        if not os.path.exists(txt_path):
-            log.warning(f'Transcript file {txt_path} not found. Cannot generate title.')
+            if not os.path.exists(txt_path):
+                log.warning(f'Transcript file {txt_path} not found. Cannot generate title.')
+                return ''
+
+            log.info(f'Generating title for \x1b[1m{resource}\x1b[0m from transcript at {txt_path}')
+
+            # Read the transcript file content
+            subtitle_content = open(txt_path, 'r', encoding='utf-8').read()
+
+            messages = []
+            messages.append(SystemMessage(content=GENERATE_TITLE_PROMPT))
+            messages.append(HumanMessage(content=subtitle_content))
+            response = self.llm.invoke(messages)
+            return response.content.strip()
+        except Exception as e:
+            log.error(f'Exception generating title: {e}')
             return ''
-
-        log.info(f'Generating title for \x1b[1m{resource}\x1b[0m from transcript at {txt_path}')
-
-        # Read the transcript file content
-        subtitle_content = open(txt_path, 'r', encoding='utf-8').read()
-
-        messages = []
-        messages.append(SystemMessage(content=GENERATE_TITLE_PROMPT))
-        messages.append(HumanMessage(content=subtitle_content))
-        response = self.llm.invoke(messages)
-        return response.content.strip()
 
     def generateDescription(self, resource: str) -> str:
         '''
         Generate a description for a video based on the subtitles.
         Reads the text transcript file for the resource and sends its content to the LLM.
         '''
-        txt_path = f'build/{self.filename(resource)}.txt'
+        try:
+            txt_path = f'build/{self.filename(resource)}.txt'
 
-        if not os.path.exists(txt_path):
-            log.warning(f'Transcript file {txt_path} not found. Cannot generate description.')
+            if not os.path.exists(txt_path):
+                log.warning(f'Transcript file {txt_path} not found. Cannot generate description.')
+                return ''
+
+            log.info(f'Generating description for \x1b[1m{resource}\x1b[0m from transcript at {txt_path}')
+
+            # Read the transcript file content
+            subtitle_content = open(txt_path, 'r', encoding='utf-8').read()
+
+            messages = []
+            messages.append(SystemMessage(content=GENERATE_DESCRIPTION_PROMPT))
+            messages.append(HumanMessage(content=subtitle_content))
+            response = self.llm.invoke(messages)
+            return response.content.strip()
+        except Exception as e:
+            log.error(f'Exception generating description: {e}')
             return ''
-
-        log.info(f'Generating description for \x1b[1m{resource}\x1b[0m from transcript at {txt_path}')
-
-        # Read the transcript file content
-        subtitle_content = open(txt_path, 'r', encoding='utf-8').read()
-
-        messages = []
-        messages.append(SystemMessage(content=GENERATE_DESCRIPTION_PROMPT))
-        messages.append(HumanMessage(content=subtitle_content))
-        response = self.llm.invoke(messages)
-        return response.content.strip()
 
     def save(self) -> None:
         '''
