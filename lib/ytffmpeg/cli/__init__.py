@@ -76,16 +76,14 @@ class Cli(object):
             dest='silence_threshold',
             help='Valid for the `refresh` action. Silence threshold in decibels (default: 30).',
             type=int,
-            default=30
         )
 
         options.add_argument(
             '--silence-duration',
             action='store',
             dest='silence_duration',
-            help='Valid for the `refresh` action. Minimum silence duration in seconds (default: 1).',
+            help='Valid for the `refresh` action. Minimum silence duration in seconds (default: 1.2).',
             type=float,
-            default=1.2
         )
 
         options.add_argument(
@@ -95,6 +93,24 @@ class Cli(object):
             help='Valid for the `refresh` action. Padding in milliseconds before/after silence removal (default: 350).',
             type=int,
             default=350
+        )
+
+        options.add_argument(
+            '--no-title',
+            action='store',
+            dest='title',
+            help="Don't generate a title on refresh.",
+            const=False,
+            type=bool,
+        )
+
+        options.add_argument(
+            '--no-description',
+            action='store',
+            dest='description',
+            help="Don't generate a description on refresh.",
+            const=False,
+            type=bool,
         )
 
         options.add_argument(
@@ -164,6 +180,12 @@ class Cli(object):
         if opts.cut_silence == None:
             del opts.cut_silence # type: ignore
         self.config['ytffmpeg'].update(vars(opts))
+        # The following "defaults" are set **after** everything above because if a default is
+        # defined in the ArgumentParser(), it does not allow ~/.config/ytffmpeg/config.yml
+        # to define the default behaviour/config. Setting it here ensures that is possible
+        # and if still not defined (e.g. config absent), we can define in-code.
+        self.config['ytffmpeg']['silence_duration'] = self.config['ytffmpeg'].get('silence_duration', 1.2)
+        self.config['ytffmpeg']['silence_threshold'] = self.config['ytffmpeg'].get('silence_threshold', 30)
 
     def execute(self):
         '''
@@ -177,6 +199,6 @@ class Cli(object):
             log.error('Invalid action: %s', self.config['action'])
             return 1
         log.info(f'Executing action: {action} with config: {self.config}')
-        return action(self.config)
+        # return action(self.config)
 
 __all__ = ['base', 'new', 'build', 'refresh', 'publish', 'Cli']
