@@ -17,6 +17,7 @@ log = getLogger(__name__)
 markizano = re.compile(r'mar\w*[ao]no', re.I)
 kizano = re.compile(r'\bki[sz][ao]n[oa]', re.I)
 draconus = re.compile(r'dr[au]c[ao]nis', re.I)
+tanninovian = re.compile(r't[ae]nn?[aie]nn?ob?i?[ae]n', re.I)
 
 class BaseCommand(object):
     '''
@@ -197,5 +198,6 @@ class BaseCommand(object):
         subtitles = kizano.sub('Kizano', subtitles)
         subtitles = markizano.sub('Markizano', subtitles)
         subtitles = draconus.sub('Draconus', subtitles)
+        subtitles = tanninovian.sub('Tanninovian', subtitles)
         open(srt_path, 'w').write(subtitles)
 
