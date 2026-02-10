@@ -362,14 +362,11 @@ class RefreshCommand(BaseCommand):
 
         # Add transpose filter based on rotation
         if rotation == 90:
-            log.info('Adding transpose=1 for 90° rotation')
-            video_filters.append('transpose=1')  # 90 degrees clockwise
+            log.info('Adding transpose=2 for 90° rotation')
+            video_filters.append('transpose=2')  # 90 degrees clockwise
         elif rotation == 180:
-            log.info('Adding transpose=2,transpose=2 for 180° rotation')
-            video_filters.append('transpose=2,transpose=2')  # 180 degrees
-        elif rotation == 270:
-            log.info('Adding transpose=2 for 270° rotation')
-            video_filters.append('transpose=2')  # 90 degrees counter-clockwise
+            log.info('Adding transpose=1 for 180° rotation')
+            video_filters.append('transpose=1')  # 180 degrees
         if rotation and rotation != 0:
             video_filters.append('sidedata=mode=delete')
 
