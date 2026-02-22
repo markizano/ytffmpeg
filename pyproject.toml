@@ -30,7 +30,6 @@ dependencies = [
 
 [project.scripts]
 ytffmpeg = "ytffmpeg:main"
-ytffmpeg-serv = "ytffmpeg.directoryserver:main"
 
 [project.urls]
 Homepage = "https://ytffmpeg.markizano.net"
