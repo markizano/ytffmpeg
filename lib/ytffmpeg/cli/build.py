@@ -198,6 +198,7 @@ class BuildCommand(BaseCommand):
             final_cmd = [os.getenv('FFMPEG_BIN', 'ffmpeg'), '-hide_banner', '-noautorotate']
             assert 'input' in video_opts, 'No input specified for video!'
             assert 'output' in video_opts, 'No output specified for video!'
+            assert isinstance(video_opts['input'], list), 'Input must be an array!'
             vidnow = time.time()
             output = video_opts["output"]
             if output is None:
@@ -261,13 +262,19 @@ class BuildCommand(BaseCommand):
                 final_cmd.append('-vn')
             else:
                 final_cmd.append('-c:v')
-                final_cmd.append(video_opts.get('codecs', {}).get('video', 'h264'))
+                final_cmd.append(video_opts.get('codecs', {}).get('video', 'libx265'))
+                final_cmd.append('-tag:v')
+                final_cmd.append('hvc1')
+
                 final_cmd.append('-pix_fmt')
-                final_cmd.append('yuv420p')
+                final_cmd.append('yuv444p')
+
                 final_cmd.append('-crf')
                 final_cmd.append('28')
+
                 final_cmd.append('-metadata:s:v')
                 final_cmd.append(f'language={language}')
+
             if 'no-audio' in attributes:
                 final_cmd.append('-an')
             else:
@@ -285,7 +292,7 @@ class BuildCommand(BaseCommand):
 
             # With the pre-hook, this should just execute now.
             if os.path.exists('thumbnail.png'):
-                i = len(video_opts['input'])
+                i = video_opts['input'].index({'i': 'thumbnail.png'})
                 final_cmd.append(f'-disposition:v:{i}')
                 final_cmd.append('attached_pic')
 

@@ -9,13 +9,12 @@ from google import genai
 from PIL import Image
 
 import textwrap
-from typing import Dict, List
 
 from subprocess import Popen, PIPE
 from kizano import getLogger
 log = getLogger(__name__)
 
-TEMPLATE_SVG = '''<svg width="585" height="1024" viewBox="0 0 585 1024" background="none" xmlns="http://www.w3.org/2000/svg">
+TEMPLATE_SVG = '''<svg width="585" height="1024" viewBox="0 0 1024 1024" background="none" xmlns="http://www.w3.org/2000/svg">
     <style>
         .outlined {
             fill: #04547a;
@@ -37,8 +36,8 @@ TEMPLATE_SVG = '''<svg width="585" height="1024" viewBox="0 0 585 1024" backgrou
 
 TEMPLATE_TEXTLINE = '        <text class="outlined" x="292" y="%(yCoord)s">%(line)s</text>'
 
-IMAGE_PROMPT = """Create an interesting thumbnail for my TikTok video.
-Here's the content of the video:
+IMAGE_PROMPT = """Create an interesting thumbnail for my video.
+Here's the text content of the video:
 
 ---
 
@@ -47,8 +46,7 @@ Here's the content of the video:
 ---
 
 Take the content and craft an interesting, engaging and simple thumbnail based on the context provided, please.
-The aspect ratio MUST be 9:16. The size can be no greater than 585x1024.
-Do NOT include the TikTok logo in the resulting image.
+Do NOT include the TikTok logo nor any username in the resulting image.
 Thanks!
 """
 
@@ -79,7 +77,7 @@ def getClient() -> genai.Client:
         GENAI_CLIENT = genai.Client(api_key=GOOGLE_API_KEY)
     return GENAI_CLIENT
 
-def _wrap_title_12(title: str) -> List[str]:
+def _wrap_title_12(title: str) -> list[str]:
     """
     Wrap to ~12 chars/line, allowing long words to exceed bounds (no forced breaking).
     Limit to at most 3 lines (merge overflow into the 3rd line).
@@ -116,7 +114,7 @@ def max_font_size_for_char_count_single_line(chars: int) -> int:
     fs_w = _max_font_width_fit(chars)
     return min(fs_v, fs_w)
 
-def compute_thumbnail_typography(title: str) -> Dict[str, object]:
+def compute_thumbnail_typography(title: str):
     """
     Inputs:
     - title (str): single-line title, 1..36 characters (guaranteed by caller).
@@ -179,7 +177,7 @@ def generate_template(title: str) -> str:
 
     if p.returncode != 0:
         log.error(f"Error: convert command failed with return code {p.returncode}")
-        return 1
+        return ''
     log.info(f'Converted SVG written to {template} as PNG')
     return template
 
@@ -200,13 +198,13 @@ def generate_thumbnail(title: str, content: str) -> str:
 
     image_parts = [
         part.inline_data.data
-        for part in result.candidates[0].content.parts
+        for part in result.candidates[0].content.parts or [] # type: ignore
         if part.inline_data
     ]
 
     # Most SDK builds return a PIL.Image with .save available
     thumbnail = 'thumbnail.png'
     if image_parts:
-        image = Image.open(io.BytesIO(image_parts[0]))
+        image = Image.open(io.BytesIO(image_parts[0])) # type: ignore
         image.save(thumbnail)
     return thumbnail

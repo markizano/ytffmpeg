@@ -14,8 +14,8 @@ from ytffmpeg.types import WhisperTask
 from kizano import getLogger
 log = getLogger(__name__)
 
-markizano = re.compile(r'mar\w*[ao]no', re.I)
-kizano = re.compile(r'\bki[sz][ao]n[oa]', re.I)
+markizano = re.compile(r'm[ae]r\w*[ao]no', re.I)
+kizano = re.compile(r'\bk[iu][sz][ao]n[oa]', re.I)
 draconus = re.compile(r'dr[au]c[ao]nis', re.I)
 tanninovian = re.compile(r't[ae]nn?[aie]nn?ob?i?[ae]n', re.I)
 
@@ -139,6 +139,12 @@ class BaseCommand(object):
             '--max_words_per_line', '5',
             '--highlight_words', 'True',
             '--verbose', 'True',
+            '--initial_prompt', (
+                'Markizano Draconus is a Tanninovian from the Crux galaxy. '
+                "Kizano's FinTech is an education and career advancement company. "
+                'markizano.net is the website you can visit. '
+                'Alex Hormozi and Codie Sanchez are YouTube personalities.'
+            )
         ]
 
         # Add temperature if specified
@@ -200,4 +206,5 @@ class BaseCommand(object):
         subtitles = draconus.sub('Draconus', subtitles)
         subtitles = tanninovian.sub('Tanninovian', subtitles)
         open(srt_path, 'w').write(subtitles)
+        return subtitles
 

@@ -32,14 +32,16 @@ log = getLogger(__name__)
 from ytffmpeg.cli.base import BaseCommand
 
 GENERATE_TITLE_PROMPT = '''Generate a title.
-Based on the subtitles provided, summarize the post in a 1-3 word summary that would be engaging for a TikTok user.
+Based on the subtitles provided, summarize the post in a 1-3 word summary that would be an engaging title.
 No markdown or extra formatting accepted.
 Just the 1 to 3 word summary.
 '''
 
-GENERATE_DESCRIPTION_PROMPT = '''
-Based on the subtitles provided, provide an engaging summary for the user to view when they click on the video description in TikTok.
-Markdown is not allowed in TikTok descriptions.
+GENERATE_DESCRIPTION_PROMPT = '''Summarize the video content for the video description.
+If the video is short (less than 60 seconds), give a one sentence summary.
+If multiple points were described, use bullet points to highlight them.
+Markdown is not allowed in descriptions.
+Keep it under 5000 characters.
 '''
 
 class RefreshCommand(BaseCommand):
@@ -47,7 +49,7 @@ class RefreshCommand(BaseCommand):
     Refresh command operations in object form so we have places to store program configuration.
     '''
 
-    def mp4tompv(self, resource: str, q: Queue) -> str:
+    def mp4tomkv(self, resource: str, q: Queue) -> str:
         '''
         Convert an MP4 file to MKV.
         '''
@@ -361,22 +363,35 @@ class RefreshCommand(BaseCommand):
         video_filters = []
 
         # Add transpose filter based on rotation
+        # 90 deg clockwise: -180; 90 deg counter-cw: 0; portrait: 90; upside-down: -90
         if rotation == 90:
             log.info('Adding transpose=2 for 90° rotation')
             video_filters.append('transpose=2')  # 90 degrees clockwise
-        elif rotation == 180:
+        elif rotation == -90:
             log.info('Adding transpose=1 for 180° rotation')
-            video_filters.append('transpose=1')  # 180 degrees
+            video_filters.append('transpose=1')  # 90 degrees counter-clockwise/upside down
         if rotation and rotation != 0:
             video_filters.append('sidedata=mode=delete')
 
         # Add scale and setsar
-        video_filters.append('scale=720x1280')
-        video_filters.append('setsar=1:1')
+        # @markizano: Removed since 1080p is now OK. May delete these lines at some point.
+        # video_filters.append('scale=720x1280')
+        # video_filters.append('setsar=1:1')
 
         # Add subtitles if enabled
         if self.isSubtitles():
-            video_filters.append(f"subtitles={srt}:force_style='Alignment=0,PrimaryColour=&H00FFFFFF,FontName=Impact,OutlineColour=&H40000000,BorderStyle=3,Fontsize=14,MarginV=60,MarginL=30'")
+            # @TODO: Detect when split screen OBS view and change font settings.
+            font_style = [
+                'Alignment=0',
+                'PrimaryColour=&H00FFFFFF',
+                'FontName=Impact',
+                'OutlineColour=&H40000000',
+                'BorderStyle=3',
+                'Fontsize=14',
+                'MarginV=60',
+                'MarginL=30'
+            ]
+            video_filters.append(f"subtitles={srt}:force_style='{'.'.join(font_style)}'")
 
         # Build filter_complex with standard processing
         video_filter_str = ','.join(video_filters)
@@ -393,7 +408,14 @@ class RefreshCommand(BaseCommand):
     def processSubtitles(self, resource: str) -> None:
         '''
         Do the needful with the subtitles.
+        Help generate subtitles, if they haven't been done already.
+        Attach them to the video config if they haven't already been connected.
+        Only do this if subtitles are enabled for this video.
+        @TODO: Support translations here. Attach multiple languages if configured.
         '''
+        # Skip if this is totally told to bypass subs.
+        if not self.isSubtitles():
+            return
         srt_en = f'build/{self.filename(resource)}.en.srt'
         if self.has_video(resource):
             vid_config = self.get_video_config(resource)
@@ -438,7 +460,7 @@ class RefreshCommand(BaseCommand):
             messages.append(SystemMessage(content=GENERATE_TITLE_PROMPT))
             messages.append(HumanMessage(content=subtitle_content))
             response = self.llm.invoke(messages)
-            return response.content.strip()
+            return str(response.content).strip()
         except Exception as e:
             log.error(f'Exception generating title: {e}')
             return ''
@@ -464,7 +486,7 @@ class RefreshCommand(BaseCommand):
             messages.append(SystemMessage(content=GENERATE_DESCRIPTION_PROMPT))
             messages.append(HumanMessage(content=subtitle_content))
             response = self.llm.invoke(messages)
-            return response.content.strip()
+            return str(response.content).strip()
         except Exception as e:
             log.error(f'Exception generating description: {e}')
             return ''
@@ -492,22 +514,20 @@ class RefreshCommand(BaseCommand):
                     log.info('Silence detection enabled, combining conversion and trimming...')
                     processed_resource = self.removeSilence(resource)
                     # Generate subtitles from the trimmed video
-                    if self.isSubtitles():
-                        self.processSubtitles(processed_resource)
+                    self.processSubtitles(processed_resource)
                     self.appendVideo(processed_resource)
                 else:
                     # Standard flow: convert MP4→MKV first, then process
                     log.info('No silence detection enabled, converting MP4→MKV...')
                     q = Queue()
-                    conversion = Process(target=self.mp4tompv, args=(resource, q))
+                    conversion = Process(target=self.mp4tomkv, args=(resource, q))
                     conversion.start()
                     conversion.join()
 
                     while q.empty() is False:
                         converted_resource = q.get()
                         # Generate subtitles from the converted video
-                        if self.isSubtitles():
-                            self.processSubtitles(converted_resource)
+                        self.processSubtitles(converted_resource)
                         self.appendVideo(converted_resource)
 
                 log.info(f'Done processing \x1b[1m{resource}\x1b[0m!')
@@ -516,8 +536,7 @@ class RefreshCommand(BaseCommand):
                 # Apply silence removal if enabled
                 processed_resource = self.removeSilence(resource)
                 # Generate subtitles from the final video (trimmed or original)
-                if self.isSubtitles():
-                    self.processSubtitles(processed_resource)
+                self.processSubtitles(processed_resource)
                 self.appendVideo(processed_resource)
                 log.info(f'Done processing \x1b[1m{resource}\x1b[0m!')
             # I don't believe the last suggested else should be here because sometimes
