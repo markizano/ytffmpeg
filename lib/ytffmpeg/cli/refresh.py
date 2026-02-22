@@ -351,10 +351,46 @@ class RefreshCommand(BaseCommand):
                 new_vid_tpl['metadata']['description'] = ''
 
         if self.isSubtitles():
-            new_vid_tpl['languages'] = ['en:0']
-            new_vid_tpl['attributes'] = [ 'subs' ]
-            new_vid_tpl['map'] = { 'en': '1:s' }
-            new_vid_tpl['input'].append({ 'i': srt })
+            # Detect all available subtitle files for this resource
+            base_filename = self.filename(resource)
+            available_subs = []
+
+            # Check for subtitle files in build directory
+            from glob import glob as file_glob
+            srt_pattern = f'build/{base_filename}.*.srt'
+            srt_files = file_glob(srt_pattern)
+
+            # Extract language codes from subtitle files
+            for srt_file in srt_files:
+                # Extract language code from filename (e.g., "web-4.0.en.srt" -> "en")
+                parts = os.path.basename(srt_file).split('.')
+                if len(parts) >= 3 and parts[-1] == 'srt':
+                    lang_code = parts[-2]
+                    available_subs.append((lang_code, srt_file))
+
+            if not available_subs:
+                # Fallback to single English subtitle
+                new_vid_tpl['languages'] = ['en:0']
+                new_vid_tpl['attributes'] = [ 'subs' ]
+                new_vid_tpl['map'] = { 'en': '1:s' }
+                new_vid_tpl['input'].append({ 'i': srt })
+            else:
+                # Multi-language setup
+                new_vid_tpl['attributes'] = [ 'subs' ]
+                new_vid_tpl['languages'] = []
+                new_vid_tpl['map'] = {}
+
+                # Sort by language code for consistent ordering
+                available_subs.sort(key=lambda x: x[0])
+
+                for idx, (lang_code, srt_file) in enumerate(available_subs):
+                    new_vid_tpl['input'].append({ 'i': srt_file })
+                    # Stream index starts at 1 (0 is the video)
+                    stream_idx = idx + 1
+                    new_vid_tpl['languages'].append(f'{lang_code}:{idx}')
+                    new_vid_tpl['map'][lang_code] = f'{stream_idx}:s'
+
+                log.info(f'Configured {len(available_subs)} subtitle tracks: {[lang for lang, _ in available_subs]}')
 
         # Detect video rotation from display matrix metadata
         rotation = self.getVideoRotation(resource)
@@ -411,31 +447,83 @@ class RefreshCommand(BaseCommand):
         Help generate subtitles, if they haven't been done already.
         Attach them to the video config if they haven't already been connected.
         Only do this if subtitles are enabled for this video.
-        @TODO: Support translations here. Attach multiple languages if configured.
+
+        Multi-language support:
+        - Generates English subtitles using Whisper
+        - Translates to additional languages using Argos Translate
+        - Preserves timing by translating full context then splitting by word count
+        - Checks for global 'languages' config to auto-enable translation
         '''
         # Skip if this is totally told to bypass subs.
         if not self.isSubtitles():
             return
-        srt_en = f'build/{self.filename(resource)}.en.srt'
+
+        base_lang = self.language()  # Default base language (usually 'en')
+        srt_base = f'build/{self.filename(resource)}.{base_lang}.srt'
+
         if self.has_video(resource):
             vid_config = self.get_video_config(resource)
         else:
             vid_config = copy.deepcopy(self.config['ytffmpeg']['defaults'])
             vid_config['attributes'] = [ 'subs' ]
-            vid_config['languages'] = ['en:0']
-            vid_config['map'] = { 'en': '1:s' }
+
+            # Check for global languages configuration
+            global_languages = self.config['ytffmpeg'].get('languages', [])
+            if global_languages and isinstance(global_languages, list):
+                # Auto-configure multi-language support from global config
+                vid_config['languages'] = [f'{lang}:{idx}' for idx, lang in enumerate(global_languages)]
+                vid_config['map'] = {lang: f'{idx+1}:s' for idx, lang in enumerate(global_languages)}
+                log.info(f'Using global language configuration: {global_languages}')
+            else:
+                # Default single language
+                vid_config['languages'] = [f'{base_lang}:0']
+                vid_config['map'] = { base_lang: '1:s' }
+
             if 'input' not in vid_config:
                 vid_config['input'] = []
-            vid_config['input'].append({ 'i': srt_en })
+            vid_config['input'].append({ 'i': srt_base })
+
         if 'attributes' in vid_config and 'subs' in vid_config['attributes']:
             if 'languages' in vid_config:
                 log.info(f'Multilang video found at \x1b[1m{resource}\x1b[0m')
+
+                # Extract all requested languages
+                requested_langs = []
                 for ilang in vid_config['languages']:
                     lang = ilang.split(':').pop(0)
-                    log.info(f'Processing subtitles for \x1b[1m{resource}\x1b[0m in \x1b[1m{lang}\x1b[0m')
-                    self.get_subtitles(resource, lang)
+                    requested_langs.append(lang)
+
+                # First, generate base language subtitles using Whisper
+                if base_lang in requested_langs:
+                    log.info(f'Generating base language ({base_lang}) subtitles with Whisper for \x1b[1m{resource}\x1b[0m')
+                    self.get_subtitles(resource, base_lang)
+                else:
+                    # If base language not in requested languages, generate it anyway for translation
+                    log.info(f'Generating {base_lang} subtitles as translation source for \x1b[1m{resource}\x1b[0m')
+                    self.get_subtitles(resource, base_lang)
+
+                # Translate to other languages
+                for lang in requested_langs:
+                    if lang == base_lang:
+                        continue  # Already generated
+
+                    target_srt = f'build/{self.filename(resource)}.{lang}.srt'
+
+                    # Check if translation already exists
+                    if os.path.exists(target_srt) and not self.isOverwrite():
+                        log.info(f'Translated subtitles already exist for \x1b[1m{target_srt}\x1b[0m')
+                        continue
+
+                    log.info(f'Translating subtitles from {base_lang} to {lang} for \x1b[1m{resource}\x1b[0m')
+                    translated_srt = self.translate_subtitles(srt_base, base_lang, lang)
+
+                    if translated_srt:
+                        log.info(f'Successfully created translated subtitles: {translated_srt}')
+                    else:
+                        log.error(f'Failed to translate subtitles to {lang}')
             else:
-                self.get_subtitles(resource, self.language())
+                # Single language mode
+                self.get_subtitles(resource, base_lang)
         else:
             log.info(f'Subs not enabled for \x1b[1m{resource}\x1b[0m')
 

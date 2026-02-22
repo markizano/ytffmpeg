@@ -110,6 +110,31 @@
                         }
                     }
                 },
+                "languages": {
+                    "$id": "#/videos/languages",
+                    "description": "Array of language codes with stream indices (e.g., 'en:0', 'es:1'). Enables multi-language subtitle support.",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^[a-z]{2}:[0-9]+$"
+                    },
+                    "example": ["en:0", "es:1", "fr:2"]
+                },
+                "map": {
+                    "$id": "#/videos/map",
+                    "description": "Mapping of language codes to ffmpeg stream specifications for subtitle tracks.",
+                    "type": "object",
+                    "patternProperties": {
+                        "^[a-z]{2}$": {
+                            "type": "string",
+                            "pattern": "^[0-9]+:s$"
+                        }
+                    },
+                    "example": {
+                        "en": "1:s",
+                        "es": "2:s"
+                    }
+                },
                 "required": ["input", "output"]
             }
         },

@@ -56,7 +56,9 @@ changes we will be performing here.
 This may take a moment as ffmpeg converts your MP4 format videos into MKV format under high
 compression as lossless as possible. This will reduce the amount of disk that is consumed by the
 videos recorded and saved raw from devices. Subtitles will also be automatically generated from
-the video files! You can suppress auto-subtitle generation with the `--no-subtitles` argument.
+the video files using Whisper! The system automatically detects your GPU VRAM and selects the
+best Whisper model that fits (preferring `large-v3` for high-end GPUs). You can suppress
+auto-subtitle generation with the `--no-subtitles` argument.
 
 Once your videos have been compressed and subtitles generated for them, you will have artifacts
 available in the `./build/` directory as well.
@@ -102,6 +104,77 @@ This project takes some of the rough edges off of the `filter_complex` argument 
 
 This started off as a simple script to try and automate some of the rough edges of my process
 when recording content and publishing to the platforms.
+
+## Multi-Language Subtitle Support
+
+ytffmpeg now supports automatic translation of subtitles to multiple languages using Argos Translate!
+
+### Quick Start
+
+1. **Configure languages in your `ytffmpeg.yml`:**
+
+```yaml
+ytffmpeg:
+  language: en           # Base language for Whisper transcription
+  languages:             # Translate to these languages
+    - en                 # English (from Whisper)
+    - es                 # Spanish (translated)
+    - fr                 # French (translated)
+    - de                 # German (translated)
+```
+
+2. **Run refresh to generate and translate subtitles:**
+
+```bash
+ytffmpeg refresh
+```
+
+This will:
+- Generate English subtitles using Whisper
+- Automatically translate to Spanish, French, and German
+- Preserve timing information from the original subtitles
+- Create separate SRT files for each language in `build/`
+
+3. **Build your video with all subtitle tracks:**
+
+```bash
+ytffmpeg build
+```
+
+The final video will contain all subtitle tracks, properly mapped and labeled.
+
+### How Translation Works
+
+**Context-Aware Translation**: The entire transcript is translated as one document to preserve meaning, intent, and context. This produces much better results than translating line-by-line.
+
+**Timing Preservation**: After translation, the system intelligently splits the translated text to match the original subtitle timing, distributing words proportionally across subtitle entries.
+
+**Automatic Package Management**: Argos Translate language packages are downloaded and installed automatically on first use.
+
+### Example Output
+
+After running `ytffmpeg refresh` with multi-language support:
+
+```
+build/
+├── my-video.mkv              # Processed video
+├── my-video.txt              # Full English transcript
+├── my-video.en.srt           # English subtitles (Whisper)
+├── my-video.es.srt           # Spanish translation
+├── my-video.fr.srt           # French translation
+├── my-video.de.srt           # German translation
+└── my-video.mp4              # Final video with all subtitle tracks
+```
+
+### Supported Languages
+
+Any language pair supported by Argos Translate, including:
+- Spanish (es), French (fr), German (de), Portuguese (pt)
+- Italian (it), Russian (ru), Chinese (zh), Japanese (ja)
+- Arabic (ar), Hindi (hi), Korean (ko)
+- And many more!
+
+For detailed documentation, see [CHANGES.md](CHANGES.md).
 
 ## @FutureFeature
 
