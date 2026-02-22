@@ -5,7 +5,6 @@ kizano.Config.APP_NAME = 'ytffmpeg'  # type: ignore
 import ytffmpeg.cli as cli
 import ytffmpeg.filter_complex as filter_complex
 import ytffmpeg.genimg as genimg
-import ytffmpeg.directoryserver as directoryserver
 
 def main():
     '''

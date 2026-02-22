@@ -57,8 +57,13 @@ This may take a moment as ffmpeg converts your MP4 format videos into MKV format
 compression as lossless as possible. This will reduce the amount of disk that is consumed by the
 videos recorded and saved raw from devices. Subtitles will also be automatically generated from
 the video files using Whisper! The system automatically detects your GPU VRAM and selects the
-best Whisper model that fits (preferring `large-v3` for high-end GPUs). You can suppress
-auto-subtitle generation with the `--no-subtitles` argument.
+best Whisper model that fits (preferring `large-v3` for high-end GPUs).
+
+**Concurrent Processing:** If you run multiple ytffmpeg instances simultaneously, they will
+automatically queue for GPU access using a file-based lock to prevent OOM (Out Of Memory) errors.
+Each instance waits its turn instead of competing for GPU resources.
+
+You can suppress auto-subtitle generation with the `--no-subtitles` argument.
 
 Once your videos have been compressed and subtitles generated for them, you will have artifacts
 available in the `./build/` directory as well.

@@ -11,4 +11,5 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..'
 # Importing into the namespace is sufficient as pytest will find the test cases.
 from ytffmpegunit.build import *
 from ytffmpegunit.config import *
+from ytffmpegunit.gpu_lock import *
 from ytffmpegfunc.vertical import *

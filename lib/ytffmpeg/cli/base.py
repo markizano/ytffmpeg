@@ -6,6 +6,9 @@ import os
 import re
 import subprocess
 import time
+import fcntl
+import random
+from contextlib import contextmanager
 
 from langchain.chat_models import init_chat_model
 import argostranslate.package
@@ -52,6 +55,82 @@ class BaseCommand(object):
         )
         # Cache for GPU VRAM detection
         self._gpu_vram_mb = None
+
+    @contextmanager
+    def gpu_lock(self, max_wait_seconds: int = 3600):
+        '''
+        Context manager for acquiring an exclusive GPU lock.
+
+        Prevents multiple Whisper instances from running simultaneously and causing OOM errors.
+        Uses POSIX file locking (fcntl.flock) with retry logic and random delays to avoid race conditions.
+
+        Args:
+            max_wait_seconds: Maximum time to wait for lock (default: 1 hour)
+
+        Usage:
+            with self.gpu_lock():
+                # Run GPU-intensive operation
+                subprocess.run(['whisper', ...])
+        '''
+        # Determine lock file location
+        # Try ~/.cache/ytffmpeg first (user-writable, persistent)
+        # Fall back to /tmp if ~/.cache doesn't exist
+        cache_dir = os.path.expanduser('~/.cache/ytffmpeg')
+        if not os.path.exists(cache_dir):
+            try:
+                os.makedirs(cache_dir, mode=0o755, exist_ok=True)
+                lock_path = os.path.join(cache_dir, 'gpu.lock')
+            except (OSError, PermissionError):
+                # Fallback to /tmp
+                lock_path = '/tmp/ytffmpeg-gpu.lock'
+        else:
+            lock_path = os.path.join(cache_dir, 'gpu.lock')
+
+        lock_file = None
+        lock_acquired = False
+        start_time = time.time()
+
+        try:
+            # Open/create lock file
+            lock_file = open(lock_path, 'w')
+
+            # Try to acquire lock with retry logic
+            while True:
+                try:
+                    # Try non-blocking lock first
+                    fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                    lock_acquired = True
+                    log.info(f'Acquired GPU lock: {lock_path}')
+                    break
+                except IOError:
+                    # Lock is held by another process
+                    elapsed = time.time() - start_time
+                    if elapsed >= max_wait_seconds:
+                        log.error(f'Failed to acquire GPU lock after {elapsed:.1f}s (timeout: {max_wait_seconds}s)')
+                        raise RuntimeError(f'GPU lock timeout after {elapsed:.1f}s - another Whisper instance may be stuck')
+
+                    # Wait at least 1 second + random to avoid race conditions
+                    wait_time = 1.0 + random.uniform(0.1, 2.0)
+                    log.warning(f'GPU is busy (locked by another process). Waiting {wait_time:.2f}s... (elapsed: {elapsed:.1f}s/{max_wait_seconds}s)')
+                    time.sleep(wait_time)
+
+            # Yield control to caller (lock is held)
+            yield
+
+        finally:
+            # Always release lock and close file
+            if lock_file:
+                if lock_acquired:
+                    try:
+                        fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+                        log.info(f'Released GPU lock: {lock_path}')
+                    except Exception as e:
+                        log.warning(f'Error releasing GPU lock: {e}')
+
+                try:
+                    lock_file.close()
+                except Exception as e:
+                    log.warning(f'Error closing lock file: {e}')
 
     def get_gpu_vram_mb(self) -> int:
         '''
@@ -254,36 +333,19 @@ class BaseCommand(object):
 
         log.info(f"Running whisper command: {' '.join(whisper_cmd)}")
 
+        # Determine if we need GPU lock (only for CUDA devices)
+        device = self.config['ytffmpeg'].get('device', 'cuda')
+        use_gpu_lock = device in ['cuda', 'auto']
+
         try:
-            now = time.time()
-            # Use Popen to stream output to console in real-time
-            process = subprocess.Popen(whisper_cmd, text=True)
-            returncode = process.wait()
-            then = time.time()
-
-            if returncode != 0:
-                log.error(f"Whisper failed with exit code {returncode}")
-                return ''
-
-            log.info(f"Whisper completed in {round(then-now, 4)} seconds!")
-            log.info(f'Now removing excess VTT, JSON, and TSV files...')
-            for suffix in ['json', 'vtt', 'tsv']:
-                extra = os.path.join('build', f'{self.filename(video_path)}.{suffix}')
-                if os.path.exists(extra):
-                    os.unlink(extra)
-
-            # Whisper will create the SRT file with the same name as the video but with .srt extension
-            # We need to rename it to match our expected naming convention
-            expected_whisper_srt = os.path.join('build', f"{self.filename(video_path)}.srt")
-            if os.path.exists(expected_whisper_srt) and expected_whisper_srt != srt_path:
-                os.rename(expected_whisper_srt, srt_path)
-                log.info(f"Renamed {expected_whisper_srt} to {srt_path}")
-
-            self.correct_subtitles(srt_path)
-            txt_path = os.path.join('build', f"{self.filename(video_path)}.txt")
-            self.correct_subtitles(txt_path)
-
-            return srt_path
+            # Acquire GPU lock if using GPU to prevent OOM errors from concurrent Whisper instances
+            if use_gpu_lock:
+                log.info('Acquiring GPU lock to prevent concurrent Whisper instances...')
+                with self.gpu_lock():
+                    return self._run_whisper(whisper_cmd, video_path, srt_path)
+            else:
+                # CPU mode - no lock needed
+                return self._run_whisper(whisper_cmd, video_path, srt_path)
 
         except FileNotFoundError:
             log.error("Whisper command not found. Please ensure whisper is installed and available in PATH.")
@@ -291,6 +353,41 @@ class BaseCommand(object):
         except Exception as e:
             log.error(f"Whisper failed with error: {e}")
             return ''
+
+    def _run_whisper(self, whisper_cmd: list, video_path: str, srt_path: str) -> str:
+        '''
+        Internal method to run Whisper and process the output.
+        Separated from get_subtitles() to allow GPU locking around the execution.
+        '''
+        now = time.time()
+        # Use Popen to stream output to console in real-time
+        process = subprocess.Popen(whisper_cmd, text=True)
+        returncode = process.wait()
+        then = time.time()
+
+        if returncode != 0:
+            log.error(f"Whisper failed with exit code {returncode}")
+            return ''
+
+        log.info(f"Whisper completed in {round(then-now, 4)} seconds!")
+        log.info(f'Now removing excess VTT, JSON, and TSV files...')
+        for suffix in ['json', 'vtt', 'tsv']:
+            extra = os.path.join('build', f'{self.filename(video_path)}.{suffix}')
+            if os.path.exists(extra):
+                os.unlink(extra)
+
+        # Whisper will create the SRT file with the same name as the video but with .srt extension
+        # We need to rename it to match our expected naming convention
+        expected_whisper_srt = os.path.join('build', f"{self.filename(video_path)}.srt")
+        if os.path.exists(expected_whisper_srt) and expected_whisper_srt != srt_path:
+            os.rename(expected_whisper_srt, srt_path)
+            log.info(f"Renamed {expected_whisper_srt} to {srt_path}")
+
+        self.correct_subtitles(srt_path)
+        txt_path = os.path.join('build', f"{self.filename(video_path)}.txt")
+        self.correct_subtitles(txt_path)
+
+        return srt_path
 
     def correct_subtitles(self, srt_path: str) -> str:
         '''
