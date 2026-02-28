@@ -24,7 +24,7 @@ class BuildCommand(BaseCommand):
     def __init__(self, config: dict):
         super().__init__(config)
         if not ytffmpeg.genimg.GOOGLE_API_KEY:
-            ytffmpeg.genimg.GOOGLE_API_KEY = config.get('google', {}).get('api_key')
+            ytffmpeg.genimg.GOOGLE_API_KEY = config['ytffmpeg'].get('google', {}).get('api_key')
 
     def processRequirements(self, requirements: list) -> None:
         '''
