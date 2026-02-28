@@ -5,6 +5,7 @@ kizano.Config.APP_NAME = 'ytffmpeg'  # type: ignore
 import ytffmpeg.cli as cli
 import ytffmpeg.filter_complex as filter_complex
 import ytffmpeg.genimg as genimg
+import ytffmpeg.notify as notify
 
 def main():
     '''
@@ -22,4 +23,4 @@ def main():
     ytffmpeg = cli.Cli(config)
     ytffmpeg.execute()
 
-__all__ = ['cli', 'filter_complex', 'genimg', 'main', 'directoryserver']
+__all__ = ['cli', 'filter_complex', 'genimg', 'notify', 'main', 'directoryserver']
