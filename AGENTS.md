@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ytffmpeg is a Python-based video processing automation tool that simplifies complex FFmpeg operations for creating social media content. It provides:
+ytffmpeg is a Python-based video processing automation tool that simplifies complex FFmpeg
+operations for creating social media content. It provides:
+
 - YAML-driven configuration for video transformations
 - Automatic subtitle generation using OpenAI Whisper with GPU auto-detection
 - Multi-language subtitle translation via Argos Translate
@@ -14,14 +16,16 @@ ytffmpeg is a Python-based video processing automation tool that simplifies comp
 ## Development Commands
 
 ### Environment Setup
+
 ```bash
 # Create virtual environment and install dependencies
-python3 -m venv .venv
+uv venv
 source .venv/bin/activate
 pip install -e .
 ```
 
 ### Testing
+
 ```bash
 # Run all tests
 python tests/runtests.py
@@ -31,15 +35,17 @@ pytest tests/
 ```
 
 ### Building and Installation
+
 ```bash
 # Build package
-python -m build
+uv build
 
 # Install locally for development
 pip install -e .
 ```
 
 ### Running the Application
+
 ```bash
 # Main entry point
 ytffmpeg --help
@@ -57,6 +63,7 @@ ytffmpeg publish                # Publish to configured endpoints (SFTP)
 ### Core Components
 
 **CLI Module** (`lib/ytffmpeg/cli/`)
+
 - `base.py`: BaseCommand class with shared functionality:
   - GPU lock mechanism using fcntl for preventing concurrent Whisper instances
   - Automatic Whisper model selection based on GPU VRAM detection (via nvidia-smi or torch)
@@ -68,23 +75,27 @@ ytffmpeg publish                # Publish to configured endpoints (SFTP)
 - `publish.py`: Video publishing to configured endpoints
 
 **Filter Complex System** (`lib/ytffmpeg/filter_complex.py`)
+
 - `FilterComplexFunctionUnit`: Parses and represents individual FFmpeg filters
 - `FilterComplexStream`: Represents input→functions→output stream chains
 - `FilterComplexFunctionList`: Collection of filter functions
 - Provides abstraction over FFmpeg's filter_complex syntax for programmatic manipulation
 
 **Configuration** (`lib/ytffmpeg/schema.json`)
+
 - JSON Schema defining ytffmpeg.yml structure
 - Two-level configuration: global `ytffmpeg` section + per-video `videos` array
 - Configuration hierarchy: `/etc/ytffmpeg/config.yml` → `~/.config/ytffmpeg/config.yml` → `./ytffmpeg.yml`
 
 **Notification System** (`lib/ytffmpeg/notify.py`)
+
 - SNS notification support for build completion/failures
 - Replaced Discord webhooks in recent refactor
 
 ### GPU Resource Management
 
 The `gpu_lock()` context manager in `base.py` prevents multiple Whisper instances from running simultaneously:
+
 - Uses POSIX file locking (fcntl.flock) on `~/.cache/ytffmpeg/gpu.lock`
 - Retry logic with random delays to avoid race conditions
 - Configurable timeout (default: 1 hour)
@@ -93,6 +104,7 @@ The `gpu_lock()` context manager in `base.py` prevents multiple Whisper instance
 ### Whisper Model Selection
 
 Automatic model selection in `select_whisper_model()`:
+
 - Detects GPU VRAM via nvidia-smi (preferred) or torch
 - Model VRAM requirements:
   - `tiny`/`base`: ~1GB
@@ -114,6 +126,7 @@ Automatic model selection in `select_whisper_model()`:
 ## Configuration Structure
 
 **Project-Level** (`ytffmpeg.yml`):
+
 ```yaml
 ytffmpeg:
   language: en                  # Base language for Whisper
@@ -146,20 +159,26 @@ videos:
 ## Common Patterns
 
 ### Adding New FFmpeg Filters
+
 When adding support for new FFmpeg filters, work with `FilterComplexFunctionUnit` in `filter_complex.py`. The parser automatically handles:
+
 - Named parameters: `trim=start=1.15:end=4.5`
 - Positional args: `fade=in:st=0:d=1`
 - Mixed syntax: `overlay=x=10:y=20:enable='between(t,0,5)'`
 
 ### Extending CLI Commands
+
 New CLI commands should:
+
 1. Subclass `BaseCommand` in `cli/base.py`
 2. Implement command logic
 3. Register in `cli/__init__.py`
 4. Add to project scripts in `pyproject.toml` if needed
 
 ### Testing GPU-Related Features
+
 Tests in `tests/ytffmpegunit/gpu_lock.py` demonstrate:
+
 - Concurrent lock acquisition testing
 - Timeout handling
 - CPU vs CUDA mode differences
@@ -188,6 +207,7 @@ Tests in `tests/ytffmpegunit/gpu_lock.py` demonstrate:
 **Name Correction in Subtitles**: `correct_subtitles()` in `base.py` uses regex to fix common Whisper transcription errors for project-specific terms (Markizano, Kizano, Draconus, Tanninovian). This runs automatically after subtitle generation.
 
 **MP4 vs MKV**: The `refresh` command converts MP4 to MKV for:
+
 - Better compression with minimal quality loss
 - Container support for multiple subtitle tracks
 - Metadata preservation
