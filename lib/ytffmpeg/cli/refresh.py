@@ -591,52 +591,53 @@ class RefreshCommand(BaseCommand):
         '''
         Entrypoint for execution
         '''
-        resources = glob('resources/*')
-        log.debug(f'Found resources: {resources}')
-        for resource in resources:
-            if resource.endswith('.mp4'):
-                log.info(f'Processing {resource}...')
+        with self.video_processing_lock('refresh'):
+            resources = glob('resources/*')
+            log.debug(f'Found resources: {resources}')
+            for resource in resources:
+                if resource.endswith('.mp4'):
+                    log.info(f'Processing {resource}...')
 
-                # If silence detection is enabled, do MP4→MKV conversion + silence removal in one step
-                if self.shouldCutSilence():
-                    log.info('Silence detection enabled, combining conversion and trimming...')
+                    # If silence detection is enabled, do MP4→MKV conversion + silence removal in one step
+                    if self.shouldCutSilence():
+                        log.info('Silence detection enabled, combining conversion and trimming...')
+                        processed_resource = self.removeSilence(resource)
+                        # Generate subtitles from the trimmed video
+                        self.processSubtitles(processed_resource)
+                        self.appendVideo(processed_resource)
+                    else:
+                        # Standard flow: convert MP4→MKV first, then process
+                        log.info('No silence detection enabled, converting MP4→MKV...')
+                        q = Queue()
+                        conversion = Process(target=self.mp4tomkv, args=(resource, q))
+                        conversion.start()
+                        conversion.join()
+
+                        while q.empty() is False:
+                            converted_resource = q.get()
+                            # Generate subtitles from the converted video
+                            self.processSubtitles(converted_resource)
+                            self.appendVideo(converted_resource)
+
+                    log.info(f'Done processing \x1b[1m{resource}\x1b[0m!')
+                elif resource.endswith('.mkv'):
+                    log.info(f'Processing {resource}...')
+                    # Apply silence removal if enabled
                     processed_resource = self.removeSilence(resource)
-                    # Generate subtitles from the trimmed video
+                    # Generate subtitles from the final video (trimmed or original)
                     self.processSubtitles(processed_resource)
                     self.appendVideo(processed_resource)
-                else:
-                    # Standard flow: convert MP4→MKV first, then process
-                    log.info('No silence detection enabled, converting MP4→MKV...')
-                    q = Queue()
-                    conversion = Process(target=self.mp4tomkv, args=(resource, q))
-                    conversion.start()
-                    conversion.join()
+                    log.info(f'Done processing \x1b[1m{resource}\x1b[0m!')
+                # I don't believe the last suggested else should be here because sometimes
+                # PNG files and other non-video items may be included, so we only want to
+                # track specified video files.
 
-                    while q.empty() is False:
-                        converted_resource = q.get()
-                        # Generate subtitles from the converted video
-                        self.processSubtitles(converted_resource)
-                        self.appendVideo(converted_resource)
-
-                log.info(f'Done processing \x1b[1m{resource}\x1b[0m!')
-            elif resource.endswith('.mkv'):
-                log.info(f'Processing {resource}...')
-                # Apply silence removal if enabled
-                processed_resource = self.removeSilence(resource)
-                # Generate subtitles from the final video (trimmed or original)
-                self.processSubtitles(processed_resource)
-                self.appendVideo(processed_resource)
-                log.info(f'Done processing \x1b[1m{resource}\x1b[0m!')
-            # I don't believe the last suggested else should be here because sometimes
-            # PNG files and other non-video items may be included, so we only want to
-            # track specified video files.
-
-        log.info('Resources have been processed!')
-        self.save()
-        log.info('Refresh complete!')
-        # Somehow the terminal is getting messed up after this command is run.
-        os.system('stty echo -brkint -imaxbel icanon iexten icrnl')
-        return 0
+            log.info('Resources have been processed!')
+            self.save()
+            log.info('Refresh complete!')
+            # Somehow the terminal is getting messed up after this command is run.
+            os.system('stty echo -brkint -imaxbel icanon iexten icrnl')
+            return 0
 
 def refresher(config: dict) -> int:
     '''

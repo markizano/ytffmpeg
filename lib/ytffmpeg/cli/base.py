@@ -55,6 +55,11 @@ class BaseCommand(object):
         )
         # Cache for GPU VRAM detection
         self._gpu_vram_mb = None
+        # Store lockfile path from configuration
+        self.lockfile = os.path.expanduser(
+            self.config.get('ytffmpeg', {}).get('lockfile', '~/.ytffmpeg.lock')
+        )
+        self.lockfile_timeout = self.config.get('ytffmpeg', {}).get('lockfile_timeout', 3600)
 
     @contextmanager
     def gpu_lock(self, max_wait_seconds: int = 3600):
@@ -126,6 +131,103 @@ class BaseCommand(object):
                         log.info(f'Released GPU lock: {lock_path}')
                     except Exception as e:
                         log.warning(f'Error releasing GPU lock: {e}')
+
+                try:
+                    lock_file.close()
+                except Exception as e:
+                    log.warning(f'Error closing lock file: {e}')
+
+    @contextmanager
+    def video_processing_lock(self, operation: str):
+        '''
+        Context manager for acquiring an exclusive lock for video processing operations.
+
+        Prevents multiple refresh or build processes from running simultaneously.
+        Uses POSIX file locking (fcntl.flock) with retry logic and random delays to avoid race conditions.
+
+        Args:
+            operation: The operation name (e.g., 'refresh', 'build') for logging purposes
+
+        Usage:
+            with self.video_processing_lock('refresh'):
+                # Run refresh operation
+                self.process_videos()
+        '''
+        lock_file = None
+        lock_acquired = False
+        start_time = time.time()
+
+        try:
+            # Create lock file if it doesn't exist
+            lock_dir = os.path.dirname(self.lockfile)
+            if lock_dir and not os.path.exists(lock_dir):
+                try:
+                    os.makedirs(lock_dir, mode=0o755, exist_ok=True)
+                except (OSError, PermissionError) as e:
+                    log.error(f'Failed to create lockfile directory {lock_dir}: {e}')
+                    raise
+
+            # Open/create lock file
+            lock_file = open(self.lockfile, 'w')
+
+            # Try to acquire lock with retry logic
+            while True:
+                try:
+                    # Try non-blocking lock first
+                    fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                    lock_acquired = True
+
+                    # Write current PID to lockfile
+                    lock_file.write(str(os.getpid()))
+                    lock_file.flush()
+
+                    log.info(f'Acquired video processing lock for {operation}: {self.lockfile} (PID: {os.getpid()})')
+                    break
+                except IOError:
+                    # Lock is held by another process
+                    elapsed = time.time() - start_time
+                    if elapsed >= self.lockfile_timeout:
+                        error_msg = (
+                            f'Failed to acquire video processing lock for {operation} after {elapsed:.1f}s '
+                            f'(timeout: {self.lockfile_timeout}s). '
+                            f'Another ytffmpeg process may be stuck or still running. '
+                            f'Check lockfile: {self.lockfile}'
+                        )
+                        log.error(error_msg)
+
+                        # Send ERROR notification
+                        try:
+                            from ytffmpeg.notify import send_notification
+                            send_notification(
+                                'ERROR',
+                                f'ytffmpeg {operation} lock timeout',
+                                error_msg
+                            )
+                        except Exception as notify_error:
+                            log.warning(f'Failed to send notification: {notify_error}')
+
+                        raise RuntimeError(error_msg)
+
+                    # Wait 1 second + random 0.1-1.0s to mitigate race conditions
+                    wait_time = 1.0 + random.uniform(0.1, 1.0)
+                    log.warning(
+                        f'Video processing lock for {operation} is held by another process. '
+                        f'Waiting {wait_time:.2f}s... (elapsed: {elapsed:.1f}s/{self.lockfile_timeout}s)'
+                    )
+                    time.sleep(wait_time)
+
+            # Yield control to caller (lock is held)
+            yield
+
+        finally:
+            # Always release lock and close file
+            if lock_file:
+                if lock_acquired:
+                    try:
+                        fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+                        log.info(f'Released video processing lock for {operation}: {self.lockfile}')
+                    except Exception as e:
+                        log.warning(f'Error releasing video processing lock: {e}')
 
                 try:
                     lock_file.close()

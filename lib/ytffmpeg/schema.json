@@ -174,6 +174,20 @@
               "description": "Google API key for thumbnail generation service"
             }
           }
+        },
+        "lockfile": {
+          "$id": "#/ytffmpeg/lockfile",
+          "description": "Path to the lockfile for video processing operations (refresh and build)",
+          "type": "string",
+          "default": "~/.ytffmpeg.lock",
+          "examples": ["~/.ytffmpeg.lock", "/tmp/ytffmpeg.lock", ".ytffmpeg.lock"]
+        },
+        "lockfile_timeout": {
+          "$id": "#/ytffmpeg/lockfile_timeout",
+          "description": "Timeout in seconds for acquiring the lockfile (default: 1 hour)",
+          "type": "number",
+          "default": 3600,
+          "minimum": 1
         }
       }
     },

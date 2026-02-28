@@ -188,136 +188,137 @@ class BuildCommand(BaseCommand):
         If a resource video was provided to build, only build that one.
 
         '''
-        now = time.time()
-        if 'resource' in self.config['ytffmpeg']:
-            videos = list( filter(lambda x: x['output'] == self.config['ytffmpeg']['resource'], self.config['videos']) ) or []
-        else:
-            videos = self.config['videos']
-        while videos:
-            video_opts = videos.pop(0)
-            final_cmd = [os.getenv('FFMPEG_BIN', 'ffmpeg'), '-hide_banner', '-noautorotate']
-            assert 'input' in video_opts, 'No input specified for video!'
-            assert 'output' in video_opts, 'No output specified for video!'
-            assert isinstance(video_opts['input'], list), 'Input must be an array!'
-            vidnow = time.time()
-            output = video_opts["output"]
-            if output is None:
-                log.warning(f'Skipping vid because output is set to None.')
-                continue
-            attributes = video_opts.get('attributes', [])
-            log.info(f'Processing video: \x1b[1m{output}\x1b[0m')
-            self._preBuildHooks(video_opts)
-
-            # Process ffmpeg input/output options.
-            ## Append the `-i` arguments accordingly.
-            for input_video in video_opts['input']:
-                final_cmd.extend(self.processInput(input_video))
-            # With the pre-hook, this should just execute now.
-            if os.path.exists('thumbnail.png'):
-                final_cmd.append('-i')
-                final_cmd.append('thumbnail.png')
-            # Process a filter_complex if we have one.
-            if 'filter_complex' in video_opts:
-                filter_complex = f'build/{self.filename(output)}.filter_complex'
-                self.processFilterComplex(filter_complex, video_opts['filter_complex'])
-                final_cmd.append('-/filter_complex')
-                final_cmd.append(filter_complex)
-            # Strip previous metadata.
-            final_cmd.append('-map_metadata')
-            final_cmd.append('-1')
-            language = video_opts.get('language', 'en')
-
-            # Attach current required metadata.
-            if 'metadata' in video_opts:
-                for name, value in video_opts['metadata'].items():
-                    final_cmd.append('-metadata')
-                    final_cmd.append(f'{name}={value}')
-            # If there's custom mapping involved, ensure that is handled as well.
-            if 'no-video' not in attributes:
-                final_cmd.append('-map')
-                final_cmd.append(video_opts.get('map', {}).get('video', '[video]'))
-            if 'no-audio' not in attributes:
-                final_cmd.append('-map')
-                final_cmd.append(video_opts.get('map', {}).get('audio', '[audio]'))
-            if 'subs' in attributes:
-                if 'languages' in video_opts:
-                    # If you set languages and subs, then we assume you know you need to set
-                    # map to each of the language inputs you want to include as well.
-                    for ilang in video_opts['languages']:
-                        lang, i = ilang.split(':')
-                        final_cmd.append('-map')
-                        final_cmd.append(video_opts['map'][lang])
-                        final_cmd.append(f'-metadata:s:s:{i}')
-                        final_cmd.append(f'language={lang}')
-                else:
-                    final_cmd.append('-map')
-                    final_cmd.append(video_opts.get('map', {}).get('subs', '[subs]'))
-                    final_cmd.append('-metadata:s:s')
-                    final_cmd.append(f'language=eng')
-
-            if 'vsync' in attributes:
-                final_cmd.append('-fps_mode')
-                final_cmd.append('vfs')
-            if 'no-video' in attributes:
-                final_cmd.append('-vn')
+        with self.video_processing_lock('build'):
+            now = time.time()
+            if 'resource' in self.config['ytffmpeg']:
+                videos = list( filter(lambda x: x['output'] == self.config['ytffmpeg']['resource'], self.config['videos']) ) or []
             else:
-                final_cmd.append('-c:v')
-                final_cmd.append(video_opts.get('codecs', {}).get('video', 'libx265'))
-                final_cmd.append('-tag:v')
-                final_cmd.append('hvc1')
-
-                final_cmd.append('-pix_fmt')
-                final_cmd.append('yuv444p')
-
-                final_cmd.append('-crf')
-                final_cmd.append('28')
-
-                final_cmd.append('-metadata:s:v')
-                final_cmd.append(f'language={language}')
-
-            if 'no-audio' in attributes:
-                final_cmd.append('-an')
-            else:
-                final_cmd.append('-c:a')
-                final_cmd.append(video_opts.get('codecs', {}).get('audio', 'aac'))
-                final_cmd.append('-metadata:s:a')
-                final_cmd.append(f'language={language}')
-            if 'subs' in attributes:
-                final_cmd.append('-c:s')
-                final_cmd.append('mov_text')
-
-            if 'movflags' in video_opts:
-                final_cmd.append('-movflags')
-                final_cmd.append(video_opts['movflags'])
-
-            # With the pre-hook, this should just execute now.
-            if os.path.exists('thumbnail.png'):
-                i = video_opts['input'].index({'i': 'thumbnail.png'})
-                final_cmd.append(f'-disposition:v:{i}')
-                final_cmd.append('attached_pic')
-
-            # Attach the output file.
-            final_cmd.append('-y')
-            final_cmd.append(video_opts['output'])
-            log.info(f'Execute: \x1b[34m{" ".join(final_cmd)}\x1b[0m')
-            if os.path.exists(video_opts['output']):
-                if self.isOverwrite():
-                    log.info(f'Overwriting existing \x1b[1m{output}\x1b[0m!')
-                else:
-                    log.info(f'File \x1b[1m{output}\x1b[0m already exists!')
+                videos = self.config['videos']
+            while videos:
+                video_opts = videos.pop(0)
+                final_cmd = [os.getenv('FFMPEG_BIN', 'ffmpeg'), '-hide_banner', '-noautorotate']
+                assert 'input' in video_opts, 'No input specified for video!'
+                assert 'output' in video_opts, 'No output specified for video!'
+                assert isinstance(video_opts['input'], list), 'Input must be an array!'
+                vidnow = time.time()
+                output = video_opts["output"]
+                if output is None:
+                    log.warning(f'Skipping vid because output is set to None.')
                     continue
-            subprocess.run(final_cmd, shell=False)
-            vidthen = time.time()
-            if not self.config['ytffmpeg'].get('autoplay', True):
-                log.info(f'Done processing \x1b[1m{output}\x1b[0m in {round(vidthen-vidnow,4)} seconds!')
-                continue
-            log.info(f'Done processing \x1b[1m{output}\x1b[0m in {round(vidthen-vidnow,4)} seconds! Now playing...')
-            media_player = self.config['ytffmpeg'].get('media_player', 'mpv')
-            subprocess.run([media_player, output], shell=False)
-        os.system('stty echo -brkint -imaxbel icanon iexten icrnl')
-        then = time.time()
-        log.info(f'Completed all media in \x1b[4m{round(then-now, 2)}\x1b[0m seconds!')
-        return 0
+                attributes = video_opts.get('attributes', [])
+                log.info(f'Processing video: \x1b[1m{output}\x1b[0m')
+                self._preBuildHooks(video_opts)
+
+                # Process ffmpeg input/output options.
+                ## Append the `-i` arguments accordingly.
+                for input_video in video_opts['input']:
+                    final_cmd.extend(self.processInput(input_video))
+                # With the pre-hook, this should just execute now.
+                if os.path.exists('thumbnail.png'):
+                    final_cmd.append('-i')
+                    final_cmd.append('thumbnail.png')
+                # Process a filter_complex if we have one.
+                if 'filter_complex' in video_opts:
+                    filter_complex = f'build/{self.filename(output)}.filter_complex'
+                    self.processFilterComplex(filter_complex, video_opts['filter_complex'])
+                    final_cmd.append('-/filter_complex')
+                    final_cmd.append(filter_complex)
+                # Strip previous metadata.
+                final_cmd.append('-map_metadata')
+                final_cmd.append('-1')
+                language = video_opts.get('language', 'en')
+
+                # Attach current required metadata.
+                if 'metadata' in video_opts:
+                    for name, value in video_opts['metadata'].items():
+                        final_cmd.append('-metadata')
+                        final_cmd.append(f'{name}={value}')
+                # If there's custom mapping involved, ensure that is handled as well.
+                if 'no-video' not in attributes:
+                    final_cmd.append('-map')
+                    final_cmd.append(video_opts.get('map', {}).get('video', '[video]'))
+                if 'no-audio' not in attributes:
+                    final_cmd.append('-map')
+                    final_cmd.append(video_opts.get('map', {}).get('audio', '[audio]'))
+                if 'subs' in attributes:
+                    if 'languages' in video_opts:
+                        # If you set languages and subs, then we assume you know you need to set
+                        # map to each of the language inputs you want to include as well.
+                        for ilang in video_opts['languages']:
+                            lang, i = ilang.split(':')
+                            final_cmd.append('-map')
+                            final_cmd.append(video_opts['map'][lang])
+                            final_cmd.append(f'-metadata:s:s:{i}')
+                            final_cmd.append(f'language={lang}')
+                    else:
+                        final_cmd.append('-map')
+                        final_cmd.append(video_opts.get('map', {}).get('subs', '[subs]'))
+                        final_cmd.append('-metadata:s:s')
+                        final_cmd.append(f'language=eng')
+
+                if 'vsync' in attributes:
+                    final_cmd.append('-fps_mode')
+                    final_cmd.append('vfs')
+                if 'no-video' in attributes:
+                    final_cmd.append('-vn')
+                else:
+                    final_cmd.append('-c:v')
+                    final_cmd.append(video_opts.get('codecs', {}).get('video', 'libx265'))
+                    final_cmd.append('-tag:v')
+                    final_cmd.append('hvc1')
+
+                    final_cmd.append('-pix_fmt')
+                    final_cmd.append('yuv444p')
+
+                    final_cmd.append('-crf')
+                    final_cmd.append('28')
+
+                    final_cmd.append('-metadata:s:v')
+                    final_cmd.append(f'language={language}')
+
+                if 'no-audio' in attributes:
+                    final_cmd.append('-an')
+                else:
+                    final_cmd.append('-c:a')
+                    final_cmd.append(video_opts.get('codecs', {}).get('audio', 'aac'))
+                    final_cmd.append('-metadata:s:a')
+                    final_cmd.append(f'language={language}')
+                if 'subs' in attributes:
+                    final_cmd.append('-c:s')
+                    final_cmd.append('mov_text')
+
+                if 'movflags' in video_opts:
+                    final_cmd.append('-movflags')
+                    final_cmd.append(video_opts['movflags'])
+
+                # With the pre-hook, this should just execute now.
+                if os.path.exists('thumbnail.png'):
+                    i = video_opts['input'].index({'i': 'thumbnail.png'})
+                    final_cmd.append(f'-disposition:v:{i}')
+                    final_cmd.append('attached_pic')
+
+                # Attach the output file.
+                final_cmd.append('-y')
+                final_cmd.append(video_opts['output'])
+                log.info(f'Execute: \x1b[34m{" ".join(final_cmd)}\x1b[0m')
+                if os.path.exists(video_opts['output']):
+                    if self.isOverwrite():
+                        log.info(f'Overwriting existing \x1b[1m{output}\x1b[0m!')
+                    else:
+                        log.info(f'File \x1b[1m{output}\x1b[0m already exists!')
+                        continue
+                subprocess.run(final_cmd, shell=False)
+                vidthen = time.time()
+                if not self.config['ytffmpeg'].get('autoplay', True):
+                    log.info(f'Done processing \x1b[1m{output}\x1b[0m in {round(vidthen-vidnow,4)} seconds!')
+                    continue
+                log.info(f'Done processing \x1b[1m{output}\x1b[0m in {round(vidthen-vidnow,4)} seconds! Now playing...')
+                media_player = self.config['ytffmpeg'].get('media_player', 'mpv')
+                subprocess.run([media_player, output], shell=False)
+            os.system('stty echo -brkint -imaxbel icanon iexten icrnl')
+            then = time.time()
+            log.info(f'Completed all media in \x1b[4m{round(then-now, 2)}\x1b[0m seconds!')
+            return 0
 
 def builder(config: dict) -> int:
     '''

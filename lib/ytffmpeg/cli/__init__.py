@@ -5,7 +5,8 @@ This module will be responsible for parsing command line arguments and
 calling the appropriate sub-modules to perform the actions requested.
 '''
 
-import os
+import os, sys
+from signal import signal, SIGINT
 from multiprocessing import cpu_count
 from argparse import ArgumentParser, RawTextHelpFormatter
 from kizano import getLogger
@@ -18,6 +19,9 @@ import ytffmpeg.cli.build as build
 import ytffmpeg.cli.refresh as refresh
 import ytffmpeg.cli.publish as publish
 
+def interrupt(signal, frame):
+    log.error('Caught ^C interrupt, exiting...')
+    sys.exit(signal)
 
 class Cli(object):
     '''
@@ -199,6 +203,7 @@ class Cli(object):
             log.error('Invalid action: %s', self.config['action'])
             return 1
         log.info(f'Executing action: {action} with config: {self.config}')
+        signal(SIGINT, interrupt)
         return action(self.config)
 
 __all__ = ['base', 'new', 'build', 'refresh', 'publish', 'Cli']
