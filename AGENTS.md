@@ -67,7 +67,7 @@ ytffmpeg serve                  # Start web interface (default: http://localhost
 
 - Browser-based UI for video upload and project management
 - CherryPy-based HTTP server with REST API endpoints
-- Background processing using threading for non-blocking uploads
+- Background processing using multiprocessing for non-blocking uploads
 - Static file serving for HTML/CSS/JS assets
 - Key endpoints:
   - `GET /` - Video upload form

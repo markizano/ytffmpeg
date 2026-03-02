@@ -154,7 +154,7 @@ When you upload a video:
 
 1. **Upload**: Files are uploaded to a temporary directory
 2. **Immediate Response**: Server returns 200 OK immediately
-3. **Background Processing**: A background thread runs the ytffmpeg pipeline:
+3. **Background Processing**: A background process runs the ytffmpeg pipeline:
    - Creates project structure (`ytffmpeg new`)
    - Moves files to resources directory
    - Generates subtitles (`ytffmpeg refresh`)

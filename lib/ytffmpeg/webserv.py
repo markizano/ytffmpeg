@@ -13,7 +13,7 @@ import os
 import json
 import shutil
 import tempfile
-import threading
+import multiprocessing
 from importlib import resources
 from typing import Dict, List, Optional
 
@@ -229,12 +229,12 @@ class ApiHandlers:
                     log.info(f'Saved uploaded file: {filename} ({os.path.getsize(temp_path)} bytes)')
 
                 # Start background processing
-                thread = threading.Thread(
+                process = multiprocessing.Process(
                     target=process_video_pipeline,
                     args=(self.workspace, project_name, project_config, metadata, saved_files, self.config),
                     daemon=True
                 )
-                thread.start()
+                process.start()
 
                 log.info(f'Started background processing for project: {project_name}')
 

@@ -70,13 +70,14 @@
                         navigator.clipboard.writeText(vidcfg.metadata.description).then((value) => {
                             console.log('Copied!');
                             window.setTimeout(() => {
-                                confirm.fadeOut(1000, function () { $(this).detach(); })
-                            }, 3000);
+                                confirm.fadeOut(800, function () { $(this).detach(); })
+                            }, 2000);
                         });
                     });
                 const download = Elm('a')
                     .attr('href', `/api/resource/${urlName}/output`)
                     .attr('target', '_blank')
+                    .addClass('download-link')
                     .text(vidcfg.output);
 
                 detail

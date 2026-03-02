@@ -102,8 +102,8 @@ class TestWebServerClasses(unittest.TestCase):
         '''Verify PageHandlers can be instantiated'''
         from ytffmpeg.webserv import PageHandlers
 
-        config = {'ytffmpeg': {}}
-        handler = PageHandlers('/tmp/workspace', config, '/tmp/webroot')
+        config = {'ytffmpeg': {'workspace': '/tmp/workspace', 'webroot': '/tmp/webroot'}}
+        handler = PageHandlers(config)
 
         self.assertEqual(handler.workspace, '/tmp/workspace')
         self.assertEqual(handler.config, config)
@@ -113,8 +113,8 @@ class TestWebServerClasses(unittest.TestCase):
         '''Verify ApiHandlers can be instantiated'''
         from ytffmpeg.webserv import ApiHandlers
 
-        config = {'ytffmpeg': {}}
-        handler = ApiHandlers('/tmp/workspace', config)
+        config = {'ytffmpeg': {'workspace': '/tmp/workspace'}}
+        handler = ApiHandlers(config)
 
         self.assertEqual(handler.workspace, '/tmp/workspace')
         self.assertEqual(handler.config, config)
@@ -210,13 +210,6 @@ class TestDocumentation(unittest.TestCase):
         '''Verify WEBSERVER.md documentation exists'''
         doc_path = os.path.join(os.path.dirname(__file__), '..', '..', 'doc', 'WEBSERVER.md')
         self.assertTrue(os.path.exists(doc_path))
-
-    def test_implementation_summary_exists(self):
-        '''Verify IMPLEMENTATION_SUMMARY.md exists'''
-        summary_path = os.path.join(
-            os.path.dirname(__file__), '..', '..', 'IMPLEMENTATION_SUMMARY.md'
-        )
-        self.assertTrue(os.path.exists(summary_path))
 
     def test_claude_md_updated(self):
         '''Verify CLAUDE.md mentions the serve command'''

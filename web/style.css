@@ -265,10 +265,38 @@ button:disabled {
 
 /* Project Cards */
 #projects-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 1.5rem;
     margin-top: 1.5rem;
+}
+
+/* Responsive grid behavior */
+@media (min-width: 768px) {
+    #projects-container {
+        justify-content: flex-start;
+    }
+
+    .project-card {
+        flex: 0 1 calc(50% - 0.75rem);
+        min-width: 300px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .project-card {
+        flex: 0 1 calc(33.333% - 1rem);
+    }
+}
+
+@media (max-width: 767px) {
+    #projects-container {
+        flex-direction: column;
+    }
+
+    .project-card {
+        flex: 1 1 100%;
+    }
 }
 
 .project-card {
@@ -289,59 +317,11 @@ button:disabled {
     margin-bottom: 0.75rem;
 }
 
-.project-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    color: var(--secondary-color);
-    font-size: 0.875rem;
-}
-
-.project-status {
-    font-weight: 500;
-    color: var(--success-color);
-}
-
 .project-actions {
     margin-top: 1rem;
 }
 
 /* Project Detail */
-.project-info {
-    background-color: var(--bg-color);
-    padding: 1.5rem;
-    border-radius: 0.375rem;
-    margin-bottom: 1.5rem;
-}
-
-.project-info p {
-    margin-bottom: 0.5rem;
-}
-
-pre {
-    background-color: var(--bg-color);
-    padding: 1rem;
-    border-radius: 0.375rem;
-    overflow-x: auto;
-    font-size: 0.875rem;
-}
-
-.file-list {
-    list-style: none;
-    background-color: var(--bg-color);
-    padding: 1rem;
-    border-radius: 0.375rem;
-}
-
-.file-list li {
-    padding: 0.5rem;
-    border-bottom: 1px solid var(--border-color);
-}
-
-.file-list li:last-child {
-    border-bottom: none;
-}
 
 img.thumbnail {
     max-width: 40%;
@@ -353,12 +333,36 @@ div.description {
     font-size: 110%;
 }
 
+a.download-link {
+    display: block;
+    font-size: 120%;
+    font-weight: 500;
+    margin: 1rem 0;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a.download-link:hover {
+    text-decoration: underline;
+    color: var(--primary-hover);
+}
+
 div.notif {
-    border: 0.3rem solid #224f08;
-    background-color: #76de3960;
-    border-radius: 1rem;
-    padding: 1rem;
-    margin: 2rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid var(--success-color);
+    background-color: rgba(16, 185, 129, 0.95);
+    color: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    font-weight: 500;
+    font-size: 1.1rem;
+    z-index: 1000;
+    min-width: 300px;
+    text-align: center;
 }
 
 /* Utility Classes */
