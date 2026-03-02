@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ytffmpeg - Project Details</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <nav>
+        <h1>ytffmpeg</h1>
+        <ul>
+            <li><a href="/">Upload Video</a></li>
+            <li><a href="/videos">Projects</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div id="project-detail">
+            <p class="loading">Loading project details...</p>
+        </div>
+    </main>
+
+    <script>
+        $(document).ready(function() {
+            const Elm = (e) => $(document.createElement(e));
+            function loadProjectDetail(name) {
+                $.ajax({
+                    url: '/api/project/' + encodeURIComponent(name),
+                    type: 'GET',
+                    success: function(response) {
+                        displayProjectDetail(response);
+                    },
+                    error: function(xhr) {
+                        $('#project-detail').html(
+                            '<p class="error">Failed to load project: ' +
+                            (xhr.responseJSON?.error || 'Unknown error') +
+                            '</p>'
+                        );
+                    }
+                });
+            }
+
+            function displayProjectDetail(project) {
+                const detail = $('#project-detail');
+                detail.empty();
+                const vidcfg = project.config.videos.shift();
+                console.log('Got project details: ', vidcfg);
+
+                const urlName = encodeURIComponent(project.name);
+                const header = Elm('h2').text(vidcfg.metadata.title);
+                const thumbUrl = `/api/resource/${urlName}/thumbnail`;
+                const thumbnail = Elm('img')
+                    .attr('src', thumbUrl)
+                    .attr('alt', 'Thumbnail')
+                    .addClass('thumbnail')
+                    .click((e) => {
+                        window.location = thumbUrl;
+                    });
+                const confirm = Elm('div')
+                    .addClass('notif')
+                    .text('Description copied to clipboard!');
+                const description = Elm('div')
+                    .text(vidcfg.metadata.description)
+                    .addClass('description')
+                    .click((e) => {
+                        e.preventDefault();
+                        detail.append(confirm);
+                        navigator.clipboard.writeText(vidcfg.metadata.description).then((value) => {
+                            console.log('Copied!');
+                            window.setTimeout(() => {
+                                confirm.fadeOut(1000, function () { $(this).detach(); })
+                            }, 3000);
+                        });
+                    });
+                const download = Elm('a')
+                    .attr('href', `/api/resource/${urlName}/output`)
+                    .attr('target', '_blank')
+                    .text(vidcfg.output);
+
+                detail
+                    .append(header)
+                    .append(thumbnail)
+                    .append(download)
+                    .append(description);
+                console.log('Detail populated: ', detail);
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectName = urlParams.get('project');
+
+            if (!projectName) {
+                $('#project-detail').html('<p class="error">No project specified</p>');
+                return;
+            }
+
+            loadProjectDetail(projectName);
+        });
+    </script>
+</body>
+</html>

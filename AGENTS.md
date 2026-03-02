@@ -56,11 +56,29 @@ ytffmpeg refresh                # Process MP4s, convert to MKV, generate subtitl
 ytffmpeg build [output.mp4]     # Build final video from configuration
 ytffmpeg gensubs video.mkv      # Generate subtitles for specific file
 ytffmpeg publish                # Publish to configured endpoints (SFTP)
+ytffmpeg serve                  # Start web interface (default: http://localhost:9091)
 ```
 
 ## Architecture
 
 ### Core Components
+
+**Web Interface** (`lib/ytffmpeg/webserv.py`, `web/`)
+
+- Browser-based UI for video upload and project management
+- CherryPy-based HTTP server with REST API endpoints
+- Background processing using threading for non-blocking uploads
+- Static file serving for HTML/CSS/JS assets
+- Key endpoints:
+  - `GET /` - Video upload form
+  - `GET /videos` - Projects list page
+  - `GET /api/projects` - JSON list of all projects
+  - `POST /api/process` - Upload and process videos
+- Configuration options:
+  - `--workspace`: Directory for project storage (default: `~/ytffmpeg-projects`)
+  - `--http-port`: Web server port (default: 9091)
+  - `--webroot`: Custom web assets directory
+- See `doc/WEBSERVER.md` for detailed documentation
 
 **CLI Module** (`lib/ytffmpeg/cli/`)
 

@@ -42,3 +42,15 @@ ytffmpeg = "lib/ytffmpeg"
 
 [tool.setuptools.packages.find]
 where = ["lib"]
+
+[tool.setuptools.package-data]
+ytffmpeg = [
+    "schema.json"
+]
+
+[tool.setuptools.data-files]
+"share/ytffmpeg/web" = [
+    "web/*.html",
+    "web/*.css",
+    "web/*.js"
+]

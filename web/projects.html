@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ytffmpeg - Projects</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <nav>
+        <h1>ytffmpeg</h1>
+        <ul>
+            <li><a href="/">Upload Video</a></li>
+            <li><a href="/videos" class="active">Projects</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2>Video Projects</h2>
+
+        <div id="projects-container">
+            <p class="loading">Loading projects...</p>
+        </div>
+
+        <!-- Project Template (hidden, cloned by JavaScript) -->
+        <template id="project-template">
+            <div class="project-card">
+                <h3 class="project-name"></h3>
+                <div class="project-actions">
+                    <a href="#" class="btn-primary view-project">View Details</a>
+                </div>
+            </div>
+        </template>
+    </main>
+
+    <script src="/static/app.js"></script>
+    <script>
+        $(document).ready(function() {
+            function loadProjects() {
+                $.ajax({
+                url: '/api/projects',
+                type: 'GET',
+                success: function(response) {
+                    displayProjects(response.projects);
+                },
+                error: function(xhr) {
+                    $('#projects-container').html(
+                    '<p class="error">Failed to load projects: ' +
+                    (xhr.responseJSON?.error || 'Unknown error') +
+                    '</p>'
+                    );
+                }
+                });
+            }
+
+            function displayProjects(projects) {
+                const container = $('#projects-container');
+                container.empty();
+
+                if (projects.length === 0) {
+                container.html('<p class="info">No projects found. Upload a video to get started!</p>');
+                return;
+                }
+
+                projects.forEach(function(project) {
+                const template = $('#project-template').prop('content');
+                const card = $(template).clone();
+
+                card.find('.project-name').text(project);
+                card.find('.view-project').attr('href', '/video?project=' + encodeURIComponent(project));
+
+                container.append(card);
+                });
+            }
+
+            loadProjects();
+        });
+    </script>
+</body>
+</html>

@@ -12,4 +12,5 @@ sys.path.insert(0, os.path.realpath(os.path.join(os.path.dirname(__file__), '..'
 from ytffmpegunit.build import *
 from ytffmpegunit.config import *
 from ytffmpegunit.gpu_lock import *
+from ytffmpegunit.webserv import *
 from ytffmpegfunc.vertical import *

@@ -18,6 +18,7 @@ import ytffmpeg.cli.new as new
 import ytffmpeg.cli.build as build
 import ytffmpeg.cli.refresh as refresh
 import ytffmpeg.cli.publish as publish
+import ytffmpeg.webserv as webserv
 
 def interrupt(signal, frame):
     log.error('Caught ^C interrupt, exiting...')
@@ -32,7 +33,8 @@ class Cli(object):
         Action.NEW: new.gennew,
         Action.BUILD: build.builder,
         Action.REFRESH: refresh.refresher,
-        Action.PUBLISH: publish.publisher
+        Action.PUBLISH: publish.publisher,
+        Action.SERVE: webserv.serve
     }
 
     def __init__(self, config: dict):
@@ -140,6 +142,31 @@ class Cli(object):
         )
 
         options.add_argument(
+            '--workspace',
+            action='store',
+            dest='workspace',
+            help='Valid for the `serve` action. Workspace directory for video projects.',
+            default=None
+        )
+
+        options.add_argument(
+            '--http-port',
+            action='store',
+            dest='http_port',
+            help='Valid for the `serve` action. HTTP port for web server (default: 9091).',
+            type=int,
+            default=None
+        )
+
+        options.add_argument(
+            '--webroot',
+            action='store',
+            dest='webroot',
+            help='Valid for the `serve` action. Directory containing web assets.',
+            default=None
+        )
+
+        options.add_argument(
             '--log-level', '-l',
             action='store',
             dest='log_level',
@@ -183,6 +210,12 @@ class Cli(object):
             del opts.silence_duration # type: ignore
         if opts.silence_threshold == None:
             del opts.silence_threshold # type: ignore
+        if opts.workspace == None:
+            del opts.workspace # type: ignore
+        if opts.http_port == None:
+            del opts.http_port # type: ignore
+        if opts.webroot == None:
+            del opts.webroot # type: ignore
         self.config['ytffmpeg'].update(vars(opts))
         # The following "defaults" are set **after** everything above because if a default is
         # defined in the ArgumentParser(), it does not allow ~/.config/ytffmpeg/config.yml
@@ -206,4 +239,4 @@ class Cli(object):
         signal(SIGINT, interrupt)
         return action(self.config)
 
-__all__ = ['base', 'new', 'build', 'refresh', 'publish', 'Cli']
+__all__ = ['base', 'new', 'build', 'refresh', 'publish', 'webserv', 'Cli']

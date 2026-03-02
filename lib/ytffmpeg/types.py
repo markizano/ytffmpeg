@@ -16,6 +16,7 @@ class Action(StrEnum):
     SUBS = 'gensubs'
     LOADMOD = 'load-module'
     PUBLISH = 'publish'
+    SERVE = 'serve'
 
 class WhisperTask(StrEnum):
     TRANSCRIBE = 'transcribe'
