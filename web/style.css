@@ -289,15 +289,13 @@ button:disabled {
     margin-bottom: 0.75rem;
 }
 
-.project-actions {
-    margin-top: 1rem;
-}
-
 /* Project Detail */
 
 img.thumbnail {
-    max-width: 40%;
+    max-width: 50vw;
+    max-height: 70vh;
     display: block;
+    object-fit: contain;
 }
 
 div.description {

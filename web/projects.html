@@ -27,9 +27,6 @@
         <template id="project-template">
             <div class="project-card">
                 <h3 class="project-name"></h3>
-                <div class="project-actions">
-                    <a href="#" class="btn-primary view-project">View Details</a>
-                </div>
             </div>
         </template>
     </main>
@@ -66,10 +63,10 @@
                 projects.forEach(function(project) {
                 const template = $('#project-template').prop('content');
                 const card = $(template).clone();
-
+                card.find('.project-card').click(() => {
+                    window.location = `/video?project=${encodeURIComponent(project)}`;
+                });
                 card.find('.project-name').text(project);
-                card.find('.view-project').attr('href', '/video?project=' + encodeURIComponent(project));
-
                 container.append(card);
                 });
             }
