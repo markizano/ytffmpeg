@@ -207,6 +207,8 @@ Tests in `tests/ytffmpegunit/gpu_lock.py` demonstrate:
 **Tests**: `tests/`
 **Documentation**: `doc/` (mostly reference to README.md)
 **Examples**: `examples/` (sample ytffmpeg.yml files for different use cases)
+**Contrib**: `contrib/` (third-party integrations and deployment scripts)
+  - `contrib/sysvinit/` - SysV init scripts for Devuan/non-systemd systems
 **System Config**: `/etc/ytffmpeg/config.yml` (optional)
 **User Config**: `~/.config/ytffmpeg/config.yml` (optional)
 
