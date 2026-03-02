@@ -71,7 +71,6 @@ nav a.active {
 
 /* Main Content */
 main {
-    max-width: 900px;
     margin: 2rem auto;
     padding: 0 2rem;
 }
@@ -271,34 +270,6 @@ button:disabled {
     margin-top: 1.5rem;
 }
 
-/* Responsive grid behavior */
-@media (min-width: 768px) {
-    #projects-container {
-        justify-content: flex-start;
-    }
-
-    .project-card {
-        flex: 0 1 calc(50% - 0.75rem);
-        min-width: 300px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .project-card {
-        flex: 0 1 calc(33.333% - 1rem);
-    }
-}
-
-@media (max-width: 767px) {
-    #projects-container {
-        flex-direction: column;
-    }
-
-    .project-card {
-        flex: 1 1 100%;
-    }
-}
-
 .project-card {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -306,6 +277,7 @@ button:disabled {
     padding: 1.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.2s;
+    flex: 0 1 calc(18% - 1rem);
 }
 
 .project-card:hover {
