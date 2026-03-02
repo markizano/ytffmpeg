@@ -358,62 +358,42 @@ class BaseCommand(object):
         whisper_cmd.append(video_path)
 
         log.info(f"Running whisper command: {' '.join(whisper_cmd)}")
-
-        # Determine if we need GPU lock (only for CUDA devices)
-        device = self.config['ytffmpeg'].get('device', 'cuda')
-        use_gpu_lock = device in ['cuda', 'auto']
-
         try:
-            # Acquire GPU lock if using GPU to prevent OOM errors from concurrent Whisper instances
-            if use_gpu_lock:
-                log.info('Acquiring GPU lock to prevent concurrent Whisper instances...')
-                with self.gpu_lock():
-                    return self._run_whisper(whisper_cmd, video_path, srt_path)
-            else:
-                # CPU mode - no lock needed
-                return self._run_whisper(whisper_cmd, video_path, srt_path)
+            now = time.time()
+            # Use Popen to stream output to console in real-time
+            process = subprocess.Popen(whisper_cmd, text=True)
+            returncode = process.wait()
+            then = time.time()
 
+            if returncode != 0:
+                log.error(f"Whisper failed with exit code {returncode}")
+                return ''
+
+            log.info(f"Whisper completed in {round(then-now, 4)} seconds!")
+            log.info(f'Now removing excess VTT, JSON, and TSV files...')
+            for suffix in ['json', 'vtt', 'tsv']:
+                extra = os.path.join('build', f'{self.filename(video_path)}.{suffix}')
+                if os.path.exists(extra):
+                    os.unlink(extra)
+
+            # Whisper will create the SRT file with the same name as the video but with .srt extension
+            # We need to rename it to match our expected naming convention
+            expected_whisper_srt = os.path.join('build', f"{self.filename(video_path)}.srt")
+            if os.path.exists(expected_whisper_srt) and expected_whisper_srt != srt_path:
+                os.rename(expected_whisper_srt, srt_path)
+                log.info(f"Renamed {expected_whisper_srt} to {srt_path}")
+
+            self.correct_subtitles(srt_path)
+            txt_path = os.path.join('build', f"{self.filename(video_path)}.txt")
+            self.correct_subtitles(txt_path)
+
+            return srt_path
         except FileNotFoundError:
             log.error("Whisper command not found. Please ensure whisper is installed and available in PATH.")
             return ''
         except Exception as e:
             log.error(f"Whisper failed with error: {e}")
             return ''
-
-    def _run_whisper(self, whisper_cmd: list, video_path: str, srt_path: str) -> str:
-        '''
-        Internal method to run Whisper and process the output.
-        Separated from get_subtitles() to allow GPU locking around the execution.
-        '''
-        now = time.time()
-        # Use Popen to stream output to console in real-time
-        process = subprocess.Popen(whisper_cmd, text=True)
-        returncode = process.wait()
-        then = time.time()
-
-        if returncode != 0:
-            log.error(f"Whisper failed with exit code {returncode}")
-            return ''
-
-        log.info(f"Whisper completed in {round(then-now, 4)} seconds!")
-        log.info(f'Now removing excess VTT, JSON, and TSV files...')
-        for suffix in ['json', 'vtt', 'tsv']:
-            extra = os.path.join('build', f'{self.filename(video_path)}.{suffix}')
-            if os.path.exists(extra):
-                os.unlink(extra)
-
-        # Whisper will create the SRT file with the same name as the video but with .srt extension
-        # We need to rename it to match our expected naming convention
-        expected_whisper_srt = os.path.join('build', f"{self.filename(video_path)}.srt")
-        if os.path.exists(expected_whisper_srt) and expected_whisper_srt != srt_path:
-            os.rename(expected_whisper_srt, srt_path)
-            log.info(f"Renamed {expected_whisper_srt} to {srt_path}")
-
-        self.correct_subtitles(srt_path)
-        txt_path = os.path.join('build', f"{self.filename(video_path)}.txt")
-        self.correct_subtitles(txt_path)
-
-        return srt_path
 
     def correct_subtitles(self, srt_path: str) -> str:
         '''
