@@ -213,3 +213,4 @@ Tests in `tests/ytffmpegunit/gpu_lock.py` demonstrate:
 - Metadata preservation
 
 **Silence Detection**: When `cut_silence: true`, uses FFmpeg's silencedetect/silenceremove filters with configurable thresholds (`silence_threshold`, `silence_duration`, `silence_pad`).
+
