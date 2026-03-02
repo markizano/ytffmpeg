@@ -135,6 +135,7 @@ ytffmpeg refresh
 ```
 
 This will:
+
 - Generate English subtitles using Whisper
 - Automatically translate to Spanish, French, and German
 - Preserve timing information from the original subtitles
@@ -174,6 +175,7 @@ build/
 ### Supported Languages
 
 Any language pair supported by Argos Translate, including:
+
 - Spanish (es), French (fr), German (de), Portuguese (pt)
 - Italian (it), Russian (ru), Chinese (zh), Japanese (ja)
 - Arabic (ar), Hindi (hi), Korean (ko)
