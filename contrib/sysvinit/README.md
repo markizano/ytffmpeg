@@ -54,6 +54,7 @@ sudo nano /etc/default/ytffmpeg
 ```
 
 Available options:
+
 - `YTFFMPEG_USER` - User to run as (default: ytffmpeg)
 - `YTFFMPEG_GROUP` - Group to run as (default: ytffmpeg)
 - `YTFFMPEG_WORKSPACE` - Directory for video projects (default: /var/lib/ytffmpeg)
@@ -130,13 +131,13 @@ sudo journalctl -u ytffmpeg -f
 
 Once the service is running, access the web interface at:
 
-```
+```plain
 http://localhost:9091/
 ```
 
 Or from another machine (replace with server IP):
 
-```
+```plain
 http://192.168.1.100:9091/
 ```
 
@@ -145,12 +146,14 @@ http://192.168.1.100:9091/
 ### Service won't start
 
 Check permissions:
+
 ```bash
 ls -la /var/lib/ytffmpeg
 sudo -u ytffmpeg ytffmpeg serve  # Test as service user
 ```
 
 Check if port is available:
+
 ```bash
 sudo netstat -tulpn | grep 9091
 ```
@@ -158,6 +161,7 @@ sudo netstat -tulpn | grep 9091
 ### Permission denied errors
 
 Ensure the ytffmpeg user owns the workspace:
+
 ```bash
 sudo chown -R ytffmpeg:ytffmpeg /var/lib/ytffmpeg
 ```
@@ -165,12 +169,14 @@ sudo chown -R ytffmpeg:ytffmpeg /var/lib/ytffmpeg
 ### Command not found
 
 Verify ytffmpeg is installed and in PATH:
+
 ```bash
 which ytffmpeg
 sudo -u ytffmpeg which ytffmpeg
 ```
 
 If not found, create a symlink:
+
 ```bash
 sudo ln -s /usr/local/bin/ytffmpeg /usr/bin/ytffmpeg
 ```
@@ -178,6 +184,7 @@ sudo ln -s /usr/local/bin/ytffmpeg /usr/bin/ytffmpeg
 ### GPU access issues
 
 Add the ytffmpeg user to the video group for GPU access:
+
 ```bash
 sudo usermod -a -G video ytffmpeg
 ```
@@ -221,5 +228,6 @@ sudo rm -rf /var/lib/ytffmpeg
 ## Support
 
 For issues or questions:
-- GitHub Issues: https://github.com/markizano/ytffmpeg/issues
+
+- [GitHub Issues](https://github.com/markizano/ytffmpeg/issues)
 - Documentation: `ytffmpeg --help`
