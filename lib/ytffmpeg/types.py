@@ -1,6 +1,6 @@
-from typing import NamedTuple
+from enum import StrEnum
 
-class Devices(NamedTuple):
+class Devices(StrEnum):
     '''
     Poor man's enumeration() object for device types.
     '''
@@ -9,7 +9,7 @@ class Devices(NamedTuple):
     CUDA = 'cuda'
     AUTO = 'auto'
 
-class Action(NamedTuple):
+class Action(StrEnum):
     NEW = 'new'
     BUILD = 'build'
     REFRESH = 'refresh'
@@ -17,7 +17,7 @@ class Action(NamedTuple):
     LOADMOD = 'load-module'
     PUBLISH = 'publish'
 
-class WhisperTask(NamedTuple):
+class WhisperTask(StrEnum):
     TRANSCRIBE = 'transcribe'
     TRANSLATE = 'translate'
 
