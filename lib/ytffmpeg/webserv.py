@@ -19,10 +19,11 @@ from typing import Dict, List, Optional
 
 import cherrypy
 from kizano import getLogger
-from kizano.utils import dictmerge, read_yaml
+from kizano.utils import dictmerge, read_yaml, write_yaml
 
 log = getLogger(__name__)
 
+from ytffmpeg.notify import send_notification
 
 class PageHandlers:
     '''
@@ -330,9 +331,7 @@ def process_video_pipeline(workspace: str, project_name: str, project_config: di
         # Merge metadata into generated configuration
         config_path = os.path.join(project_path, 'ytffmpeg.yml')
         if os.path.exists(config_path):
-            with open(config_path, 'r') as f:
-                generated_config = yaml.safe_load(f)
-
+            generated_config = read_yaml(config_path)
             # Add metadata to first video if provided
             if metadata and generated_config.get('videos'):
                 if 'metadata' not in generated_config['videos'][0]:
@@ -344,9 +343,7 @@ def process_video_pipeline(workspace: str, project_name: str, project_config: di
                 generated_config = dictmerge(generated_config, {'videos': project_config['videos']})
 
             # Save updated configuration
-            with open(config_path, 'w') as f:
-                yaml.dump(generated_config, f, default_flow_style=False, sort_keys=False)
-
+            write_yaml(config_path, generated_config)
             log.info('Configuration updated with metadata and project settings')
 
         # Run 'build' command to create final video
@@ -358,7 +355,6 @@ def process_video_pipeline(workspace: str, project_name: str, project_config: di
 
         # Send success notification
         try:
-            from ytffmpeg.notify import send_notification
             send_notification(
                 'INFO',
                 f'ytffmpeg: {project_name} complete',
@@ -374,7 +370,6 @@ def process_video_pipeline(workspace: str, project_name: str, project_config: di
 
         # Send error notification
         try:
-            from ytffmpeg.notify import send_notification
             send_notification(
                 'ERROR',
                 f'ytffmpeg: {project_name} failed',
