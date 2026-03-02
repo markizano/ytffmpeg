@@ -57,85 +57,9 @@ class BaseCommand(object):
         self._gpu_vram_mb = None
         # Store lockfile path from configuration
         self.lockfile = os.path.expanduser(
-            self.config.get('ytffmpeg', {}).get('lockfile', '~/.ytffmpeg.lock')
+            self.config['ytffmpeg'].get('lockfile', '~/.ytffmpeg.lock')
         )
-        self.lockfile_timeout = self.config.get('ytffmpeg', {}).get('lockfile_timeout', 3600)
-
-    @contextmanager
-    def gpu_lock(self, max_wait_seconds: int = 3600):
-        '''
-        Context manager for acquiring an exclusive GPU lock.
-
-        Prevents multiple Whisper instances from running simultaneously and causing OOM errors.
-        Uses POSIX file locking (fcntl.flock) with retry logic and random delays to avoid race conditions.
-
-        Args:
-            max_wait_seconds: Maximum time to wait for lock (default: 1 hour)
-
-        Usage:
-            with self.gpu_lock():
-                # Run GPU-intensive operation
-                subprocess.run(['whisper', ...])
-        '''
-        # Determine lock file location
-        # Try ~/.cache/ytffmpeg first (user-writable, persistent)
-        # Fall back to /tmp if ~/.cache doesn't exist
-        cache_dir = os.path.expanduser('~/.cache/ytffmpeg')
-        if not os.path.exists(cache_dir):
-            try:
-                os.makedirs(cache_dir, mode=0o755, exist_ok=True)
-                lock_path = os.path.join(cache_dir, 'gpu.lock')
-            except (OSError, PermissionError):
-                # Fallback to /tmp
-                lock_path = '/tmp/ytffmpeg-gpu.lock'
-        else:
-            lock_path = os.path.join(cache_dir, 'gpu.lock')
-
-        lock_file = None
-        lock_acquired = False
-        start_time = time.time()
-
-        try:
-            # Open/create lock file
-            lock_file = open(lock_path, 'w')
-
-            # Try to acquire lock with retry logic
-            while True:
-                try:
-                    # Try non-blocking lock first
-                    fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-                    lock_acquired = True
-                    log.info(f'Acquired GPU lock: {lock_path}')
-                    break
-                except IOError:
-                    # Lock is held by another process
-                    elapsed = time.time() - start_time
-                    if elapsed >= max_wait_seconds:
-                        log.error(f'Failed to acquire GPU lock after {elapsed:.1f}s (timeout: {max_wait_seconds}s)')
-                        raise RuntimeError(f'GPU lock timeout after {elapsed:.1f}s - another Whisper instance may be stuck')
-
-                    # Wait at least 1 second + random to avoid race conditions
-                    wait_time = 1.0 + random.uniform(0.1, 2.0)
-                    log.warning(f'GPU is busy (locked by another process). Waiting {wait_time:.2f}s... (elapsed: {elapsed:.1f}s/{max_wait_seconds}s)')
-                    time.sleep(wait_time)
-
-            # Yield control to caller (lock is held)
-            yield
-
-        finally:
-            # Always release lock and close file
-            if lock_file:
-                if lock_acquired:
-                    try:
-                        fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
-                        log.info(f'Released GPU lock: {lock_path}')
-                    except Exception as e:
-                        log.warning(f'Error releasing GPU lock: {e}')
-
-                try:
-                    lock_file.close()
-                except Exception as e:
-                    log.warning(f'Error closing lock file: {e}')
+        self.lockfile_timeout = self.config['ytffmpeg'].get('lockfile_timeout', 3600)
 
     @contextmanager
     def video_processing_lock(self, operation: str):
