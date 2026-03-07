@@ -76,10 +76,11 @@ You can use this:
 ytffmpeg gensubs [path-to-file.mkv]
 ```
 
-This will generate subtitles in `build/path-to-file.${LANG}.srt` for any video file you give this command.
-This is not necessary if you used `ytffmpeg refresh` to generate subs from a video resource. I used this
-to get access to the sub-generation functionality this app provided with this command and so I exposed
-that function to this command here. You can elect to do more with it after that.
+This will generate subtitles in `build/path-to-file.${LANG}.srt` for any video file you give this
+command. This is not necessary if you used `ytffmpeg refresh` to generate subs from a video
+resource. I used this to get access to the sub-generation functionality this app provided with this
+command and so I exposed that function to this command here. You can elect to do more with it after
+that.
 
 Once your videos have been compressed and your configuration updated, you will see the YAML
 has been updated with the new video. If you have a preferred name for it, you should rename
@@ -118,28 +119,28 @@ ytffmpeg now supports automatic translation of subtitles to multiple languages u
 
 1. **Configure languages in your `ytffmpeg.yml`:**
 
-```yaml
-ytffmpeg:
-  language: en           # Base language for Whisper transcription
-  languages:             # Translate to these languages
-    - en                 # English (from Whisper)
-    - es                 # Spanish (translated)
-    - fr                 # French (translated)
-    - de                 # German (translated)
-```
+    ```yaml
+    ytffmpeg:
+      language: en           # Base language for Whisper transcription
+      languages:             # Translate to these languages
+        - en                 # English (from Whisper)
+        - es                 # Spanish (translated)
+        - fr                 # French (translated)
+        - de                 # German (translated)
+    ```
 
 2. **Run refresh to generate and translate subtitles:**
 
-```bash
-ytffmpeg refresh
-```
+    ```bash
+    ytffmpeg refresh
+    ```
 
-This will:
+    This will:
 
-- Generate English subtitles using Whisper
-- Automatically translate to Spanish, French, and German
-- Preserve timing information from the original subtitles
-- Create separate SRT files for each language in `build/`
+    - Generate English subtitles using Whisper
+    - Automatically translate to Spanish, French, and German
+    - Preserve timing information from the original subtitles
+    - Create separate SRT files for each language in `build/`
 
 3. **Build your video with all subtitle tracks:**
 
@@ -151,17 +152,20 @@ The final video will contain all subtitle tracks, properly mapped and labeled.
 
 ### How Translation Works
 
-**Context-Aware Translation**: The entire transcript is translated as one document to preserve meaning, intent, and context. This produces much better results than translating line-by-line.
+**Context-Aware Translation**: The entire transcript is translated as one document to preserve
+meaning, intent, and context. This produces much better results than translating line-by-line.
 
-**Timing Preservation**: After translation, the system intelligently splits the translated text to match the original subtitle timing, distributing words proportionally across subtitle entries.
+**Timing Preservation**: After translation, the system intelligently splits the translated text to
+match the original subtitle timing, distributing words proportionally across subtitle entries.
 
-**Automatic Package Management**: Argos Translate language packages are downloaded and installed automatically on first use.
+**Automatic Package Management**: Argos Translate language packages are downloaded and installed
+automatically on first use.
 
 ### Example Output
 
 After running `ytffmpeg refresh` with multi-language support:
 
-```
+```plain
 build/
 ├── my-video.mkv              # Processed video
 ├── my-video.txt              # Full English transcript
