@@ -12,14 +12,17 @@ It includes:
 import os
 import json
 import shutil
-import tempfile
 import multiprocessing
-from importlib import resources
-from typing import Dict, List, Optional
-
 import cherrypy
+from cherrypy._cpreqbody import Part
+from importlib import resources
+from typing import Dict, List, Union
+from copy import deepcopy as copy
+
 from kizano import getLogger
 from kizano.utils import dictmerge, read_yaml, write_yaml
+
+from ytffmpeg.cli import new, refresh, build
 
 log = getLogger(__name__)
 
@@ -80,7 +83,7 @@ class ApiHandlers:
         '''
         log.info(f'{cherrypy.request.method} /api/projects.')
         if cherrypy.request.method != 'GET':
-            cherrypy.log.error(f'Method {cherrypy.request.method} not allowed. Use GET only.')
+            log.error(f'Method {cherrypy.request.method} not allowed. Use GET only.')
             raise cherrypy.HTTPError(405, 'Method not allowed')
         try:
             projects = []
@@ -168,70 +171,56 @@ class ApiHandlers:
             raise cherrypy.HTTPError(500, str(e))
 
     @cherrypy.expose
-    @cherrypy.tools.json_in()
     @cherrypy.tools.json_out()
-    def process(self):
+    def process(self, project_name: str, project_config: str, videos: Union[Part, List[Part], None] = None):
         '''
         POST /api/process
         Upload videos and start processing pipeline
         '''
-        cherrypy.log.info(f'{cherrypy.request.method} /api/process.')
+        log.info(f'{cherrypy.request.method} /api/process.')
         if cherrypy.request.method != 'POST':
             raise cherrypy.HTTPError(405, 'Method not allowed')
+        log.info('Receiving upload.')
+        # ytffmpeg.cli.new.gennew will cd into the project directory. On each request, we need to revert that.
+        os.chdir(self.workspace)
 
         try:
-            # Parse multipart form data
-            project_name = None
-            project_config = None
-            metadata = None
-            video_files = []
-
-            # Get form fields
-            for key, value in cherrypy.request.params.items():
-                if key == 'project_name':
-                    project_name = value
-                elif key == 'project_config':
-                    project_config = json.loads(value)
-                elif key == 'metadata':
-                    metadata = json.loads(value)
-                elif key == 'videos':
-                    # Handle multiple video uploads
-                    if not isinstance(value, list):
-                        value = [value]
-                    for video_file in value:
-                        if hasattr(video_file, 'file'):
-                            video_files.append(video_file)
+            if videos is None:
+                video_list = []
+            if not isinstance(videos, list):
+                video_list = [videos]
 
             # Validation
             if not project_name:
                 raise cherrypy.HTTPError(400, 'project_name is required')
-            if not video_files:
+            if not videos:
                 raise cherrypy.HTTPError(400, 'At least one video file is required')
 
-            # Save uploaded files to temporary directory
-            temp_dir = tempfile.mkdtemp(prefix='ytffmpeg_upload_')
-            saved_files = []
+            self.config['ytffmpeg']['resource'] = project_name
+            new.gennew(self.config)
+            log.info(f'Got JSON project config: {project_config}')
+            project_cfg = json.loads(project_config)
 
-            try:
-                for video_file in video_files:
-                    filename = video_file.filename
-                    temp_path = os.path.join(temp_dir, filename)
-
-                    # Save file
-                    with open(temp_path, 'wb') as f:
-                        while True:
-                            chunk = video_file.file.read(8192)
-                            if not chunk:
-                                break
-                            f.write(chunk)
-
-                    saved_files.append((temp_path, filename))
-                    log.info(f'Saved uploaded file: {filename} ({os.path.getsize(temp_path)} bytes)')
+            for i, video in enumerate(video_list):
+                log.info(f'Received video {video.filename} uploading...')
+                if project_cfg['videos'] and project_cfg['videos'][0]['input']:
+                    video_filename: str = os.path.basename(project_cfg['videos'][0]['input'][i]['i'])
+                else:
+                    video_filename: str = os.path.basename(video.filename)
+                video_path = os.path.join(self.workspace, project_name, 'resources', video_filename)
+                with open(video_path, 'wb') as fd:
+                    while True:
+                        chunk = video.file.read(8192)
+                        if not chunk:
+                            break
+                        fd.write(chunk)
+                    fd.flush()
+                log.info(f'Saved uploaded video: {video_path} ({os.path.getsize(video_path)} bytes).')
 
                 # Start background processing
                 process = multiprocessing.Process(
                     target=process_video_pipeline,
-                    args=(self.workspace, project_name, project_config, metadata, saved_files, self.config),
+                    args=(self.config, project_name, project_cfg),
                     daemon=True
                 )
                 process.start()
@@ -243,12 +232,6 @@ class ApiHandlers:
                     'message': 'Video upload successful. Processing started in background.',
                     'project': project_name
                 }
-
-            except Exception as e:
-                # Cleanup on error
-                shutil.rmtree(temp_dir, ignore_errors=True)
-                raise
-
         except cherrypy.HTTPError:
             raise
         except Exception as e:
@@ -256,112 +239,44 @@ class ApiHandlers:
             raise cherrypy.HTTPError(500, str(e))
 
 
-def process_video_pipeline(workspace: str, project_name: str, project_config: dict,
-                           metadata: Optional[dict], file_paths: List[tuple],
-                           config: dict):
+def process_video_pipeline(
+    config: dict,
+    project_name: str,
+    project_config: dict,
+):
     '''
     Background worker for video processing.
     Uses built-in ytffmpeg interfaces instead of shell commands.
     '''
-    from ytffmpeg.cli.new import gennew
-    from ytffmpeg.cli.refresh import refresher
-    from ytffmpeg.cli.build import builder
 
     log.info(f'Starting video pipeline for project: {project_name}')
-
-    # Create a copy of config to avoid modifying the shared config
-    worker_config = {
-        'ytffmpeg': dict(config['ytffmpeg']),
-        'videos': []
-    }
-
-    # Merge project-specific configuration
-    if project_config and 'ytffmpeg' in project_config:
-        worker_config['ytffmpeg'] = dictmerge(
-            worker_config['ytffmpeg'],
-            project_config['ytffmpeg']
-        )
-
-    temp_dir = None
+    # Cache a deepcopy of this for later so we can merge correctly.
+    video_cfg = copy(config['videos'])
+    project_path = os.path.join(config['ytffmpeg']['workspace'], project_name)
+    os.chdir(project_path)
 
     try:
-        # Save current directory
-        original_cwd = os.getcwd()
+        # Check to see if we have >1 video and run `build` to concat the videos first.
+        if len(project_config['videos']) > 1:
+            log.info('More than 1 video in the list, running build to concat into a single resource.')
+            build.builder(config)
 
-        # Create project directory
-        project_path = os.path.join(workspace, project_name)
-        if not os.path.exists(project_path):
-            os.makedirs(project_path, exist_ok=True)
+        log.info('Refreshing resources from existing video list.')
+        refresh.refresher(config)
 
-        # Change to workspace directory to run ytffmpeg commands
-        os.chdir(workspace)
+        if len(project_config['videos']) >1:
+            log.info('Merging config from submitted form.')
+            config['videos'][0] = dictmerge(config['videos'][0], video_cfg)
 
-        # Run 'new' command to create project structure
-        worker_config['ytffmpeg']['resource'] = project_name
-        log.info(f'Creating project structure: {project_name}')
-        result = gennew(worker_config)
-        if result != 0:
-            raise RuntimeError(f'Failed to create project structure (exit code: {result})')
-
-        # Change to project directory
-        os.chdir(project_path)
-
-        # Move uploaded files to resources directory
-        resources_dir = os.path.join(project_path, 'resources')
-        for temp_path, save_name in file_paths:
-            dest_path = os.path.join(resources_dir, save_name)
-            log.info(f'Moving {save_name} to resources/')
-            shutil.move(temp_path, dest_path)
-
-        # Remember temp directory for cleanup
-        if file_paths:
-            temp_dir = os.path.dirname(file_paths[0][0])
-
-        # If multiple videos, handle concatenation
-        if len(file_paths) > 1:
-            log.info(f'Multiple videos detected ({len(file_paths)}), concatenation mode')
-            # The refresh command will handle this automatically
-
-        # Run 'refresh' command to generate subtitles and create ytffmpeg.yml
-        log.info('Running refresh to generate subtitles...')
-        result = refresher(worker_config)
-        if result != 0:
-            log.warning(f'Refresh command returned non-zero exit code: {result}')
-
-        # Merge metadata into generated configuration
-        config_path = os.path.join(project_path, 'ytffmpeg.yml')
-        if os.path.exists(config_path):
-            generated_config = read_yaml(config_path)
-            # Add metadata to first video if provided
-            if metadata and generated_config.get('videos'):
-                if 'metadata' not in generated_config['videos'][0]:
-                    generated_config['videos'][0]['metadata'] = {}
-                generated_config['videos'][0]['metadata'].update(metadata)
-
-            # Merge project config
-            if project_config and 'videos' in project_config:
-                generated_config = dictmerge(generated_config, {'videos': project_config['videos']})
-
-            # Save updated configuration
-            write_yaml(config_path, generated_config)
-            log.info('Configuration updated with metadata and project settings')
-
-        # Run 'build' command to create final video
-        log.info('Running build to create final video...')
-        worker_config['ytffmpeg']['autoplay'] = False  # Disable autoplay on server
-        result = builder(worker_config)
-        if result != 0:
-            log.warning(f'Build command returned non-zero exit code: {result}')
+        log.info('Building compiled final video result.')
+        build.builder(config)
 
         # Send success notification
-        try:
-            send_notification(
-                'INFO',
-                f'ytffmpeg: {project_name} complete',
-                f'Video processing completed successfully for project: {project_name}'
-            )
-        except Exception as notify_error:
-            log.warning(f'Failed to send success notification: {notify_error}')
+        send_notification(
+            'INFO',
+            f'ytffmpeg: {project_name} complete',
+            f'Video processing completed successfully for project: {project_name}'
+        )
 
         log.info(f'Video pipeline completed successfully for: {project_name}')
 
@@ -369,30 +284,26 @@ def process_video_pipeline(workspace: str, project_name: str, project_config: di
         log.error(f'Video pipeline failed for {project_name}: {e}', exc_info=True)
 
         # Send error notification
-        try:
-            send_notification(
-                'ERROR',
-                f'ytffmpeg: {project_name} failed',
-                f'Video processing failed for project {project_name}: {str(e)}'
-            )
-        except Exception as notify_error:
-            log.warning(f'Failed to send error notification: {notify_error}')
+        send_notification(
+            'ERROR',
+            f'ytffmpeg: {project_name} failed',
+            f'Video processing failed for project {project_name}: {str(e)}'
+        )
 
-    finally:
-        # Cleanup temporary directory
-        if temp_dir and os.path.exists(temp_dir):
-            try:
-                shutil.rmtree(temp_dir)
-                log.debug(f'Cleaned up temporary directory: {temp_dir}')
-            except Exception as e:
-                log.warning(f'Failed to cleanup temp directory {temp_dir}: {e}')
+def jsonify_error(status, message, traceback, version):
+    '''
+    Custom error handler to return JSON instead of HTML.
+    '''
+    cherrypy.response.headers['Content-Type'] = 'application/json'
 
-        # Restore original working directory
-        try:
-            os.chdir(original_cwd)
-        except Exception as e:
-            log.warning(f'Failed to restore original directory: {e}')
+    # Log the traceback to the console manually if needed
+    log.error(f"Error {status}: {message}\n{traceback}")
 
+    return json.dumps({
+        'status': status,
+        'message': message,
+        'version': version
+    }).encode('utf-8')
 
 def serve(config: dict):
     '''
@@ -402,6 +313,7 @@ def serve(config: dict):
     # Get configuration
     workspace = config['ytffmpeg'].get('workspace', os.getcwd())
     http_port = config['ytffmpeg'].get('http_port', int(os.getenv('HTTP_PORT', '9091')))
+    os.chdir(workspace)
 
     # Ensure workspace exists
     os.makedirs(workspace, exist_ok=True)
@@ -443,10 +355,16 @@ def serve(config: dict):
         }
     })
 
-    cherrypy.tree.mount(api_handler, '/api')
+    cherrypy.tree.mount(api_handler, '/api', config={
+        '/': {
+            'error_page.default': jsonify_error,
+        },
+    })
 
     # Server configuration
     cherrypy.config.update({
+        'error_page.default': jsonify_error,
+        'request.show_tracebacks': False,
         'server.socket_host': '0.0.0.0',
         'server.socket_port': http_port,
         'server.thread_pool': 10,

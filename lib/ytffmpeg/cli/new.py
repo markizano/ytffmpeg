@@ -23,14 +23,15 @@ def gennew(config: dict) -> int:
     '''
     log.debug(config)
     if 'resource' in config['ytffmpeg']:
-        if not os.path.exists(config['ytffmpeg']['resource']):
-            log.info(f"Creating new resource directory in {config['ytffmpeg']['resource']}.")
-            os.mkdir(config['ytffmpeg']['resource'])
+        resource_path = os.path.realpath(config['ytffmpeg']['resource'])
+        if not os.path.exists(resource_path):
+            log.info(f"Creating new resource directory in {resource_path}.")
+            os.makedirs(resource_path, exist_ok=True)
         else:
-            if not os.path.isdir(config['ytffmpeg']['resource']):
-                log.error(f"{config['ytffmpeg']['resource']} is not a directory!")
+            if not os.path.isdir(resource_path):
+                log.error(f"{resource_path} is not a directory!")
                 return 1
-        os.chdir(config['ytffmpeg']['resource'])
+        os.chdir(resource_path)
     log.info(f'Creating new project directory in {os.getcwd()}.')
     initconfig = {
         'videos': [],
