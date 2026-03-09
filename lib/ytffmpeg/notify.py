@@ -14,7 +14,7 @@ Usage:
 
 import boto3
 import kizano
-from typing import Dict, Optional
+from typing import Dict, Optional, Self
 
 log = kizano.getLogger(__name__)
 
@@ -61,18 +61,19 @@ class Notifier:
         try:
             response = self._sns_client.list_topics()
             topics = response.get('Topics', [])
+            log.info(f'Found {len(topics)} topics from AWS-SNS.')
 
             # Map topics by notification level
             for topic in topics:
                 topic_arn = topic['TopicArn']
 
-                if 'INFO' in topic_arn:
+                if 'INFO' in topic_arn.upper():
                     self._topics['INFO'] = topic_arn
                     log.debug(f"Found INFO topic: {topic_arn}")
-                elif 'WARN' in topic_arn or 'WARNING' in topic_arn:
+                elif 'WARN' in topic_arn.upper():
                     self._topics['WARNING'] = topic_arn
                     log.debug(f"Found WARNING topic: {topic_arn}")
-                elif 'ERROR' in topic_arn:
+                elif 'ERROR' in topic_arn.upper():
                     self._topics['ERROR'] = topic_arn
                     log.debug(f"Found ERROR topic: {topic_arn}")
 
@@ -84,7 +85,7 @@ class Notifier:
             raise
 
     @staticmethod
-    def getInstance() -> 'Notifier':
+    def getInstance() -> Self:
         """
         Get the singleton instance of Notifier.
 

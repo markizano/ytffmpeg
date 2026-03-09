@@ -417,7 +417,7 @@ class RefreshCommand(BaseCommand):
         # Add subtitles if enabled
         if self.isSubtitles():
             # @TODO: Detect when split screen OBS view and change font settings.
-            font_style = [
+            font_style = ','.join([
                 'Alignment=0',
                 'PrimaryColour=&H00FFFFFF',
                 'FontName=Impact',
@@ -426,8 +426,8 @@ class RefreshCommand(BaseCommand):
                 'Fontsize=14',
                 'MarginV=60',
                 'MarginL=30'
-            ]
-            video_filters.append(f"subtitles={srt}:force_style='{'.'.join(font_style)}'")
+            ])
+            video_filters.append(f"subtitles={srt}:force_style='{font_style}'")
 
         # Build filter_complex with standard processing
         video_filter_str = ','.join(video_filters)
@@ -676,5 +676,5 @@ def refresher(config: dict) -> int:
       - Padding: Configurable via `--silence-pad` (default: 350ms) - adds padding before/after silence
     '''
     log.info('Refreshing resources directory.')
-    cmd = RefreshCommand(config)
+    cmd = RefreshCommand(copy.deepcopy(config))
     return cmd.execute()

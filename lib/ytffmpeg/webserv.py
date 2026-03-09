@@ -11,22 +11,21 @@ It includes:
 
 import os
 import json
-import shutil
 import multiprocessing
+import signal
 import cherrypy
-from cherrypy._cpreqbody import Part
 from importlib import resources
 from typing import Dict, List, Union
-from copy import deepcopy as copy
+from cherrypy._cpreqbody import Part
 
 from kizano import getLogger
 from kizano.utils import dictmerge, read_yaml, write_yaml
 
+from ytffmpeg.notify import send_notification
 from ytffmpeg.cli import new, refresh, build
 
 log = getLogger(__name__)
-
-from ytffmpeg.notify import send_notification
+DEBUG = os.getenv('DEBUG', False)
 
 class PageHandlers:
     '''
@@ -217,13 +216,17 @@ class ApiHandlers:
                     fd.flush()
                 log.info(f'Saved uploaded video: {video_path} ({os.path.getsize(video_path)} bytes).')
 
-                # Start background processing
-                process = multiprocessing.Process(
-                    target=process_video_pipeline,
-                    args=(self.config, project_name, project_cfg),
-                    daemon=True
-                )
-                process.start()
+                if DEBUG:
+                    # Stay attached in debug mode because I may do some interactive testing.
+                    process_video_pipeline(self.config, project_name, project_cfg)
+                else:
+                    # Start background processing
+                    process = multiprocessing.Process(
+                        target=process_video_pipeline,
+                        args=(self.config, project_name, project_cfg),
+                        daemon=True
+                    )
+                    process.start()
 
                 log.info(f'Started background processing for project: {project_name}')
 
@@ -250,33 +253,38 @@ def process_video_pipeline(
     '''
 
     log.info(f'Starting video pipeline for project: {project_name}')
-    # Cache a deepcopy of this for later so we can merge correctly.
-    video_cfg = copy(config['videos'])
     project_path = os.path.join(config['ytffmpeg']['workspace'], project_name)
     os.chdir(project_path)
+    log.info(f'Process config: {project_config}')
 
     try:
         # Check to see if we have >1 video and run `build` to concat the videos first.
         if len(project_config['videos']) > 1:
             log.info('More than 1 video in the list, running build to concat into a single resource.')
-            build.builder(config)
+            build.builder(project_config)
 
         log.info('Refreshing resources from existing video list.')
-        refresh.refresher(config)
+        video_cfg = read_yaml('ytffmpeg.yml')
+        refresh.refresher({'ytffmpeg': config['ytffmpeg'], 'videos': video_cfg['videos']})
 
-        if len(project_config['videos']) >1:
-            log.info('Merging config from submitted form.')
-            config['videos'][0] = dictmerge(config['videos'][0], video_cfg)
+        log.info('Merging config from submitted form.')
+        video_cfg = read_yaml('ytffmpeg.yml')
+        log.info(f'Loaded ytffmpeg.yml: {video_cfg}')
+        log.info(f'In-memory project config: {project_config}')
+        video_cfg['videos'][0]['metadata'] = dictmerge(video_cfg['videos'][0]['metadata'], project_config['videos'][0]['metadata'])
+        del config['ytffmpeg']['resource']
 
         log.info('Building compiled final video result.')
-        build.builder(config)
+        log.debug(f'Build config: {video_cfg}')
+        build.builder({'ytffmpeg': config['ytffmpeg'], 'videos': video_cfg['videos']})
 
         # Send success notification
-        send_notification(
-            'INFO',
-            f'ytffmpeg: {project_name} complete',
-            f'Video processing completed successfully for project: {project_name}'
-        )
+        if not DEBUG:
+            send_notification(
+                'INFO',
+                f'ytffmpeg: {project_name} complete',
+                f'Video processing completed successfully for project: {project_name}'
+            )
 
         log.info(f'Video pipeline completed successfully for: {project_name}')
 
@@ -284,11 +292,12 @@ def process_video_pipeline(
         log.error(f'Video pipeline failed for {project_name}: {e}', exc_info=True)
 
         # Send error notification
-        send_notification(
-            'ERROR',
-            f'ytffmpeg: {project_name} failed',
-            f'Video processing failed for project {project_name}: {str(e)}'
-        )
+        if not DEBUG:
+            send_notification(
+                'ERROR',
+                f'ytffmpeg: {project_name} failed',
+                f'Video processing failed for project {project_name}: {str(e)}'
+            )
 
 def jsonify_error(status, message, traceback, version):
     '''
@@ -332,6 +341,7 @@ def serve(config: dict):
     webroot = config['ytffmpeg'].get('webroot', default_webroot)
     webroot = os.path.abspath(webroot)
     config['ytffmpeg']['webroot'] = webroot
+    config['ytffmpeg']['autoplay'] = False
 
     if not os.path.exists(webroot):
         log.error(f'Webroot directory not found: {webroot}')
@@ -377,6 +387,7 @@ def serve(config: dict):
 
     log.info(f'Starting ytffmpeg web server on http://0.0.0.0:{http_port}')
     log.info('Press Ctrl+C to stop')
+    signal.signal(signal.SIGCHLD, signal.SIG_IGN)
 
     try:
         cherrypy.engine.start()

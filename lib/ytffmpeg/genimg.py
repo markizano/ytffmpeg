@@ -170,10 +170,14 @@ def generate_template(title: str) -> str:
     svgVars['lines'] = EOL.join(lines)
     svg = TEMPLATE_SVG % svgVars
     log.debug(f'SVG: \n{svg}')
+    svg_file_path = 'build/thumbnail.svg'
+    open(svg_file_path, 'w').write(svg)
     template = 'build/thumbnail.png'
     # Create the thumbnail from SVG using ImageMagick
-    p = Popen(['convert', '-background', 'none', '-', template], stdin=PIPE)
-    p.communicate(input=svg.encode('utf-8'))
+    convert_cmd = ['rsvg-convert', svg_file_path, '-o', template]
+    log.info(f'Running command: {" ".join(convert_cmd)}')
+    p = Popen(convert_cmd)
+    p.communicate()
 
     if p.returncode != 0:
         log.error(f"Error: convert command failed with return code {p.returncode}")

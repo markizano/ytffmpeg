@@ -9,8 +9,8 @@ If a video is specified, only that video will be built.
 import os
 import time
 import subprocess
+from copy import deepcopy as copy
 from ytffmpeg.cli.base import BaseCommand
-from ytffmpeg.filter_complex import FilterComplexFunctionUnit
 import ytffmpeg.genimg
 
 from kizano import getLogger
@@ -45,7 +45,7 @@ class BuildCommand(BaseCommand):
                     self.config['videos'].remove(video)
         log.info('Done processing dependencies.')
 
-    def processInput(self, input_video: str|dict) -> list:
+    def processInput(self, raw_input_video: str|dict) -> list:
         '''
         Process one branch of the data structure that defines an input video.
         For each of the options, include it on the command line.
@@ -54,12 +54,13 @@ class BuildCommand(BaseCommand):
         In this way, all options for that video are processed on the command line in the correct order.
         '''
         input_cmd = []
-        if isinstance(input_video, str):
-            log.debug(f'INPUT stream: \x1b[1m{input_video}\x1b[0m')
+        if isinstance(raw_input_video, str):
+            log.debug(f'INPUT stream: \x1b[1m{raw_input_video}\x1b[0m')
             input_cmd.append('-i')
-            input_cmd.append(input_video)
-        elif isinstance(input_video, dict):
-            assert 'i' in input_video, 'No input specified for video!'
+            input_cmd.append(raw_input_video)
+        elif isinstance(raw_input_video, dict):
+            assert 'i' in raw_input_video, 'No input specified for video!'
+            input_video = copy(raw_input_video)
             i = input_video.pop('i')
             log.debug(f'INPUT stream: \x1b[1m{i}\x1b[0m')
             while len(input_video):
@@ -171,6 +172,7 @@ class BuildCommand(BaseCommand):
 
     def _preBuildHooks(self, video_opts: dict):
         log.info('**\x1b[1mPre-Build Hooks!\x1b[0m**')
+        log.debug(f'CWD: {os.getcwd()}')
         # If we have pre-existing requirements or videos this is dependent on, process them first.
         if 'require' in video_opts:
             self.processRequirements(video_opts['require'])
@@ -191,8 +193,10 @@ class BuildCommand(BaseCommand):
         with self.video_processing_lock('build'):
             now = time.time()
             if 'resource' in self.config['ytffmpeg']:
+                log.info(f'Filtering process to just {self.config["ytffmpeg"]["resource"]} due to config.')
                 videos = list( filter(lambda x: x['output'] == self.config['ytffmpeg']['resource'], self.config['videos']) ) or []
             else:
+                log.info('Processing all configured videos in ytffmpeg.yml.')
                 videos = self.config['videos']
             while videos:
                 video_opts = videos.pop(0)
@@ -263,12 +267,10 @@ class BuildCommand(BaseCommand):
                     final_cmd.append('-vn')
                 else:
                     final_cmd.append('-c:v')
-                    final_cmd.append(video_opts.get('codecs', {}).get('video', 'libx265'))
-                    final_cmd.append('-tag:v')
-                    final_cmd.append('hvc1')
+                    final_cmd.append(video_opts.get('codecs', {}).get('video', 'h264'))
 
                     final_cmd.append('-pix_fmt')
-                    final_cmd.append('yuv444p')
+                    final_cmd.append('yuv420p')
 
                     final_cmd.append('-crf')
                     final_cmd.append('28')
@@ -293,7 +295,7 @@ class BuildCommand(BaseCommand):
 
                 # With the pre-hook, this should just execute now.
                 if os.path.exists('thumbnail.png'):
-                    i = video_opts['input'].index({'i': 'thumbnail.png'})
+                    i = len(video_opts['input'])
                     final_cmd.append(f'-disposition:v:{i}')
                     final_cmd.append('attached_pic')
 
@@ -324,5 +326,5 @@ def builder(config: dict) -> int:
     '''
     Entrtypoint for this model.
     '''
-    cmd = BuildCommand(config)
+    cmd = BuildCommand(copy(config))
     return cmd.execute()
