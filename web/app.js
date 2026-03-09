@@ -52,31 +52,35 @@ $(document).ready(function() {
         if (fileInput.files.length > 0) {
           const file = fileInput.files[0];
           const filename = overrideName || file.name;
-          videoData.input.push({ 'i': filename });
+          console.debug('Video Data', JSON.stringify(videoData,0,2));
           formData.append('videos', file, filename);
           return {video: file, filename};
         }
       }).get();
+      console.log('Input Videos: ', inputVideos);
       if (inputVideos.length === 0) {
         // No videos == error.
         showStatus('Please select at least one video file', 'error');
         return;
       } else if (inputVideos.length === 1) {
         // Just submit the video.
-        videoData.input.push({i: inputVideos.filename})
-        videos.push(videoData);
+        console.log('Single video upload.');
+        videoData.input.push({i: inputVideos[0].filename});
+        videoData.output = `build/${projectName}.mp4`;
       } else if (inputVideos.length > 1) {
+        console.log('Multi-video upload for concat.');
         // Build the filter complex to combine the videos.
         const filterComplex = inputVideos.map((v, i) => `[${i}:v][${i}:a]`).join('') + `concat=n=${inputVideos.length}:a=1[video][audio]`
-        const concatVideo = `resources/${projectName}.mkv`;
+        const concatVideo = `resources/${projectName}_concat.mkv`;
         videos.push({
           input: inputVideos.map(v => ({i: v.filename})),
           output: concatVideo,
           filter_complex: [filterComplex]
         });
         videoData.input.push({i: concatVideo})
-        videos.push(videoData);
+        videoData.output = `build/${projectName}.mp4`;
       }
+      videos.push(videoData);
 
       // Project configuration
       const projectConfig = {
@@ -86,6 +90,7 @@ $(document).ready(function() {
         },
         videos: videos,
       };
+      console.log('Project config payload: ', projectConfig);
 
       // Add project configuration
       formData.append('project_name', projectName);
@@ -123,10 +128,10 @@ $(document).ready(function() {
 
           // Reset form after 3 seconds and redirect to projects
           setTimeout(function() {
-            $('#upload-form')[0].reset();
+            // $('#upload-form')[0].reset();
             $('#submit-btn').prop('disabled', false);
             $('#progress-container').hide();
-            window.location.href = '/videos';
+            // window.location.href = '/videos';
           }, 3000);
         },
         error: function(xhr) {
@@ -153,6 +158,8 @@ $(document).ready(function() {
   function updateProgress(percent) {
     $('#progress-fill').css('width', percent + '%');
     $('#progress-text').text('Uploading: ' + percent + '%');
+    const position = $('#progress-container').offset();
+    window.scrollTo(position.left, position.top)
   }
 
   function showStatus(message, type) {
@@ -161,6 +168,8 @@ $(document).ready(function() {
     statusDiv.removeClass('success error');
     statusDiv.addClass(type);
     statusDiv.show();
+    const position = statusDiv.offset();
+    window.scrollTo(position.left, position.top)
   }
 
   function hideStatus() {

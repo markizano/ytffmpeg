@@ -29,7 +29,7 @@ body {
 nav {
     background-color: var(--card-bg);
     border-bottom: 1px solid var(--border-color);
-    padding: 1rem 2rem;
+    padding: 0.5rem 1rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -71,18 +71,19 @@ nav a.active {
 
 /* Main Content */
 main {
-    margin: 2rem auto;
-    padding: 0 2rem;
+    margin: 1rem auto;
+    padding: 0 1rem;
+    max-width: 1200px;
 }
 
 h2 {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
     color: var(--text-color);
 }
 
 h3 {
-    margin-top: 1.5rem;
-    margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
     color: var(--text-color);
 }
 
@@ -90,25 +91,25 @@ h3 {
 form {
     background-color: var(--card-bg);
     border-radius: 0.5rem;
-    padding: 2rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
 }
 
 fieldset {
     border: 1px solid var(--border-color);
     border-radius: 0.375rem;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
 }
 
 legend {
     font-weight: 600;
     color: var(--text-color);
-    padding: 0 0.5rem;
+    padding: 0 0.25rem;
 }
 
 .form-group {
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.5rem;
 }
 
 .form-group label {
@@ -143,6 +144,11 @@ legend {
     margin-top: 0.25rem;
     color: var(--secondary-color);
     font-size: 0.875rem;
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: row;
 }
 
 .checkbox-group label {
@@ -193,29 +199,29 @@ button:disabled {
 
 .form-actions {
     display: flex;
-    gap: 1rem;
-    margin-top: 1.5rem;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
 }
 
 /* Video Input Rows */
 .video-input {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    padding: 1rem;
+    gap: 0.5rem;
+    padding: 0.375rem;
     background-color: var(--bg-color);
     border-radius: 0.375rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 #add-video {
-    margin-top: 0.5rem;
+    margin-top: 0.25rem;
 }
 
 /* Progress Bar */
 #progress-container {
-    margin-top: 2rem;
-    padding: 1.5rem;
+    margin-top: 1rem;
+    padding: 0.75rem;
     background-color: var(--card-bg);
     border-radius: 0.5rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -223,11 +229,11 @@ button:disabled {
 
 .progress-bar {
     width: 100%;
-    height: 1.5rem;
+    height: 1.25rem;
     background-color: var(--border-color);
     border-radius: 0.75rem;
     overflow: hidden;
-    margin: 1rem 0;
+    margin: 0.5rem 0;
 }
 
 .progress-fill {
@@ -244,8 +250,8 @@ button:disabled {
 
 /* Status Messages */
 #status-message {
-    margin-top: 1rem;
-    padding: 1rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem 0.75rem;
     border-radius: 0.375rem;
     font-weight: 500;
 }
@@ -360,7 +366,73 @@ div.notif {
     border: 1px solid var(--primary-color);
 }
 
-/* Responsive Design */
+/* Portrait: vertical layout, tight spacing */
+@media (orientation: portrait) {
+    main {
+        margin: 0.5rem auto;
+        padding: 0 0.5rem;
+    }
+
+    form {
+        padding: 0.25rem;
+    }
+
+    fieldset {
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .video-input {
+        grid-template-columns: 1fr;
+        padding: 0.25rem;
+        margin-bottom: 0.375rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        margin-top: 0.5rem;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+}
+
+/* Landscape: horizontal layout */
+@media (orientation: landscape) {
+    fieldset.form-row-fields {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+    }
+
+    fieldset.form-row-fields > legend {
+        flex-basis: 100%;
+    }
+
+    fieldset.form-row-fields .form-group {
+        flex: 1 1 min(180px, 100%);
+    }
+
+    fieldset.form-row-fields .form-group:has(textarea) {
+        flex: 1 1 100%;
+    }
+
+    fieldset.form-row-fields .checkbox-group {
+        flex: 0 1 auto;
+    }
+
+    fieldset.form-row-fields > .form-group {
+        margin-bottom: 0;
+    }
+
+    .form-actions {
+        flex-direction: row;
+    }
+}
+
+/* Narrow viewport (e.g. portrait width) */
 @media (max-width: 768px) {
     nav h1 {
         display: block;
@@ -372,7 +444,7 @@ div.notif {
     }
 
     main {
-        padding: 0 1rem;
+        padding: 0 0.5rem;
     }
 
     .video-input {
