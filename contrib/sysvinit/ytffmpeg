@@ -9,25 +9,36 @@
 # Description:       CherryPy-based web interface for ytffmpeg video processing
 ### END INIT INFO
 
-PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="ytffmpeg web server"
 NAME=ytffmpeg
 DAEMON=/usr/local/bin/ytffmpeg
 DAEMON_ARGS="serve"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
-
-# Read configuration variable file if it is present
-[ -r /etc/default/$NAME ] && . /etc/default/$NAME
 
 # Load the VERBOSE setting and other rcS variables
 . /lib/init/vars.sh
 
 # Define LSB log_* functions.
 . /lib/lsb/init-functions
+
+# Read configuration variable file if it is present
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+YTFFMPEG_USER=${YTFFMPEG_USER:-ytffmpeg}
+YTFFMPEG_GROUP=${YTFFMPEG_GROUP:-ytffmpeg}
+
+YTFFMPEG_HOME=`getent passwd ${YTFFMPEG_USER} | cut -d: -f6`
+YTFFMPEG_WORKSPACE=${YTFFMPEG_WORKSPACE:-$YTFFMPEG_HOME/workspace}
+
+PATH=$PATH:$YTFFMPEG_HOME
+
+# Load the venv if there is one.
+[ -r $YTFFMPEG_HOME/bin/activate ] && . $YTFFMPEG_HOME/bin/activate
 
 #
 # Function that starts the daemon/service
