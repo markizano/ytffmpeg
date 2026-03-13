@@ -373,11 +373,12 @@ def serve(config: dict):
 
     # Server configuration
     cherrypy.config.update({
+        'tools.sessions.on': False,
         'error_page.default': jsonify_error,
         'request.show_tracebacks': False,
         'server.socket_host': '0.0.0.0',
         'server.socket_port': http_port,
-        'server.thread_pool': 10,
+        'server.thread_pool': 50,
         'server.max_request_body_size': 5 * 1024 * 1024 * 1024,  # 5GB
         'server.socket_timeout': 600,
         'log.screen': True,

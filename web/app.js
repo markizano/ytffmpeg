@@ -108,6 +108,7 @@ $(document).ready(function() {
         data: formData,
         processData: false,
         contentType: false,
+        timeout: 120000, // 2 minutes
         xhr: function() {
           const xhr = new window.XMLHttpRequest();
           xhr.upload.addEventListener('progress', function(e) {
@@ -134,16 +135,30 @@ $(document).ready(function() {
             // window.location.href = '/videos';
           }, 3000);
         },
-        error: function(xhr) {
-          console.log(xhr);
+        error: function(xhr, textStatus, errorThrown) {
+          console.error('Upload error', textStatus, errorThrown, xhr);
           let errorMsg;
-          if (xhr.responseJSON.error) {
+
+          // Network-level errors or server not reachable
+          if (xhr.readyState === 0 && xhr.status === 0) {
+            errorMsg = 'Cannot connect to server. Please ensure the ytffmpeg server is running and try again.';
+          } else if (textStatus === 'timeout') {
+            errorMsg = 'Upload timed out. Please check your connection and server status, then try again.';
+          } else if (xhr.responseJSON && xhr.responseJSON.error) {
             errorMsg = xhr.responseJSON.error;
-          } else if (xhr.response.error) {
+          } else if (xhr.responseJSON && xhr.responseJSON.message) {
+            errorMsg = xhr.responseJSON.message;
+          } else if (xhr.response && xhr.response.error) {
             errorMsg = xhr.response.error;
+          } else if (xhr.responseText) {
+            // Try to extract something useful from plain text / HTML
+            errorMsg = xhr.responseText.substring(0, 200);
+          } else if (errorThrown) {
+            errorMsg = errorThrown.toString();
           } else {
             errorMsg = 'Upload failed. Please try again.';
           }
+
           showStatus('Error: ' + errorMsg, 'error');
           $('#submit-btn').prop('disabled', false);
           $('#progress-container').hide();

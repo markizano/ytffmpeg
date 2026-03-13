@@ -261,7 +261,7 @@ class BaseCommand(object):
         Gets the language from the configuration.
         '''
         language = self.config['ytffmpeg'].get('language', os.environ.get('LANGUAGE', 'en'))
-        if language and language.lower() == 'none':
+        if not language or language.lower() == 'none':
             language = 'en'
         return language
 
@@ -329,6 +329,7 @@ class BaseCommand(object):
         whisper_model = self.select_whisper_model()
 
         # Build whisper command
+        log.info(f'PATH: {os.getenv("PATH")}')
         whisper_cmd = [
             'whisper',
             '--model', whisper_model,
@@ -360,8 +361,19 @@ class BaseCommand(object):
         log.info(f"Running whisper command: {' '.join(whisper_cmd)}")
         try:
             now = time.time()
-            # Use Popen to stream output to console in real-time
-            process = subprocess.Popen(whisper_cmd, text=True)
+            # Use Popen to stream output to the logger in real-time
+            process = subprocess.Popen(
+                whisper_cmd,
+                text=True,
+                env=os.environ,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+            )
+            assert process.stdout is not None
+            for line in process.stdout:
+                line = line.rstrip('\n')
+                if line:
+                    log.info(line)
             returncode = process.wait()
             then = time.time()
 
@@ -388,11 +400,8 @@ class BaseCommand(object):
             self.correct_subtitles(txt_path)
 
             return srt_path
-        except FileNotFoundError:
-            log.error("Whisper command not found. Please ensure whisper is installed and available in PATH.")
-            return ''
         except Exception as e:
-            log.error(f"Whisper failed with error: {e}")
+            log.error(f"Failed to generate subtitles: {e}")
             return ''
 
     def correct_subtitles(self, srt_path: str) -> str:

@@ -485,12 +485,13 @@ class RefreshCommand(BaseCommand):
 
         if 'attributes' in vid_config and 'subs' in vid_config['attributes']:
             if 'languages' in vid_config:
-                log.info(f'Multilang video found at \x1b[1m{resource}\x1b[0m')
+                log.info(f'Transcription detected for video found at \x1b[1m{resource}\x1b[0m')
 
                 # Extract all requested languages
                 requested_langs = []
-                for ilang in vid_config['languages']:
+                for i, ilang in enumerate(vid_config['languages']):
                     lang = ilang.split(':').pop(0)
+                    assert lang != '', f'Language for {resource} index {i} was empty??'
                     requested_langs.append(lang)
 
                 # First, generate base language subtitles using Whisper
