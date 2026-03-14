@@ -135,41 +135,6 @@ class BuildCommand(BaseCommand):
             raise ValueError('Unknown type "%s" from func[%s]!' % ( type(func[function]), function ) )
         return function + '=' + ':'.join(args)
 
-    def processFilterComplex(self, filter_complex_filename: str, filter_complex_script: list) -> None:
-        '''
-        Here's where things get interesting with filter_complex.
-        In its simplest form, it's a list of strings that are joined together with a semicolon.
-        In its most complex form, it's a data structure where each key is a function, and the value
-        of that object is the set of arguments that are fed to that function.
-        The challenge comes into play with the streams and how to operate with named streams in ffmpeg.
-        All inputs are available to the filter_complex. By default, only [video] and [audio] are mapped
-        in the resulting output unless the .videos[].attributes specifies otherwise.
-        If the filter_complex string result is greater than the bash max string for arguments,
-        then this needs to write to a file and tell ffmpeg to use `-filter_complex_script` to refer
-        to that file. I am torn as to whether I should just do this as the default for easier
-        inspection and debugging of the final filter_complex result.
-        This might also result in less interpolation against the command line that may need to happen.
-        '''
-        result = []
-        log.info(f'Writing out \x1b[1m{filter_complex_filename}\x1b[0m script...')
-        with open(filter_complex_filename, 'w') as fc:
-            for i, filter_complex in enumerate(filter_complex_script):
-                if isinstance(filter_complex, str):
-                    # Ignore commented lines.
-                    if filter_complex.startswith('#'): continue
-                    # Otherwise add the string.
-                    result.append(filter_complex)
-                elif isinstance(filter_complex, dict):
-                    assert 'istream' in filter_complex, f'I need an input stream specified in filter_complex[{i}]!'
-                    assert 'ostream' in filter_complex, f'I need an output stream specified in filter_complex[{i}]!'
-                    assert 'filters' in filter_complex, f'I need a list of functions specified in filter_complex[{i}]!'
-                    funcs = ','.join( map(lambda x: self.parseFunction(x['func']), filter_complex['funcs']) )
-                    filter_complex_str = f'[{filter_complex["istream"]}] {funcs} [{filter_complex["ostream"]}]'
-                    result.append(filter_complex_str)
-            fc.write(";\n".join(result))
-            fc.flush()
-        log.info(f'Done writing out \x1b[1m{filter_complex_filename}\x1b[0m script!')
-
     def _preBuildHooks(self, video_opts: dict):
         log.info('**\x1b[1mPre-Build Hooks!\x1b[0m**')
         log.debug(f'CWD: {os.getcwd()}')

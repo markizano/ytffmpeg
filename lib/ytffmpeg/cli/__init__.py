@@ -176,7 +176,18 @@ class Cli(object):
             type=str.upper
         )
 
+        options.add_argument(
+            '--version',
+            action='store_true',
+            dest='print_version',
+            help='Print version and exit.',
+        )
+
         opts, other = options.parse_known_args()
+        if opts.print_version:
+            import ytffmpeg._version
+            print(f'ytffmpeg: {ytffmpeg._version.__version__}')
+            return 0
         if not 'LOG_LEVEL' in os.environ:
             os.environ['LOG_LEVEL'] = opts.log_level
             log.setLevel(opts.log_level)

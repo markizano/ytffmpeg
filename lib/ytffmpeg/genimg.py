@@ -4,14 +4,14 @@
 This module will generate a thumbnail for a video based on the content of the video.
 '''
 
-import os, io
-from google import genai
-from PIL import Image
-
+import io
 import textwrap
 
-from subprocess import Popen, PIPE
-from kizano import getLogger
+from google import genai
+from PIL import Image
+from subprocess import Popen
+
+from ytffmpeg import getLogger, const
 log = getLogger(__name__)
 
 TEMPLATE_SVG = '''<svg width="585" height="1024" viewBox="0 0 1024 1024" background="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,10 +50,6 @@ Do NOT include the TikTok logo nor any username in the resulting image.
 Thanks!
 """
 
-MODEL_ID = os.getenv("GEMINI_IMAGE_MODEL", "gemini-2.5-flash-image")
-# Generate a key from AI Studio: https://aistudio.google.com/app/api-keys
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY") # If it's set, great, if not, it will be picked up by config.
-
 CANVAS_W = 585
 CANVAS_H = 1024
 VISIBLE_H = 800                 # TikTok preview visible height
@@ -74,7 +70,7 @@ def getClient() -> genai.Client:
     '''
     global GENAI_CLIENT
     if GENAI_CLIENT == None:
-        GENAI_CLIENT = genai.Client(api_key=GOOGLE_API_KEY)
+        GENAI_CLIENT = genai.Client(api_key=const.GOOGLE_API_KEY)
     return GENAI_CLIENT
 
 def _wrap_title_12(title: str) -> list[str]:
@@ -196,7 +192,7 @@ def generate_thumbnail(title: str, content: str) -> str:
 
     prompt = IMAGE_PROMPT % {'content': content}
     result = getClient().models.generate_content(
-        model=MODEL_ID,
+        model=const.IMAGE_MODEL_ID,
         contents=[prompt, src_img],
     )
 

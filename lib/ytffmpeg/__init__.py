@@ -1,11 +1,17 @@
 import kizano
-log = kizano.getLogger(__name__)
 kizano.Config.APP_NAME = 'ytffmpeg'  # type: ignore
 
+from logging import Logger
 import ytffmpeg.cli as cli
 import ytffmpeg.filter_complex as filter_complex
 import ytffmpeg.genimg as genimg
+import ytffmpeg.metadata as metadata
+import ytffmpeg.subtitles as subtitles
 import ytffmpeg.notify as notify
+import ytffmpeg.videos as videos
+
+def getLogger(n: str, ll: str, lf: str) -> Logger: return kizano.getLogger(n, ll, lf)
+log = getLogger(__name__)
 
 def main():
     '''
@@ -23,4 +29,14 @@ def main():
     ytffmpeg = cli.Cli(config)
     ytffmpeg.execute()
 
-__all__ = ['cli', 'filter_complex', 'genimg', 'notify', 'main', 'directoryserver']
+__all__ = [
+    'getLogger',
+    'main',
+    'cli',
+    'filter_complex',
+    'genimg',
+    'metadata',
+    'subtitles',
+    'notify',
+    'videos',
+]

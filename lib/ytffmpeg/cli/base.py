@@ -10,19 +10,13 @@ import fcntl
 import random
 from contextlib import contextmanager
 
-from langchain.chat_models import init_chat_model
 import argostranslate.package
 import argostranslate.translate
 
-from ytffmpeg.types import WhisperTask
 
-from kizano import getLogger
+from ytffmpeg.logger import getLogger
 log = getLogger(__name__)
 
-markizano = re.compile(r'm[ae]r\w*[ao]no', re.I)
-kizano = re.compile(r'\bk[iu][sz][ao]n[oa]', re.I)
-draconus = re.compile(r'dr[au]c[ao]nis', re.I)
-tanninovian = re.compile(r't[ae]nn?[aie]nn?ob?i?[ae]n', re.I)
 
 class BaseCommand(object):
     '''
@@ -158,104 +152,6 @@ class BaseCommand(object):
                 except Exception as e:
                     log.warning(f'Error closing lock file: {e}')
 
-    def get_gpu_vram_mb(self) -> int:
-        '''
-        Detect available GPU VRAM in megabytes.
-        Returns 0 if no GPU detected or on error.
-        '''
-        if self._gpu_vram_mb is not None:
-            return self._gpu_vram_mb
-
-        # Try nvidia-smi first
-        try:
-            result = subprocess.run(
-                ['nvidia-smi', '--query-gpu=memory.total', '--format=csv,noheader,nounits'],
-                capture_output=True,
-                text=True,
-                timeout=5
-            )
-            if result.returncode == 0:
-                # Get first GPU's VRAM (in MB)
-                vram_mb = int(result.stdout.strip().split('\n')[0])
-                self._gpu_vram_mb = vram_mb
-                log.info(f'Detected GPU with {vram_mb} MB VRAM via nvidia-smi')
-                return vram_mb
-        except (subprocess.TimeoutExpired, FileNotFoundError, ValueError, IndexError) as e:
-            log.debug(f'nvidia-smi detection failed: {e}')
-
-        # Try torch if available
-        try:
-            import torch
-            if torch.cuda.is_available():
-                vram_bytes = torch.cuda.get_device_properties(0).total_memory
-                vram_mb = int(vram_bytes / (1024 * 1024))
-                self._gpu_vram_mb = vram_mb
-                log.info(f'Detected GPU with {vram_mb} MB VRAM via torch')
-                return vram_mb
-        except (ImportError, RuntimeError) as e:
-            log.debug(f'torch detection failed: {e}')
-
-        # No GPU detected
-        log.warning('No GPU detected, will use CPU or smaller models')
-        self._gpu_vram_mb = 0
-        return 0
-
-    def select_whisper_model(self) -> str:
-        '''
-        Automatically select the best Whisper model based on available GPU VRAM.
-
-        Model VRAM requirements (approximate):
-        - tiny:     ~1 GB  VRAM
-        - base:     ~1 GB  VRAM
-        - small:    ~2 GB  VRAM
-        - medium:   ~5 GB  VRAM
-        - large:    ~10 GB VRAM
-        - large-v2: ~10 GB VRAM
-        - large-v3: ~10 GB VRAM
-
-        Returns the model name to use with Whisper.
-        '''
-        # Check if model is explicitly configured
-        configured_model = self.config['ytffmpeg'].get('whisper_model')
-        if configured_model:
-            log.info(f'Using configured Whisper model: {configured_model}')
-            return configured_model
-
-        # Check if device is CPU - use smaller model
-        device = self.config['ytffmpeg'].get('device', 'cuda')
-        if device == 'cpu':
-            log.info('CPU mode detected, using small model for reasonable performance')
-            return 'small'
-
-        # Auto-select based on GPU VRAM
-        vram_mb = self.get_gpu_vram_mb()
-
-        if vram_mb == 0:
-            # No GPU, use small model for CPU
-            log.info('No GPU detected, selecting "small" model for CPU processing')
-            return 'small'
-        elif vram_mb >= 10240:  # 10 GB or more
-            log.info(f'GPU has {vram_mb} MB VRAM, selecting "large-v3" model (best quality)')
-            return 'large-v3'
-        elif vram_mb >= 8192:   # 8-10 GB
-            log.info(f'GPU has {vram_mb} MB VRAM, selecting "large-v2" model (excellent quality)')
-            return 'large-v2'
-        elif vram_mb >= 6144:   # 6-8 GB
-            log.info(f'GPU has {vram_mb} MB VRAM, selecting "medium" model (good quality)')
-            return 'medium'
-        elif vram_mb >= 3072:   # 3-6 GB
-            log.info(f'GPU has {vram_mb} MB VRAM, selecting "small" model (decent quality)')
-            return 'small'
-        else:                    # < 3 GB
-            log.info(f'GPU has {vram_mb} MB VRAM, selecting "base" model (basic quality)')
-            return 'base'
-
-    def filename(self, path: str) -> str:
-        '''
-        Gets the filename without the extension or leading path.
-        '''
-        return os.path.splitext(os.path.basename(path))[0]
-
     def language(self) -> str:
         '''
         Gets the language from the configuration.
@@ -302,121 +198,6 @@ class BaseCommand(object):
                 if self.filename(invid['i']).lower() in vid.lower():
                     return video
         return {}
-
-    def get_subtitles(self, video_path: str, lang: str) -> str:
-        '''
-        Generate subtitles for a video file using the whisper script directly.
-        Returns the path to the generated SRT file.
-        '''
-        if not self.isSubtitles():
-            log.warning(f'Failed to get subtitles for {video_path}! Subtitles not enabled.')
-            return ''
-
-        srt_path = os.path.join('build', f"{self.filename(video_path)}.{lang}.srt")
-        log.info(f"Generating subtitles for {srt_path} from {video_path}... This might take a while...")
-
-        if os.path.exists(srt_path):
-            if self.isOverwrite():
-                log.info(f"Overwriting existing subtitles for \x1b[1m{srt_path}\x1b[0m!")
-            else:
-                log.info(f"Subtitles already generated for \x1b[1m{srt_path}\x1b[0m!")
-                return srt_path
-
-        # Ensure build directory exists
-        os.makedirs('build', exist_ok=True)
-
-        # Select appropriate Whisper model based on GPU VRAM
-        whisper_model = self.select_whisper_model()
-
-        # Build whisper command
-        log.info(f'PATH: {os.getenv("PATH")}')
-        whisper_cmd = [
-            'whisper',
-            '--model', whisper_model,
-            '--device', self.config['ytffmpeg'].get('device', 'cuda'),
-            '--fp16', 'False',
-            '--output_dir', 'build',
-            '--output_format', 'all',
-            '--language', lang,
-            '--task', os.environ.get('WHISPER_TASK', WhisperTask.TRANSCRIBE),
-            '--word_timestamps', 'True',
-            '--max_words_per_line', '5',
-            '--highlight_words', 'True',
-            '--verbose', 'True',
-            '--initial_prompt', (
-                'Markizano Draconus is a Tanninovian from the Crux galaxy. '
-                "Kizano's FinTech is an education and career advancement company. "
-                'markizano.net is the website you can visit. '
-                'Alex Hormozi and Codie Sanchez are YouTube personalities.'
-            )
-        ]
-
-        # Add temperature if specified
-        if 'whisper_temperature' in self.config['ytffmpeg']:
-            whisper_cmd.extend(['--temperature', str(self.config['ytffmpeg']['whisper_temperature'])])
-
-        # Add the video file
-        whisper_cmd.append(video_path)
-
-        log.info(f"Running whisper command: {' '.join(whisper_cmd)}")
-        try:
-            now = time.time()
-            # Use Popen to stream output to the logger in real-time
-            process = subprocess.Popen(
-                whisper_cmd,
-                text=True,
-                env=os.environ,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-            )
-            assert process.stdout is not None
-            for line in process.stdout:
-                line = line.rstrip('\n')
-                if line:
-                    log.info(line)
-            returncode = process.wait()
-            then = time.time()
-
-            if returncode != 0:
-                log.error(f"Whisper failed with exit code {returncode}")
-                return ''
-
-            log.info(f"Whisper completed in {round(then-now, 4)} seconds!")
-            log.info(f'Now removing excess VTT, JSON, and TSV files...')
-            for suffix in ['json', 'vtt', 'tsv']:
-                extra = os.path.join('build', f'{self.filename(video_path)}.{suffix}')
-                if os.path.exists(extra):
-                    os.unlink(extra)
-
-            # Whisper will create the SRT file with the same name as the video but with .srt extension
-            # We need to rename it to match our expected naming convention
-            expected_whisper_srt = os.path.join('build', f"{self.filename(video_path)}.srt")
-            if os.path.exists(expected_whisper_srt) and expected_whisper_srt != srt_path:
-                os.rename(expected_whisper_srt, srt_path)
-                log.info(f"Renamed {expected_whisper_srt} to {srt_path}")
-
-            self.correct_subtitles(srt_path)
-            txt_path = os.path.join('build', f"{self.filename(video_path)}.txt")
-            self.correct_subtitles(txt_path)
-
-            return srt_path
-        except Exception as e:
-            log.error(f"Failed to generate subtitles: {e}")
-            return ''
-
-    def correct_subtitles(self, srt_path: str) -> str:
-        '''
-        Whisper is constantly mis-spelling my name and various other story-lore.
-        I attempt to correct that here.
-        '''
-        log.info(f'Implementing corrections to {srt_path}')
-        subtitles = open(srt_path).read()
-        subtitles = kizano.sub('Kizano', subtitles)
-        subtitles = markizano.sub('Markizano', subtitles)
-        subtitles = draconus.sub('Draconus', subtitles)
-        subtitles = tanninovian.sub('Tanninovian', subtitles)
-        open(srt_path, 'w').write(subtitles)
-        return subtitles
 
     def parse_srt(self, srt_path: str) -> list[dict]:
         '''
