@@ -12,13 +12,15 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from kizano import getLogger
 log = getLogger(__name__)
 
-from ytffmpeg.types import Devices, Action
-import ytffmpeg.cli.base as base
+from ytffmpeg import types
 import ytffmpeg.cli.new as new
+import ytffmpeg.cli.compress as compress
+import ytffmpeg.cli.genimage as genimage
+import ytffmpeg.cli.gensubs as gensubs
+import ytffmpeg.cli.normalize as normalize
 import ytffmpeg.cli.build as build
-import ytffmpeg.cli.refresh as refresh
 import ytffmpeg.cli.publish as publish
-import ytffmpeg.webserv as webserv
+import ytffmpeg.cli.web as web
 
 def interrupt(signal, frame):
     log.error('Caught ^C interrupt, exiting...')
@@ -30,11 +32,14 @@ class Cli(object):
     '''
 
     ACTIONS = {
-        Action.NEW: new.gennew,
-        Action.BUILD: build.builder,
-        Action.REFRESH: refresh.refresher,
-        Action.PUBLISH: publish.publisher,
-        Action.SERVE: webserv.serve
+        types.Action.NEW: new.gennew,
+        types.Action.MP4TOMKV: compress.compressVideo,
+        types.Action.GENSUBS: gensubs.genSubs,
+        types.Action.GENIMG: genimage.genImage,
+        types.Action.NORMALIZE: normalize.normalize,
+        types.Action.BUILD: build.builder,
+        types.Action.PUBLISH: publish.publisher,
+        types.Action.SERVE: web.serveTheWeb,
     }
 
     def __init__(self, config: dict):
@@ -128,8 +133,8 @@ class Cli(object):
             action='store',
             dest='device',
             help='Valid for the `refresh` action. Specify the device to use for processing.',
-            choices=[Devices.CPU, Devices.CUDA, Devices.AUTO],
-            default=Devices.GPU
+            choices=[types.Devices.CPU, types.Devices.CUDA, types.Devices.AUTO],
+            default=types.Devices.GPU
         )
 
         options.add_argument(
@@ -248,6 +253,16 @@ class Cli(object):
             return 1
         log.info(f'Executing action: {action} with config: {self.config}')
         signal(SIGINT, interrupt)
-        return action(self.config)
+        return action(self.config['ytffmpeg'])
 
-__all__ = ['base', 'new', 'build', 'refresh', 'publish', 'webserv', 'Cli']
+__all__ = [
+    'base',
+    'new',
+    'compress',
+    'genimage',
+    'normalize',
+    'build',
+    'publish',
+    'webserv',
+    'Cli',
+]

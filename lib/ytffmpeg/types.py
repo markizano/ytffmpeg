@@ -12,11 +12,13 @@ class Devices(StrEnum):
 class Action(StrEnum):
     NEW = 'new'
     BUILD = 'build'
-    REFRESH = 'refresh'
-    SUBS = 'gensubs'
+    GENSUBS = 'gensubs'
+    GENIMG = 'genimage'
     LOADMOD = 'load-module'
     PUBLISH = 'publish'
     SERVE = 'serve'
+    MP4TOMKV = 'mp4-to-mkv'
+    NORMALIZE = 'normalize'
 
 class WhisperTask(StrEnum):
     TRANSCRIBE = 'transcribe'

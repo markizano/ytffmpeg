@@ -21,7 +21,6 @@ def gennew(config: dict) -> int:
     '''
     Produce a new project directory.
     '''
-    log.debug(config)
     if 'resource' in config['ytffmpeg']:
         resource_path = os.path.realpath(config['ytffmpeg']['resource'])
         if not os.path.exists(resource_path):

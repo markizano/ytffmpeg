@@ -7,12 +7,23 @@ import subprocess
 import fcntl
 import random
 from contextlib import contextmanager
+from glob import glob
 from kizano.utils import read_yaml, write_yaml
 
 from ytffmpeg import getLogger, notify
 log = getLogger(__name__)
 
 _gpu_vram_mb = None
+
+def language(cfg: dict, video_cfg: dict) -> str:
+    '''
+    Try to parse out the language from the config/env.
+    Definitely return a language. Default to English if nothing else.
+    '''
+    lang_env = os.getenv('LANGUAGE', 'en')
+    lang_cfg = cfg.get('language', lang_env)
+    lang_vid = video_cfg.get('language', lang_cfg)
+    return lang_vid
 
 def filename(path: str) -> str:
     '''
@@ -44,6 +55,35 @@ def save(videos: list[dict]) -> None:
     log.info('Writing out ytffmpeg.yml configuration...')
     write_yaml('ytffmpeg.yml', { 'videos': videos })
     log.info('Done writing out ytffmpeg.yml configuration!')
+
+def getResources() -> list[str]:
+    '''
+    List all resources in the directory.
+    '''
+    return glob('resources/*.mp4') + glob('resources/*.mkv')
+
+def mergefilters(segments: list) -> list[str]:
+    '''
+    Generate and return the final `concat` filter with all the segments properly input.
+    required to converge them together.
+
+    segments: An array with as many elements that are meant to be merged.
+
+    Returns: filter complex array that can be `.extend()`ed to define the concat.
+    Outputs to [video] and [audio] streams to map.
+    '''
+    trim_filters = []
+    if len(segments) > 1:
+        video_inputs = ''.join([f'[v{i}]' for i in range(len(segments))])
+        audio_inputs = ''.join([f'[a{i}]' for i in range(len(segments))])
+        concat_filter = f"{video_inputs}concat=n={len(segments)}:v=1:a=0,setsar=1:1[video];{audio_inputs}concat=n={len(segments)}:v=0:a=1[audio]"
+        trim_filters.append(concat_filter)
+    else:
+        # Single segment, just rename outputs
+        trim_filters.append("[v0]null[video]")
+        trim_filters.append("[a0]anull[audio]")
+
+    return trim_filters
 
 def get_gpu_vram_mb() -> int:
     '''
@@ -89,7 +129,7 @@ def get_gpu_vram_mb() -> int:
     return 0
 
 @contextmanager
-def video_processing_lock(self, operation: str):
+def video_processing_lock(operation: str, lockfile_timeout: int = 3600):
     '''
     Context manager for acquiring an exclusive lock for video processing operations.
 
@@ -104,13 +144,14 @@ def video_processing_lock(self, operation: str):
             # Run refresh operation
             self.process_videos()
     '''
+    lockfile = os.path.expanduser('~/.ytffmpeg.lock')
     lock_file = None
     lock_acquired = False
     start_time = time.time()
 
     try:
         # Create lock file if it doesn't exist
-        lock_dir = os.path.dirname(self.lockfile)
+        lock_dir = os.path.dirname(lockfile)
         if lock_dir and not os.path.exists(lock_dir):
             try:
                 os.makedirs(lock_dir, mode=0o755, exist_ok=True)
@@ -119,7 +160,7 @@ def video_processing_lock(self, operation: str):
                 raise
 
         # Open/create lock file
-        lock_file = open(self.lockfile, 'w')
+        lock_file = open(lockfile, 'w')
 
         # Try to acquire lock with retry logic
         while True:
@@ -132,17 +173,17 @@ def video_processing_lock(self, operation: str):
                 lock_file.write(str(os.getpid()))
                 lock_file.flush()
 
-                log.info(f'Acquired video processing lock for {operation}: {self.lockfile} (PID: {os.getpid()})')
+                log.info(f'Acquired video processing lock for {operation}: {lockfile} (PID: {os.getpid()})')
                 break
             except IOError:
                 # Lock is held by another process
                 elapsed = time.time() - start_time
-                if elapsed >= self.lockfile_timeout:
+                if elapsed >= lockfile_timeout:
                     error_msg = (
                         f'Failed to acquire video processing lock for {operation} after {elapsed:.1f}s '
-                        f'(timeout: {self.lockfile_timeout}s). '
+                        f'(timeout: {lockfile_timeout}s). '
                         f'Another ytffmpeg process may be stuck or still running. '
-                        f'Check lockfile: {self.lockfile}'
+                        f'Check lockfile: {lockfile}'
                     )
                     log.error(error_msg)
 
@@ -162,7 +203,7 @@ def video_processing_lock(self, operation: str):
                 wait_time = 1.0 + random.uniform(0.1, 1.0)
                 log.warning(
                     f'Video processing lock for {operation} is held by another process. '
-                    f'Waiting {wait_time:.2f}s... (elapsed: {elapsed:.1f}s/{self.lockfile_timeout}s)'
+                    f'Waiting {wait_time:.2f}s... (elapsed: {elapsed:.1f}s/{lockfile_timeout}s)'
                 )
                 time.sleep(wait_time)
 
@@ -175,7 +216,7 @@ def video_processing_lock(self, operation: str):
             if lock_acquired:
                 try:
                     fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
-                    log.info(f'Released video processing lock for {operation}: {self.lockfile}')
+                    log.info(f'Released video processing lock for {operation}: {lockfile}')
                 except Exception as e:
                     log.warning(f'Error releasing video processing lock: {e}')
 

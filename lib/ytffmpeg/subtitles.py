@@ -16,7 +16,7 @@ kizano = re.compile(r'\bk[iu][sz][ao]n[oa]', re.I)
 draconus = re.compile(r'dr[au]c[ao]nis', re.I)
 tanninovian = re.compile(r't[ae]nn?[aie]nn?ob?i?[ae]n', re.I)
 
-def select_whisper_model() -> str:
+def whisperModel() -> str:
     '''
     Automatically select the best Whisper model based on available GPU VRAM.
 
@@ -54,7 +54,7 @@ def select_whisper_model() -> str:
         log.info(f'GPU has {vram_mb} MB VRAM, selecting "base" model (basic quality)')
         return 'base'
 
-def get_subtitles(
+def genSubtitles(
     video_path: str,
     lang: str,
     overwrite: bool = False,
@@ -141,16 +141,16 @@ def get_subtitles(
             os.rename(expected_whisper_srt, srt_path)
             log.info(f"Renamed {expected_whisper_srt} to {srt_path}")
 
-        correct_subtitles(srt_path)
+        fixSubtitles(srt_path)
         txt_path = os.path.join('build', f"{utils.filename(video_path)}.txt")
-        correct_subtitles(txt_path)
+        fixSubtitles(txt_path)
 
         return srt_path
     except Exception as e:
         log.error(f"Failed to generate subtitles: {e}")
         return ''
 
-def correct_subtitles(self, srt_path: str) -> str:
+def fixSubtitles(self, srt_path: str) -> str:
     '''
     Whisper is constantly mis-spelling my name and various other story-lore.
     I attempt to correct that here.
