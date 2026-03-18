@@ -12,7 +12,7 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from kizano import getLogger
 log = getLogger(__name__)
 
-from ytffmpeg import types
+from ytffmpeg import types, const
 import ytffmpeg.cli.new as new
 import ytffmpeg.cli.compress as compress
 import ytffmpeg.cli.genimage as genimage
@@ -142,7 +142,7 @@ class Cli(object):
             action='store',
             dest='language',
             help='Which language to use when generating subtitles?',
-            choices=base.BaseCommand.LANGS,
+            choices=const.LANGS,
             default=None
         )
 
