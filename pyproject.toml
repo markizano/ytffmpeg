@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ytffmpeg"
-version = "1.5.1"
+dynamic = ["version"]
 description = "Scripts and tools to ease the processing of videos for Social Media platforms."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -36,6 +36,13 @@ ytffmpeg = "ytffmpeg:main"
 Homepage = "https://ytffmpeg.markizano.net"
 Repository = "https://github.com/markizano/ytffmpeg"
 Issues = "https://github.com/markizano/ytffmpeg/issues"
+
+[tool.setuptools_scm]
+tag_regex = "^v(?P<version>.+)$"
+version_scheme = "no-guess-dev"
+local_scheme = "node-and-date"
+write_to = "lib/ytffmpeg/_version.py"
+write_to_template = "__version__ = \"{version}\"\n"
 
 [tool.setuptools.package-dir]
 ytffmpeg = "lib/ytffmpeg"

@@ -108,7 +108,7 @@ $(document).ready(function() {
         data: formData,
         processData: false,
         contentType: false,
-        timeout: 120000, // 2 minutes
+        timeout: 300000, // 5 minutes
         xhr: function() {
           const xhr = new window.XMLHttpRequest();
           xhr.upload.addEventListener('progress', function(e) {
