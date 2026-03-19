@@ -31,15 +31,27 @@ def filename(path: str) -> str:
     '''
     return os.path.splitext(os.path.basename(path))[0]
 
-def hasVideo(videos: list[dict], vid: str) -> bool:
+def hasInput(videos: list[dict], artifact: str) -> bool:
     '''
-    Check the list of videos. If any of the input videos match the resource using filename() then return True.
+    Check the list of videos.
+    If the target artifact (subtitle|video) is mentioned in the inputs, return True
     '''
     for video in videos:
         for inputVid in video['input']:
-            if inputVid['i'] == vid:
+            if inputVid['i'] == artifact:
                 return True
     return False
+
+def getInputIndex(videos: list[dict], artifact: str) -> int|None:
+    '''
+    Check the list of videos.
+    Return the video index the input was found so we can extract the `video_cfg` for it.
+    '''
+    for i, video in enumerate(videos):
+        for inputVid in video['input']:
+            if inputVid['i'] == artifact:
+                return i
+    return None
 
 def load() -> dict:
     '''
@@ -61,6 +73,12 @@ def getResources() -> list[str]:
     List all resources in the directory.
     '''
     return glob('resources/*.mp4') + glob('resources/*.mkv')
+
+def getTranscripts() -> list[str]:
+    '''
+    List all whisper transcripts.
+    '''
+    return glob('build/*.txt')
 
 def mergefilters(segments: list) -> list[str]:
     '''

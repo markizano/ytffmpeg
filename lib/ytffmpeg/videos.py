@@ -404,7 +404,7 @@ def preProcessResources(ytffmpeg_cfg: dict, **kwargs) -> str:
     '''
     to_concat: list[dict] = []
     for resource in utils.getResources():
-        if utils.hasVideo(ytffmpeg_cfg['videos']): continue
+        if utils.hasInput(ytffmpeg_cfg['videos']): continue
         mp4tomkv(resource)
         trimmed_video = removeSilence(resource, **kwargs)
         to_concat.append({'i': trimmed_video})

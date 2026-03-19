@@ -15,6 +15,7 @@ class Action(StrEnum):
     GENSUBS = 'gensubs'
     GENIMG = 'genimage'
     LOADMOD = 'load-module'
+    METADATA = 'metadata'
     PUBLISH = 'publish'
     SERVE = 'serve'
     MP4TOMKV = 'mp4-to-mkv'

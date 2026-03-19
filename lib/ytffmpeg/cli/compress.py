@@ -14,7 +14,7 @@ def compressVideo(cfg: dict) -> int:
     ytffmpeg_cfg = utils.load()
     for resource in utils.getResources():
         if not resource.endswith('mp4'): continue
-        if utils.hasVideo(ytffmpeg_cfg, resource): continue
+        if utils.hasInput(ytffmpeg_cfg, resource): continue
         log.info(f'Identified {resource} to be compressed...')
         compressed = videos.mp4tomkv(resource)
         log.info(f'Compressed video {compressed}')
