@@ -46,6 +46,7 @@ build/
 *.egg-info
 .eggs
 dist/
+lib/ytffmpeg/_version.py
 
 # Makefile's are generated, so no need to keep them under VCS.
 Makefile
