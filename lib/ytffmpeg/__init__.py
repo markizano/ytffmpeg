@@ -25,6 +25,7 @@ def main():
     except Exception as e:
         log.warning(f'Local ytffmpeg.yml not found: {e}')
         local_cfg = {}
+    kizano.log.setLevel(99)
     config = kizano.utils.dictmerge( kizano.getConfig(), local_cfg )
     if 'ytffmpeg' not in config:
         config['ytffmpeg'] = {}

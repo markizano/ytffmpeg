@@ -40,7 +40,7 @@ class Cli(object):
         types.Action.METADATA: metadata.generateMetadata,
         types.Action.NORMALIZE: normalize.normalize,
         types.Action.BUILD: build.buildVideo,
-        types.Action.PUBLISH: publish.publisher,
+        types.Action.PUBLISH: publish.publishBuilds,
         types.Action.SERVE: web.serveTheWeb,
     }
 

@@ -20,7 +20,7 @@ from kizano import getLogger
 from kizano.utils import dictmerge, read_yaml, write_yaml
 
 from ytffmpeg.notify import send_notification
-from ytffmpeg.cli import new, refresh, build
+from ytffmpeg.cli import new, normalize, build
 
 log = getLogger(__name__)
 DEBUG = os.getenv('DEBUG', False)
@@ -261,9 +261,9 @@ def process_video_pipeline(
             log.info('More than 1 video in the list, running build to concat into a single resource.')
             build.builder(project_config)
 
-        log.info('Refreshing resources from existing video list.')
+        log.info('Normalizing resources from existing video list.')
         video_cfg = read_yaml('ytffmpeg.yml')
-        refresh.refresher({'ytffmpeg': config['ytffmpeg'], 'videos': video_cfg['videos']})
+        normalize.normalize({'ytffmpeg': config['ytffmpeg'], 'videos': video_cfg['videos']})
 
         log.info('Merging config from submitted form.')
         video_cfg = read_yaml('ytffmpeg.yml')
