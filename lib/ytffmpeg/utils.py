@@ -77,6 +77,7 @@ def getResources() -> list[str]:
 def getTranscripts() -> list[str]:
     '''
     List all whisper transcripts.
+    These are the TXT files in the `build/` folder.
     '''
     return glob('build/*.txt')
 
