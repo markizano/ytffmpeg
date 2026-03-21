@@ -11,14 +11,14 @@ from ytffmpeg import getLogger, webserv
 log = getLogger(__name__)
 
 
-def serveTheWeb(config: dict):
+def serveTheWeb(cfg: dict):
     '''
     Main entry point for 'ytffmpeg serve' command.
     Starts the CherryPy web server.
     '''
     # Get configuration
-    workspace = os.path.abspath(config.get('workspace', os.getcwd()))
-    http_port = config.get('http_port', int(os.getenv('HTTP_PORT', '9091')))
+    workspace = os.path.abspath(cfg.get('workspace', os.getcwd()))
+    http_port = cfg.get('http_port', int(os.getenv('HTTP_PORT', '9091')))
     os.chdir(workspace)
 
     # Ensure workspace exists
@@ -35,9 +35,9 @@ def serveTheWeb(config: dict):
         # Fallback for development or older Python
         default_webroot = os.path.join(os.path.dirname(__file__), '../../web')
 
-    webroot = config.get('webroot', default_webroot)
+    webroot = cfg.get('webroot', default_webroot)
     webroot = os.path.abspath(webroot)
-    config['webroot'] = webroot
+    cfg['webroot'] = webroot
 
     if not os.path.exists(webroot):
         log.error(f'Webroot directory not found: {webroot}')
@@ -47,8 +47,8 @@ def serveTheWeb(config: dict):
     log.info(f'Serving static files from: {webroot}')
 
     # Create handlers
-    page_handler = webserv.PageHandlers(config)
-    api_handler = webserv.ApiHandlers(config)
+    page_handler = webserv.PageHandlers(cfg)
+    api_handler = webserv.ApiHandlers(cfg)
 
     # Mount handlers
     cherrypy.tree.mount(page_handler, '/', config={
