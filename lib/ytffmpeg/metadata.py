@@ -2,9 +2,10 @@
 Handles generation and management of metadata associated with a video.
 '''
 import os
+from typing import Literal
 from langchain.chat_models import init_chat_model
 from langchain_core.messages import HumanMessage, SystemMessage
-from ytffmpeg import getLogger, const, utils
+from ytffmpeg import getLogger, const, utils, videos
 
 log = getLogger(__name__)
 
@@ -35,56 +36,45 @@ def getClient():
         )
     return LLM
 
-def generateTitle(resource: str) -> str:
+def generateMetadata(video_cfg: dict, md_type: Literal['title', 'description'], **kwargs) -> dict:
     '''
-    Generate a title for a video based on the subtitles.
+    Generate a title|description for a video based on the subtitles/content of the video.
     Reads the text transcript file for the resource and sends its content to the LLM.
     '''
     try:
+        resource = video_cfg['input'][0]['i']
         txt_path = f'build/{utils.filename(resource)}.txt'
+        if video_cfg['metadata'].get(md_type, '') and not kwargs.get('overwrite', False):
+            log.info(f'Video already has {md_type}. Not wasting tokens for another...')
 
         if not os.path.exists(txt_path):
-            log.warning(f'Transcript file {txt_path} not found. Cannot generate title.')
-            return ''
+            log.warning(f'Transcript file {txt_path} not found. Cannot generate {md_type}.')
+            video_cfg['metadata'][md_type] = ''
+            return video_cfg
 
-        log.info(f'Generating title for \x1b[1m{resource}\x1b[0m from transcript at {txt_path}')
+        log.info(f'Generating {md_type} for \x1b[1m{resource}\x1b[0m from transcript at {txt_path}')
 
         # Read the transcript file content
         subtitle_content = open(txt_path, 'r', encoding='utf-8').read()
 
+        if md_type == 'title':
+            sysprompt = GENERATE_TITLE_PROMPT
+        elif md_type == 'description':
+            sysprompt = GENERATE_DESCRIPTION_PROMPT
+        else:
+            # Realistically, this should never execute, but as a preventative measure...
+            raise ValueError(f'Unsupported md_type: {md_type}; must be one of "title" or "description".')
         messages = [
-            SystemMessage(content=GENERATE_TITLE_PROMPT),
+            SystemMessage(content=sysprompt),
             HumanMessage(content=subtitle_content)
         ]
         response = getClient().invoke(messages)
-        return str(response.content).strip()
+        value = str(response.content).strip()
     except Exception as e:
-        log.error(f'Exception generating title: {e}')
-        return ''
-
-def generateDescription(resource: str) -> str:
-    '''
-    Generate a description for a video based on the subtitles.
-    Reads the text transcript file for the resource and sends its content to the LLM.
-    '''
-    try:
-        txt_path = f'build/{utils.filename(resource)}.txt'
-
-        if not os.path.exists(txt_path):
-            log.warning(f'Transcript file {txt_path} not found. Cannot generate description.')
-            return ''
-
-        log.info(f'Generating description for \x1b[1m{resource}\x1b[0m from transcript at {txt_path}')
-
-        # Read the transcript file content
-        subtitle_content = open(txt_path, 'r', encoding='utf-8').read()
-
-        messages = [
-            SystemMessage(content=GENERATE_DESCRIPTION_PROMPT),
-            HumanMessage(content=subtitle_content)
-        ]
-        response = getClient().invoke(messages)
-        return str(response.content).strip()
-    except Exception as e:
-        log.error(f'Exception generating description: {e}')
-        return ''
+        log.error(f'Exception generating {md_type}: {e}')
+        value = ''
+    args = {
+        md_type: value
+    }
+    videos.updateVideo(video_cfg, **args)
+    return video_cfg
