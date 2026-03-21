@@ -14,10 +14,6 @@ log = getLogger(__name__)
 
 from ytffmpeg import types, const
 import ytffmpeg.cli.new as new
-import ytffmpeg.cli.compress as compress
-import ytffmpeg.cli.genimage as genimage
-import ytffmpeg.cli.gensubs as gensubs
-import ytffmpeg.cli.metadata as metadata
 import ytffmpeg.cli.normalize as normalize
 import ytffmpeg.cli.build as build
 import ytffmpeg.cli.publish as publish
@@ -34,10 +30,10 @@ class Cli(object):
 
     ACTIONS = {
         types.Action.NEW: new.gennew,
-        types.Action.MP4TOMKV: compress.compressVideo,
-        types.Action.GENSUBS: gensubs.genSubs,
-        types.Action.GENIMG: genimage.genImage,
-        types.Action.METADATA: metadata.generateMetadata,
+        types.Action.MP4TOMKV: normalize.compressVideos,
+        types.Action.GENSUBS: normalize.genSubs,
+        types.Action.GENIMG: normalize.genImage,
+        types.Action.METADATA: normalize.genMetadata,
         types.Action.NORMALIZE: normalize.normalize,
         types.Action.BUILD: build.buildVideo,
         types.Action.PUBLISH: publish.publishBuilds,
