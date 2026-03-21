@@ -20,15 +20,10 @@ def main():
     Let's you run commands for ytffmpeg.
     '''
     log = getLogger(__name__)
-    try:
-        local_cfg = kizano.utils.read_yaml('ytffmpeg.yml')
-    except Exception as e:
-        log.warning(f'Local ytffmpeg.yml not found: {e}')
-        local_cfg = {}
     kizano.log.setLevel(99)
-    config = kizano.utils.dictmerge( kizano.getConfig(), local_cfg )
-    if 'ytffmpeg' not in config:
-        config['ytffmpeg'] = {}
+    config = kizano.getConfig()
+    if 'google' in config and 'api_key' in config['google']:
+        const.GOOGLE_API_KEY = config['google']['api_key']
     ytffmpeg = cli.Cli(config)
     ytffmpeg.execute()
 

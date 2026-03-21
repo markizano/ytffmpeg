@@ -375,28 +375,29 @@ class Cli(object):
 
         # Filter out None values so config file defaults are not overridden.
         opts_dict = {k: v for k, v in vars(opts).items() if v is not None}
-        self.config['ytffmpeg'].update(opts_dict)
+        self.config.update(opts_dict)
         # The following "defaults" are set **after** everything above because if a default is
         # defined in the ArgumentParser(), it does not allow ~/.config/ytffmpeg/config.yml
         # to define the default behaviour/config. Setting it here ensures that is possible
         # and if still not defined (e.g. config absent), we can define in-code.
-        self.config['ytffmpeg']['silence_duration'] = self.config['ytffmpeg'].get('silence_duration', 1.2)
-        self.config['ytffmpeg']['silence_threshold'] = self.config['ytffmpeg'].get('silence_threshold', 30)
+        self.config['silence_duration'] = self.config.get('silence_duration', 1.2)
+        self.config['silence_threshold'] = self.config.get('silence_threshold', 30)
 
     def execute(self):
         '''
         Interprets command line options and calls the subsequent actions to take.
         These will be built out as sub-modules to this module.
         '''
+        log.info('Welcome to ytffmpeg!')
         if 'OMP_NUM_THREADS' not in os.environ:
             os.environ['OMP_NUM_THREADS'] = str(cpu_count())
-        action = Cli.ACTIONS.get(self.config['ytffmpeg']['action'])
+        action = Cli.ACTIONS.get(self.config['action'])
         if not action:
-            log.error('Invalid action: %s', self.config['ytffmpeg']['action'])
+            log.error('Invalid action: %s', self.config['action'])
             return 1
         log.info(f'Executing action: {action} with config: {self.config}')
         signal(SIGINT, interrupt)
-        return action(self.config['ytffmpeg'])
+        return action(self.config)
 
 __all__ = [
     'base',

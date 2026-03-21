@@ -20,6 +20,9 @@ def mp4tomkv(resource: str) -> str:
     Compress using crf=28.
     '''
     log.info(f'Converting {resource} to mkv.')
+    if resource.endswith('.mkv'):
+        log.info('Video already MKV, not converting!')
+        return resource
     mkvfile = resource.replace('.mp4', '.mkv')
     out_opts = {
         'vf': 'sidedata=mode=delete',
@@ -245,6 +248,7 @@ def updateVideo(video_cfg: dict, **kwargs) -> dict:
     filter_complex: list[str] -- List of strings to use for the filter complex. By default
         include the standard hard-sub filter complex.
     '''
+    log.info(f'Updating video attributes and metadata: {video_cfg}')
 
     # If metadata is defined, then assign it where it belongs in the data structure.
     for metadata in ['title', 'description']:
@@ -276,20 +280,6 @@ def updateVideo(video_cfg: dict, **kwargs) -> dict:
         else:
             # Build video filter chain with rotation handling
             video_filters = []
-
-            # Detect video rotation from display matrix metadata
-            rotation = getVideoRotation(video_cfg['input'][0]['i'])
-
-            # Add transpose filter based on rotation BEFORE subtitles.
-            # 90 deg clockwise: -180; 90 deg counter-cw: 0; portrait: 90; upside-down: -90
-            if rotation == 90:
-                log.info('Adding transpose=2 for 90° rotation')
-                video_filters.append('transpose=2')  # 90 degrees clockwise
-            elif rotation == -90:
-                log.info('Adding transpose=1 for 180° rotation')
-                video_filters.append('transpose=1')  # 90 degrees counter-clockwise/upside down
-            if rotation and rotation != 0:
-                video_filters.append('sidedata=mode=delete')
 
             # Remember: https://www.abyssale.com/blog/how-to-change-the-appearances-of-subtitles-with-ffmpeg
             # @TODO: Detect when split screen OBS view and change font settings.
@@ -390,7 +380,7 @@ def preProcessResources(ytffmpeg_cfg: dict, **kwargs) -> str:
         log.warning('compileVideo() at this step did not succeed. This may cause downstream effects from here...')
     return outfile
 
-def compileVideo(video_opts: dict, overwrite: bool = False) -> int:
+def compileVideo(video_opts: dict, **kwargs) -> int:
     '''
     Craft the FFMpeg command and execute on the video conversion.
     '''
@@ -420,11 +410,8 @@ def compileVideo(video_opts: dict, overwrite: bool = False) -> int:
         # Process a filter_complex if we have one.
         if 'filter_complex' in video_opts:
             filter_complex = f'build/{utils.filename(output)}.filter_complex'
-            with open(filter_complex, 'w', encoding='utf-8') as fc:
-                for fc_line in video_opts['filter_complex']:
-                    if fc_line.startswith('#'): continue
-                    fc.write(fc_line + '\n')
-                    fc.flush()
+            filter_complex_script = ';\n'.join(fc_line for fc_line in video_opts['filter_complex'] if not fc_line.startswith('#')) + '\n'
+            open(filter_complex, 'w', encoding='utf-8').write(filter_complex_script)
             final_cmd.append('-/filter_complex')
             final_cmd.append(filter_complex)
         # Strip previous metadata.
@@ -504,7 +491,7 @@ def compileVideo(video_opts: dict, overwrite: bool = False) -> int:
         final_cmd.append(video_opts['output'])
         log.info(f'Execute: \x1b[34m{" ".join(final_cmd)}\x1b[0m')
         if os.path.exists(video_opts['output']):
-            if overwrite:
+            if kwargs.get('overwrite', False):
                 log.info(f'Overwriting existing \x1b[1m{output}\x1b[0m!')
             else:
                 log.info(f'File \x1b[1m{output}\x1b[0m already exists!')

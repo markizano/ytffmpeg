@@ -16,4 +16,12 @@ def buildVideo(cfg: dict) -> int:
     '''
     log.info('Building project based on `ytffmpeg.yml` config.')
     ytffmpeg_cfg = utils.load()
-    return videos.compileVideo(ytffmpeg_cfg, **cfg)
+    results = []
+    for video_cfg in ytffmpeg_cfg['videos']:
+        cv = videos.compileVideo(video_cfg, **cfg)
+        if cv != 0:
+            log.info(f'Compile Video had an error for producing {video_cfg["output"]}')
+        results.append(cv)
+    if all(r == 0 for r in results):
+        return 0
+    return 1

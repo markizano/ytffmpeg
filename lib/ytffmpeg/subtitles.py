@@ -87,8 +87,15 @@ def genSubtitles(
             log.info(f"Overwriting existing subtitles for \x1b[1m{srtfile}\x1b[0m!")
         else:
             log.info(f"Subtitles already generated for \x1b[1m{srtfile}\x1b[0m!")
+            log.info('Checking to see if sub config is in ytffmpeg.yml...')
+            for inputVid in video_cfg['input']:
+                if inputVid['i'].endswith('.srt'):
+                    log.info('Config is good!')
+                    return video_cfg
+            subs = [(lang, srtfile)]
+            log.info(f'Video config missing SRT files! Adding subs={subs}')
+            videos.updateVideo(video_cfg, subs=subs)
             return video_cfg
-
 
     # Build whisper command
     log.info(f'PATH: {os.getenv("PATH")}')

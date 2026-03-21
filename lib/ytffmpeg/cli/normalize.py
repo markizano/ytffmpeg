@@ -101,7 +101,7 @@ def normalize(cfg: dict) -> int:
     ytffmpeg_cfg = utils.load()
     cfg['name'] = os.path.basename(os.getcwd())
     resources = utils.getResources()
-    if resources >1:
+    if len(resources) >1:
         resource = videos.preProcessResources(ytffmpeg_cfg, **cfg)
     else:
         resource = videos.mp4tomkv(resources[0])
@@ -110,9 +110,11 @@ def normalize(cfg: dict) -> int:
     subtitles.genSubtitles(video_cfg, resource, **cfg)
     metadata.generateMetadata(video_cfg, 'title', **cfg)
     metadata.generateMetadata(video_cfg, 'description', **cfg)
-    videos.updateVideo(video_cfg, attributes=['thumbnail'])
-    content = open(f'build/{utils.filename(resource)}.txt')
-    genimg.generate_thumbnail(video_cfg['metadata']['title'], content)
+    # Set filter_complex to None to get the default hardsub filter.
+    videos.updateVideo(video_cfg, attributes=['thumbnail'], filter_complex=None)
+    content = open(f'build/{utils.filename(resource)}.txt').read()
+    if not os.path.exists('thumbnail.png') or ( os.path.exists('thumbnail.png') and cfg.get('overwrite', False) ):
+        genimg.generate_thumbnail(video_cfg['metadata']['title'], content)
 
     ytffmpeg_cfg['videos'].append(video_cfg)
     log.info('Video(s) normalized and added to `ytffmpeg.yml` config.')
