@@ -7,7 +7,7 @@ import os
 import re
 import time
 import subprocess
-from ytffmpeg import getLogger, utils, types
+from ytffmpeg import getLogger, types, utils, videos
 log = getLogger(__name__)
 
 # I know this isn't an end-all solution, but it handles 80% of the cases Whisper gets it wrong.
@@ -15,6 +15,20 @@ markizano = re.compile(r'm[ae]r\w*[ao]no', re.I)
 kizano = re.compile(r'\bk[iu][sz][ao]n[oa]', re.I)
 draconus = re.compile(r'dr[au]c[ao]nis', re.I)
 tanninovian = re.compile(r't[ae]nn?[aie]nn?ob?i?[ae]n', re.I)
+
+def fixSubtitles(srt_path: str) -> str:
+    '''
+    Whisper is constantly mis-spelling my name and various other story-lore.
+    I attempt to correct that here.
+    '''
+    log.info(f'Implementing corrections to {srt_path}')
+    subtitles = open(srt_path).read()
+    subtitles = kizano.sub('Kizano', subtitles)
+    subtitles = markizano.sub('Markizano', subtitles)
+    subtitles = draconus.sub('Draconus', subtitles)
+    subtitles = tanninovian.sub('Tanninovian', subtitles)
+    open(srt_path, 'w').write(subtitles)
+    return subtitles
 
 def whisperModel() -> str:
     '''
@@ -55,40 +69,39 @@ def whisperModel() -> str:
         return 'base'
 
 def genSubtitles(
+    video_cfg: dict,
     video_path: str,
-    lang: str,
-    overwrite: bool = False,
-    device: types.Devices = types.Devices.AUTO,
-    task: types.WhisperTask = types.WhisperTask.TRANSCRIBE,
-) -> str:
+    **kwargs
+) -> dict:
     '''
     Generate subtitles for a video file using the whisper script directly.
     Returns the path to the generated SRT file.
     '''
-    srt_path = os.path.join('build', f"{utils.filename(video_path)}.{lang}.srt")
-    log.info(f"Generating subtitles for {srt_path} from {video_path}... This might take a while...")
+    lang = utils.language(kwargs, video_cfg)
+    srtfile = os.path.join('build', f"{utils.filename(video_path)}.{lang}.srt")
+    txtfile = os.path.join('build', f"{utils.filename(video_path)}.txt")
+    log.info(f"Generating subtitles for {srtfile} from {video_path}... This might take a while...")
 
-    if os.path.exists(srt_path):
-        if overwrite:
-            log.info(f"Overwriting existing subtitles for \x1b[1m{srt_path}\x1b[0m!")
+    if os.path.exists(srtfile):
+        if kwargs.get('overwrite', False):
+            log.info(f"Overwriting existing subtitles for \x1b[1m{srtfile}\x1b[0m!")
         else:
-            log.info(f"Subtitles already generated for \x1b[1m{srt_path}\x1b[0m!")
-            return srt_path
+            log.info(f"Subtitles already generated for \x1b[1m{srtfile}\x1b[0m!")
+            return video_cfg
 
-    # Select appropriate Whisper model based on GPU VRAM
-    whisper_model = utils.select_whisper_model()
 
     # Build whisper command
     log.info(f'PATH: {os.getenv("PATH")}')
     whisper_cmd = [
         'whisper',
-        '--model', whisper_model,
-        '--device', device,
+        # Select appropriate Whisper model based on GPU VRAM
+        '--model', whisperModel(),
+        '--device', kwargs.get('device', types.Devices.AUTO),
         '--fp16', 'False',
         '--output_dir', 'build',
         '--output_format', 'all',
         '--language', lang,
-        '--task', task,
+        '--task', kwargs.get('task', types.WhisperTask.TRANSCRIBE),
         '--word_timestamps', 'True',
         '--max_words_per_line', '5',
         '--highlight_words', 'True',
@@ -125,7 +138,7 @@ def genSubtitles(
 
         if returncode != 0:
             log.error(f"Whisper failed with exit code {returncode}")
-            return ''
+            return video_cfg
 
         log.info(f"Whisper completed in {round(then-now, 4)} seconds!")
         log.info(f'Now removing excess VTT, JSON, and TSV files...')
@@ -136,30 +149,16 @@ def genSubtitles(
 
         # Whisper will create the SRT file with the same name as the video but with .srt extension
         # We need to rename it to match our expected naming convention
-        expected_whisper_srt = os.path.join('build', f"{utils.filename(video_path)}.srt")
-        if os.path.exists(expected_whisper_srt) and expected_whisper_srt != srt_path:
-            os.rename(expected_whisper_srt, srt_path)
-            log.info(f"Renamed {expected_whisper_srt} to {srt_path}")
+        generated_whisper_srt = os.path.join('build', f"{utils.filename(video_path)}.srt")
+        if os.path.exists(generated_whisper_srt) and generated_whisper_srt != srtfile:
+            os.rename(generated_whisper_srt, srtfile)
+            log.info(f"Renamed {generated_whisper_srt} to {srtfile}")
 
-        fixSubtitles(srt_path)
-        txt_path = os.path.join('build', f"{utils.filename(video_path)}.txt")
-        fixSubtitles(txt_path)
+        fixSubtitles(srtfile)
+        fixSubtitles(txtfile)
+        videos.updateVideo(video_cfg, subs=[(lang, srtfile)])
 
-        return srt_path
+        return video_cfg
     except Exception as e:
         log.error(f"Failed to generate subtitles: {e}")
-        return ''
-
-def fixSubtitles(self, srt_path: str) -> str:
-    '''
-    Whisper is constantly mis-spelling my name and various other story-lore.
-    I attempt to correct that here.
-    '''
-    log.info(f'Implementing corrections to {srt_path}')
-    subtitles = open(srt_path).read()
-    subtitles = kizano.sub('Kizano', subtitles)
-    subtitles = markizano.sub('Markizano', subtitles)
-    subtitles = draconus.sub('Draconus', subtitles)
-    subtitles = tanninovian.sub('Tanninovian', subtitles)
-    open(srt_path, 'w').write(subtitles)
-    return subtitles
+        return video_cfg

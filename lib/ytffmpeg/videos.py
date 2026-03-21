@@ -27,6 +27,7 @@ def mp4tomkv(resource: str) -> str:
         'c:v': 'libx265',
         'c:a': 'ac3',
         'crf': 28,
+        'pix_fmt': 'yuv420p',
         'map_metadata': '-1',
         'metadata:s:a:0': 'language=eng',
     }
@@ -155,68 +156,34 @@ def detectSilence(
 
     # Create concat filter for video and audio
     trim_filters.extend(utils.mergefilters(segments))
+    log.info(f'Done detecting silence for {resource}!')
     return trim_filters
 
-def removeSilence(
-    resource: str,
-    overwrite: bool = False,
-    silence_threshold: int = 30,
-    silence_duration: float = 1.2,
-    silence_pad_ms: int = 350,
-) -> str:
+def removeSilence(resource: str, **kwargs) -> str:
     '''
     Process a video to remove silent segments and output to build/ directory.
     If the input is MP4, also handles conversion to MKV with CRF 28.
     Returns the path to the trimmed video.
     '''
     # Get silence filters
-    silence_filters = detectSilence(resource, silence_threshold, silence_duration, silence_pad_ms)
+    silence_filters = detectSilence(resource, **kwargs)
     if not silence_filters:
         log.info('No silence detected, using original video.')
         return resource
 
-    # Create output path in build/
-    output_path = f'build/{utils.filename(resource)}.mkv'
-
-    if os.path.exists(output_path):
-        if overwrite:
-            log.info(f'\x1b[1;31mOverwriting\x1b[0m existing \x1b[1m{output_path}\x1b[0m!')
-        else:
-            log.info(f'\x1b[1m{output_path}\x1b[0m already exists! Skipping silence removal.')
-            return output_path
-
+    video_cfg = newVideo(resource)
+    updateVideo(video_cfg, filter_complex=silence_filters)
+    ytffmpeg_cfg = utils.load()
+    ytffmpeg_cfg['videos'].append(video_cfg)
+    utils.save(ytffmpeg_cfg)
     log.info(f'Processing silence removal for \x1b[1m{resource}\x1b[0m...')
-
-    # Build filter_complex string for ffmpeg
-    filter_complex_str = ';'.join(silence_filters)
-
-    try:
-        # Create ffmpeg stream with silence removal
-        # This also handles MP4→MKV conversion if needed
-        out_opts = {
-            'filter_complex': filter_complex_str,
-            'map': ['[video]', '[audio]'],
-        }
-        stream = (
-            ffmpeg.FFmpeg()
-            .option('hide_banner')
-            .option('y')
-            .input(resource)
-            .output(
-                output_path,
-                **out_opts
-            )
-        )
-
-        stream.execute()
+    cv = compileVideo(video_cfg, **kwargs)
+    output_path = video_cfg['output']
+    if cv != 0:
+        log.warning('compileVideo() at this step did not succeed. This may cause downstream effects from here...')
+    else:
         log.info(f'Successfully created silence-trimmed video at \x1b[1m{output_path}\x1b[0m!')
-
-        return output_path
-
-    except Exception as e:
-        log.error(f'Error processing silence removal: {e}')
-        log.warning('Using original video instead.')
-        return resource
+    return output_path
 
 def getVideoRotation(resource: str) -> int:
     '''
@@ -250,113 +217,112 @@ def getVideoRotation(resource: str) -> int:
         log.warning(f'Could not detect rotation for {resource}: {e}')
         return 0
 
-def newVideo(resource: str, title: str = '', description: str = '') -> dict:
+def newVideo(resource: str) -> dict:
     '''
-    Append a video to the ytffmpeg.yml configuration.
+    Generate a video config to append to the ytffmpeg.yml configuration.
     If title or description are empty in the config defaults, they will be auto-generated from
     subtitles.
 
-    Params:
-
-        videos: The {'videos': []} array from `ytffmpeg.yml`.
-        resource: The video from the `resources/` directory.
-        subtitles: Whether or not this video should handle subtitles.
-
-    Returns: The updated video configuration with the appended video in the config.
+    Returns: The video configuration you can add to `ytffmpeg.yml`.
     '''
-    log.info(f'Appending \x1b[1m{resource}\x1b[0m to ytffmpeg.yml configuration.')
-    srt_en = f'build/{utils.filename(resource)}.en.srt'
-    new_vid_tpl = {
+    log.info(f'Generating \x1b[1m{resource}\x1b[0m to add to ytffmpeg.yml configuration.')
+    return {
         'input': [
             { 'i': resource },
         ],
         'output': f'build/{utils.filename(resource)}.mp4',
-        'metadata': {
-            'title': title,
-            'description': description,
-        }
+        'metadata': {},
+        'attributes': [],
     }
 
-    # Detect video rotation from display matrix metadata
-    rotation = getVideoRotation(resource)
+def updateVideo(video_cfg: dict, **kwargs) -> dict:
+    '''
+    Once we have more details about a video, update the data structure accordingly.
 
-    # Build video filter chain with rotation handling
-    video_filters = []
+    title: str -- Assign the metadata title.
+    description: str -- Assign the metadata description.
+    subs: dict[str, str] -- key-value mapping of language:filename for subtitles.
+    filter_complex: list[str] -- List of strings to use for the filter complex. By default
+        include the standard hard-sub filter complex.
+    '''
 
-    # Add transpose filter based on rotation BEFORE subtitles.
-    # 90 deg clockwise: -180; 90 deg counter-cw: 0; portrait: 90; upside-down: -90
-    if rotation == 90:
-        log.info('Adding transpose=2 for 90° rotation')
-        video_filters.append('transpose=2')  # 90 degrees clockwise
-    elif rotation == -90:
-        log.info('Adding transpose=1 for 180° rotation')
-        video_filters.append('transpose=1')  # 90 degrees counter-clockwise/upside down
-    if rotation and rotation != 0:
-        video_filters.append('sidedata=mode=delete')
+    # If metadata is defined, then assign it where it belongs in the data structure.
+    for metadata in ['title', 'description']:
+        if metadata in kwargs and kwargs[metadata]:
+            video_cfg['metadata'][metadata] = kwargs[metadata]
 
-    if os.path.exists(srt_en):
-        # Detect all available subtitle files for this resource
-        base_filename = utils.filename(resource)
-        available_subs = []
+    if 'attributes' in kwargs and kwargs['attributes']:
+        for attribute in kwargs['attributes']:
+            if attribute not in video_cfg['attributes']:
+                video_cfg['attributes'].append(attribute)
 
-        # Check for subtitle files in build directory
-        # Extract language codes from subtitle files
-        for srt_file in glob(f'build/{base_filename}.*.srt'):
-            # Extract language code from filename (e.g., "web-4.0.en.srt" -> "en")
-            parts = os.path.basename(srt_file).split('.')
-            if len(parts) >= 3 and parts[-1] == 'srt':
-                lang_code = parts[-2]
-                available_subs.append((lang_code, srt_file))
+    if 'subs' in kwargs and kwargs['subs']:
+        if 'subs' not in video_cfg['attributes']:
+            video_cfg['attributes'].append('subs')
+        if 'map' not in video_cfg:
+            video_cfg['map'] = {}
+        if 'languages' not in video_cfg:
+            video_cfg['languages'] = []
+        for idx, sub in enumerate(kwargs['subs']):
+            lang, srtfile = sub
+            video_cfg['languages'].append(f'{lang}:{idx}')
+            i = len(video_cfg['input'])
+            video_cfg['map'][lang] = f'{i}:s'
+            video_cfg['input'].append({'i': srtfile})
 
-        if not available_subs:
-            # Fallback to single English subtitle
-            new_vid_tpl['languages'] = ['en:0']
-            new_vid_tpl['attributes'] = [ 'subs' ]
-            new_vid_tpl['map'] = { 'en': '1:s' }
-            new_vid_tpl['input'].append({ 'i': srt_en })
+    if 'filter_complex' in kwargs:
+        if kwargs['filter_complex']:
+            video_cfg['filter_complex'] = kwargs['filter_complex']
         else:
-            # Multi-language setup
-            new_vid_tpl['attributes'] = [ 'subs' ]
-            new_vid_tpl['languages'] = []
-            new_vid_tpl['map'] = {}
+            # Build video filter chain with rotation handling
+            video_filters = []
 
-            # Sort by language code for consistent ordering
-            available_subs.sort(key=lambda x: x[0])
+            # Detect video rotation from display matrix metadata
+            rotation = getVideoRotation(video_cfg['input'][0]['i'])
 
-            for idx, (lang_code, srt_file) in enumerate(available_subs):
-                new_vid_tpl['input'].append({ 'i': srt_file })
-                # Stream index starts at 1 (0 is the video)
-                stream_idx = idx + 1
-                new_vid_tpl['languages'].append(f'{lang_code}:{idx}')
-                new_vid_tpl['map'][lang_code] = f'{stream_idx}:s'
+            # Add transpose filter based on rotation BEFORE subtitles.
+            # 90 deg clockwise: -180; 90 deg counter-cw: 0; portrait: 90; upside-down: -90
+            if rotation == 90:
+                log.info('Adding transpose=2 for 90° rotation')
+                video_filters.append('transpose=2')  # 90 degrees clockwise
+            elif rotation == -90:
+                log.info('Adding transpose=1 for 180° rotation')
+                video_filters.append('transpose=1')  # 90 degrees counter-clockwise/upside down
+            if rotation and rotation != 0:
+                video_filters.append('sidedata=mode=delete')
 
-            log.info(f'Configured {len(available_subs)} subtitle tracks: {[lang for lang, _ in available_subs]}')
+            # Remember: https://www.abyssale.com/blog/how-to-change-the-appearances-of-subtitles-with-ffmpeg
+            # @TODO: Detect when split screen OBS view and change font settings.
+            font_style = ','.join([
+                'Alignment=0',
+                'PrimaryColour=&H00FFFFFF',
+                'FontName=Impact',
+                'OutlineColour=&H40000000',
+                'BorderStyle=3',
+                'Fontsize=14',
+                'MarginV=60',
+                'MarginL=30'
+            ])
+            # Get the first SRT file as input.
+            srtfile = None
+            for inputVid in video_cfg['input']:
+                if inputVid['i'].endswith('.srt'):
+                    srtfile = inputVid['i']
+                    break
+            if srtfile == None:
+                raise ValueError(f'Input video has no SRT file: {video_cfg}')
+            video_filters.append(f"subtitles={srtfile}:force_style='{font_style}'")
 
-        # Remember: https://www.abyssale.com/blog/how-to-change-the-appearances-of-subtitles-with-ffmpeg
-        # @TODO: Detect when split screen OBS view and change font settings.
-        font_style = ','.join([
-            'Alignment=0',
-            'PrimaryColour=&H00FFFFFF',
-            'FontName=Impact',
-            'OutlineColour=&H40000000',
-            'BorderStyle=3',
-            'Fontsize=14',
-            'MarginV=60',
-            'MarginL=30'
-        ])
-        video_filters.append(f"subtitles={srt_en}:force_style='{font_style}'")
+            # Build filter_complex with standard processing
+            video_filter_str = ','.join(video_filters)
+            video_cfg['filter_complex'] = [
+                f"[0:v]{video_filter_str}[video]",
+                # f"[0:a]volume=1.5,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[audio]"
+                f"[0:a]volume=1.5,asetpts=PTS-STARTPTS[audio]"
+            ]
 
-    # Build filter_complex with standard processing
-    video_filter_str = ','.join(video_filters)
-    filter_complex = [
-        f"[0:v]{video_filter_str}[video]",
-        # f"[0:a]volume=1.5,afftdn=nr=10:nf=-20:tn=1,equalizer=f=623:w=3.5:t=h:g=-15:n=1,asetpts=NB_CONSUMED_SAMPLES/SR/TB[audio]"
-        f"[0:a]volume=1.5,asetpts=PTS-STARTPTS[audio]"
-    ]
-
-    new_vid_tpl['filter_complex'] = filter_complex
-    log.info(f'New Video config: {new_vid_tpl}')
-    return new_vid_tpl
+    log.info(f'New Video config: {video_cfg}')
+    return video_cfg
 
 def inputToArgList(raw_input_video: str|dict):
     '''
@@ -392,9 +358,7 @@ def inputToArgList(raw_input_video: str|dict):
 
 def preProcessResources(ytffmpeg_cfg: dict, **kwargs) -> str:
     '''
-    This is a "meta-routine", meaning it's a helper to a greater function later, but also
-    re-callable, modular functionality that can be used elsewhere.
-
+    Handle the case of >1 resource.
     When we have >1 resource, need to:
     * mp4-to-mkv
     * cut-silence
