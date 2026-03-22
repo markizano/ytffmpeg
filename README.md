@@ -19,7 +19,7 @@ in their own video editing process endeavours.
 
 When recording from phone or cam, it's difficult to manage all the media and content that comes in
 without paying for crazy software to get it done. With this open-source product, you can simply
-`pip3 install ffmpeg2youtube` and go!
+`pip3 install mkzforge` and go!
 
 This project honours configuration defined in a system-wide configuration file in `/etc/ytffmpeg/config.yml`,
 user-specific configuration defined in `~/.config/ytffmpeg/config.yml`, with the configurations merged
