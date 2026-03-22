@@ -17,10 +17,9 @@ from typing import Dict, List, Union
 from cherrypy._cpreqbody import Part
 
 from kizano import getLogger
-from kizano.utils import dictmerge, read_yaml, write_yaml
+from kizano.utils import dictmerge, read_yaml
 
-from ytffmpeg.notify import send_notification
-from ytffmpeg.cli import new, normalize, build
+from ytffmpeg import notify, cli, build, utils, videos, subtitles, metadata, genimg
 
 log = getLogger(__name__)
 DEBUG = os.getenv('DEBUG', False)
@@ -32,8 +31,8 @@ class PageHandlers:
 
     def __init__(self, config: dict):
         self.config = config
-        self.workspace = config['ytffmpeg'].get('workspace', os.getcwd())
-        self.webroot = config['ytffmpeg'].get('webroot', os.path.join(os.getcwd(), 'web'))
+        self.workspace = config.get('workspace', os.getcwd())
+        self.webroot = config.get('webroot', os.path.join(os.getcwd(), 'web'))
 
     @cherrypy.expose
     def index(self):
@@ -68,7 +67,7 @@ class ApiHandlers:
 
     def __init__(self, config: dict):
         self.config = config
-        self.workspace = config['ytffmpeg'].get('workspace', os.getcwd())
+        self.workspace = config.get('workspace', os.getcwd())
         self.processing_jobs: Dict[str, dict] = {}
 
     @cherrypy.expose
@@ -184,8 +183,10 @@ class ApiHandlers:
         try:
             if videos is None:
                 video_list = []
-            if not isinstance(videos, list):
+            elif not isinstance(videos, list):
                 video_list = [videos]
+            else:
+                video_list = videos
 
             # Validation
             if not project_name:
@@ -193,8 +194,8 @@ class ApiHandlers:
             if not videos:
                 raise cherrypy.HTTPError(400, 'At least one video file is required')
 
-            self.config['ytffmpeg']['resource'] = project_name
-            new.gennew(self.config)
+            self.config['resource'] = project_name
+            cli.new.gennew(self.config)
             log.info(f'Got JSON project config: {project_config}')
             project_cfg = json.loads(project_config)
 
@@ -228,11 +229,11 @@ class ApiHandlers:
 
                 log.info(f'Started background processing for project: {project_name}')
 
-                return {
-                    'status': 'success',
-                    'message': 'Video upload successful. Processing started in background.',
-                    'project': project_name
-                }
+            return {
+                'status': 'success',
+                'message': 'Video upload successful. Processing started in background.',
+                'project': project_name
+            }
         except cherrypy.HTTPError:
             raise
         except Exception as e:
@@ -241,7 +242,7 @@ class ApiHandlers:
 
 
 def process_video_pipeline(
-    config: dict,
+    cfg: dict,
     project_name: str,
     project_config: dict,
 ):
@@ -251,7 +252,7 @@ def process_video_pipeline(
     '''
 
     log.info(f'Starting video pipeline for project: {project_name}')
-    project_path = os.path.join(config['ytffmpeg']['workspace'], project_name)
+    project_path = os.path.join(cfg['workspace'], project_name)
     os.chdir(project_path)
     log.info(f'Process config: {project_config}')
 
@@ -262,23 +263,37 @@ def process_video_pipeline(
             build.builder(project_config)
 
         log.info('Normalizing resources from existing video list.')
-        video_cfg = read_yaml('ytffmpeg.yml')
-        normalize.normalize({'ytffmpeg': config['ytffmpeg'], 'videos': video_cfg['videos']})
+        ytffmpeg_cfg = read_yaml('ytffmpeg.yml')
+        cfg['name'] = os.path.basename(os.getcwd())
+        video_cfg, resource = videos.detectState(**cfg)
+        subtitles.genSubtitles(video_cfg, resource, **cfg)
+        metadata.generateMetadata(video_cfg, 'title', **cfg)
+        metadata.generateMetadata(video_cfg, 'description', **cfg)
+        # Set filter_complex to None to get the default hardsub filter.
+        videos.updateVideo(video_cfg, attributes=['thumbnail'], filter_complex=None)
+        content = open(f'build/{utils.filename(resource)}.txt').read()
+        if not os.path.exists('thumbnail.png') or ( os.path.exists('thumbnail.png') and cfg.get('overwrite', False) ):
+            genimg.generate_thumbnail(video_cfg['metadata']['title'], content)
+
+        if not utils.hasInput(ytffmpeg_cfg['videos'], resource):
+            ytffmpeg_cfg['videos'].append(video_cfg)
+        log.info('Video(s) normalized and added to `ytffmpeg.yml` config.')
+        utils.save(ytffmpeg_cfg['videos'])
 
         log.info('Merging config from submitted form.')
-        video_cfg = read_yaml('ytffmpeg.yml')
-        log.info(f'Loaded ytffmpeg.yml: {video_cfg}')
+        ytffmpeg_cfg = read_yaml('ytffmpeg.yml')
+        log.info(f'Loaded ytffmpeg.yml: {ytffmpeg_cfg}')
         log.info(f'In-memory project config: {project_config}')
-        video_cfg['videos'][0]['metadata'] = dictmerge(video_cfg['videos'][0]['metadata'], project_config['videos'][0]['metadata'])
-        del config['ytffmpeg']['resource']
+        ytffmpeg_cfg['videos'][0]['metadata'] = dictmerge(ytffmpeg_cfg['videos'][0]['metadata'], project_config['videos'][0]['metadata'])
+        del cfg['resource']
 
         log.info('Building compiled final video result.')
-        log.debug(f'Build config: {video_cfg}')
-        build.builder({'ytffmpeg': config['ytffmpeg'], 'videos': video_cfg['videos']})
+        log.debug(f'Build config: {ytffmpeg_cfg}')
+        build.buildVideo({'ytffmpeg': cfg, 'videos': ytffmpeg_cfg['videos']})
 
         # Send success notification
         if not DEBUG:
-            send_notification(
+            notify.send_notification(
                 'INFO',
                 f'ytffmpeg: {project_name} complete',
                 f'Video processing completed successfully for project: {project_name}'
@@ -291,7 +306,7 @@ def process_video_pipeline(
 
         # Send error notification
         if not DEBUG:
-            send_notification(
+            notify.send_notification(
                 'ERROR',
                 f'ytffmpeg: {project_name} failed',
                 f'Video processing failed for project {project_name}: {str(e)}'

@@ -44,7 +44,13 @@ def genSubs(cfg: dict) -> int:
     log.info('Generating subtitles for resources...')
     ytffmpeg_cfg = utils.load()
     for resource in utils.getResources():
-        video_cfg = utils.getInputIndex(ytffmpeg_cfg, resource) or videos.newVideo(resource)
+        idx = utils.getInputIndex(ytffmpeg_cfg['videos'], resource)
+        if idx is None:
+            log.info(f'Resource {resource} not found in ytffmpeg.yml config. Generating new config.')
+            video_cfg = videos.newVideo(resource)
+        else:
+            log.info(f'Found {resource} in ytffmpeg.yml.')
+            video_cfg = ytffmpeg_cfg['videos'][idx]
         subtitles.genSubtitles(video_cfg, resource, **cfg)
         ytffmpeg_cfg['videos'].append(video_cfg)
     utils.save(ytffmpeg_cfg)

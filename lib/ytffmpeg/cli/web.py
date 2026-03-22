@@ -10,7 +10,6 @@ from ytffmpeg import getLogger, webserv
 
 log = getLogger(__name__)
 
-
 def serveTheWeb(cfg: dict):
     '''
     Main entry point for 'ytffmpeg serve' command.
@@ -29,14 +28,12 @@ def serveTheWeb(cfg: dict):
     # Try importlib.resources first (for installed package)
     try:
         # For Python 3.9+, resources.files returns a Traversable
-        webroot_resource = resources.files('ytffmpeg').joinpath('../../web')
-        default_webroot = str(webroot_resource)
+        default_webroot = str(resources.files('ytffmpeg').joinpath('../../web'))
     except (AttributeError, TypeError):
         # Fallback for development or older Python
         default_webroot = os.path.join(os.path.dirname(__file__), '../../web')
 
-    webroot = cfg.get('webroot', default_webroot)
-    webroot = os.path.abspath(webroot)
+    webroot = os.path.abspath(cfg.get('webroot', default_webroot))
     cfg['webroot'] = webroot
 
     if not os.path.exists(webroot):
@@ -53,12 +50,9 @@ def serveTheWeb(cfg: dict):
     # Mount handlers
     cherrypy.tree.mount(page_handler, '/', config={
         '/': {
-            'tools.staticdir.on': False
-        },
-        '/static': {
-            'tools.staticdir.on': True,
+            'tools.staticdir.on': False,
             'tools.staticdir.dir': webroot
-        }
+        },
     })
 
     cherrypy.tree.mount(api_handler, '/api', config={
@@ -70,7 +64,6 @@ def serveTheWeb(cfg: dict):
     # Server configuration
     cherrypy.config.update({
         'tools.sessions.on': False,
-        'error_page.default': webserv.jsonify_error,
         'request.show_tracebacks': False,
         'server.socket_host': '0.0.0.0',
         'server.socket_port': http_port,

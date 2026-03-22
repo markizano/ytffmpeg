@@ -4,6 +4,7 @@ Input a path to a video, perform some operation on it, output the updated/transm
 Some functions take a video path to inspect and output a filter complex to execute against it.
 '''
 import os
+import sys
 import re
 import time
 import ffmpeg
@@ -271,7 +272,7 @@ def updateVideo(video_cfg: dict, **kwargs) -> dict:
             lang, srtfile = sub
             langcode = f'{lang}:{idx}'
             if langcode not in video_cfg['languages']:
-                video_cfg['languages'].append()
+                video_cfg['languages'].append(langcode)
             i = len(video_cfg['input'])
             video_cfg['map'][lang] = f'{i}:s'
             if not utils.hasInput([video_cfg], srtfile):
@@ -329,7 +330,7 @@ def preProcessResources(ytffmpeg_cfg: dict, **kwargs) -> str:
     '''
     to_concat: list[dict] = []
     for resource in utils.getResources():
-        if utils.hasInput(ytffmpeg_cfg['videos']): continue
+        if utils.hasInput(ytffmpeg_cfg['videos'], resource): continue
         mp4tomkv(resource)
         trimmed_video = removeSilence(resource, **kwargs)
         to_concat.append({'i': trimmed_video})
@@ -361,14 +362,15 @@ def detectState(**kwargs) -> tuple[dict, str]:
     ytffmpeg_cfg = utils.load()
     mp4s = utils.getMP4s()
     if len(mp4s) >1:
-        resource = preProcessResources(ytffmpeg_cfg, **kwargs)
+        resource = preProcessResources(ytffmpeg_cfg['videos'], **kwargs)
     elif len(mp4s) == 1:
         mkv = mp4tomkv(mp4s[0])
         # cut-silence from video.
         resource = removeSilence(mkv, **kwargs)
         if utils.hasInput(ytffmpeg_cfg, resource):
             log.info(f'Resource {resource} found in config. Loading from this...')
-            video_cfg = utils.getInputIndex(ytffmpeg_cfg, resource)
+            idx = utils.getInputIndex(ytffmpeg_cfg['videos'], resource)
+            video_cfg = ytffmpeg_cfg['videos'][idx]
         else:
             log.info(f'Resource {resource} not found. Generating new config...')
             video_cfg = newVideo(resource)
@@ -382,12 +384,12 @@ def detectState(**kwargs) -> tuple[dict, str]:
             resource = resources[0]
             log.info(f'Found exactly one resource. Working with \x1b[1m{resource}\x1b[0m')
             idx = utils.getInputIndex(ytffmpeg_cfg['videos'], resource)
-            if idx is not None:
-                log.info(f'Found {resource} in ytffmpeg.yml.')
-                video_cfg = ytffmpeg_cfg['videos'][idx]
-            else:
+            if idx is None:
                 log.info(f'Resource {resource} not found in ytffmpeg.yml config. Generating new config.')
                 video_cfg = newVideo(resource)
+            else:
+                log.info(f'Found {resource} in ytffmpeg.yml.')
+                video_cfg = ytffmpeg_cfg['videos'][idx]
     return video_cfg, resource
 
 def _inputToFluidArgs(raw_input_video: str|dict) -> tuple[str, dict]:
@@ -540,7 +542,8 @@ def compileVideo(video_opts: dict, **kwargs) -> int:
         vidthen = time.time()
         log.info(f'Done processing \x1b[1m{output}\x1b[0m in {round(vidthen-vidnow,4)} seconds!')
         # Restore tty after ffmpeg progress (interactive sessions).
-        os.system('stty echo -brkint -imaxbel icanon iexten icrnl')
+        if sys.stdout.isatty():
+            os.system('stty echo -brkint -imaxbel icanon iexten icrnl')
         then = time.time()
         log.info(f'Completed all media in \x1b[4m{round(then-now, 2)}\x1b[0m seconds!')
     return 0
