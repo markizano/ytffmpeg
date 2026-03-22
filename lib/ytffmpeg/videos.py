@@ -7,8 +7,7 @@ import os
 import re
 import time
 import ffmpeg
-import subprocess
-from glob import glob
+from ffmpeg.errors import FFmpegError
 from copy import deepcopy as copy
 from ytffmpeg import getLogger, utils
 log = getLogger(__name__)
@@ -35,7 +34,7 @@ def mp4tomkv(resource: str) -> str:
         'metadata:s:a:0': 'language=eng',
     }
     (
-        ffmpeg.FFmpeg()
+        ffmpeg.FFmpeg(executable=os.getenv('FFMPEG_BIN', 'ffmpeg'))
         .option('hide_banner')
         .option('y')
         .input(resource)
@@ -51,7 +50,7 @@ def getVideoDuration(resource: str) -> float:
     '''
     # This ffprobe will output the number of seconds in the video.
     probe_stream = (
-        ffmpeg.FFmpeg(executable="ffprobe")
+        ffmpeg.FFmpeg(executable=os.getenv('FFPROBE_BIN', "ffprobe"))
         .option('v', 'quiet')
         .option('show_entries', 'format=duration')
         .option('of', 'csv=p=0')
@@ -59,6 +58,38 @@ def getVideoDuration(resource: str) -> float:
     )
 
     return float(probe_stream.execute().decode('utf-8').strip())
+
+def getVideoRotation(resource: str) -> int:
+    '''
+    Detect video rotation from display matrix metadata using ffprobe.
+    Returns the rotation angle in degrees (0, 90, 180, 270).
+    '''
+    log.info(f'Detecting rotation for {resource}...')
+    try:
+        rotation_output = []
+
+        # Use ffprobe to get rotation metadata
+        probe_stream = (
+            ffmpeg.FFmpeg(executable=os.getenv('FFPROBE_BIN', "ffprobe"))
+            .option('v', 'quiet')
+            .option('show_entries', 'stream_tags=rotate:stream_side_data=rotation')
+            .option('of', 'csv=p=0')
+            .input(resource)
+        )
+
+        rotation_output = probe_stream.execute().decode('utf-8')
+
+        # Parse rotation value
+        if rotation_output:
+            rotation = int(rotation_output.strip().strip(','))
+            log.info(f'Detected rotation: {rotation} degrees for {resource}')
+            return rotation
+        log.debug(f'No rotation metadata found for {resource}')
+        return 0
+
+    except Exception as e:
+        log.warning(f'Could not detect rotation for {resource}: {e}')
+        return 0
 
 def detectSilence(
     resource: str,
@@ -188,38 +219,6 @@ def removeSilence(resource: str, **kwargs) -> str:
         log.info(f'Successfully created silence-trimmed video at \x1b[1m{output_path}\x1b[0m!')
     return output_path
 
-def getVideoRotation(resource: str) -> int:
-    '''
-    Detect video rotation from display matrix metadata using ffprobe.
-    Returns the rotation angle in degrees (0, 90, 180, 270).
-    '''
-    log.info(f'Detecting rotation for {resource}...')
-    try:
-        rotation_output = []
-
-        # Use ffprobe to get rotation metadata
-        probe_stream = (
-            ffmpeg.FFmpeg(executable="ffprobe")
-            .option('v', 'quiet')
-            .option('show_entries', 'stream_tags=rotate:stream_side_data=rotation')
-            .option('of', 'csv=p=0')
-            .input(resource)
-        )
-
-        rotation_output = probe_stream.execute().decode('utf-8')
-
-        # Parse rotation value
-        if rotation_output:
-            rotation = int(rotation_output.strip().strip(','))
-            log.info(f'Detected rotation: {rotation} degrees for {resource}')
-            return rotation
-        log.debug(f'No rotation metadata found for {resource}')
-        return 0
-
-    except Exception as e:
-        log.warning(f'Could not detect rotation for {resource}: {e}')
-        return 0
-
 def newVideo(resource: str) -> dict:
     '''
     Generate a video config to append to the ytffmpeg.yml configuration.
@@ -236,6 +235,7 @@ def newVideo(resource: str) -> dict:
         'output': f'build/{utils.filename(resource)}.mp4',
         'metadata': {},
         'attributes': [],
+        'movflags': ['+faststart'],
     }
 
 def updateVideo(video_cfg: dict, **kwargs) -> dict:
@@ -317,6 +317,40 @@ def updateVideo(video_cfg: dict, **kwargs) -> dict:
     log.info(f'New Video config: {video_cfg}')
     return video_cfg
 
+def preProcessResources(ytffmpeg_cfg: dict, **kwargs) -> str:
+    '''
+    Handle the case of >1 resource.
+    When we have >1 resource, need to:
+    * mp4-to-mkv
+    * cut-silence
+    * concat the results.
+
+    Return: Path to post-processed video path.
+    '''
+    to_concat: list[dict] = []
+    for resource in utils.getResources():
+        if utils.hasInput(ytffmpeg_cfg['videos']): continue
+        mp4tomkv(resource)
+        trimmed_video = removeSilence(resource, **kwargs)
+        to_concat.append({'i': trimmed_video})
+    # Once we are done iterating videos that need compress & cut, combine them.
+    concat_filter_complex = utils.mergefilters(to_concat)
+    outfile = f'resources/{ytffmpeg_cfg["name"]}.mkv'
+    if os.path.exists(outfile):
+        log.warning(f'The {outfile} exists, writing to `resources/_{ytffmpeg_cfg["name"]}.mkv`')
+        outfile = f'resources/_{ytffmpeg_cfg["name"]}.mkv'
+    video_cfg = {
+        'input': to_concat,
+        'output': outfile,
+        'filter_complex': concat_filter_complex,
+    }
+    ytffmpeg_cfg['videos'].append(video_cfg)
+    utils.save(ytffmpeg_cfg['videos'])
+    cv = compileVideo(video_cfg, **kwargs)
+    if cv != 0:
+        log.warning('compileVideo() at this step did not succeed. This may cause downstream effects from here...')
+    return outfile
+
 def detectState(**kwargs) -> tuple[dict, str]:
     '''
     Used in the `ytffmpeg normalize` function.
@@ -356,71 +390,37 @@ def detectState(**kwargs) -> tuple[dict, str]:
                 video_cfg = newVideo(resource)
     return video_cfg, resource
 
-def inputToArgList(raw_input_video: str|dict):
+def _inputToFluidArgs(raw_input_video: str|dict) -> tuple[str, dict]:
     '''
-    Take the data structure that represents an input and convert into the argument list ffmpeg
-    expects.
-    Lead with -f for the format.
-    Tail with -i for the input file.
-    In this way, all options for that video are processed on the command line in the correct order.
+    OLD function:
+        Take the data structure that represents an input and convert into the argument list ffmpeg
+        expects.
+        Lead with -f for the format.
+        Tail with -i for the input file.
+        In this way, all options for that video are processed on the command line in the correct order.
+
+    NEW function:
+        Same option ordering as inputToArgList (dict branch), for ffmpeg.FFmpeg().input(..., **opts).
+
+    Used to generate an array to pass to `subprocess` to run ffmpeg. Now we use the fluid interface.
     '''
-    input_cmd = []
     if isinstance(raw_input_video, str):
         log.debug(f'INPUT stream: \x1b[1m{raw_input_video}\x1b[0m')
-        input_cmd.append('-i')
-        input_cmd.append(raw_input_video)
-    elif isinstance(raw_input_video, dict):
-        assert 'i' in raw_input_video, 'No input specified for video!'
-        input_video = copy(raw_input_video)
-        i = input_video.pop('i')
-        log.debug(f'INPUT stream: \x1b[1m{i}\x1b[0m')
-        while len(input_video):
-            # Make sure the format is the first argument to be added.
-            if 'f' in input_video:
-                input_cmd.append('-f')
-                input_cmd.append(input_video.pop('f'))
-            # Add other arguments in the middle
-            if len(input_video) >= 1:
-                name, value = input_video.popitem()
-                input_cmd.append(f'-{name}')
-                input_cmd.append(value)
-        input_cmd.append('-i')
-        input_cmd.append(i)
-    return input_cmd
-
-def preProcessResources(ytffmpeg_cfg: dict, **kwargs) -> str:
-    '''
-    Handle the case of >1 resource.
-    When we have >1 resource, need to:
-    * mp4-to-mkv
-    * cut-silence
-    * concat the results.
-
-    Return: Path to post-processed video path.
-    '''
-    to_concat: list[dict] = []
-    for resource in utils.getResources():
-        if utils.hasInput(ytffmpeg_cfg['videos']): continue
-        mp4tomkv(resource)
-        trimmed_video = removeSilence(resource, **kwargs)
-        to_concat.append({'i': trimmed_video})
-    # Once we are done iterating videos that need compress & cut, combine them.
-    concat_filter_complex = utils.mergefilters(to_concat)
-    outfile = f'resources/{ytffmpeg_cfg["name"]}.mkv'
-    if os.path.exists(outfile):
-        log.warning(f'The {outfile} exists, writing to `resources/_{ytffmpeg_cfg["name"]}.mkv`')
-        outfile = f'resources/_{ytffmpeg_cfg["name"]}.mkv'
-    video_cfg = {
-        'input': to_concat,
-        'output': outfile,
-        'filter_complex': concat_filter_complex,
-    }
-    ytffmpeg_cfg['videos'].append(video_cfg)
-    utils.save(ytffmpeg_cfg['videos'])
-    cv = compileVideo(video_cfg, **kwargs)
-    if cv != 0:
-        log.warning('compileVideo() at this step did not succeed. This may cause downstream effects from here...')
-    return outfile
+        return raw_input_video, {}
+    assert 'i' in raw_input_video, 'No input specified for video!'
+    input_video = copy(raw_input_video)
+    i = input_video.pop('i')
+    log.debug(f'INPUT stream: \x1b[1m{i}\x1b[0m')
+    opts: dict = {}
+    while len(input_video):
+        # Make sure the format is the first argument to be added (mirrors inputToArgList).
+        if 'f' in input_video:
+            opts['f'] = input_video.pop('f')
+        # Add other arguments in the middle; popitem order matches the legacy argv builder.
+        if len(input_video) >= 1:
+            name, value = input_video.popitem()
+            opts[name] = value
+    return i, opts
 
 def compileVideo(video_opts: dict, **kwargs) -> int:
     '''
@@ -428,7 +428,6 @@ def compileVideo(video_opts: dict, **kwargs) -> int:
     '''
     with utils.video_processing_lock('build'):
         now = time.time()
-        final_cmd = [os.getenv('FFMPEG_BIN', 'ffmpeg'), '-hide_banner']
         assert 'input' in video_opts, 'No input specified for video!'
         assert 'output' in video_opts, 'No output specified for video!'
         assert isinstance(video_opts['input'], list), 'Input must be an array!'
@@ -439,108 +438,108 @@ def compileVideo(video_opts: dict, **kwargs) -> int:
             return 1
         attributes = video_opts.get('attributes', [])
         log.info(f'Processing video: \x1b[1m{output}\x1b[0m')
-        # self._preBuildHooks(video_opts)
+        language = video_opts.get('language', 'en')
 
-        # Process ffmpeg input/output options.
-        ## Append the `-i` arguments accordingly.
+        # Build the ffmpeg command with the fluid API (global opts, then each input in order).
+        ffbin = os.getenv('FFMPEG_BIN', 'ffmpeg')
+        final_cmd = ffmpeg.FFmpeg(executable=ffbin)
+        final_cmd.option('hide_banner')
+        final_cmd.option('y')
+        output_opts: dict = {}
+        # Map filter outputs or stream selectors onto the output file (video, audio, subs).
+        map_streams: list[str] = []
+
+        # Append each `-i` (with any per-input flags) in config order.
         for input_video in video_opts['input']:
-            final_cmd.extend(inputToArgList(input_video))
-        # With the pre-hook, this should just execute now.
+            url, in_opts = _inputToFluidArgs(input_video)
+            final_cmd.input(url, **in_opts)
+
+        # Optional project thumbnail: extra input + disposition on the matching video stream index.
         if os.path.exists('thumbnail.png'):
-            final_cmd.append('-i')
-            final_cmd.append('thumbnail.png')
-        # Process a filter_complex if we have one.
+            final_cmd.input('thumbnail.png')
+
+        # filter_complex from script file; `-/filter_complex` matches Option key `/filter_complex`.
         if 'filter_complex' in video_opts:
             filter_complex = f'build/{utils.filename(output)}.filter_complex'
             filter_complex_script = ';\n'.join(fc_line for fc_line in video_opts['filter_complex'] if not fc_line.startswith('#')) + '\n'
             open(filter_complex, 'w', encoding='utf-8').write(filter_complex_script)
-            final_cmd.append('-/filter_complex')
-            final_cmd.append(filter_complex)
-        # Strip previous metadata.
-        final_cmd.append('-map_metadata')
-        final_cmd.append('-1')
-        language = video_opts.get('language', 'en')
+            final_cmd.option('/filter_complex', filter_complex)
 
-        # Attach current required metadata.
+        # Strip container metadata from inputs before we attach our own.
+        output_opts['map_metadata'] = '-1'
+
+        # Attach current required metadata (title, description, etc.).
         if 'metadata' in video_opts:
-            for name, value in video_opts['metadata'].items():
-                final_cmd.append('-metadata')
-                final_cmd.append(f'{name}={value}')
-        # If there's custom mapping involved, ensure that is handled as well.
-        if 'no-video' not in attributes:
-            final_cmd.append('-map')
-            final_cmd.append(video_opts.get('map', {}).get('video', '[video]'))
-        if 'no-audio' not in attributes:
-            final_cmd.append('-map')
-            final_cmd.append(video_opts.get('map', {}).get('audio', '[audio]'))
-        if 'subs' in attributes:
-            if 'languages' in video_opts:
-                # If you set languages and subs, then we assume you know you need to set
-                # map to each of the language inputs you want to include as well.
-                for ilang in video_opts['languages']:
-                    lang, i = ilang.split(':')
-                    final_cmd.append('-map')
-                    final_cmd.append(video_opts['map'][lang])
-                    final_cmd.append(f'-metadata:s:s:{i}')
-                    final_cmd.append(f'language={lang}')
-            else:
-                final_cmd.append('-map')
-                final_cmd.append(video_opts.get('map', {}).get('subs', '[subs]'))
-                final_cmd.append('-metadata:s:s')
-                final_cmd.append(f'language=eng')
+            output_opts['metadata'] = [
+                f'{name}={value}' for name, value in video_opts['metadata'].items()
+            ]
 
         if 'vsync' in attributes:
-            final_cmd.append('-fps_mode')
-            final_cmd.append('vfs')
+            output_opts['fps_mode'] = 'vfs'
+
         if 'no-video' in attributes:
-            final_cmd.append('-vn')
+            output_opts['vn'] = None
         else:
-            final_cmd.append('-c:v')
-            final_cmd.append(video_opts.get('codecs', {}).get('video', 'h264'))
-
-            final_cmd.append('-pix_fmt')
-            final_cmd.append('yuv420p')
-
-            final_cmd.append('-crf')
-            final_cmd.append('28')
-
-            final_cmd.append('-metadata:s:v')
-            final_cmd.append(f'language={language}')
+            map_streams.append(video_opts.get('map', {}).get('video', '[video]'))
+            output_opts['c:v'] = video_opts.get('codecs', {}).get('video', 'h264')
+            output_opts['pix_fmt'] = 'yuv420p'
+            output_opts['crf'] = 28
+            output_opts['metadata:s:v'] = f'language={language}'
 
         if 'no-audio' in attributes:
-            final_cmd.append('-an')
+            output_opts['an'] = None
         else:
-            final_cmd.append('-c:a')
-            final_cmd.append(video_opts.get('codecs', {}).get('audio', 'aac'))
-            final_cmd.append('-metadata:s:a')
-            final_cmd.append(f'language={language}')
+            map_streams.append(video_opts.get('map', {}).get('audio', '[audio]'))
+            output_opts['c:a'] = video_opts.get('codecs', {}).get('audio', 'aac')
+            # First output audio stream; matches behaviour of mp4tomkv metadata tagging.
+            output_opts['metadata:s:a:0'] = f'language={language}'
+
         if 'subs' in attributes:
-            final_cmd.append('-c:s')
-            final_cmd.append('mov_text')
+            output_opts['c:s'] = 'mov_text'
+            if 'languages' in video_opts:
+                # If you set languages and subs, map each language from `map.<lang>` (e.g. 1:s).
+                for ilang in video_opts['languages']:
+                    lang, i = ilang.split(':')
+                    map_streams.append(video_opts['map'][lang])
+                    output_opts[f'metadata:s:s:{i}'] = f'language={lang}'
+            else:
+                map_streams.append(video_opts.get('map', {}).get('subs', '[subs]'))
+                output_opts['metadata:s:s'] = 'language=eng'
 
         if 'movflags' in video_opts:
-            final_cmd.append('-movflags')
-            final_cmd.append(video_opts['movflags'])
+            output_opts['movflags'] = video_opts['movflags']
 
-        # With the pre-hook, this should just execute now.
+        if map_streams:
+            output_opts['map'] = map_streams
+
         if os.path.exists('thumbnail.png'):
-            i = len(video_opts['input'])
-            final_cmd.append(f'-disposition:v:{i}')
-            final_cmd.append('attached_pic')
+            ti = len(video_opts['input'])
+            output_opts[f'disposition:v:{ti}'] = 'attached_pic'
 
-        # Attach the output file.
-        final_cmd.append('-y')
-        final_cmd.append(video_opts['output'])
-        log.info(f'Execute: \x1b[34m{" ".join(final_cmd)}\x1b[0m')
-        if os.path.exists(video_opts['output']):
+        # Output path and encoding/mapping options (`-y` was set as a global option above).
+        final_cmd.output(output, **output_opts)
+
+        # Preserve visibility of the exact argv ffmpeg will run (same idea as joining final_cmd).
+        log.info(f'Execute: \x1b[34m{" ".join(final_cmd.arguments)}\x1b[0m')
+
+        if os.path.exists(output):
             if kwargs.get('overwrite', False):
                 log.info(f'Overwriting existing \x1b[1m{output}\x1b[0m!')
             else:
                 log.info(f'File \x1b[1m{output}\x1b[0m already exists!')
                 return 0
-        subprocess.run(final_cmd, shell=False)
+
+        # I like to see the console output from ffmpeg when it runs.
+        final_cmd.on('stderr')(log.debug)
+
+        try:
+            final_cmd.execute()
+        except FFmpegError as e:
+            log.error(f'ffmpeg failed: {e.message}')
+            return 1
         vidthen = time.time()
         log.info(f'Done processing \x1b[1m{output}\x1b[0m in {round(vidthen-vidnow,4)} seconds!')
+        # Restore tty after ffmpeg progress (interactive sessions).
         os.system('stty echo -brkint -imaxbel icanon iexten icrnl')
         then = time.time()
         log.info(f'Completed all media in \x1b[4m{round(then-now, 2)}\x1b[0m seconds!')
