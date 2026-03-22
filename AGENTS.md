@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ytffmpeg is a Python-based video processing automation tool that simplifies complex FFmpeg
+mkzforge is a Python-based video processing automation tool that simplifies complex FFmpeg
 operations for creating social media content. It provides:
 
 - YAML-driven configuration for video transformations
@@ -48,22 +48,22 @@ pip install -e .
 
 ```bash
 # Main entry point
-ytffmpeg --help
+mkzforge --help
 
 # Common workflows
-ytffmpeg new                    # Create new project structure
-ytffmpeg refresh                # Process MP4s, convert to MKV, generate subtitles
-ytffmpeg build [output.mp4]     # Build final video from configuration
-ytffmpeg gensubs video.mkv      # Generate subtitles for specific file
-ytffmpeg publish                # Publish to configured endpoints (SFTP)
-ytffmpeg serve                  # Start web interface (default: http://localhost:9091)
+mkzforge new                    # Create new project structure
+mkzforge refresh                # Process MP4s, convert to MKV, generate subtitles
+mkzforge build [output.mp4]     # Build final video from configuration
+mkzforge gensubs video.mkv      # Generate subtitles for specific file
+mkzforge publish                # Publish to configured endpoints (SFTP)
+mkzforge serve                  # Start web interface (default: http://localhost:9091)
 ```
 
 ## Architecture
 
 ### Core Components
 
-**Web Interface** (`lib/ytffmpeg/webserv.py`, `web/`)
+**Web Interface** (`lib/mkzforge/webserv.py`, `web/`)
 
 - Browser-based UI for video upload and project management
 - CherryPy-based HTTP server with REST API endpoints
@@ -75,37 +75,37 @@ ytffmpeg serve                  # Start web interface (default: http://localhost
   - `GET /api/projects` - JSON list of all projects
   - `POST /api/process` - Upload and process videos
 - Configuration options:
-  - `--workspace`: Directory for project storage (default: `~/ytffmpeg-projects`)
+  - `--workspace`: Directory for project storage (default: `~/mkzforge-projects`)
   - `--http-port`: Web server port (default: 9091)
   - `--webroot`: Custom web assets directory
 - See `doc/WEBSERVER.md` for detailed documentation
 
-**CLI Module** (`lib/ytffmpeg/cli/`)
+**CLI Module** (`lib/mkzforge/cli/`)
 
 - `base.py`: BaseCommand class with shared functionality:
   - GPU lock mechanism using fcntl for preventing concurrent Whisper instances
   - Automatic Whisper model selection based on GPU VRAM detection (via nvidia-smi or torch)
   - Subtitle generation, parsing, and translation utilities
   - Configuration loading and merging (system → user → project)
-- `new.py`: Project scaffolding (creates build/, resources/, ytffmpeg.yml)
+- `new.py`: Project scaffolding (creates build/, resources/, mkzforge.yml)
 - `refresh.py`: MP4→MKV conversion, subtitle generation, YAML updates
 - `build.py`: Final video assembly using filter_complex definitions
 - `publish.py`: Video publishing to configured endpoints
 
-**Filter Complex System** (`lib/ytffmpeg/filter_complex.py`)
+**Filter Complex System** (`lib/mkzforge/filter_complex.py`)
 
 - `FilterComplexFunctionUnit`: Parses and represents individual FFmpeg filters
 - `FilterComplexStream`: Represents input→functions→output stream chains
 - `FilterComplexFunctionList`: Collection of filter functions
 - Provides abstraction over FFmpeg's filter_complex syntax for programmatic manipulation
 
-**Configuration** (`lib/ytffmpeg/schema.json`)
+**Configuration** (`lib/mkzforge/schema.json`)
 
-- JSON Schema defining ytffmpeg.yml structure
-- Two-level configuration: global `ytffmpeg` section + per-video `videos` array
-- Configuration hierarchy: `/etc/ytffmpeg/config.yml` → `~/.config/ytffmpeg/config.yml` → `./ytffmpeg.yml`
+- JSON Schema defining mkzforge.yml structure
+- Two-level configuration: global `mkzforge` section + per-video `videos` array
+- Configuration hierarchy: `/etc/mkzforge/config.yml` → `~/.config/mkzforge/config.yml` → `./mkzforge.yml`
 
-**Notification System** (`lib/ytffmpeg/notify.py`)
+**Notification System** (`lib/mkzforge/notify.py`)
 
 - SNS notification support for build completion/failures
 - Replaced Discord webhooks in recent refactor
@@ -114,7 +114,7 @@ ytffmpeg serve                  # Start web interface (default: http://localhost
 
 The `gpu_lock()` context manager in `base.py` prevents multiple Whisper instances from running simultaneously:
 
-- Uses POSIX file locking (fcntl.flock) on `~/.cache/ytffmpeg/gpu.lock`
+- Uses POSIX file locking (fcntl.flock) on `~/.cache/mkzforge/gpu.lock`
 - Retry logic with random delays to avoid race conditions
 - Configurable timeout (default: 1 hour)
 - Only applies to CUDA/auto device modes, not CPU
@@ -130,12 +130,12 @@ Automatic model selection in `select_whisper_model()`:
   - `medium`: ~5GB
   - `large-v2`/`large-v3`: ~10GB
 - Falls back to `small` for CPU or low VRAM systems
-- Can be overridden via `ytffmpeg.whisper_model` config
+- Can be overridden via `mkzforge.whisper_model` config
 
 ### Multi-Language Subtitle Workflow
 
-1. Whisper generates base language subtitles (configured via `ytffmpeg.language`)
-2. For additional languages in `ytffmpeg.languages`, translation occurs:
+1. Whisper generates base language subtitles (configured via `mkzforge.language`)
+2. For additional languages in `mkzforge.languages`, translation occurs:
    - Full transcript translated as one document (preserves context)
    - Translated text split back to match original timing
    - Argos Translate packages auto-downloaded as needed
@@ -143,10 +143,10 @@ Automatic model selection in `select_whisper_model()`:
 
 ## Configuration Structure
 
-**Project-Level** (`ytffmpeg.yml`):
+**Project-Level** (`mkzforge.yml`):
 
 ```yaml
-ytffmpeg:
+mkzforge:
   language: en                  # Base language for Whisper
   languages: [en, es, fr]       # Languages in final video
   subtitles: true               # Enable subtitle generation
@@ -195,7 +195,7 @@ New CLI commands should:
 
 ### Testing GPU-Related Features
 
-Tests in `tests/ytffmpegunit/gpu_lock.py` demonstrate:
+Tests in `tests/mkzforgeunit/gpu_lock.py` demonstrate:
 
 - Concurrent lock acquisition testing
 - Timeout handling
@@ -203,14 +203,14 @@ Tests in `tests/ytffmpegunit/gpu_lock.py` demonstrate:
 
 ## File Locations
 
-**Source Code**: `lib/ytffmpeg/`
+**Source Code**: `lib/mkzforge/`
 **Tests**: `tests/`
 **Documentation**: `doc/` (mostly reference to README.md)
-**Examples**: `examples/` (sample ytffmpeg.yml files for different use cases)
+**Examples**: `examples/` (sample mkzforge.yml files for different use cases)
 **Contrib**: `contrib/` (third-party integrations and deployment scripts)
   - `contrib/sysvinit/` - SysV init scripts for Devuan/non-systemd systems
-**System Config**: `/etc/ytffmpeg/config.yml` (optional)
-**User Config**: `~/.config/ytffmpeg/config.yml` (optional)
+**System Config**: `/etc/mkzforge/config.yml` (optional)
+**User Config**: `~/.config/mkzforge/config.yml` (optional)
 
 ## Dependencies
 

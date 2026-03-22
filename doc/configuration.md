@@ -1,23 +1,23 @@
 # Configuration
 
-The configuration directives in the `ytffmpeg.yml` file drive how the program behaves.
-Each project will have its own `ytffmpeg.yml` configuration available in the root of the
+The configuration directives in the `mkzforge.yml` file drive how the program behaves.
+Each project will have its own `mkzforge.yml` configuration available in the root of the
 project (acting like many other projects' `package.json` for npm and `Makefile` for make).
 
-You can use `/etc/ytffmpeg/config.yml` for system-wide global configuration for how `ytffmpeg`
-will behave. You can use `~/.config/ytffmpeg/config.yml` for user-preferences on how `ytffmpeg`
-shall behave. Configuration directives referenced here under the `jq` notation for `.ytffmpeg[]`
-will control how `ytffmpeg` behaves.
+You can use `/etc/mkzforge/config.yml` for system-wide global configuration for how `mkzforge`
+will behave. You can use `~/.config/mkzforge/config.yml` for user-preferences on how `mkzforge`
+shall behave. Configuration directives referenced here under the `jq` notation for `.mkzforge[]`
+will control how `mkzforge` behaves.
 
 The following descriptions of the configuration are using the `jq` reference of where a part
 of a data structure exists and more description around that data structure and its function
-within `ytffmpeg`.
+within `mkzforge`.
 
 # Environment Variables
 
 ## LANGUAGE
 - Default: "en"
-- Choices: One of the country codes as defined by `ytffmpeg.cli.base::BaseCommand.LANGS`
+- Choices: One of the country codes as defined by `mkzforge.cli.base::BaseCommand.LANGS`
 - Description: Default language to write out for the SRT file.
 - @TODO: make it possible to support a list of comma-delimited languages?
 
@@ -44,17 +44,17 @@ within `ytffmpeg`.
 
 # Behaviour
 
-At the top level data structure, you can configure `ytffmpeg` with `.ytffmpeg`. This is a
+At the top level data structure, you can configure `mkzforge` with `.mkzforge`. This is a
 dictionary containing the configuration directives. Again, this can be configured system-wide
-in `/etc/ytffmpeg/config.yml` or on a user-basis in `~/.config/ytffmpeg/config.yml`.
+in `/etc/mkzforge/config.yml` or on a user-basis in `~/.config/mkzforge/config.yml`.
 
-## .ytffmpeg.subtitles
+## .mkzforge.subtitles
 - Type: string
 - Default: `True`
 - Description: Enables support for handling subtitles.
   Cli argument `--no-auto-subtitles` can be used to set this to `False` on a per-execution basis.
 
-## .ytffmpeg.overwrite
+## .mkzforge.overwrite
 - Type: boolean
 - Default: `False`
 - Description: Controls whether to overwrite files when generating assets. Useful when wanting
@@ -62,24 +62,24 @@ in `/etc/ytffmpeg/config.yml` or on a user-basis in `~/.config/ytffmpeg/config.y
   the resources.
   Can be set to true per-execution with the `-f` or `--force` cli argument.
 
-## .ytffmpeg.delete_mp4
+## .mkzforge.delete_mp4
 - Type: boolean
 - Default: `False`
-- Description: Controls whether `ytffmpeg` will delete the MP4 files after successfully converting
+- Description: Controls whether `mkzforge` will delete the MP4 files after successfully converting
   them to a compressed MKV format.
 
-## .ytffmpeg.log_level
+## .mkzforge.log_level
 - Type: str
 - Default: INFO
 - Description: Choice of DEBUG, INFO, WARNING, ERROR, CRITICAL for logging level. (mostly DEBUG and INFO are used).
 
-## .ytffmpeg.youtube
+## .mkzforge.youtube
 - Type: dict
 - Default: `{}`
 - Description: Contains the `client_id` and `client_secret` used to communicate with YouTube.
   @FutureFeature as of 1.0.0
 
-## .ytffmpeg.tiktok
+## .mkzforge.tiktok
 - Type: dict
 - Default: `{}`
 - Description: Contains the `client_id` and `client_secret` used to communicate with TikTok.
@@ -137,7 +137,7 @@ The `-f` argument is provided first and the `-i` argument is provided last to en
 ## .videos[].attributes
 - Type: List of strings.
 - Default: []
-- Description: Custom attributes that will make ytffmpeg treat this video differently.
+- Description: Custom attributes that will make mkzforge treat this video differently.
 - Values:
 - - `no-video`: Don't process video for this stream.
 - - `no-audio`: Don't process audio for this stream.
@@ -154,7 +154,7 @@ The `-f` argument is provided first and the `-i` argument is provided last to en
 
 ## .videos[].metadata
 - Type: dict
-- Default: See `.ytffmpeg.defaults.metadata`. Unconfigured default will be empty.
+- Default: See `.mkzforge.defaults.metadata`. Unconfigured default will be empty.
 - Description: Sets metadata for this video. By default, all output metadata is stripped prior
   to writring encoding result.
 
@@ -184,7 +184,7 @@ I plan on driving into this data structure further to interpolate everything it 
 additional functionality on top of this by allowing for either data structures to describe the functions
 and their respective arguments with proper quoting and all that.
 Also, I want to provide "shortcuts" to certain function bundles. For example, it would be great to be able
-to create custom "functions" that `ytffmpeg` will see and interpret differently before passing to `ffmpeg`.
+to create custom "functions" that `mkzforge` will see and interpret differently before passing to `ffmpeg`.
 Example: I use `scale,setsar` often as a pair. I also use `trim,setpts` as another pair of functions that
 are often strung together. When dealing with video streams and cuts, you find that certain things must
 always be done or set and if you aren't in the business of making videos all the time, it's not always

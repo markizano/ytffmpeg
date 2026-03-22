@@ -84,7 +84,7 @@ $(document).ready(function() {
 
       // Project configuration
       const projectConfig = {
-        ytffmpeg: {
+        mkzforge: {
           subtitles: subtitles,
           cut_silence: cutSilence,
         },
@@ -141,7 +141,7 @@ $(document).ready(function() {
 
           // Network-level errors or server not reachable
           if (xhr.readyState === 0 && xhr.status === 0) {
-            errorMsg = 'Cannot connect to server. Please ensure the ytffmpeg server is running and try again.';
+            errorMsg = 'Cannot connect to server. Please ensure the mkzforge server is running and try again.';
           } else if (textStatus === 'timeout') {
             errorMsg = 'Upload timed out. Please check your connection and server status, then try again.';
           } else if (xhr.responseJSON && xhr.responseJSON.error) {

@@ -1,0 +1,26 @@
+# Defaults for mkzforge init script
+# sourced by /etc/init.d/mkzforge
+# installed at /etc/default/mkzforge by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+
+# User and group to run mkzforge as
+MKZFORGE_USER=mkzforge
+MKZFORGE_GROUP=mkzforge
+
+# Workspace directory for video projects
+# This is where uploaded videos and processed files will be stored
+MKZFORGE_WORKSPACE=/var/lib/mkzforge
+
+# HTTP port for the web server
+# Can also be set via the config file at ~/.config/mkzforge/config.yml
+export HTTP_PORT=9091
+
+# Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+export LOG_LEVEL=INFO
+
+# Additional options to pass to mkzforge serve
+# DAEMON_OPTS="--workspace /custom/path --http-port 8080"
+DAEMON_OPTS=""

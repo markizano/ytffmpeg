@@ -1,20 +1,20 @@
-# ytffmpeg Web Interface
+# mkzforge Web Interface
 
-The ytffmpeg web interface provides a browser-based UI for uploading videos and managing video processing projects.
+The mkzforge web interface provides a browser-based UI for uploading videos and managing video processing projects.
 
 ## Quick Start
 
 ### Start the Web Server
 
 ```bash
-# Basic usage (default port 9091, workspace: ~/ytffmpeg-projects)
-ytffmpeg serve
+# Basic usage (default port 9091, workspace: ~/mkzforge-projects)
+mkzforge serve
 
 # Custom port and workspace
-ytffmpeg serve --http-port 8080 --workspace /path/to/projects
+mkzforge serve --http-port 8080 --workspace /path/to/projects
 
 # Custom webroot (for development)
-ytffmpeg serve --webroot /path/to/web/assets
+mkzforge serve --webroot /path/to/web/assets
 ```
 
 ### Access the Interface
@@ -123,18 +123,18 @@ The web server can be configured via:
 
 1. **Command-line arguments**:
    ```bash
-   ytffmpeg serve --workspace /path/to/projects --http-port 8080
+   mkzforge serve --workspace /path/to/projects --http-port 8080
    ```
 
 2. **Environment variables**:
    ```bash
    export HTTP_PORT=8080
-   ytffmpeg serve
+   mkzforge serve
    ```
 
-3. **Configuration files** (`~/.config/ytffmpeg/config.yml`):
+3. **Configuration files** (`~/.config/mkzforge/config.yml`):
    ```yaml
-   ytffmpeg:
+   mkzforge:
      workspace: /path/to/projects
      http_port: 8080
      webroot: /custom/web/assets
@@ -144,7 +144,7 @@ The web server can be configured via:
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `workspace` | `~/ytffmpeg-projects` | Directory where project folders are created |
+| `workspace` | `~/mkzforge-projects` | Directory where project folders are created |
 | `http_port` | `9091` | TCP port for the web server |
 | `webroot` | Auto-detected | Directory containing HTML/CSS/JS assets |
 
@@ -154,11 +154,11 @@ When you upload a video:
 
 1. **Upload**: Files are uploaded to a temporary directory
 2. **Immediate Response**: Server returns 200 OK immediately
-3. **Background Processing**: A background process runs the ytffmpeg pipeline:
-   - Creates project structure (`ytffmpeg new`)
+3. **Background Processing**: A background process runs the mkzforge pipeline:
+   - Creates project structure (`mkzforge new`)
    - Moves files to resources directory
-   - Generates subtitles (`ytffmpeg refresh`)
-   - Builds final video (`ytffmpeg build`)
+   - Generates subtitles (`mkzforge refresh`)
+   - Builds final video (`mkzforge build`)
 4. **Notifications**: SNS notifications are sent on completion or failure
 
 ## File Organization
@@ -174,7 +174,7 @@ workspace/
     │   └── output.mp4           # Final output
     ├── resources/                # Uploaded files
     │   └── video.mp4
-    ├── ytffmpeg.yml              # Project configuration
+    ├── mkzforge.yml              # Project configuration
     └── readme.md
 ```
 
@@ -230,10 +230,10 @@ Check the server logs for detailed error messages. Common issues:
 
 ```bash
 # Run directly from source
-python lib/ytffmpeg/webserv.py
+python lib/mkzforge/webserv.py
 
 # Or use the CLI
-ytffmpeg serve --log-level DEBUG
+mkzforge serve --log-level DEBUG
 ```
 
 ### Frontend Development
@@ -263,7 +263,7 @@ Planned features:
 
 ```bash
 # Start server
-ytffmpeg serve
+mkzforge serve
 
 # In browser: http://localhost:9091
 # - Enter project name: "my-first-video"
@@ -288,7 +288,7 @@ ytffmpeg serve
 
 ```bash
 # Start with custom settings
-ytffmpeg serve \
+mkzforge serve \
   --workspace /media/videos/projects \
   --http-port 8080 \
   --log-level DEBUG
@@ -299,6 +299,6 @@ ytffmpeg serve \
 ## Support
 
 For issues or questions:
-- GitHub Issues: https://github.com/markizano/ytffmpeg/issues
-- Documentation: https://ytffmpeg.markizano.net
-- CLI Help: `ytffmpeg --help`
+- GitHub Issues: https://github.com/markizano/mkzforge/issues
+- Documentation: https://mkzforge.markizano.net
+- CLI Help: `mkzforge --help`

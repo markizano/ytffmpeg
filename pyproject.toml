@@ -3,7 +3,7 @@ requires = ["setuptools>=80", "wheel", "setuptools-scm>=9"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "ytffmpeg"
+name = "mkzforge"
 dynamic = ["version"]
 description = "Scripts and tools to ease the processing of videos for Social Media platforms."
 readme = "README.md"
@@ -33,33 +33,33 @@ dependencies = [
 ]
 
 [project.scripts]
-ytffmpeg = "ytffmpeg:main"
+mkzforge = "mkzforge:main"
 
 [project.urls]
-Homepage = "https://ytffmpeg.markizano.net"
-Repository = "https://github.com/markizano/ytffmpeg"
-Issues = "https://github.com/markizano/ytffmpeg/issues"
+Homepage = "https://mkzforge.markizano.net"
+Repository = "https://github.com/markizano/mkzforge"
+Issues = "https://github.com/markizano/mkzforge/issues"
 
 [tool.setuptools_scm]
 tag_regex = "^v(?P<version>.+)$"
 version_scheme = "no-guess-dev"
 local_scheme = "node-and-date"
-write_to = "lib/ytffmpeg/_version.py"
+write_to = "lib/mkzforge/_version.py"
 write_to_template = "__version__ = \"{version}\"\n"
 
 [tool.setuptools.package-dir]
-ytffmpeg = "lib/ytffmpeg"
+mkzforge = "lib/mkzforge"
 
 [tool.setuptools.packages.find]
 where = ["lib"]
 
 [tool.setuptools.package-data]
-ytffmpeg = [
+mkzforge = [
     "schema.json"
 ]
 
 [tool.setuptools.data-files]
-"share/ytffmpeg/web" = [
+"share/mkzforge/web" = [
     "web/*.html",
     "web/*.css",
     "web/*.js"
