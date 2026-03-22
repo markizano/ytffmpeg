@@ -1,5 +1,7 @@
 # MKZ Forge
 
+> Markizano's Forge for video production!
+
 This is a Python project I use and maintain to automate various aspects of my video editing
 process to publish on video supporting platforms like TikTok, YouTube, LinkedIn and Substack.
 
