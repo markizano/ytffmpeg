@@ -97,75 +97,76 @@ def genSubtitles(
             videos.updateVideo(video_cfg, subs=subs)
             return video_cfg
 
-    # Build whisper command
-    log.info(f'PATH: {os.getenv("PATH")}')
-    whisper_cmd = [
-        'whisper',
-        # Select appropriate Whisper model based on GPU VRAM
-        '--model', whisperModel(),
-        '--device', kwargs.get('device', types.Devices.AUTO),
-        '--fp16', 'False',
-        '--output_dir', 'build',
-        '--output_format', 'all',
-        '--language', lang,
-        '--task', kwargs.get('task', types.WhisperTask.TRANSCRIBE),
-        '--word_timestamps', 'True',
-        '--max_words_per_line', '5',
-        '--highlight_words', 'True',
-        '--verbose', 'True',
-        '--initial_prompt', (
-            'Markizano Draconus is a Tanninovian from the Crux galaxy. '
-            "Kizano's FinTech is an education and career advancement company. "
-            'markizano.net is the website you can visit. '
-            'Alex Hormozi and Codie Sanchez are YouTube personalities.'
-        )
-    ]
+    with utils.video_processing_lock('subtitles'):
+        # Build whisper command
+        log.info(f'PATH: {os.getenv("PATH")}')
+        whisper_cmd = [
+            'whisper',
+            # Select appropriate Whisper model based on GPU VRAM
+            '--model', whisperModel(),
+            '--device', kwargs.get('device', types.Devices.AUTO),
+            '--fp16', 'False',
+            '--output_dir', 'build',
+            '--output_format', 'all',
+            '--language', lang,
+            '--task', kwargs.get('task', types.WhisperTask.TRANSCRIBE),
+            '--word_timestamps', 'True',
+            '--max_words_per_line', '5',
+            '--highlight_words', 'True',
+            '--verbose', 'True',
+            '--initial_prompt', (
+                'Markizano Draconus is a Tanninovian from the Crux galaxy. '
+                "Kizano's FinTech is an education and career advancement company. "
+                'markizano.net is the website you can visit. '
+                'Alex Hormozi and Codie Sanchez are YouTube personalities.'
+            )
+        ]
 
-    # Add the video file
-    whisper_cmd.append(video_path)
+        # Add the video file
+        whisper_cmd.append(video_path)
 
-    log.info(f"Running whisper command: {' '.join(whisper_cmd)}")
-    try:
-        now = time.time()
-        # Use Popen to stream output to the logger in real-time
-        process = subprocess.Popen(
-            whisper_cmd,
-            text=True,
-            env=os.environ,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-        )
-        assert process.stdout is not None
-        for line in process.stdout:
-            line = line.rstrip('\n')
-            if line:
-                log.info(line)
-        returncode = process.wait()
-        then = time.time()
+        log.info(f"Running whisper command: {' '.join(whisper_cmd)}")
+        try:
+            now = time.time()
+            # Use Popen to stream output to the logger in real-time
+            process = subprocess.Popen(
+                whisper_cmd,
+                text=True,
+                env=os.environ,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+            )
+            assert process.stdout is not None
+            for line in process.stdout:
+                line = line.rstrip('\n')
+                if line:
+                    log.info(line)
+            returncode = process.wait()
+            then = time.time()
 
-        if returncode != 0:
-            log.error(f"Whisper failed with exit code {returncode}")
+            if returncode != 0:
+                log.error(f"Whisper failed with exit code {returncode}")
+                return video_cfg
+
+            log.info(f"Whisper completed in {round(then-now, 4)} seconds!")
+            log.info(f'Now removing excess VTT, JSON, and TSV files...')
+            for suffix in ['json', 'vtt', 'tsv']:
+                extra = os.path.join('build', f'{utils.filename(video_path)}.{suffix}')
+                if os.path.exists(extra):
+                    os.unlink(extra)
+
+            # Whisper will create the SRT file with the same name as the video but with .srt extension
+            # We need to rename it to match our expected naming convention
+            generated_whisper_srt = os.path.join('build', f"{utils.filename(video_path)}.srt")
+            if os.path.exists(generated_whisper_srt) and generated_whisper_srt != srtfile:
+                os.rename(generated_whisper_srt, srtfile)
+                log.info(f"Renamed {generated_whisper_srt} to {srtfile}")
+
+            fixSubtitles(srtfile)
+            fixSubtitles(txtfile)
+            videos.updateVideo(video_cfg, subs=[(lang, srtfile)])
+
             return video_cfg
-
-        log.info(f"Whisper completed in {round(then-now, 4)} seconds!")
-        log.info(f'Now removing excess VTT, JSON, and TSV files...')
-        for suffix in ['json', 'vtt', 'tsv']:
-            extra = os.path.join('build', f'{utils.filename(video_path)}.{suffix}')
-            if os.path.exists(extra):
-                os.unlink(extra)
-
-        # Whisper will create the SRT file with the same name as the video but with .srt extension
-        # We need to rename it to match our expected naming convention
-        generated_whisper_srt = os.path.join('build', f"{utils.filename(video_path)}.srt")
-        if os.path.exists(generated_whisper_srt) and generated_whisper_srt != srtfile:
-            os.rename(generated_whisper_srt, srtfile)
-            log.info(f"Renamed {generated_whisper_srt} to {srtfile}")
-
-        fixSubtitles(srtfile)
-        fixSubtitles(txtfile)
-        videos.updateVideo(video_cfg, subs=[(lang, srtfile)])
-
-        return video_cfg
-    except Exception as e:
-        log.error(f"Failed to generate subtitles: {e}")
-        return video_cfg
+        except Exception as e:
+            log.error(f"Failed to generate subtitles: {e}")
+            return video_cfg
