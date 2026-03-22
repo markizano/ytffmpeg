@@ -1,10 +1,24 @@
-# ffmpeg-youtube
+# MKZ Forge
 
-Python project I use to convert my videos into stuff that can be posted on YouTube, TikTok,
-Instagram and other social media sites.
+This is a Python project I use and maintain to automate various aspects of my video editing
+process to publish on video supporting platforms like TikTok, YouTube, LinkedIn and Substack.
 
 FFMPEG is a great video editor by itself, but it's difficult to manage that incredible description
 library it has.
+
+This project handles the following process for me:
+
+* **Convert MP4 files to MKV** files to compress for disk space.
+* **Cut Silence** from videos to remove the "uhm"s and "uuh"s.
+* **Combine videos** so multiple uploads can result in a single artifact to publish.
+* **Generate subtitles** using OpenAI's `whisper` libraries for hardsubs/captions.
+* **Generate Metadata** for title and description based on the content of the video.
+* **Generate Thumbnail** using Google's GenAI Image generation API.
+* **Pristine Video Production** for that final product you see on video platforms posted by me.
+
+In a single upload (or multi-file upload), I can quickly generate videos that already have
+captions hardcoded into them, metadata attached so platforms can easily and quickly categorize
+my videos for publishing (if they support that kind of thing).
 
 With this project, I hope to make it easier for program-oriented folks like me to have a
 descriptive file that converts your videos for you instead of having to remember complex filter
@@ -19,12 +33,11 @@ in their own video editing process endeavours.
 
 When recording from phone or cam, it's difficult to manage all the media and content that comes in
 without paying for crazy software to get it done. With this open-source product, you can simply
-`pip3 install mkzforge` and go!
+`pip install mkzforge` and go!
 
 This project honours configuration defined in a system-wide configuration file in `/etc/mkzforge/config.yml`,
 user-specific configuration defined in `~/.config/mkzforge/config.yml`, with the configurations merged
-together in that order as defined. A top-level directive `.mkzforge` in `jq` notation would configure
-how `mkzforge` operates globally, but also respects that data structure on a per-project level as well.
+together in that order as defined.
 
 To create a new project, let's use this:
 
@@ -47,7 +60,7 @@ You can drop your MP4 files from your devices into the `./resources/` directory.
 Next, we can run
 
 ```bash
-mkzforge refresh
+mkzforge normalize
 ```
 
 to refresh the YAML file that is the configuration driving the
@@ -137,10 +150,10 @@ mkzforge now supports automatic translation of subtitles to multiple languages u
 
     This will:
 
-    - Generate English subtitles using Whisper
-    - Automatically translate to Spanish, French, and German
-    - Preserve timing information from the original subtitles
-    - Create separate SRT files for each language in `build/`
+    * Generate English subtitles using Whisper
+    * Automatically translate to Spanish, French, and German
+    * Preserve timing information from the original subtitles
+    * Create separate SRT files for each language in `build/`
 
 3. **Build your video with all subtitle tracks:**
 
@@ -180,10 +193,10 @@ build/
 
 Any language pair supported by Argos Translate, including:
 
-- Spanish (es), French (fr), German (de), Portuguese (pt)
-- Italian (it), Russian (ru), Chinese (zh), Japanese (ja)
-- Arabic (ar), Hindi (hi), Korean (ko)
-- And many more!
+* Spanish (es), French (fr), German (de), Portuguese (pt)
+* Italian (it), Russian (ru), Chinese (zh), Japanese (ja)
+* Arabic (ar), Hindi (hi), Korean (ko)
+* And many more!
 
 For detailed documentation, see [CHANGES.md](CHANGES.md).
 
@@ -191,10 +204,10 @@ For detailed documentation, see [CHANGES.md](CHANGES.md).
 
 Features I'd like to add to this include:
 
-- `mkzforge publish` to publish to your configured social media platforms
--- I want to support YouTube, TikTok, and Mastadon.
--- Right now, only an SFTP endpoint is supported (uses [Fabric](https://www.fabfile.org/)).
-- Stream specifier error clarification: It would be nice to know that a stream is disconnected
+* `mkzforge publish` to publish to your configured social media platforms
+  * I want to support YouTube, TikTok, and Mastadon.
+  * Right now, only an SFTP endpoint is supported (uses [Fabric](https://www.fabfile.org/)).
+* Stream specifier error clarification: It would be nice to know that a stream is disconnected
   right there in vscode or some editor of sorts. I hope a project like this can make that more
   easily accesible as a potential by simulating the results of the configuration in ffmpeg's
   `filter_complex` parameter.

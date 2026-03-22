@@ -13,48 +13,55 @@ The following descriptions of the configuration are using the `jq` reference of 
 of a data structure exists and more description around that data structure and its function
 within `mkzforge`.
 
-# Environment Variables
+## Environment Variables
 
-## LANGUAGE
+### LANGUAGE
+
 - Default: "en"
 - Choices: One of the country codes as defined by `mkzforge.cli.base::BaseCommand.LANGS`
 - Description: Default language to write out for the SRT file.
 - @TODO: make it possible to support a list of comma-delimited languages?
 
-## OMP_NUM_THREADS
+### OMP_NUM_THREADS
+
 - Default: "`nproc`"
 - Description: When running on CPU, make sure to set the same number of threads.
   Many frameworks will read the environment variable OMP_NUM_THREADS, which can be set when
   running your script
 
-## LOG_LEVEL
+### LOG_LEVEL
+
 - Default: "INFO"
 - Description: `kizano.getLogger()` respects the environment varibale for the log level.
   The command lines have also been tweaked to enable this feature.
 
-## WHISPER_MODEL
+### WHISPER_MODEL
+
 - Default: large-v2
 - Description: Define a different Whisper model to use for transcription. Available models are:
   tiny, base, small, medium, large, large-v2, large-v3. These are downloaded automatically
   by the whisper script when needed.
 
-## FFMPEG_BIN
+### FFMPEG_BIN
+
 - Default: `ffmpeg`
 - Description: Specify an alternate path to the `ffmpeg` binary to execute.
 
-# Behaviour
+## Behaviour
 
 At the top level data structure, you can configure `mkzforge` with `.mkzforge`. This is a
 dictionary containing the configuration directives. Again, this can be configured system-wide
 in `/etc/mkzforge/config.yml` or on a user-basis in `~/.config/mkzforge/config.yml`.
 
-## .mkzforge.subtitles
+### .mkzforge.subtitles
+
 - Type: string
 - Default: `True`
 - Description: Enables support for handling subtitles.
   Cli argument `--no-auto-subtitles` can be used to set this to `False` on a per-execution basis.
 
-## .mkzforge.overwrite
+### .mkzforge.overwrite
+
 - Type: boolean
 - Default: `False`
 - Description: Controls whether to overwrite files when generating assets. Useful when wanting
@@ -62,24 +69,29 @@ in `/etc/mkzforge/config.yml` or on a user-basis in `~/.config/mkzforge/config.y
   the resources.
   Can be set to true per-execution with the `-f` or `--force` cli argument.
 
-## .mkzforge.delete_mp4
+### .mkzforge.delete_mp4
+
 - Type: boolean
 - Default: `False`
 - Description: Controls whether `mkzforge` will delete the MP4 files after successfully converting
   them to a compressed MKV format.
 
-## .mkzforge.log_level
+### .mkzforge.log_level
+
 - Type: str
 - Default: INFO
-- Description: Choice of DEBUG, INFO, WARNING, ERROR, CRITICAL for logging level. (mostly DEBUG and INFO are used).
+- Description: Choice of DEBUG, INFO, WARNING, ERROR, CRITICAL for logging level. (mostly DEBUG and
+  INFO are used).
 
-## .mkzforge.youtube
+### .mkzforge.youtube
+
 - Type: dict
 - Default: `{}`
 - Description: Contains the `client_id` and `client_secret` used to communicate with YouTube.
   @FutureFeature as of 1.0.0
 
-## .mkzforge.tiktok
+### .mkzforge.tiktok
+
 - Type: dict
 - Default: `{}`
 - Description: Contains the `client_id` and `client_secret` used to communicate with TikTok.
@@ -87,12 +99,13 @@ in `/etc/mkzforge/config.yml` or on a user-basis in `~/.config/mkzforge/config.y
 
 *@TODO*: Support for Reels?
 
-# Videos
+## Videos
 
 At the top of the data structure, we have `.videos[]` which is an array of objects containing the
 videos we will be tracking, modifying and converting into our project.
 
-## .videos[].input
+### .videos[].input
+
 - Type: Array of {str|dict}. If `str`, read as input video. If `dict`, then each of the keys of
   said dictionary will be fed into the `-i` arguments to ffmpeg and a key of "i" is required.
 - Default: None
@@ -105,7 +118,7 @@ All parts of this data structure will eventually be fed into the "-i" argument a
 In this way, if there's a loop or custom framerate, those may be specified as part of this input file.
 All components of this data structure are fed into their respective arguments.
 
-### Example
+#### Example
 
 The following YAML data structure:
 
@@ -125,16 +138,18 @@ Would result in these arguments being passed to ffmpeg:
 ffmpeg -framerate 30 -t 5 -loop true -i resources/intro.png
 ```
 
-The `-f` argument is provided first and the `-i` argument is provided last to ensure all options that describe
-"this" input are defined before providing the input to `ffmpeg`.
+The `-f` argument is provided first and the `-i` argument is provided last to ensure all options
+that describe "this" input are defined before providing the input to `ffmpeg`.
 
-## .videos[].output
+### .videos[].output
+
 - Type: str
 - Default: ''
 - *Required!*
 - Description: Target output video. Only one output is allowed.
 
-## .videos[].attributes
+### .videos[].attributes
+
 - Type: List of strings.
 - Default: []
 - Description: Custom attributes that will make mkzforge treat this video differently.
@@ -145,20 +160,23 @@ The `-f` argument is provided first and the `-i` argument is provided last to en
 - - `vsync`: Whether to enable breaking the synchronization of video-to-audio timestamps.
     (See `fps_mode` in `ffmpeg` man page for more details).
 
-## .videos[].languages
+### .videos[].languages
+
 - Type: List of strings.
 - Default: `['en']`
 - Description: Provides the supported languages if international support is needed.
   Will attempt to stream an additional subtitle stream for each language.
   (may not be compatible with the `mp4/mjpeg4` container)
 
-## .videos[].metadata
+### .videos[].metadata
+
 - Type: dict
 - Default: See `.mkzforge.defaults.metadata`. Unconfigured default will be empty.
 - Description: Sets metadata for this video. By default, all output metadata is stripped prior
   to writring encoding result.
 
-## .videos[].map
+### .videos[].map
+
 - Type: dict
 - Default: {}
 - Description: Map these streams into the resulting video. Streams available are as follows:
@@ -174,25 +192,28 @@ videos:
     # ...
 ```
 
-## .videos[].filter_complex
+### .videos[].filter_complex
+
 - Type: list{str|dict}
 - Default: []
-- Description: List of strings that are concatenated to represent the filter complex graph from within FFmpeg.
-  This is the crux of this application and the headspace I want to try to automate for myself.
+- Description: List of strings that are concatenated to represent the filter complex graph from
+  within FFmpeg. This is the crux of this application and the headspace I want to try to automate
+  for myself.
 
 I plan on driving into this data structure further to interpolate everything it has to offer and provide
 additional functionality on top of this by allowing for either data structures to describe the functions
 and their respective arguments with proper quoting and all that.
-Also, I want to provide "shortcuts" to certain function bundles. For example, it would be great to be able
-to create custom "functions" that `mkzforge` will see and interpret differently before passing to `ffmpeg`.
-Example: I use `scale,setsar` often as a pair. I also use `trim,setpts` as another pair of functions that
-are often strung together. When dealing with video streams and cuts, you find that certain things must
-always be done or set and if you aren't in the business of making videos all the time, it's not always
-obvious. This is an attempt to make some of that more accessible by providing alternate/additional
-functionality to make the filter_complex part easier to access for the non-programmer.
+Also, I want to provide "shortcuts" to certain function bundles. For example, it would be great to
+be able to create custom "functions" that `mkzforge` will see and interpret differently before
+passing to `ffmpeg`. Example: I use `scale,setsar` often as a pair. I also use `trim,setpts` as
+another pair of functions that are often strung together. When dealing with video streams and cuts,
+you find that certain things must always be done or set and if you aren't in the business of making
+videos all the time, it's not always obvious. This is an attempt to make some of that more
+accessible by providing alternate/additional functionality to make the filter_complex part easier
+to access for the non-programmer.
 
+## Samples
 
-# Samples
 Here's a sample JSON that I have used for extensive video production:
 
 ```json
@@ -354,10 +375,10 @@ Here's a sample JSON that I have used for extensive video production:
     }
 ```
 
-In this example, I have created a master video containing a combination of several child video and images to overlay and mesh together.
-It would be great to pull this together into a smaller data structure that required less description, but achieved the same effects
-since some things must always be done together as a set, like trimming sections and setting the presentation timestamp before concatenating
-the segments together to make a video segment.
+In this example, I have created a master video containing a combination of several child video and
+images to overlay and mesh together. It would be great to pull this together into a smaller data
+structure that required less description, but achieved the same effects since some things must
+always be done together as a set, like trimming sections and setting the presentation timestamp
+before concatenating the segments together to make a video segment.
 
 FFMPEG is incredibly powerful! Let's harness that power!
-
