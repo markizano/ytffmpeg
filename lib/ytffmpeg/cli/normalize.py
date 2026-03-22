@@ -100,13 +100,7 @@ def normalize(cfg: dict) -> int:
     # There's no video config to consider. So determine language as soon as possible.
     ytffmpeg_cfg = utils.load()
     cfg['name'] = os.path.basename(os.getcwd())
-    resources = utils.getResources()
-    if len(resources) >1:
-        resource = videos.preProcessResources(ytffmpeg_cfg, **cfg)
-    else:
-        resource = videos.mp4tomkv(resources[0])
-        # cut-silence from video.
-    video_cfg = videos.newVideo(resource)
+    video_cfg, resource = videos.detectState(**cfg)
     subtitles.genSubtitles(video_cfg, resource, **cfg)
     metadata.generateMetadata(video_cfg, 'title', **cfg)
     metadata.generateMetadata(video_cfg, 'description', **cfg)
@@ -116,7 +110,8 @@ def normalize(cfg: dict) -> int:
     if not os.path.exists('thumbnail.png') or ( os.path.exists('thumbnail.png') and cfg.get('overwrite', False) ):
         genimg.generate_thumbnail(video_cfg['metadata']['title'], content)
 
-    ytffmpeg_cfg['videos'].append(video_cfg)
+    if not utils.hasInput(ytffmpeg_cfg['videos'], resource):
+        ytffmpeg_cfg['videos'].append(video_cfg)
     log.info('Video(s) normalized and added to `ytffmpeg.yml` config.')
     utils.save(ytffmpeg_cfg['videos'])
     log.info('Done normalizing videos!')

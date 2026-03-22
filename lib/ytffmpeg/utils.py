@@ -68,9 +68,15 @@ def save(videos: list[dict]) -> None:
     write_yaml('ytffmpeg.yml', { 'videos': videos })
     log.info('Done writing out ytffmpeg.yml configuration!')
 
+def getMP4s() -> list[str]:
+    '''
+    List all MP4 files in the resources folder.
+    '''
+    return glob('resources/*.mp4')
+
 def getResources() -> list[str]:
     '''
-    List all resources in the directory.
+    List all resources in the resources folder.
     '''
     return glob('resources/*.mp4') + glob('resources/*.mkv')
 

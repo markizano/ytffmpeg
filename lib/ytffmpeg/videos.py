@@ -269,10 +269,13 @@ def updateVideo(video_cfg: dict, **kwargs) -> dict:
             video_cfg['languages'] = []
         for idx, sub in enumerate(kwargs['subs']):
             lang, srtfile = sub
-            video_cfg['languages'].append(f'{lang}:{idx}')
+            langcode = f'{lang}:{idx}'
+            if langcode not in video_cfg['languages']:
+                video_cfg['languages'].append()
             i = len(video_cfg['input'])
             video_cfg['map'][lang] = f'{i}:s'
-            video_cfg['input'].append({'i': srtfile})
+            if not utils.hasInput([video_cfg], srtfile):
+                video_cfg['input'].append({'i': srtfile})
 
     if 'filter_complex' in kwargs:
         if kwargs['filter_complex']:
@@ -313,6 +316,45 @@ def updateVideo(video_cfg: dict, **kwargs) -> dict:
 
     log.info(f'New Video config: {video_cfg}')
     return video_cfg
+
+def detectState(**kwargs) -> tuple[dict, str]:
+    '''
+    Used in the `ytffmpeg normalize` function.
+    Detect the current state of the environment based on the `ytffmpeg.yml` config and which
+    resources are present on disk.
+    Gets the active video configuration and the active resource we should be processing.
+    '''
+    ytffmpeg_cfg = utils.load()
+    mp4s = utils.getMP4s()
+    if len(mp4s) >1:
+        resource = preProcessResources(ytffmpeg_cfg, **kwargs)
+    elif len(mp4s) == 1:
+        mkv = mp4tomkv(mp4s[0])
+        # cut-silence from video.
+        resource = removeSilence(mkv, **kwargs)
+        if utils.hasInput(ytffmpeg_cfg, resource):
+            log.info(f'Resource {resource} found in config. Loading from this...')
+            video_cfg = utils.getInputIndex(ytffmpeg_cfg, resource)
+        else:
+            log.info(f'Resource {resource} not found. Generating new config...')
+            video_cfg = newVideo(resource)
+    else:
+        # It's safe to assume these will all be MKV files.
+        resources = utils.getResources()
+        if len(resources) > 1:
+            log.info('Multiple MKV files found. Getting the last one off the config.')
+            video_cfg = ytffmpeg_cfg['videos'][-1]
+        elif len(resources) == 1:
+            resource = resources[0]
+            log.info(f'Found exactly one resource. Working with \x1b[1m{resource}\x1b[0m')
+            idx = utils.getInputIndex(ytffmpeg_cfg['videos'], resource)
+            if idx is not None:
+                log.info(f'Found {resource} in ytffmpeg.yml.')
+                video_cfg = ytffmpeg_cfg['videos'][idx]
+            else:
+                log.info(f'Resource {resource} not found in ytffmpeg.yml config. Generating new config.')
+                video_cfg = newVideo(resource)
+    return video_cfg, resource
 
 def inputToArgList(raw_input_video: str|dict):
     '''

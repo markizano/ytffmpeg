@@ -46,6 +46,7 @@ def generateMetadata(video_cfg: dict, md_type: Literal['title', 'description'], 
         txt_path = f'build/{utils.filename(resource)}.txt'
         if video_cfg['metadata'].get(md_type, '') and not kwargs.get('overwrite', False):
             log.info(f'Video already has {md_type}. Not wasting tokens for another...')
+            return video_cfg
 
         if not os.path.exists(txt_path):
             log.warning(f'Transcript file {txt_path} not found. Cannot generate {md_type}.')
