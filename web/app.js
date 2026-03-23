@@ -34,66 +34,31 @@ $(document).ready(function() {
       const title = $('#title').val().trim();
       const description = $('#description').val().trim();
       const subtitles = $('#subtitles').is(':checked');
-      const cutSilence = $('#cut-silence').is(':checked');
+      const cut_silence = $('#cut-silence').is(':checked');
 
-      const videos = [];
-      const videoData = {
-        input: [],
-        metadata: {
-          title: title ?? '',
-          description: description ?? '',
-        }
-      };
-
-      const inputVideos = $('.video-input').map(function() {
+      $('.video-input').map(function() {
         const fileInput = $(this).find('input[type="file"]')[0];
         const overrideName = $(this).find('input[type="text"]').val().trim();
 
         if (fileInput.files.length > 0) {
           const file = fileInput.files[0];
           const filename = overrideName || file.name;
-          console.debug('Video Data', JSON.stringify(videoData,0,2));
           formData.append('videos', file, filename);
           return {video: file, filename};
         }
-      }).get();
-      console.log('Input Videos: ', inputVideos);
-      if (inputVideos.length === 0) {
-        // No videos == error.
-        showStatus('Please select at least one video file', 'error');
-        return;
-      } else if (inputVideos.length === 1) {
-        // Just submit the video.
-        console.log('Single video upload.');
-        videoData.input.push({i: inputVideos[0].filename});
-        videoData.output = `build/${projectName}.mp4`;
-      } else if (inputVideos.length > 1) {
-        console.log('Multi-video upload for concat.');
-        // Build the filter complex to combine the videos.
-        const filterComplex = inputVideos.map((v, i) => `[${i}:v][${i}:a]`).join('') + `concat=n=${inputVideos.length}:a=1[video][audio]`
-        const concatVideo = `resources/${projectName}_concat.mkv`;
-        videos.push({
-          input: inputVideos.map(v => ({i: v.filename})),
-          output: concatVideo,
-          filter_complex: [filterComplex]
-        });
-        videoData.input.push({i: concatVideo})
-        videoData.output = `build/${projectName}.mp4`;
-      }
-      videos.push(videoData);
+      });
 
       // Project configuration
       const projectConfig = {
-        mkzforge: {
-          subtitles: subtitles,
-          cut_silence: cutSilence,
-        },
-        videos: videos,
+        name: projectName,
+        subtitles,
+        cut_silence,
+        title,
+        description,
       };
       console.log('Project config payload: ', projectConfig);
 
       // Add project configuration
-      formData.append('project_name', projectName);
       formData.append('project_config', JSON.stringify(projectConfig));
 
       // Show progress container

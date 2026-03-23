@@ -163,7 +163,7 @@ class ApiHandlers:
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def process(self, project_name: str, project_config: str, videos: Union[Part, List[Part], None] = None):
+    def process(self, project_config: str, videos: Union[Part, List[Part], None] = None):
         '''
         POST /api/process
         Upload videos and start processing pipeline
@@ -184,12 +184,12 @@ class ApiHandlers:
                 video_list = videos
 
             # Validation
-            if not project_name:
+            if not project_config['name']:
                 raise cherrypy.HTTPError(400, 'project_name is required')
             if not videos:
                 raise cherrypy.HTTPError(400, 'At least one video file is required')
 
-            self.config['resource'] = project_name
+            self.config['resource'] = project_config['name']
             videos.newProject(**self.config)
             log.info(f'Got JSON project config: {project_config}')
             project_cfg = json.loads(project_config)
@@ -200,7 +200,7 @@ class ApiHandlers:
                     video_filename: str = os.path.basename(project_cfg['videos'][0]['input'][i]['i'])
                 else:
                     video_filename: str = os.path.basename(video.filename)
-                video_path = os.path.join(self.workspace, project_name, 'resources', video_filename)
+                video_path = os.path.join(self.workspace, project_config['name'], 'resources', video_filename)
                 # Chunk the video because it could be many GB in size. We don't want that in-memory.
                 with open(video_path, 'wb') as fd:
                     while True:
@@ -213,22 +213,22 @@ class ApiHandlers:
 
                 if DEBUG:
                     # Stay attached in debug mode because I may do some interactive testing.
-                    process_video_pipeline(self.config, project_name, project_cfg)
+                    process_video_pipeline(self.config, project_config['name'], project_cfg)
                 else:
                     # Start background processing
                     process = multiprocessing.Process(
                         target=process_video_pipeline,
-                        args=(self.config, project_name, project_cfg),
+                        args=(self.config, project_config['name'], project_cfg),
                         daemon=True
                     )
                     process.start()
 
-                log.info(f'Started background processing for project: {project_name}')
+                log.info(f'Started background processing for project: {project_config["name"]}')
 
             return {
                 'status': 'success',
                 'message': 'Video upload successful. Processing started in background.',
-                'project': project_name
+                'project': project_config['name']
             }
         except cherrypy.HTTPError:
             raise
@@ -236,18 +236,14 @@ class ApiHandlers:
             log.error(f'Failed to process upload: {e}', exc_info=True)
             raise cherrypy.HTTPError(500, str(e))
 
-def process_video_pipeline(
-    cfg: dict,
-    project_name: str,
-    project_config: dict,
-):
+def process_video_pipeline(cfg: dict, project_config: dict):
     '''
     Background worker for video processing.
     Uses built-in mkzforge interfaces instead of shell commands.
     '''
 
-    log.info(f'Starting video pipeline for project: {project_name}')
-    project_path = os.path.join(cfg['workspace'], project_name)
+    log.info(f'Starting video pipeline for project: {project_config["name"]}')
+    project_path = os.path.join(cfg['workspace'], project_config["name"])
     os.chdir(project_path)
     log.info(f'Process config: {project_config}')
 
@@ -288,21 +284,21 @@ def process_video_pipeline(
         if not DEBUG:
             notify.send_notification(
                 'INFO',
-                f'mkzforge: {project_name} complete',
-                f'Video processing completed successfully for project: {project_name}'
+                f'mkzforge: {project_config["name"]} complete',
+                f'Video processing completed successfully for project: {project_config["name"]}'
             )
 
-        log.info(f'Video pipeline completed successfully for: {project_name}')
+        log.info(f'Video pipeline completed successfully for: {project_config["name"]}')
 
     except Exception as e:
-        log.error(f'Video pipeline failed for {project_name}: {e}', exc_info=True)
+        log.error(f'Video pipeline failed for {project_config["name"]}: {e}', exc_info=True)
 
         # Send error notification
         if not DEBUG:
             notify.send_notification(
                 'ERROR',
-                f'mkzforge: {project_name} failed',
-                f'Video processing failed for project {project_name}: {str(e)}'
+                f'mkzforge: {project_config["name"]} failed',
+                f'Video processing failed for project {project_config["name"]}: {str(e)}'
             )
 
 def jsonify_error(status, message, traceback, version):
