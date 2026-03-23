@@ -50,7 +50,7 @@ def serveTheWeb(cfg: dict):
     # Mount handlers
     cherrypy.tree.mount(page_handler, '/', config={
         '/': {
-            'tools.staticdir.on': False,
+            'tools.staticdir.on': True,
             'tools.staticdir.dir': webroot
         },
     })

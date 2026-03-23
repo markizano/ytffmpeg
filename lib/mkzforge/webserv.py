@@ -16,7 +16,7 @@ import cherrypy
 from typing import Dict, List, Union
 from cherrypy._cpreqbody import Part
 
-from mkzforge import getLogger, notify, utils, videos, subtitles, metadata, genimg
+from mkzforge import getLogger, notify, utils, videos, subtitles, metadata, genimg, grive
 
 log = getLogger(__name__)
 DEBUG = os.getenv('DEBUG', False)
@@ -57,6 +57,69 @@ class PageHandlers:
             raise cherrypy.HTTPError(404, 'project-detail.html not found')
         return open(detail_path, 'r').read()
 
+    @cherrypy.expose
+    def oauth2callback(self, **kwargs):
+        '''
+        GET /oauth2callback?state=...&code=...&scope=...
+        Receives the full Google OAuth2 redirect URL, exchanges it for a token, then
+        redirects home.  The complete query string is passed to grive so oauthlib can
+        validate state, scope, and all other parameters Google includes in the response.
+        '''
+        if not kwargs.get('code'):
+            raise cherrypy.HTTPError(400, 'Missing authorization code')
+        http_host = self.config.get('http_host',
+            f"http://{cherrypy.request.headers.get('Host', 'localhost')}")
+        redirect_uri = f'{http_host}/oauth2callback'
+        # Reconstruct the full authorization response URL that Google redirected to.
+        qs = cherrypy.request.query_string
+        authorization_response = f'{redirect_uri}?{qs}'
+        grive.handle_oauth_callback(self.config, authorization_response, redirect_uri)
+        raise cherrypy.HTTPRedirect('/')
+
+
+class GriveHandlers:
+    '''
+    Sub-handler for /api/grive/* endpoints.
+    Mounted as ApiHandlers.grive so CherryPy routes /api/grive/* here automatically.
+    '''
+
+    def __init__(self, config: dict):
+        self.config = config
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def status(self):
+        '''GET /api/grive/status — returns {"authenticated": bool}'''
+        log.info('GET /api/grive/status')
+        return {'authenticated': grive.is_authenticated()}
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def list(self):
+        '''GET /api/grive/list — returns {"files": [...]} or 401 if not authenticated'''
+        log.info('GET /api/grive/list')
+        if not grive.is_authenticated():
+            cherrypy.response.status = 401
+            return {'error': 'not_authenticated'}
+        try:
+            files = grive.list_folder(self.config)
+            return {'files': files}
+        except Exception as e:
+            log.error(f'Failed to list Drive folder: {e}', exc_info=True)
+            raise cherrypy.HTTPError(500, str(e))
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def auth(self):
+        '''GET /api/grive/auth — returns {"auth_url": "..."}'''
+        log.info('GET /api/grive/auth')
+        http_host = self.config.get('http_host',
+            f"http://{cherrypy.request.headers.get('Host', 'localhost')}")
+        redirect_uri = f'{http_host}/oauth2callback'
+        auth_url = grive.get_auth_url(self.config, redirect_uri)
+        return {'auth_url': auth_url}
+
+
 class ApiHandlers:
     '''
     JSON API endpoints for video processing and project management.
@@ -66,6 +129,7 @@ class ApiHandlers:
         self.config = config
         self.workspace = config.get('workspace', os.getcwd())
         self.processing_jobs: Dict[str, dict] = {}
+        self.grive = GriveHandlers(config)
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -163,10 +227,12 @@ class ApiHandlers:
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def process(self, project_config: str, videos: Union[Part, List[Part], None] = None):
+    def process(self, project_config: dict, video_inputs: Union[Part, List[Part], None] = None,
+                grive_files: str = None, grive_names: str = None):
         '''
         POST /api/process
-        Upload videos and start processing pipeline
+        Upload videos and start processing pipeline.
+        Accepts either uploaded video parts or grive_files/grive_names JSON lists.
         '''
         log.info(f'{cherrypy.request.method} /api/process.')
         if cherrypy.request.method != 'POST':
@@ -176,28 +242,57 @@ class ApiHandlers:
         os.chdir(self.workspace)
 
         try:
-            if videos is None:
+            # Google Drive path: download files then hand off to pipeline
+            if grive_files:
+                file_ids = json.loads(grive_files)
+                file_names = json.loads(grive_names) if grive_names else []
+                if file_ids:
+                    if not project_config.get('name'):
+                        raise cherrypy.HTTPError(400, 'project_name is required')
+                    videos.newProject(project_config['name'], **self.config)
+                    for file_id, file_name in zip(file_ids, file_names):
+                        destination = os.path.join(
+                            self.workspace, project_config['name'], 'resources', file_name
+                        )
+                        grive.download_file(file_id, destination)
+                    if DEBUG:
+                        process_video_pipeline(self.config, project_config)
+                    else:
+                        proc = multiprocessing.Process(
+                            target=process_video_pipeline,
+                            args=(self.config, project_config),
+                            daemon=True
+                        )
+                        proc.start()
+                    log.info(f'Started background processing for project: {project_config["name"]}')
+                    return {
+                        'status': 'success',
+                        'message': 'Drive files queued. Processing started in background.',
+                        'project': project_config['name']
+                    }
+
+            if video_inputs is None:
                 video_list = []
-            elif not isinstance(videos, list):
-                video_list = [videos]
+            elif not isinstance(video_inputs, list):
+                video_list = [video_inputs]
             else:
-                video_list = videos
+                video_list = video_inputs
 
             # Validation
             if not project_config['name']:
                 raise cherrypy.HTTPError(400, 'project_name is required')
-            if not videos:
+            if not video_inputs:
                 raise cherrypy.HTTPError(400, 'At least one video file is required')
 
             self.config['resource'] = project_config['name']
-            videos.newProject(**self.config)
+            video_inputs.newProject(**self.config)
             log.info(f'Got JSON project config: {project_config}')
-            project_cfg = json.loads(project_config)
+            project_config = json.loads(project_config)
 
             for i, video in enumerate(video_list):
                 log.info(f'Received video {video.filename} uploading...')
-                if project_cfg['videos'] and project_cfg['videos'][0]['input']:
-                    video_filename: str = os.path.basename(project_cfg['videos'][0]['input'][i]['i'])
+                if project_config['videos'] and project_config['videos'][0]['input']:
+                    video_filename: str = os.path.basename(project_config['videos'][0]['input'][i]['i'])
                 else:
                     video_filename: str = os.path.basename(video.filename)
                 video_path = os.path.join(self.workspace, project_config['name'], 'resources', video_filename)
@@ -213,12 +308,12 @@ class ApiHandlers:
 
                 if DEBUG:
                     # Stay attached in debug mode because I may do some interactive testing.
-                    process_video_pipeline(self.config, project_config['name'], project_cfg)
+                    process_video_pipeline(self.config, project_config['name'], project_config)
                 else:
                     # Start background processing
                     process = multiprocessing.Process(
                         target=process_video_pipeline,
-                        args=(self.config, project_config['name'], project_cfg),
+                        args=(self.config, project_config['name'], project_config),
                         daemon=True
                     )
                     process.start()

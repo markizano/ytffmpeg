@@ -366,6 +366,69 @@ div.notif {
     border: 1px solid var(--primary-color);
 }
 
+/* Tab Interface */
+.tab-bar {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1rem;
+}
+
+.tab-btn {
+    padding: 0.5rem 1.25rem;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--secondary-color);
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    border-radius: 0;
+}
+
+.tab-btn:first-child {
+    border-radius: 0.375rem 0 0 0.375rem;
+}
+
+.tab-btn:last-child {
+    border-radius: 0 0.375rem 0.375rem 0;
+}
+
+.tab-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.tab-btn:hover:not(.active) {
+    background-color: var(--border-color);
+    color: var(--text-color);
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+#gdrive-file-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 0.5rem;
+}
+
+.gdrive-file-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+}
+
+.gdrive-file-item input[type="checkbox"] {
+    width: auto;
+}
+
 /* Portrait: vertical layout, tight spacing */
 @media (orientation: portrait) {
     main {

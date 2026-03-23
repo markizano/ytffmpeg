@@ -8,6 +8,7 @@ import mkzforge.types as types
 import mkzforge.const as const
 import mkzforge.cli as cli
 import mkzforge.genimg as genimg
+import mkzforge.grive as grive
 import mkzforge.metadata as metadata
 import mkzforge.subtitles as subtitles
 import mkzforge.i18n as i18n
@@ -34,6 +35,7 @@ __all__ = [
     'const',
     'cli',
     'genimg',
+    'grive',
     'metadata',
     'subtitles',
     'i18n',

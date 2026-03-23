@@ -58,21 +58,35 @@
             <fieldset>
                 <legend>Video Files</legend>
 
-                <div id="video-inputs">
-                    <div class="video-input">
-                        <div class="form-group">
-                            <label>Video File *</label>
-                            <input type="file" name="video" accept="video/*" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Override Filename (optional)</label>
-                            <input type="text" placeholder="custom-name.mp4">
-                        </div>
-                    </div>
+                <div class="tab-bar">
+                    <button type="button" class="tab-btn active" data-tab="direct">Direct Upload</button>
+                    <button type="button" class="tab-btn" data-tab="gdrive">Google Drive</button>
                 </div>
 
-                <button type="button" id="add-video" class="btn-secondary">+ Add Another Video</button>
-                <small>For concatenation, add multiple videos</small>
+                <!-- Direct Upload Tab -->
+                <div class="tab-panel active" id="tab-direct">
+                    <div id="video-inputs">
+                        <div class="video-input">
+                            <div class="form-group">
+                                <label>Video File *</label>
+                                <input type="file" name="video" accept="video/*" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Override Filename (optional)</label>
+                                <input type="text" placeholder="custom-name.mp4">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="add-video" class="btn-secondary">+ Add Another Video</button>
+                    <small>For concatenation, add multiple videos</small>
+                </div>
+
+                <!-- Google Drive Tab -->
+                <div class="tab-panel" id="tab-gdrive">
+                    <div id="gdrive-content">
+                        <p class="loading">Checking Google Drive connection...</p>
+                    </div>
+                </div>
             </fieldset>
 
             <!-- Processing Options -->

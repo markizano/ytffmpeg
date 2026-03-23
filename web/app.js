@@ -1,6 +1,73 @@
 $(document).ready(function() {
   let videoInputCount = 1;
 
+  // Tab switching
+  $(document).on('click', '.tab-btn', function() {
+    const tab = $(this).data('tab');
+    $('.tab-btn').removeClass('active');
+    $('.tab-panel').removeClass('active');
+    $(this).addClass('active');
+    $(`#tab-${tab}`).addClass('active');
+    if (tab === 'gdrive') {
+      loadDriveStatus();
+    }
+  });
+
+  function loadDriveStatus() {
+    $.get('/api/grive/status', function(data) {
+      if (data.authenticated) {
+        loadDriveFiles();
+      } else {
+        $('#gdrive-content').html(
+          '<p>Connect your Google Drive to select videos already uploaded there.</p>' +
+          '<button type="button" id="gdrive-connect" class="btn-primary">Connect Google Drive</button>'
+        );
+        $('#gdrive-connect').on('click', function() {
+          $.get('/api/grive/auth', function(res) {
+            window.location.href = res.auth_url;
+          }).fail(function() {
+            showStatus('Failed to get Google Drive auth URL.', 'error');
+          });
+        });
+      }
+    }).fail(function() {
+      $('#gdrive-content').html('<p class="error">Could not reach server to check Drive status.</p>');
+    });
+  }
+
+  function loadDriveFiles() {
+    $('#gdrive-content').html('<p class="loading">Loading files from Google Drive...</p>');
+    $.get('/api/grive/list', function(data) {
+      if (!data.files || data.files.length === 0) {
+        $('#gdrive-content').html('<p class="info">No video files found in the configured Drive folder.</p>');
+        return;
+      }
+      let html = '<div id="gdrive-file-list">';
+      data.files.forEach(function(f) {
+        const sizeMB = f.size ? (parseInt(f.size, 10) / (1024 * 1024)).toFixed(1) + ' MB' : 'unknown size';
+        html += `<div class="gdrive-file-item">
+          <input type="checkbox" class="gdrive-check" data-id="${f.id}" data-name="${f.name}">
+          <span>${f.name} <small>(${sizeMB})</small></span>
+        </div>`;
+      });
+      html += '</div>';
+      $('#gdrive-content').html(html);
+    }).fail(function(xhr) {
+      if (xhr.status === 401) {
+        $('#gdrive-content').html(
+          '<p>Session expired. <button type="button" id="gdrive-connect" class="btn-primary">Reconnect Google Drive</button></p>'
+        );
+        $('#gdrive-connect').on('click', function() {
+          $.get('/api/grive/auth', function(res) {
+            window.location.href = res.auth_url;
+          });
+        });
+      } else {
+        $('#gdrive-content').html('<p class="error">Failed to load Drive file list.</p>');
+      }
+    });
+  }
+
   // Add video input handler
   $('#add-video').on('click', function() {
     videoInputCount++;
@@ -36,17 +103,35 @@ $(document).ready(function() {
       const subtitles = $('#subtitles').is(':checked');
       const cut_silence = $('#cut-silence').is(':checked');
 
-      $('.video-input').map(function() {
-        const fileInput = $(this).find('input[type="file"]')[0];
-        const overrideName = $(this).find('input[type="text"]').val().trim();
+      const isDriveTab = $('#tab-gdrive').hasClass('active');
 
-        if (fileInput.files.length > 0) {
-          const file = fileInput.files[0];
-          const filename = overrideName || file.name;
-          formData.append('videos', file, filename);
-          return {video: file, filename};
+      if (isDriveTab) {
+        // Google Drive path: collect selected file IDs and names
+        const selectedIds = [];
+        const selectedNames = [];
+        $('.gdrive-check:checked').each(function() {
+          selectedIds.push($(this).data('id'));
+          selectedNames.push($(this).data('name'));
+        });
+        if (selectedIds.length === 0) {
+          showStatus('Please select at least one file from Google Drive.', 'error');
+          return;
         }
-      });
+        formData.append('grive_files', JSON.stringify(selectedIds));
+        formData.append('grive_names', JSON.stringify(selectedNames));
+      } else {
+        // Direct upload path
+        $('.video-input').map(function() {
+          const fileInput = $(this).find('input[type="file"]')[0];
+          const overrideName = $(this).find('input[type="text"]').val().trim();
+          if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const filename = overrideName || file.name;
+            formData.append('videos', file, filename);
+            return {video: file, filename};
+          }
+        });
+      }
 
       // Project configuration
       const projectConfig = {
