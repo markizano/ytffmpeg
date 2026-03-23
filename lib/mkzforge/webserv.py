@@ -67,8 +67,7 @@ class PageHandlers:
         '''
         if not kwargs.get('code'):
             raise cherrypy.HTTPError(400, 'Missing authorization code')
-        http_host = self.config.get('http_host',
-            f"http://{cherrypy.request.headers.get('Host', 'localhost')}")
+        http_host = self.config.get('http_host', f"http://{cherrypy.request.headers.get('Host', 'localhost')}")
         redirect_uri = f'{http_host}/oauth2callback'
         # Reconstruct the full authorization response URL that Google redirected to.
         qs = cherrypy.request.query_string
