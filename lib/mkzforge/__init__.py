@@ -13,13 +13,13 @@ import mkzforge.subtitles as subtitles
 import mkzforge.i18n as i18n
 import mkzforge.notify as notify
 import mkzforge.videos as videos
+import mkzforge.webserv as webserv
 
 def main():
     '''
     Main entry point for this application.
     Let's you run commands for mkzforge.
     '''
-    log = getLogger(__name__)
     kizano.log.setLevel(99)
     config = kizano.getConfig()
     if 'google' in config and 'api_key' in config['google']:
@@ -39,4 +39,5 @@ __all__ = [
     'i18n',
     'notify',
     'videos',
+    'webserv',
 ]

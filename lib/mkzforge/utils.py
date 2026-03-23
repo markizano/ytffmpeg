@@ -53,12 +53,13 @@ def getInputIndex(videos: list[dict], artifact: str) -> int|None:
                 return i
     return None
 
-def load() -> dict:
+def load(path_prefix: str = '.') -> dict:
     '''
     Read `mkzforge.yml` config into memory.
     '''
-    log.info('Reading mkzforge.yml config...')
-    return read_yaml('mkzforge.yml')
+    cfg_path = os.path.abspath(os.path.join(path_prefix, 'mkzforge.yml'))
+    log.info(f'Reading {cfg_path} config...')
+    return read_yaml(cfg_path)
 
 def save(videos: list[dict]) -> None:
     '''

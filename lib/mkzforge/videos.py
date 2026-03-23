@@ -13,6 +13,23 @@ from copy import deepcopy as copy
 from mkzforge import getLogger, utils
 log = getLogger(__name__)
 
+def newProject(resource: str, **kwargs) -> int:
+    if not os.path.exists(resource):
+        log.info(f"Creating new resource directory in {resource}.")
+        os.makedirs(resource, exist_ok=True)
+    else:
+        if not os.path.isdir(resource):
+            log.error(f"{resource} is not a directory!")
+            return 1
+    os.chdir(resource)
+    log.info(f'Creating new project directory in {os.getcwd()}.')
+    if not os.path.exists('build'):     os.mkdir('build')
+    if not os.path.exists('resources'): os.mkdir('resources')
+    if not os.path.exists('readme.md'): open('readme.md', 'w').write('')
+    if not os.path.exists('mkzforge.yml'):
+        utils.save({'videos': []})
+    log.info('Created new project directory in current working directory.')
+
 def mp4tomkv(resource: str) -> str:
     '''
     Convert an MP4 file to MKV.

@@ -16,10 +16,7 @@ import cherrypy
 from typing import Dict, List, Union
 from cherrypy._cpreqbody import Part
 
-from kizano import getLogger
-from kizano.utils import dictmerge, read_yaml
-
-from mkzforge import notify, cli, build, utils, videos, subtitles, metadata, genimg
+from mkzforge import getLogger, notify, utils, videos, subtitles, metadata, genimg
 
 log = getLogger(__name__)
 DEBUG = os.getenv('DEBUG', False)
@@ -116,10 +113,9 @@ class ApiHandlers:
                 raise cherrypy.HTTPError(404, f'Project {project_name} not found')
 
             # Read configuration
-            config_path = os.path.join(project_path, 'mkzforge.yml')
             project_config = None
-            if os.path.exists(config_path):
-                project_config = read_yaml(config_path)
+            if os.path.exists(os.path.join(project_path, 'mkzforge.yml')):
+                project_config = utils.load(project_path)
             return {
                 'name': project_name,
                 'config': project_config,
@@ -145,10 +141,9 @@ class ApiHandlers:
                 raise cherrypy.HTTPError(404, f'Project {project_name} not found')
 
             # Read configuration
-            config_path = os.path.join(project_path, 'mkzforge.yml')
             project_config = None
-            if os.path.exists(config_path):
-                project_config = read_yaml(config_path)
+            if os.path.exists(os.path.join(project_path, 'mkzforge.yml')):
+                project_config = utils.load(project_path)
             if resource == 'output':
                 output_filename = os.path.join(self.workspace, project_name, project_config['videos'][0]['output'])
                 attachment_filename = os.path.basename(output_filename)
@@ -195,7 +190,7 @@ class ApiHandlers:
                 raise cherrypy.HTTPError(400, 'At least one video file is required')
 
             self.config['resource'] = project_name
-            cli.new.gennew(self.config)
+            videos.newProject(**self.config)
             log.info(f'Got JSON project config: {project_config}')
             project_cfg = json.loads(project_config)
 
@@ -206,13 +201,14 @@ class ApiHandlers:
                 else:
                     video_filename: str = os.path.basename(video.filename)
                 video_path = os.path.join(self.workspace, project_name, 'resources', video_filename)
+                # Chunk the video because it could be many GB in size. We don't want that in-memory.
                 with open(video_path, 'wb') as fd:
                     while True:
                         chunk = video.file.read(8192)
                         if not chunk:
                             break
                         fd.write(chunk)
-                    fd.flush()
+                        fd.flush()
                 log.info(f'Saved uploaded video: {video_path} ({os.path.getsize(video_path)} bytes).')
 
                 if DEBUG:
@@ -240,7 +236,6 @@ class ApiHandlers:
             log.error(f'Failed to process upload: {e}', exc_info=True)
             raise cherrypy.HTTPError(500, str(e))
 
-
 def process_video_pipeline(
     cfg: dict,
     project_name: str,
@@ -257,16 +252,18 @@ def process_video_pipeline(
     log.info(f'Process config: {project_config}')
 
     try:
-        # Check to see if we have >1 video and run `build` to concat the videos first.
-        if len(project_config['videos']) > 1:
-            log.info('More than 1 video in the list, running build to concat into a single resource.')
-            build.builder(project_config)
-
         log.info('Normalizing resources from existing video list.')
-        mkzforge_cfg = read_yaml('mkzforge.yml')
+        # I'm aware this looks a lot like `mkzforge.cli.normalize:normalize`.
+        # The challenge is the circular import if I pull the CLI function in here.
+        # It's already simplified to just these interfaces, so this is OK, IMHO.
+        mkzforge_cfg = utils.load()
         cfg['name'] = os.path.basename(os.getcwd())
         video_cfg, resource = videos.detectState(**cfg)
         subtitles.genSubtitles(video_cfg, resource, **cfg)
+        # Inject title and description into the mix before attempting to generate them.
+        for descriptor in ['title', 'description']:
+            if descriptor in project_config and project_config[descriptor]:
+                video_cfg['metadata'][descriptor] = project_config[descriptor]
         metadata.generateMetadata(video_cfg, 'title', **cfg)
         metadata.generateMetadata(video_cfg, 'description', **cfg)
         # Set filter_complex to None to get the default hardsub filter.
@@ -280,16 +277,12 @@ def process_video_pipeline(
         log.info('Video(s) normalized and added to `mkzforge.yml` config.')
         utils.save(mkzforge_cfg['videos'])
 
-        log.info('Merging config from submitted form.')
-        mkzforge_cfg = read_yaml('mkzforge.yml')
-        log.info(f'Loaded mkzforge.yml: {mkzforge_cfg}')
         log.info(f'In-memory project config: {project_config}')
-        mkzforge_cfg['videos'][0]['metadata'] = dictmerge(mkzforge_cfg['videos'][0]['metadata'], project_config['videos'][0]['metadata'])
         del cfg['resource']
 
         log.info('Building compiled final video result.')
         log.debug(f'Build config: {mkzforge_cfg}')
-        build.buildVideo({'mkzforge': cfg, 'videos': mkzforge_cfg['videos']})
+        videos.compileVideo(mkzforge_cfg['videos'], **cfg)
 
         # Send success notification
         if not DEBUG:
