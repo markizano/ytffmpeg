@@ -4,232 +4,129 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-mkzforge is a Python-based video processing automation tool that simplifies complex FFmpeg
-operations for creating social media content. It provides:
+MKZ Forge is a Python video processing automation tool that wraps FFmpeg's `filter_complex` into a
+YAML-driven pipeline. It handles the full workflow: MP4→MKV normalization, silence removal,
+Whisper subtitle generation, multi-language translation, LLM metadata generation, Gemini thumbnail
+generation, and publishing.
 
-- YAML-driven configuration for video transformations
-- Automatic subtitle generation using OpenAI Whisper with GPU auto-detection
-- Multi-language subtitle translation via Argos Translate
-- GPU resource management to prevent OOM errors during concurrent transcription
-- Filter complex abstraction layer for FFmpeg operations
+## Commands
 
-## Development Commands
-
-### Environment Setup
+### Install & Setup
 
 ```bash
-# Create virtual environment and install dependencies
-uv venv
-source .venv/bin/activate
-pip install -e .
+uv pip install -e . # standard editable install
+```
+
+### Running
+
+```bash
+mkzforge --help
+mkzforge new [path]           # Create new project
+mkzforge normalize            # Normalize videos (compress, silence removal, subtitles)
+mkzforge build [output]       # Build final video from mkzforge.yml
+mkzforge gensubs [video]      # Generate subtitles only
+mkzforge metadata             # Generate LLM title/description
+mkzforge genimage             # Generate Gemini thumbnail
+mkzforge publish [file]       # Publish to SFTP/YouTube/TikTok
+mkzforge serve [--workspace /path] [--http-port 9091]  # Start web interface
 ```
 
 ### Testing
 
 ```bash
-# Run all tests
-python tests/runtests.py
-
-# Run with pytest directly
-pytest tests/
+uv run pytest                  # Run all tests, including the virtualenv.
 ```
 
-### Building and Installation
-
-```bash
-# Build package
-uv build
-
-# Install locally for development
-pip install -e .
-```
-
-### Running the Application
-
-```bash
-# Main entry point
-mkzforge --help
-
-# Common workflows
-mkzforge new                    # Create new project structure
-mkzforge refresh                # Process MP4s, convert to MKV, generate subtitles
-mkzforge build [output.mp4]     # Build final video from configuration
-mkzforge gensubs video.mkv      # Generate subtitles for specific file
-mkzforge publish                # Publish to configured endpoints (SFTP)
-mkzforge serve                  # Start web interface (default: http://localhost:9091)
-```
+Tests are split into `tests/mkzforgeunit/` (unit) and `tests/mkzforgefunc/`
+(functional/integration). Fixtures live in `tests/fixtures/configs/`.
 
 ## Architecture
 
-### Core Components
+### Pipeline Flow
 
-**Web Interface** (`lib/mkzforge/webserv.py`, `web/`)
+1. `mkzforge normalize` → converts MP4→MKV (H.265 crf=28), removes silence via FFmpeg `silencedetect`,
+   runs Whisper for subtitles, translates via Argos Translate, calls LLM for metadata
+2. `mkzforge build` → reads `mkzforge.yml`, constructs FFmpeg filter graph via `filter_complex.py`
+   DSL, produces final MP4
+3. `mkzforge publish` → uploads via SFTP (Fabric), with hooks for YouTube/TikTok
 
-- Browser-based UI for video upload and project management
-- CherryPy-based HTTP server with REST API endpoints
-- Background processing using multiprocessing for non-blocking uploads
-- Static file serving for HTML/CSS/JS assets
-- Key endpoints:
-  - `GET /` - Video upload form
-  - `GET /videos` - Projects list page
-  - `GET /api/projects` - JSON list of all projects
-  - `POST /api/process` - Upload and process videos
-- Configuration options:
-  - `--workspace`: Directory for project storage (default: `~/mkzforge-projects`)
-  - `--http-port`: Web server port (default: 9091)
-  - `--webroot`: Custom web assets directory
-- See `doc/WEBSERVER.md` for detailed documentation
+### Key Modules
 
-**CLI Module** (`lib/mkzforge/cli/`)
+| Module | Purpose |
+|--------|---------|
+| `cli/__init__.py` | Argument parsing, action dispatch, config merging |
+| `videos.py` | MP4→MKV, silence detection, video compilation |
+| `subtitles.py` | Whisper integration, SRT parsing/writing |
+| `i18n.py` | Argos Translate integration, subtitle re-timing |
+| `filter_complex.py` | FFmpeg filter graph DSL abstraction |
+| `metadata.py` | LangChain LLM calls for titles/descriptions |
+| `genimg.py` | Google Gemini image generation, SVG thumbnails |
+| `webserv.py` | CherryPy REST API + background workers |
+| `notify.py` | AWS SNS singleton |
+| `utils.py` | Config loading, GPU VRAM detection |
+| `types.py` | Enums: `Devices`, `Action`, `WhisperTask` |
+| `const.py` | Supported languages, API key constants |
 
-- `base.py`: BaseCommand class with shared functionality:
-  - GPU lock mechanism using fcntl for preventing concurrent Whisper instances
-  - Automatic Whisper model selection based on GPU VRAM detection (via nvidia-smi or torch)
-  - Subtitle generation, parsing, and translation utilities
-  - Configuration loading and merging (system → user → project)
-- `new.py`: Project scaffolding (creates build/, resources/, mkzforge.yml)
-- `refresh.py`: MP4→MKV conversion, subtitle generation, YAML updates
-- `build.py`: Final video assembly using filter_complex definitions
-- `publish.py`: Video publishing to configured endpoints
+### Config Loading Order (merged, last wins)
 
-**Filter Complex System** (`lib/mkzforge/filter_complex.py`)
+1. `/etc/mkzforge/config.yml`
+2. `~/.config/mkzforge/config.yml`
+3. `./mkzforge.yml` (project-specific)
+4. CLI arguments
 
-- `FilterComplexFunctionUnit`: Parses and represents individual FFmpeg filters
-- `FilterComplexStream`: Represents input→functions→output stream chains
-- `FilterComplexFunctionList`: Collection of filter functions
-- Provides abstraction over FFmpeg's filter_complex syntax for programmatic manipulation
+### Project Directory Structure
 
-**Configuration** (`lib/mkzforge/schema.json`)
-
-- JSON Schema defining mkzforge.yml structure
-- Two-level configuration: global `mkzforge` section + per-video `videos` array
-- Configuration hierarchy: `/etc/mkzforge/config.yml` → `~/.config/mkzforge/config.yml` → `./mkzforge.yml`
-
-**Notification System** (`lib/mkzforge/notify.py`)
-
-- SNS notification support for build completion/failures
-- Replaced Discord webhooks in recent refactor
-
-### GPU Resource Management
-
-The `gpu_lock()` context manager in `base.py` prevents multiple Whisper instances from running simultaneously:
-
-- Uses POSIX file locking (fcntl.flock) on `~/.cache/mkzforge/gpu.lock`
-- Retry logic with random delays to avoid race conditions
-- Configurable timeout (default: 1 hour)
-- Only applies to CUDA/auto device modes, not CPU
-
-### Whisper Model Selection
-
-Automatic model selection in `select_whisper_model()`:
-
-- Detects GPU VRAM via nvidia-smi (preferred) or torch
-- Model VRAM requirements:
-  - `tiny`/`base`: ~1GB
-  - `small`: ~2GB
-  - `medium`: ~5GB
-  - `large-v2`/`large-v3`: ~10GB
-- Falls back to `small` for CPU or low VRAM systems
-- Can be overridden via `mkzforge.whisper_model` config
-
-### Multi-Language Subtitle Workflow
-
-1. Whisper generates base language subtitles (configured via `mkzforge.language`)
-2. For additional languages in `mkzforge.languages`, translation occurs:
-   - Full transcript translated as one document (preserves context)
-   - Translated text split back to match original timing
-   - Argos Translate packages auto-downloaded as needed
-3. Final video includes all subtitle tracks with proper metadata
-
-## Configuration Structure
-
-**Project-Level** (`mkzforge.yml`):
-
-```yaml
-mkzforge:
-  language: en                  # Base language for Whisper
-  languages: [en, es, fr]       # Languages in final video
-  subtitles: true               # Enable subtitle generation
-  whisper_model: large-v3       # Override auto-selection (optional)
-  device: cuda                  # cpu, cuda, or auto
-  overwrite: false              # Overwrite existing files
-  cut_silence: false            # Enable silence removal
-
-videos:
-  - input:
-      - i: resources/video.mkv
-      - i: resources/overlay.png
-        loop: true
-        t: 5
-        framerate: 30
-    filter_complex:
-      - "[0:v]scale=1280x720[video]"
-      - "[0:a]volume=1.5[audio]"
-    map:
-      en: 2:s
-    metadata:
-      title: "Video Title"
-      description: "Description"
-      date: 2024-01-01
-    output: build/final.mp4
+```plain
+my-project/
+├── mkzforge.yml    # YAML config describing build pipeline
+├── resources/      # Input MP4/MKV files
+└── build/          # Generated outputs (MKV, SRT, MP4, PNG)
 ```
 
-## Common Patterns
+### `mkzforge.yml` Schema
 
-### Adding New FFmpeg Filters
+```yaml
+videos:
+  - input: [list of files/sources]
+    output: output.mp4
+    attributes: [subs, no-video, no-audio, vsync, no-publish, thumbnail]
+    languages: [en, es, fr]
+    filter_complex: [ffmpeg filter directives]
+    metadata:
+      title: "..."
+      description: "..."
+    map:
+      video: "[v]"
+      audio: "[a]"
+      subs: 0
+```
 
-When adding support for new FFmpeg filters, work with `FilterComplexFunctionUnit` in `filter_complex.py`. The parser automatically handles:
+Full schema documented in `lib/mkzforge/schema.json` and `doc/configuration.md`.
 
-- Named parameters: `trim=start=1.15:end=4.5`
-- Positional args: `fade=in:st=0:d=1`
-- Mixed syntax: `overlay=x=10:y=20:enable='between(t,0,5)'`
+### Whisper Model Auto-Selection (by GPU VRAM)
 
-### Extending CLI Commands
+- ≥10GB → `large-v3`; 8–10GB → `large-v2`; 6–8GB → `medium`; 3–6GB → `small`; <3GB → `base`; CPU
+  fallback → `small`
 
-New CLI commands should:
+### GPU Locking
 
-1. Subclass `BaseCommand` in `cli/base.py`
-2. Implement command logic
-3. Register in `cli/__init__.py`
-4. Add to project scripts in `pyproject.toml` if needed
+File-based lock prevents concurrent GPU usage across multiple `mkzforge` processes.
 
-### Testing GPU-Related Features
+## Key Environment Variables
 
-Tests in `tests/mkzforgeunit/gpu_lock.py` demonstrate:
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `LANGUAGE` | `en` | Base transcription language |
+| `LOG_LEVEL` | `INFO` | Logging verbosity |
+| `WHISPER_MODEL` | auto | Override Whisper model selection |
+| `LLM_MODEL` | `gpt-oss:20b` | LLM model name |
+| `LLM_PROVIDER` | `ollama` | LLM provider |
+| `GOOGLE_API_KEY` | — | Gemini API key |
+| `GEMINI_IMAGE_MODEL` | `gemini-2.5-flash-image` | Gemini model |
+| `HTTP_PORT` | `9091` | Web server port |
+| `OMP_NUM_THREADS` | `nproc` | CPU thread count |
 
-- Concurrent lock acquisition testing
-- Timeout handling
-- CPU vs CUDA mode differences
+## Versioning
 
-## File Locations
-
-**Source Code**: `lib/mkzforge/`
-**Tests**: `tests/`
-**Documentation**: `doc/` (mostly reference to README.md)
-**Examples**: `examples/` (sample mkzforge.yml files for different use cases)
-**Contrib**: `contrib/` (third-party integrations and deployment scripts)
-  - `contrib/sysvinit/` - SysV init scripts for Devuan/non-systemd systems
-**System Config**: `/etc/mkzforge/config.yml` (optional)
-**User Config**: `~/.config/mkzforge/config.yml` (optional)
-
-## Dependencies
-
-- **FFmpeg**: Core video processing engine (external binary)
-- **OpenAI Whisper**: Subtitle transcription (GPU-accelerated)
-- **Argos Translate**: Multi-language subtitle translation
-- **kizano**: Utility library for logging, config, YAML parsing
-- **langchain**: LLM integration (used for future features)
-- **PyYAML**: Configuration parsing with schema validation
-- **boto3**: AWS SNS notifications
-
-## Special Considerations
-
-**Name Correction in Subtitles**: `correct_subtitles()` in `base.py` uses regex to fix common Whisper transcription errors for project-specific terms (Markizano, Kizano, Draconus, Tanninovian). This runs automatically after subtitle generation.
-
-**MP4 vs MKV**: The `refresh` command converts MP4 to MKV for:
-
-- Better compression with minimal quality loss
-- Container support for multiple subtitle tracks
-- Metadata preservation
-
-**Silence Detection**: When `cut_silence: true`, uses FFmpeg's silencedetect/silenceremove filters with configurable thresholds (`silence_threshold`, `silence_duration`, `silence_pad`).
+Uses `setuptools-scm` — version is derived from git tags (`v*` format). Version is written to
+`lib/mkzforge/_version.py` automatically.
