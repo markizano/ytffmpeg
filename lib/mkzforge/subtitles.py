@@ -100,12 +100,21 @@ def genSubtitles(
     with utils.video_processing_lock('subtitles'):
         # Build whisper command
         log.info(f'PATH: {os.getenv("PATH")}')
+        vram_mb = utils.get_gpu_vram_mb()
         whisper_cmd = [
             'whisper',
             # Select appropriate Whisper model based on GPU VRAM
             '--model', whisperModel(),
-            '--device', kwargs.get('device', types.Devices.AUTO),
-            '--fp16', 'False',
+        ]
+        # Select the appropriate device based on GPU presence.
+        if vram_mb == 0:
+            whisper_cmd.extend(['--devices', types.Devices.CPU])
+        else:
+            whisper_cmd.extend([
+                '--device', types.Devices.CUDA,
+                '--fp16', 'False',
+            ])
+        whisper_cmd.extend([
             '--output_dir', 'build',
             '--output_format', 'all',
             '--language', lang,
@@ -120,7 +129,7 @@ def genSubtitles(
                 'markizano.net is the website you can visit. '
                 'Alex Hormozi and Codie Sanchez are YouTube personalities.'
             )
-        ]
+        ])
 
         # Add the video file
         whisper_cmd.append(video_path)

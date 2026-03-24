@@ -226,7 +226,7 @@ class ApiHandlers:
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def process(self, project_config: dict, video_inputs: Union[Part, List[Part], None] = None,
+    def process(self, project_config: str, video_inputs: Union[Part, List[Part], None] = None,
                 grive_files: str = None, grive_names: str = None):
         '''
         POST /api/process
@@ -241,33 +241,34 @@ class ApiHandlers:
         os.chdir(self.workspace)
 
         try:
+            project_cfg = json.loads(project_config)
             # Google Drive path: download files then hand off to pipeline
             if grive_files:
                 file_ids = json.loads(grive_files)
                 file_names = json.loads(grive_names) if grive_names else []
                 if file_ids:
-                    if not project_config.get('name'):
+                    if not project_cfg.get('name'):
                         raise cherrypy.HTTPError(400, 'project_name is required')
-                    videos.newProject(project_config['name'], **self.config)
+                    videos.newProject(resource=project_cfg['name'], **self.config)
                     for file_id, file_name in zip(file_ids, file_names):
                         destination = os.path.join(
-                            self.workspace, project_config['name'], 'resources', file_name
+                            self.workspace, project_cfg['name'], 'resources', file_name
                         )
                         grive.download_file(file_id, destination)
                     if DEBUG:
-                        process_video_pipeline(self.config, project_config)
+                        process_video_pipeline(self.config, project_cfg)
                     else:
                         proc = multiprocessing.Process(
                             target=process_video_pipeline,
-                            args=(self.config, project_config),
+                            args=(self.config, project_cfg),
                             daemon=True
                         )
                         proc.start()
-                    log.info(f'Started background processing for project: {project_config["name"]}')
+                    log.info(f'Started background processing for project: {project_cfg["name"]}')
                     return {
                         'status': 'success',
                         'message': 'Drive files queued. Processing started in background.',
-                        'project': project_config['name']
+                        'project': project_cfg['name']
                     }
 
             if video_inputs is None:
@@ -278,23 +279,22 @@ class ApiHandlers:
                 video_list = video_inputs
 
             # Validation
-            if not project_config['name']:
+            if not project_cfg['name']:
                 raise cherrypy.HTTPError(400, 'project_name is required')
             if not video_inputs:
                 raise cherrypy.HTTPError(400, 'At least one video file is required')
 
-            self.config['resource'] = project_config['name']
-            video_inputs.newProject(**self.config)
-            log.info(f'Got JSON project config: {project_config}')
-            project_config = json.loads(project_config)
+            videos.newProject(resource=project_cfg['name'], **self.config)
+            log.info(f'Got JSON project config: {project_cfg}')
+            project_cfg = json.loads(project_cfg)
 
             for i, video in enumerate(video_list):
                 log.info(f'Received video {video.filename} uploading...')
-                if project_config['videos'] and project_config['videos'][0]['input']:
-                    video_filename: str = os.path.basename(project_config['videos'][0]['input'][i]['i'])
+                if project_cfg['videos'] and project_cfg['videos'][0]['input']:
+                    video_filename: str = os.path.basename(project_cfg['videos'][0]['input'][i]['i'])
                 else:
                     video_filename: str = os.path.basename(video.filename)
-                video_path = os.path.join(self.workspace, project_config['name'], 'resources', video_filename)
+                video_path = os.path.join(self.workspace, project_cfg['name'], 'resources', video_filename)
                 # Chunk the video because it could be many GB in size. We don't want that in-memory.
                 with open(video_path, 'wb') as fd:
                     while True:
@@ -307,22 +307,22 @@ class ApiHandlers:
 
                 if DEBUG:
                     # Stay attached in debug mode because I may do some interactive testing.
-                    process_video_pipeline(self.config, project_config['name'], project_config)
+                    process_video_pipeline(self.config, project_cfg['name'], project_cfg)
                 else:
                     # Start background processing
                     process = multiprocessing.Process(
                         target=process_video_pipeline,
-                        args=(self.config, project_config['name'], project_config),
+                        args=(self.config, project_cfg['name'], project_cfg),
                         daemon=True
                     )
                     process.start()
 
-                log.info(f'Started background processing for project: {project_config["name"]}')
+                log.info(f'Started background processing for project: {project_cfg["name"]}')
 
             return {
                 'status': 'success',
                 'message': 'Video upload successful. Processing started in background.',
-                'project': project_config['name']
+                'project': project_cfg['name']
             }
         except cherrypy.HTTPError:
             raise
@@ -368,11 +368,11 @@ def process_video_pipeline(cfg: dict, project_config: dict):
         utils.save(mkzforge_cfg['videos'])
 
         log.info(f'In-memory project config: {project_config}')
-        del cfg['resource']
+        log.info(f'In-memory MKZ config: {mkzforge_cfg}')
 
         log.info('Building compiled final video result.')
         log.debug(f'Build config: {mkzforge_cfg}')
-        videos.compileVideo(mkzforge_cfg['videos'], **cfg)
+        videos.compileVideo(video_cfg, **cfg)
 
         # Send success notification
         if not DEBUG:

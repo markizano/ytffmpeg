@@ -27,7 +27,7 @@ def newProject(resource: str, **kwargs) -> int:
     if not os.path.exists('resources'): os.mkdir('resources')
     if not os.path.exists('readme.md'): open('readme.md', 'w').write('')
     if not os.path.exists('mkzforge.yml'):
-        utils.save({'videos': []})
+        utils.save([])
     log.info('Created new project directory in current working directory.')
 
 def mp4tomkv(resource: str) -> str:
@@ -51,13 +51,13 @@ def mp4tomkv(resource: str) -> str:
         'map_metadata': '-1',
         'metadata:s:a:0': 'language=eng',
     }
-    (
-        ffmpeg.FFmpeg(executable=os.getenv('FFMPEG_BIN', 'ffmpeg'))
-        .option('hide_banner')
-        .option('y')
-        .input(resource)
-        .output(mkvfile, **out_opts)
-    ).execute()
+    stream = ffmpeg.FFmpeg(executable=os.getenv('FFMPEG_BIN', 'ffmpeg'))
+    stream.option('hide_banner')
+    stream.option('y')
+    stream.input(resource)
+    stream.output(mkvfile, **out_opts)
+    stream.on('stderr')(log.debug)
+    stream.execute()
     log.debug(f'Deleting {resource} to save on disk space.')
     os.unlink(resource)
     return mkvfile
@@ -109,12 +109,7 @@ def getVideoRotation(resource: str) -> int:
         log.warning(f'Could not detect rotation for {resource}: {e}')
         return 0
 
-def detectSilence(
-    resource: str,
-    silence_threshold: int = 30,
-    silence_duration: float = 1.2,
-    silence_pad_ms: int = 350,
-) -> list[str]:
+def detectSilence(resource: str, **kwargs) -> list[str]:
     '''
     Detect silence in a video file and return filter_complex strings to remove silent segments.
     Params:
@@ -129,6 +124,9 @@ def detectSilence(
     Returns: List of filter complex strings representing silence removal
     '''
     log.info(f'Detecting silence in \x1b[1m{resource}\x1b[0m...')
+    silence_threshold: int = kwargs.get('silence_threshold', 30)
+    silence_duration: float = kwargs.get('silence_duration', 1.2)
+    silence_pad_ms: int = kwargs.get('silence_pad_ms', 350)
 
     # Use FFmpeg silencedetect filter to find silent segments
     silence_output = []
@@ -224,18 +222,20 @@ def removeSilence(resource: str, **kwargs) -> str:
         return resource
 
     video_cfg = newVideo(resource)
-    updateVideo(video_cfg, filter_complex=silence_filters)
+    # Avoid clashing names with the target MP$4 video for the final build.
+    # Also, this is still an "internal" resource, just in the build directory.
+    output = f'build/{utils.filename(resource)}.mkv'
+    updateVideo(video_cfg, output=output, filter_complex=silence_filters)
     mkzforge_cfg = utils.load()
     mkzforge_cfg['videos'].append(video_cfg)
-    utils.save(mkzforge_cfg)
+    utils.save(mkzforge_cfg['videos'])
     log.info(f'Processing silence removal for \x1b[1m{resource}\x1b[0m...')
     cv = compileVideo(video_cfg, **kwargs)
-    output_path = video_cfg['output']
     if cv != 0:
         log.warning('compileVideo() at this step did not succeed. This may cause downstream effects from here...')
     else:
-        log.info(f'Successfully created silence-trimmed video at \x1b[1m{output_path}\x1b[0m!')
-    return output_path
+        log.info(f'Successfully created silence-trimmed video at \x1b[1m{output}\x1b[0m!')
+    return output
 
 def newVideo(resource: str) -> dict:
     '''
@@ -277,6 +277,9 @@ def updateVideo(video_cfg: dict, **kwargs) -> dict:
         for attribute in kwargs['attributes']:
             if attribute not in video_cfg['attributes']:
                 video_cfg['attributes'].append(attribute)
+
+    if 'output' in kwargs and kwargs['output']:
+        video_cfg['output'] = kwargs['output']
 
     if 'subs' in kwargs and kwargs['subs']:
         if 'subs' not in video_cfg['attributes']:
@@ -384,7 +387,7 @@ def detectState(**kwargs) -> tuple[dict, str]:
         mkv = mp4tomkv(mp4s[0])
         # cut-silence from video.
         resource = removeSilence(mkv, **kwargs)
-        if utils.hasInput(mkzforge_cfg, resource):
+        if utils.hasInput(mkzforge_cfg['videos'], resource):
             log.info(f'Resource {resource} found in config. Loading from this...')
             idx = utils.getInputIndex(mkzforge_cfg['videos'], resource)
             video_cfg = mkzforge_cfg['videos'][idx]

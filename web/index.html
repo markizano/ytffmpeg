@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mkzforge - Video Upload</title>
+    <title>Markizano's Video Forge - Video Processing</title>
     <link rel="stylesheet" href="/style.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <nav>
-        <h1>mkzforge</h1>
+        <h1>Markizano's Video Forge</h1>
         <ul>
             <li><a href="/" class="active">Upload Video</a></li>
             <li><a href="/videos">Projects</a></li>
@@ -19,7 +19,7 @@
     <main>
         <h2>Upload Video for Processing</h2>
 
-        <form id="upload-form">
+        <form id="upload-form" novalidate>
             <!-- Project Configuration -->
             <fieldset class="form-row-fields">
                 <legend>Project Details</legend>
@@ -69,7 +69,7 @@
                         <div class="video-input">
                             <div class="form-group">
                                 <label>Video File *</label>
-                                <input type="file" name="video" accept="video/*" required>
+                                <input type="file" name="video" accept="video/*">
                             </div>
                             <div class="form-group">
                                 <label>Override Filename (optional)</label>

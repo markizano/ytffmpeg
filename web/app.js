@@ -75,7 +75,7 @@ $(document).ready(function() {
       <div class="video-input">
         <div class="form-group">
           <label>Video File ${videoInputCount}</label>
-          <input type="file" name="video" accept="video/*" required>
+          <input type="file" name="video" accept="video/*">
         </div>
         <div class="form-group">
           <label>Override Filename (optional)</label>
@@ -121,6 +121,7 @@ $(document).ready(function() {
         formData.append('grive_names', JSON.stringify(selectedNames));
       } else {
         // Direct upload path
+        let hasVideo = false;
         $('.video-input').map(function() {
           const fileInput = $(this).find('input[type="file"]')[0];
           const overrideName = $(this).find('input[type="text"]').val().trim();
@@ -128,9 +129,14 @@ $(document).ready(function() {
             const file = fileInput.files[0];
             const filename = overrideName || file.name;
             formData.append('videos', file, filename);
+            hasVideo = true;
             return {video: file, filename};
           }
         });
+        if (!hasVideo) {
+          showStatus('Please select at least one video file to upload.', 'error');
+          return;
+        }
       }
 
       // Project configuration
